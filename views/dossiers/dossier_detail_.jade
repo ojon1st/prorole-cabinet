@@ -1,0 +1,541 @@
+//
+  // start: BREADCRUMB
+  .row
+    .col-md-12
+      ol.breadcrumb
+        li
+          a(href='#')
+            | Accueil
+        li.active
+          | #{title}
+  // end: BREADCRUMB
+  // start: PAGE CONTENT
+  .row
+    .col-sm-12
+      .panel.panel-white
+        .panel-heading
+          h4.panel-title
+            | Gestionnaire du 
+            span.text-bold dossier
+          .panel-tools
+            .dropdown
+              a.btn.btn-xs.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
+                i.fa.fa-cog
+              ul.dropdown-menu.dropdown-light.pull-right(role='menu')
+                li
+                  a.panel-collapse.collapses(href='#')
+                    i.fa.fa-angle-up
+                    span Cacher
+                li
+                  a.panel-refresh(href='#')
+                    i.fa.fa-refresh
+                    span Actualiser
+                li
+                  a.panel-expand(href='#')
+                    i.fa.fa-expand
+                    span Plein écran
+            // <a class="btn btn-xs btn-link panel-close" href="#"> <i class="fa fa-times"></i> </a>
+        .panel-body
+          .row
+            .col-sm-12
+              form.form-horizontal(role='form')
+                .tabbable
+                  ul#myTab.nav.nav-tabs
+                    li.active
+                      a(href='#info', data-toggle='tab')
+                        i.green.fa.fa-info
+                        |  Informations générales
+                    li
+                      a(href='#procedure', data-toggle='tab')
+                        i.green.fa.fa-legal
+                        |  Procédure
+                    li
+                      a(href='#defence', data-toggle='tab')
+                        i.green.fa.fa-cogs
+                        |  Moyens de défense
+                  .tab-content
+                    #info.tab-pane.fade.in.active
+                      .row
+                        .col-md-12
+                          .panel.panel-white
+                            .panel-heading
+                              h4.panel-title
+                                span.text-bold Dossier
+                              .panel-tools
+                                .dropdown
+                                  a.btn.btn-xs.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
+                                    i.fa.fa-cog
+                                  ul.dropdown-menu.dropdown-light.pull-right(role='menu')
+                                    li
+                                      a.panel-collapse.collapses(href='#')
+                                        i.fa.fa-angle-up
+                                        span Cacher
+                                    li
+                                      a.panel-refresh(href='#')
+                                        i.fa.fa-refresh
+                                        span Actualiser
+                                    li
+                                      a.panel-expand(href='#')
+                                        i.fa.fa-expand
+                                        span Plein écran
+                                //
+                                  <a class="btn btn-xs btn-link panel-close" href="#">
+                                  <i class="fa fa-times"></i>
+                                  </a>
+                            .panel-body
+                              .row
+                                .col-md-6
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Réf. :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.ref_d}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Pour :
+                                    label.col-sm-8.control-label
+                                      if dossier.pour.p_type == 'pp'
+                                        | #{dossier.pour.pp.p_prenom} #{dossier.pour.pp.p_nom}
+                                      else if dossier.pour.p_type == 'pm'
+                                        | #{dossier.pour.pm.p_denomination}
+                                .col-sm-6
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Nature :
+                                    .col-sm-8.control-label
+                                      | #{dossier.nature}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Contre :
+                                    label.col-sm-8.control-label
+                                      if dossier.contre.c_type == 'pp'
+                                        | #{dossier.contre.pp.c_prenom} #{dossier.contre.pp.c_nom}
+                                      else if dossier.contre.c_type == 'pm'
+                                        | #{dossier.contre.pm.c_denomination}
+                      .row
+                        .col-md-6
+                          .panel.panel-white
+                            .panel-heading
+                              h4.panel-title
+                                span#tiltle_pour.text-bold CLIENT(S)
+                              .panel-tools
+                                .dropdown
+                                  a.btn.btn-xs.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
+                                    i.fa.fa-cog
+                                  ul.dropdown-menu.dropdown-light.pull-right(role='menu')
+                                    li
+                                      a.panel-collapse.collapses(href='#')
+                                        i.fa.fa-angle-up
+                                        span Cacher
+                                    li
+                                      a.panel-refresh(href='#')
+                                        i.fa.fa-refresh
+                                        span Actualiser
+                                    li
+                                      a.panel-expand(href='#')
+                                        i.fa.fa-expand
+                                        span Plein écran
+                                //
+                                  <a class="btn btn-xs btn-link panel-close" href="#">
+                                  <i class="fa fa-times"></i>
+                                  </a>
+                            .panel-body.buttons-widget
+                              if dossier.pour.p_type == 'pp'
+                                #physique_pour
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Nom : 
+                                    label.col-sm-8.control-label
+                                      | #{dossier.pour.pp.p_nom}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Prenom :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.pour.pp.p_prenom}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Date nais. :
+                                    label.col-sm-8.control-label
+                                      - var maDate = moment(dossier.pour.pp.p_dob).format("DD/MM/YYYY")
+                                      | #{maDate}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Lieu nais. :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.pour.pp.p_pob}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Profession :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.pour.pp.p_profession}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Téléphone :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.pour.pp.pp_tel}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | e-mail :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.pour.pp.pp_email}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Domicile :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.pour.pp.p_domicile}
+                                  // Ajout de champs apres de div
+                                  #sec_pour
+                              else if dossier.pour.p_type == 'pm'
+                                #morale_pour
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Denomination S. :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.pour.pm.p_denomination}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Raison Sociale :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.pour.pm.p_rs}
+                                  .form-group
+                                    label.Capital-sm-3.control-label(for='')
+                                      | Siège Social :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.pour.pm.p_siege}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | RCCM :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.pour.pm.p_rccm}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | NIF :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.pour.pm.p_nif}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Représentant :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.pour.pm.p_representant}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Téléphone :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.pour.pm.pm_tel}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Email :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.pour.pm.pm_email}
+                              if (dossier.autres_pour != undefined || dossier.autres_pour.length > 0)
+                                #addClient.form-group
+                                  label.col-sm-3.control-label(for='')
+                                    | Autres clients
+                                  label.col-sm-8.control-label
+                        .col-md-6
+                          .panel.panel-white
+                            .panel-heading
+                              h4.panel-title
+                                span#tiltle_contre.text-bold PARTIE(S) ADVERSE(S)
+                              .panel-tools
+                                .dropdown
+                                  a.btn.btn-xs.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
+                                    i.fa.fa-cog
+                                  ul.dropdown-menu.dropdown-light.pull-right(role='menu')
+                                    li
+                                      a.panel-collapse.collapses(href='#')
+                                        i.fa.fa-angle-up
+                                        span Cacher
+                                    li
+                                      a.panel-refresh(href='#')
+                                        i.fa.fa-refresh
+                                        span Actualiser
+                                    li
+                                      a.panel-expand(href='#')
+                                        i.fa.fa-expand
+                                        span Plein écran
+                                //
+                                  <a class="btn btn-xs btn-link panel-close" href="#">
+                                  <i class="fa fa-times"></i>
+                                  </a>
+                            .panel-body.buttons-widget
+                              if dossier.contre.c_type == 'pp'
+                                #physique_contre
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Nom : 
+                                    label.col-sm-8.control-label
+                                      | #{dossier.contre.pp.c_nom}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Prenom :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.contre.pp.c_prenom}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Date nais. :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.contre.pp.c_dob}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Lieu nais. :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.contre.pp.c_pob}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Profession :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.contre.pp.c_profession}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Téléphone :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.contre.pp.cp_tel}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | e-mail :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.contre.pp.cp_email}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Domicile :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.contre.pp.c_domicile}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Autre Parties adverses
+                                    .col-sm-8
+                              else if dossier.contre.c_type == 'pm'
+                                #morale_pour
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Denomination S. :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.contre.pm.c_denomination}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Raison Sociale :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.contre.pm.c_rs}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Siège Social :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.contre.pm.c_siege}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | RCCM :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.contre.pm.c_rccm}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | NIF :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.contre.pm.c_nif}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Représentant :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.contre.pm.c_representant}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Téléphone :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.contre.pm.cm_tel}
+                                  .form-group
+                                    label.col-sm-3.control-label(for='')
+                                      | Email :
+                                    label.col-sm-8.control-label
+                                      | #{dossier.contre.pm.cm_email}
+                      .row
+                        .col-md-offset-9.col-md-1.text-center
+                          a.btn.btn-green.show-tab(href='#procedure')
+                            i.green.fa.fa-legal
+                            |  Procédure
+                        .col-md-2.text-center
+                          a.btn.btn-green.show-tab(href='#defence')
+                            i.green.fa.fa-cogs
+                            |  Moyens de défence
+                    #procedure.tab-pane.fade
+                      .tabbable
+                        .tab-content
+                          #instance.tab-pane.fade.in.active
+                            .row
+                              .col-md-offset-5.col-md-1.text-center
+                                a.btn.btn-green.show-tab(href='#appel')
+                                  i.green.fa.fa-legal
+                                  |  Appel
+                              .col-md-1.text-center
+                                a.btn.btn-green.show-tab(href='#cassation')
+                                  i.green.fa.fa-legal
+                                  |  Cassation
+                            br
+                            .form-group
+                              label.col-sm-3.control-label(for='')
+                                | Juridiction d'instance :
+                              .col-sm-8
+                                select#form-field-select-3.form-control.search-select
+                                  option(value='')  
+                                  option(value='') Essai 1
+                                  option(value='') Essai 2
+                            .form-group
+                              label.col-sm-3.control-label(for='')
+                                | Date et motif de renvois :
+                              .col-sm-9
+                                .row
+                                  .col-md-5
+                                    input.form-control.date-picker(placeholder='Date de renvois', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years')
+                                  .col-md-offset-1.col-md-5
+                                    input.form-control(type='text', placeholder='Motif de renvois')
+                            .form-group
+                              label.col-sm-3.control-label(for='')
+                                | Deliberation :
+                              .col-sm-9
+                                .row
+                                  .col-md-5
+                                    input.form-control.date-picker(placeholder='Date de deliberation', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years')
+                                  .col-md-offset-1.col-md-5
+                                    textarea#form-field-24.autosize.form-control(placeholder='Deliberation')
+                          #appel.tab-pane.fade
+                            #instance.tab-pane.fade.in.active
+                              .row
+                                .col-md-offset-5.col-md-1.text-center
+                                  a.btn.btn-green.show-tab(href='#instance')
+                                    i.green.fa.fa-legal
+                                    |  Instance
+                                .col-md-1.text-center
+                                  a.btn.btn-green.show-tab(href='#cassation')
+                                    i.green.fa.fa-legal
+                                    |  Cassation
+                              br
+                              .form-group
+                                label.col-sm-3.control-label(for='')
+                                  | Juridiction d'appel :
+                                .col-sm-8
+                                  select#form-field-select-3.form-control.search-select
+                                    option(value='')  
+                                    option(value='') Essai 1
+                                    option(value='') Essai 2
+                              .form-group
+                                label.col-sm-3.control-label(for='')
+                                  | Date et motif de renvois :
+                                .col-sm-9
+                                  .row
+                                    .col-md-5
+                                      input.form-control.date-picker(placeholder='Date de renvois', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years')
+                                    .col-md-offset-1.col-md-5
+                                      input.form-control(type='text', placeholder='Motif de renvois')
+                              .form-group
+                                label.col-sm-3.control-label(for='')
+                                  | Deliberation :
+                                .col-sm-9
+                                  .row
+                                    .col-md-5
+                                      input.form-control.date-picker(placeholder='Date de deliberation', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years')
+                                    .col-md-offset-1.col-md-5
+                                      textarea#form-field-24.autosize.form-control(placeholder='Deliberation')
+                          #cassation.tab-pane.fade
+                            .row
+                              .col-md-offset-5.col-md-1.text-center
+                                a.btn.btn-green.show-tab(href='#instance')
+                                  i.green.fa.fa-legal
+                                  |  Instance
+                              .col-md-1.text-center
+                                a.btn.btn-green.show-tab(href='#appel')
+                                  i.green.fa.fa-legal
+                                  |  Appel
+                            br
+                            .form-group
+                              label.col-sm-3.control-label(for='')
+                                | Juridiction de cassation :
+                              .col-sm-8
+                                select#form-field-select-3.form-control.search-select
+                                  option(value='')  
+                                  option(value='') Essai 1
+                                  option(value='') Essai 2
+                            .form-group
+                              label.col-sm-3.control-label(for='')
+                                | Date et motif de renvois :
+                              .col-sm-9
+                                .row
+                                  .col-md-5
+                                    input.form-control.date-picker(placeholder='Date de renvois', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years')
+                                  .col-md-offset-1.col-md-5
+                                    input.form-control(type='text', placeholder='Motif de renvois')
+                            .form-group
+                              label.col-sm-3.control-label(for='')
+                                | Deliberation :
+                              .col-sm-9
+                                .row
+                                  .col-md-5
+                                    input.form-control.date-picker(placeholder='Date de deliberation', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years')
+                                  .col-md-offset-1.col-md-5
+                                    textarea#form-field-24.autosize.form-control(placeholder='Deliberation')
+                      .row
+                        .col-md-offset-8.col-md-2.text-center
+                          a.btn.btn-green.show-tab(href='#info')
+                            i.green.fa.fa-info
+                            |  Informations générales
+                        .col-md-2.text-center
+                          a.btn.btn-green.show-tab(href='#defence')
+                            i.green.fa.fa-cogs
+                            |  Moyens de défence
+                    #defence.tab-pane.fade
+                      .row
+                        .panel.panel-white
+                          .panel-heading
+                            h4.panel-title
+                              span.text-bold Pièces jointes
+                            .panel-tools
+                              .dropdown
+                                a.btn.btn-xs.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
+                                  i.fa.fa-cog
+                                ul.dropdown-menu.dropdown-light.pull-right(role='menu')
+                                  li
+                                    a.panel-collapse.collapses(href='#')
+                                      i.fa.fa-angle-up
+                                      span Cacher
+                                  li
+                                    a.panel-refresh(href='#')
+                                      i.fa.fa-refresh
+                                      span Actualiser
+                                  li
+                                    a.panel-expand(href='#')
+                                      i.fa.fa-expand
+                                      span Plein écran
+                              //
+                                <a class="btn btn-xs btn-link panel-close" href="#">
+                                <i class="fa fa-times"></i>
+                                </a>
+                          .panel-body
+                            .row
+                              .col-md-3
+                                .form-group
+                                  label.control-label
+                                    | Génèrer un acte de procédure:
+                                  .input-group
+                                    select#form-field-select-3.form-control.search-select
+                                      option(value='')  
+                                      option(value='') Essai 1
+                                      option(value='') Essai 2
+                              .col-md-3
+                                .form-group
+                                  label.control-label
+                                    | Télécharger une piéce de forme:
+                                  .input-group
+                                    input.btn.btn-default(type='file', name='piece')
+                              .col-md-3
+                                .form-group
+                                  label.control-label
+                                    | Telecharger la décision entiére :
+                                  .input-group
+                                    input.btn.btn-default(type='file', name='piece')
+                      .row
+                        .col-md-offset-8.col-md-2.text-center
+                          a.btn.btn-green.show-tab(href='#info')
+                            i.green.fa.fa-info
+                            |  Informations générales
+                        .col-md-2.text-center
+                          a.btn.btn-green.show-tab(href='#procedure')
+                            i.green.fa.fa-legal
+                            |  Procédure

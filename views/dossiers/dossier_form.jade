@@ -1,0 +1,586 @@
+extends ../layout
+
+block content
+  .row
+    .col-md-12
+      ol.breadcrumb
+        li
+          a(href='index.php')
+            | Accueil
+        li.active
+          | Nouveau dossier
+  // end: BREADCRUMB
+  // start: PAGE CONTENT
+  form.form-horizontal(method='POST', action='')
+    .row
+      .col-md-12
+        .panel.panel-white
+          .panel-heading
+            h4.panel-title
+              span.text-bold DOSSIER
+            .panel-tools
+              .dropdown
+                a.btn.btn-xs.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
+                  i.fa.fa-cog
+                ul.dropdown-menu.dropdown-light.pull-right(role='menu')
+                  li
+                    a.panel-collapse.collapses(href='#')
+                      i.fa.fa-angle-up
+                      span Cacher
+                  li
+                    a.panel-refresh(href='#')
+                      i.fa.fa-refresh
+                      span Actualiser
+                  li
+                    a.panel-expand(href='#')
+                      i.fa.fa-expand
+                      span Plein écran
+              //
+                <a class="btn btn-xs btn-link panel-close" href="#">
+                <i class="fa fa-times"></i>
+                </a>
+          .panel-body
+            .row
+              .col-md-6
+                .form-group
+                  label.col-sm-3.control-label
+                    | Titulaire 
+                    span.symbol.required
+                    |  :
+                  .col-sm-8
+                    if (utilisateurs)
+                      select#titulaire.form-control(name='titulaire')
+                        option(value='null')
+                        each utilisateur in utilisateurs
+                          option(value=utilisateur._id) #{utilisateur.prenom} #{utilisateur.nom}
+                    else
+                      select#titulaire.form-control(name='titulaire' readonly)
+                        option(value='null') Veuillez créer des utilisateurs
+                        
+    .row
+      .col-md-6
+        .panel.panel-white
+          input#p_type(type='hidden' name='p_type' value='')
+          input(type='hidden', id='nb_other_client_pour', name='nb_other_client_pour', value='0')
+          input(type='hidden',id='nb_other_avocat_pour', name='nb_other_avocat_pour', value='0')
+          .panel-heading
+            h4.panel-title
+              span#tiltle_pour.text-bold CLIENT(S)
+            .panel-tools
+              a#retour_pour.btn.btn-xs.btn-transparent-grey.popovers(data-original-title='', data-content='Retour', data-placement='top', data-trigger='hover')
+                i.fa.fa-mail-reply
+              .dropdown
+                a.btn.btn-xs.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
+                  i.fa.fa-cog
+                ul.dropdown-menu.dropdown-light.pull-right(role='menu')
+                  li
+                    a.panel-collapse.collapses(href='#')
+                      i.fa.fa-angle-up
+                      span Cacher
+                  li
+                    a.panel-refresh(href='#')
+                      i.fa.fa-refresh
+                      span Actualiser
+                  li
+                    a.panel-expand(href='#')
+                      i.fa.fa-expand
+                      span Plein écran
+              //
+                <a class="btn btn-xs btn-link panel-close" href="#">
+                <i class="fa fa-times"></i>
+                </a>
+          .panel-body.buttons-widget
+            #type_pour.form-group
+              label.col-sm-3.control-label
+                | Type de client 
+                span.symbol.required
+                |  :
+              .text-center.col-md-4
+                a#btn_physique_pour.btn.btn-primary
+                  | Personne 
+                  span.text-bold PHYSIQUE
+              .text-center.col-md-3
+                a#btn_morale_pour.btn.btn-primary
+                  | Personne 
+                  span.text-bold MORALE
+            #physique_pour
+              .form-group
+                label.col-sm-3.control-label
+                  | Nom 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control(type='text', placeholder='Nom du client', name='p_nom')
+                    i.fa.fa-user
+              .form-group
+                label.col-sm-3.control-label
+                  | Prenom 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control(type='text', placeholder='Prenom du client', name='p_prenom')
+                    i.fa.fa-user
+              .form-group
+                label.col-sm-3.control-label
+                  | Date nais. 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control.date-picker(placeholder='Date de naissance', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years', name='p_dob')
+                    i.fa.fa-calendar
+              .form-group
+                label.col-sm-3.control-label
+                  | Lieu nais. 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control(type='text', placeholder='Lieu de naissance', name='p_pob')
+                    i.fa.fa-home
+              .form-group
+                label.col-sm-3.control-label
+                  | Profession 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control(type='text', placeholder='Profession du client', name='p_profession')
+                    i.fa.fa-money
+              .form-group
+                label.col-sm-3.control-label
+                  | Téléphone 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control.input-mask-phone(type='text', placeholder='Téléphone du client', onkeyup="this.value=this.value.replace(/\D/g,'')", name='pp_tel')
+                    i.fa.fa-phone
+              .form-group
+                label.col-sm-3.control-label
+                  | e-mail 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control(type='email', placeholder='adresse electronique du client', name='pp_email')
+                    i.fa.fa-envelope
+              .form-group
+                label.col-sm-3.control-label
+                  | Domicile 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control(type='text', placeholder='Domicile du client', name='p_domicile')
+                    i.fa.fa-home
+              // Ajout de champs pour autres clients
+              #titre_client
+              
+              #sec_pour
+              #addClient.form-group
+                label#clientLabel.col-sm-3.control-label
+                  | Autres clients
+                #clientRow.col-sm-8
+                  .row
+                    #clientInput.col-sm-offset-1.col-sm-5.col-xs-4
+                      a#plus_pour.btn.btn-primary
+                        i.fa.fa-plus
+                        |  Autres clients
+              // Ajout de champs pour autres avocats
+              #titre_avocat
+              
+              #autre_avocat
+              #addAutre.form-group
+                label#autreLabel.col-sm-3.control-label
+                  | Autres avocats
+                #autreRow.col-sm-8
+                  .row
+                    #autreInput.col-sm-offset-1.col-sm-5.col-xs-4
+                      a#plus_autre.btn.btn-primary
+                        i.fa.fa-plus
+                        |  Autres avocats
+            #morale_pour
+              .form-group
+                label.col-sm-3.control-label
+                  | Dénomination S. 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control(type='text', placeholder='Dénommination sociale', name='p_denomination')
+                    i.fa.fa-home
+              .form-group
+                label.col-sm-3.control-label
+                  | Forme Sociale
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    select.form-control(name='p_rs')
+                        option(value=null)  Forme Sociale
+                        option(value='SAS') SAS
+                        option(value='SA') SA
+                        option(value='SARL') SARL
+              .form-group
+                label.col-sm-3.control-label
+                  | Capital 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control(type='text', placeholder='Capital de la société', name='p_capital' onkeyup="this.value=this.value.replace(/\D/g,'')")
+                    i.fa.fa-money
+              .form-group
+                label.col-sm-3.control-label
+                  | RCCM 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control(type='text', placeholder='Numero RCCM', name='p_rccm')
+                    i.fa.fa-quote-left
+              .form-group
+                label.col-sm-3.control-label
+                  | NIF 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control(type='text', placeholder='NIF', name='p_nif')
+                    i.fa.fa-home
+              .form-group
+                label.col-sm-3.control-label
+                  | Représentant 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  input.form-control(type='text', placeholder='Représentant Légal', name='p_representant')
+              .form-group
+                label.col-sm-3.control-label
+                  | Siège social 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control(type='text', placeholder='Siège social', name='p_siege')
+                    i.fa.fa-home
+              .form-group
+                label.col-sm-3.control-label
+                  | Téléphone 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control.input-mask-phone(type='text', placeholder='Téléphone du client', onkeyup="this.value=this.value.replace(/\D/g,'')", name='pm_tel')
+                    i.fa.fa-phone
+              .form-group
+                label.col-sm-3.control-label
+                  | e-mail 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control(type='email', placeholder='Email du client', name='pm_email')
+                    i.fa.fa-envelope
+              // Ajout de champs pour autres clients
+              #titre_client_morale
+              #sec_pour_morale
+              .form-group
+                label#clientMoraleLabel.col-sm-3.control-label
+                  | Autres clients
+                #clientMoraleRow.col-sm-8
+                  .row
+                    #clientMoraleInput.col-sm-offset-1.col-sm-5.col-xs-4
+                      a#plus_pour_morale.btn.btn-primary
+                        i.fa.fa-plus
+                        |  Autres clients
+              // Ajout de champs pour autres avocats
+              #titre_morale
+              #autre_avocat_morale
+              #addAutreMorale.form-group
+                label#autreLabelMorale.col-sm-3.control-label
+                  | Autres avocats
+                #autreRowMorale.col-sm-8
+                  .row
+                    #autreInputMorale.col-sm-offset-1.col-sm-5.col-xs-4
+                      a#plus_autre_morale.btn.btn-primary
+                        i.fa.fa-plus
+                        |  Autres avocats
+      .col-md-6
+        .panel.panel-white
+          input#c_type(type='hidden' name='c_type' value='')
+          input(type='hidden', id='nb_other_client_contre', name='nb_other_client_contre', value='0')
+          input(type='hidden',id='nb_other_avocat_contre', name='nb_other_avocat_contre', value='0')
+          .panel-heading
+            h4.panel-title
+              span#tiltle_contre.text-bold PARTIE(S) ADVERSE(S)
+            .panel-tools
+              a#retour_contre.btn.btn-xs.btn-transparent-grey.popovers(data-original-title='', data-content='Retour', data-placement='top', data-trigger='hover')
+                i.fa.fa-mail-reply
+              .dropdown
+                a.btn.btn-xs.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
+                  i.fa.fa-cog
+                ul.dropdown-menu.dropdown-light.pull-right(role='menu')
+                  li
+                    a.panel-collapse.collapses(href='#')
+                      i.fa.fa-angle-up
+                      span Cacher
+                  li
+                    a.panel-refresh(href='#')
+                      i.fa.fa-refresh
+                      span Actualiser
+                  li
+                    a.panel-expand(href='#')
+                      i.fa.fa-expand
+                      span Plein écran
+              //
+                <a class="btn btn-xs btn-link panel-close" href="#">
+                <i class="fa fa-times"></i>
+                </a>
+          .panel-body.buttons-widget
+            #type_contre.form-group
+              label.col-sm-3.control-label
+                | Partie adverse 
+                span.symbol.required
+                |  :
+              .text-center.col-md-4
+                button#btn_physique_contre.btn.btn-warning(type='button')
+                  | Personne 
+                  span.text-bold PHYSIQUE
+              .text-center.col-md-3
+                button#btn_morale_contre.btn.btn-warning(type='button')
+                  | Personne 
+                  span.text-bold MORALE
+            #physique_contre
+              .form-group
+                label.col-sm-3.control-label
+                  | Nom 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control(type='text', placeholder='Nom du client', name='c_nom')
+                    i.fa.fa-user
+              .form-group
+                label.col-sm-3.control-label
+                  | Prenom 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control(type='text', placeholder='Prenom du client', name='c_prenom')
+                    i.fa.fa-user
+              .form-group
+                label.col-sm-3.control-label
+                  | Date nais. 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control.date-picker(placeholder='Date de naissance', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years', name='c_dob')
+                    i.fa.fa-calendar
+              .form-group
+                label.col-sm-3.control-label
+                  | Lieu nais. 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control(type='text', placeholder='Lieu de naissance', name='c_pob')
+                    i.fa.fa-home
+              .form-group
+                label.col-sm-3.control-label
+                  | Profession 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control(type='text', placeholder='Profession du client', name='c_profession')
+                    i.fa.fa-money
+              .form-group
+                label.col-sm-3.control-label
+                  | Téléphone 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control.input-mask-phone(type='text', placeholder='Téléphone du client', onkeyup="this.value=this.value.replace(/\D/g,'')", name='cp_tel')
+                    i.fa.fa-phone
+              .form-group
+                label.col-sm-3.control-label
+                  | e-mail 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control(type='email', placeholder='adresse electronique du client', name='cp_email')
+                    i.fa.fa-envelope
+              .form-group
+                label.col-sm-3.control-label
+                  | Domicile 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control(type='text', placeholder='Domicile du client', name='c_domicile')
+                    i.fa.fa-home
+              // Ajout de champs pour autres clients
+              #titre_contre
+              
+              #sec_contre
+              .form-group
+                label#contreLabel.col-sm-3.control-label
+                  | Autres contres
+                #contreRow.col-sm-8
+                  .row
+                    #contreInput.col-sm-offset-1.col-sm-5.col-xs-4
+                      a#plus_contre.btn.btn-primary
+                        i.fa.fa-plus
+                        |  Autres contres
+              // Ajout de champs pour autres avocats
+              #titre_avocatAdverse
+              
+              #autre_avocatAdverse
+              #addAutreContre.form-group
+                label#autreLabel.col-sm-3.control-label
+                  | Autres avocats
+                #autreRowContre.col-sm-8
+                  .row
+                    #autreInputContre.col-sm-offset-1.col-sm-5.col-xs-4
+                      a#plus_autreContre.btn.btn-primary
+                        i.fa.fa-plus
+                        |  Autres avocats
+            #morale_contre
+              .form-group
+                label.col-sm-3.control-label
+                  | Dénomination S. 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control(type='text', placeholder='Dénommination sociale', name='c_denomination')
+                    i.fa.fa-home
+              .form-group
+                label.col-sm-3.control-label
+                  | Forme Sociale
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    select.form-control(name='c_rs')
+                        option(value=null)  Forme Sociale
+                        option(value='SAS') SAS
+                        option(value='SA') SA
+                        option(value='SARL') SARL
+              .form-group
+                label.col-sm-3.control-label
+                  | Capital 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control(type='text', placeholder='Capital de la société', name='c_capital' onkeyup="this.value=this.value.replace(/\D/g,'')")
+                    i.fa.fa-money
+              .form-group
+                label.col-sm-3.control-label
+                  | RCCM 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control(type='text', placeholder='Numero RCCM', name='c_rccm')
+                    i.fa.fa-quote-left
+              .form-group
+                label.col-sm-3.control-label
+                  | NIF 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control(type='text', placeholder='NIF', name='c_nif')
+                    i.fa.fa-home
+              .form-group
+                label.col-sm-3.control-label
+                  | Représentant 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  input.form-control(type='text', placeholder='Représentant Légal', name='c_representant')
+              .form-group
+                label.col-sm-3.control-label
+                  | Siège social 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control(type='text', placeholder='Siège social', name='c_siege')
+                    i.fa.fa-home
+              .form-group
+                label.col-sm-3.control-label
+                  | Téléphone 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control.input-mask-phone(type='text', placeholder='Téléphone du client', onkeyup="this.value=this.value.replace(/\D/g,'')", name='cm_tel')
+                    i.fa.fa-phone
+              .form-group
+                label.col-sm-3.control-label
+                  | e-mail 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control(type='email', placeholder='Email du client', name='cm_email')
+                    i.fa.fa-envelope
+              // Ajout de champs pour autres clients
+              #titre_contre_morale
+              #sec_contre_morale
+              .form-group
+                label#contreMoraleLabel.col-sm-3.control-label
+                  | Autres contres
+                #contreMoraleRow.col-sm-8
+                  .row
+                    #contreMoraleInput.col-sm-offset-1.col-sm-5.col-xs-4
+                      a#plus_contre_morale.btn.btn-primary
+                        i.fa.fa-plus
+                        |  Autres contres
+              // Ajout de champs pour autres avocats
+              #titre_avocatAdverse_morale
+              #autre_avocatAdverse_morale
+              #addAutreMoraleContre.form-group
+                label#autreLabelContreMorale.col-sm-3.control-label
+                  | Autres avocats
+                #autreRowContreMorale.col-sm-8
+                  .row
+                    #autreInputContreMorale.col-sm-offset-1.col-sm-5.col-xs-4
+                      a#plus_autreContreMorale.btn.btn-primary
+                        i.fa.fa-plus
+                        | Autres avocats
+    .row
+      .col-md-12
+        .panel.panel-white
+          .panel-body
+            .row
+              .col-md-12
+                div
+                  span.symbol.required
+                  | Ces champs sont obligatoires.
+                  hr
+            .row
+              .col-md-9
+                p
+              .col-md-2
+                button.btn.btn-green.btn-block(type='submit')
+                  | Enregistrer 
+                  i.fa.fa-arrow-circle-right
+
+  // end: PAGE CONTENT
+append jscripts
+  script(src='/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js')
+  script(src='/assets/js/custom-new-dossier.js')
+  //script.
+    function aff() {alert($('#c_dob').val())}

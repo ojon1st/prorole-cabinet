@@ -1,0 +1,149 @@
+doctype html
+html(lang='fr')
+  head
+    title #{titl}
+    // start: META
+    meta(charset='utf-8')
+    //if IE
+      meta(http-equiv='X-UA-Compatible', content='IE=edge,IE=9,IE=8,chrome=1')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0')
+    meta(name='apple-mobile-web-app-capable', content='yes')
+    meta(name='apple-mobile-web-app-status-bar-style', content='black')
+    meta(content='', name='description')
+    meta(content='', name='author')
+    // end: META
+    block styles
+      link(href='http://fonts.googleapis.com/css?family=Raleway:400,300,500,600,700,200,100,800', rel='stylesheet', type='text/css')
+      link(rel='stylesheet', href='/assets/plugins/bootstrap/css/bootstrap.min.css')
+      link(rel='stylesheet', href='/assets/plugins/font-awesome/css/font-awesome.min.css')
+      link(rel='stylesheet', href='/assets/plugins/iCheck/skins/all.css')
+      link(rel='stylesheet', href='/assets/plugins/perfect-scrollbar/src/perfect-scrollbar.css')
+      link(rel='stylesheet', href='/assets/plugins/animate.css/animate.min.css')
+      link(href='/stylesheets/jquery.loading.css', rel='stylesheet')
+      // end: MAIN CSS
+      // start: CSS REQUIRED FOR SUBVIEW CONTENTS
+      link(rel='stylesheet', href='/assets/plugins/owl-carousel/owl-carousel/owl.carousel.css')
+      link(rel='stylesheet', href='/assets/plugins/owl-carousel/owl-carousel/owl.theme.css')
+      link(rel='stylesheet', href='/assets/plugins/owl-carousel/owl-carousel/owl.transitions.css')
+      link(rel='stylesheet', href='/assets/plugins/summernote/dist/summernote.css')
+      link(rel='stylesheet', href='/assets/plugins/fullcalendar/fullcalendar/fullcalendar.css')
+      link(rel='stylesheet', href='/assets/plugins/toastr/toastr.min.css')
+      link(rel='stylesheet', href='/assets/plugins/bootstrap-select/bootstrap-select.min.css')
+      link(rel='stylesheet', href='/assets/plugins/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css')
+      link(rel='stylesheet', href='/assets/plugins/DataTables/media/css/DT_bootstrap.css')
+      link(rel='stylesheet', href='/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.min.css')
+      link(rel='stylesheet', href='/assets/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css')
+      link(rel='stylesheet', href='/assets/plugins/datepicker/css/datepicker.css')
+      link(rel='stylesheet', href='/assets/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css')
+
+      // end: CSS REQUIRED FOR THIS SUBVIEW CONTENTS
+      // start: CSS REQUIRED FOR THIS PAGE ONLY
+      // end: CSS REQUIRED FOR THIS PAGE ONLY
+      // start: CORE CSS
+      link(rel='stylesheet', href='/assets/css/styles.css')
+      link(rel='stylesheet', href='/assets/css/styles-responsive.css')
+      link(rel='stylesheet', href='/assets/css/plugins.css')
+      link#skin_color(rel='stylesheet', href='/assets/css/themes/theme-style8.css', type='text/css')
+      link(rel='stylesheet', href='/assets/css/print.css', type='text/css', media='print')
+      // end: CORE CSS
+      link(rel='shortcut icon', href='/images/favicon.ico')
+  body.sidebar-close.horizontal-menu-fixed.footer-fixed
+    #process_img(style='display:none')
+      img(src='/images/ajaxloader.gif')
+    .main-wrapper
+      block slidingbar
+        include sliding_bar
+        a.closedbar.inner.hidden-sm.hidden-xs(href='#')
+      block header
+        include header_nav
+      block menu
+        include menu
+      block sidebar_left
+        include sidebar_left
+      block sidebar_right
+        include sidebar_right
+      .main-container.inner
+        // start: PAGE
+        .main-content
+          .container
+            //.alert.flash
+              button.close(type='button') ×
+              i.fa.sign
+              strong #{type}
+              span #{message}
+            block toolbar
+              include toolbar
+            block content
+            block subviews
+              include subviews
+              // end: PAGE CONTENT
+            block app_modals
+              include app_modals
+    block footer
+      include footer
+    block jscripts
+      script(src='/assets/plugins/jQuery/jquery-2.1.1.min.js')
+      // <![endif]
+      script(src='/assets/plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js')
+      script(src='/assets/plugins/bootstrap/js/bootstrap.min.js')
+      script(src='/assets/plugins/blockUI/jquery.blockUI.js')
+      script(src='/assets/plugins/iCheck/jquery.icheck.min.js')
+      script(src='/assets/plugins/moment/min/moment.min.js')
+      script(src='/assets/plugins/perfect-scrollbar/src/jquery.mousewheel.js')
+      script(src='/assets/plugins/perfect-scrollbar/src/perfect-scrollbar.js')
+      script(src='/assets/plugins/bootbox/bootbox.min.js')
+      script(src='/assets/plugins/jquery.scrollTo/jquery.scrollTo.min.js')
+      script(src='/assets/plugins/ScrollToFixed/jquery-scrolltofixed-min.js')
+      script(src='/assets/plugins/jquery.appear/jquery.appear.js')
+      script(src='/assets/plugins/jquery-cookie/jquery.cookie.js')
+      script(src='/assets/plugins/velocity/jquery.velocity.min.js')
+      script(src='/assets/plugins/TouchSwipe/jquery.touchSwipe.min.js')
+      script(src='/javascripts/jquery.loading.js')
+      // end: MAIN JAVASCRIPTS
+      // start: JAVASCRIPTS REQUIRED FOR SUBVIEW CONTENTS
+      script(src='/assets/plugins/owl-carousel/owl-carousel/owl.carousel.js')
+      script(src='/assets/plugins/jquery-mockjax/jquery.mockjax.js')
+      script(src='/assets/plugins/toastr/toastr.js')
+      script(src='/assets/plugins/bootstrap-modal/js/bootstrap-modal.js')
+      script(src='/assets/plugins/bootstrap-modal/js/bootstrap-modalmanager.js')
+      script(src='/assets/plugins/fullcalendar/fullcalendar/fullcalendar.min.js')
+      script(src='/assets/plugins/bootstrap-switch/dist/js/bootstrap-switch.min.js')
+      script(src='/assets/plugins/bootstrap-select/bootstrap-select.min.js')
+      script(src='/assets/plugins/jquery-validation/dist/jquery.validate.min.js')
+      script(src='/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.min.js')
+      script(src='/assets/plugins/DataTables/media/js/jquery.dataTables.min.js')
+      script(src='/assets/plugins/truncate/jquery.truncate.js')
+      script(src='/assets/plugins/summernote/dist/summernote.min.js')
+      
+      script(src='/assets/plugins/bootstrap-daterangepicker/daterangepicker.js')
+      script(src='/assets/js/ui-notifications.js')
+      script(src='/assets/plugins/sweetalert/lib/sweet-alert.min.js')
+      script(src='/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js')
+      script(src='/assets/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js')
+      script(src='/assets/js/form-elements.js')
+
+      
+      script(src='/assets/js/subview.js')
+      script(src='/assets/js/subview-examples.js')
+      // end: JAVASCRIPTS REQUIRED FOR SUBVIEW CONTENTS
+      // start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
+      script(src='/assets/plugins/holder/holder.js')
+      // end: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
+      script(src='/assets/js/main.js')
+      script.
+        jQuery(document).ready(function() {
+          Main.init();
+          SVExamples.init();
+          UINotifications.init();
+          FormElements.init();
+          //$('#body').html("<img src="/images/ajaxpreloader.gif" />").load();
+          
+          $(document).ajaxStart(function(){
+            //$.hideSubview();
+            $('body').loading({stoppable: false});
+          });
+          $(document).ajaxComplete(function(){
+            
+            $('body').loading('destroy');
+          });
+        });

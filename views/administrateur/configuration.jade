@@ -1,0 +1,110 @@
+extends ../layout
+
+block content
+  .row
+    .col-md-12
+      ol.breadcrumb
+        li
+          a(href='index.php')
+            | Accueil
+        li.active
+          | Configuration du compte du cabinet
+    // end: BREADCRUMB
+    // start: PAGE CONTENT
+    form#form.form-horizontal(role='form')
+      .row
+        .col-md-12
+          .panel.panel-white
+            .panel-heading
+              h4.panel-title
+                | Creation du 
+                span.text-bold compte de cabinet
+              .panel-tools
+                .dropdown
+                  a.btn.btn-xs.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
+                    i.fa.fa-cog
+                  ul.dropdown-menu.dropdown-light.pull-right(role='menu')
+                    li
+                      a.panel-collapse.collapses(href='#')
+                        i.fa.fa-angle-up
+                        span Cacher
+                    li
+                      a.panel-refresh(href='#')
+                        i.fa.fa-refresh
+                        span Actualiser
+                    li
+                      a.panel-expand(href='#')
+                        i.fa.fa-expand
+                        span Plein écran
+                //
+                  <a class="btn btn-xs btn-link panel-close" href="#">
+                  <i class="fa fa-times"></i>
+                  </a>
+            .panel-body
+              .row
+                .col-md-6
+                  .form-group
+                    label.col-sm-3.control-label(for='')
+                      | Identifiant
+                      span.symbol.required
+                      |  :
+                    .col-sm-8
+                      label.form-control(type='text') #{configuration.identifiant}
+                  .form-group
+                    label.col-sm-3.control-label(for='')
+                      | Denommination S. 
+                      span.symbol.required
+                      |  :
+                    .col-sm-8
+                      label.form-control(type='text') #{configuration.denomination}
+                  .form-group
+                    label.col-sm-3.control-label(for='')
+                      | Siège Social 
+                      span.symbol.required
+                      |  :
+                    .col-sm-8
+                      label.form-control(type='text') #{configuration.siege_social}
+                  .form-group
+                    label.col-sm-3.control-label(for='')
+                      | Adresse complete 
+                      span.symbol.required
+                      |  :
+                    .col-sm-8
+                      label.form-control(type='text') #{configuration.adresse}
+                .col-sm-6
+                  .form-group
+                    label.col-sm-3.control-label(for='form-field-24')
+                      | Téléphone 
+                      span.symbol.required
+                      |  :
+                    .col-sm-8
+                      label#form-field-mask-2.form-control.input-mask-phone(type='text') #{configuration.telephone}
+                  .form-group
+                    label.col-sm-3.control-label(for='')
+                      | email 
+                      span.symbol.required
+                      |  :
+                    .col-sm-8
+                      label.form-control(type='email') #{configuration.email}
+                  .form-group
+                    label.col-sm-3.control-label(for='')
+                      | Mot de passe 
+                      span.symbol.required
+                      |  :
+                    .col-sm-8
+                      label.form-control(type='text') #{configuration.password}
+                  .form-group
+                    label.col-sm-3.control-label(for='')
+                      | Modification 
+                      span.symbol.required
+                      |  :
+                    .col-sm-8
+                      a.btn.btn-green.btn-block(type='button')
+                        | Cliquer ici pour modifier les infos ou mot de passe 
+                        i.fa.fa-arrow-circle-right
+              .row
+                .col-md-12
+                  div
+                    br
+                    span.symbol.required
+                    | 													Ces champs sont obligatoires.      

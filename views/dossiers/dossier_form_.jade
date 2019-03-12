@@ -1,0 +1,485 @@
+extends ../layout
+
+block content
+  .row
+    .col-md-12
+      ol.breadcrumb
+        li
+          a(href='#')
+            | Accueil
+        li.active
+          | Nouveau Dossier
+  // start: PAGE CONTENT
+  form#form.form-horizontal(role='form' method='POST' action='')
+    .row
+      .col-md-12
+        .panel.panel-white
+          .panel-heading
+            h4.panel-title
+              span.text-bold DOSSIER
+            .panel-tools
+              .dropdown
+                a.btn.btn-xs.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
+                  i.fa.fa-cog
+                ul.dropdown-menu.dropdown-light.pull-right(role='menu')
+                  li
+                    a.panel-collapse.collapses(href='#')
+                      i.fa.fa-angle-up
+                      span Cacher
+                  li
+                    a.panel-refresh(href='#')
+                      i.fa.fa-refresh
+                      span Actualiser
+                  li
+                    a.panel-expand(href='#')
+                      i.fa.fa-expand
+                      span Plein écran
+              //
+                <a class="btn btn-xs btn-link panel-close" href="#">
+                <i class="fa fa-times"></i>
+                </a>
+          .panel-body
+            .row
+              .col-md-6
+                .form-group
+                  label.col-sm-3.control-label
+                    | Réf. 
+                    span.symbol.required
+                    |  :
+                  .col-sm-8
+                .form-group
+                  label.col-sm-3.control-label
+                    | Titulaire 
+                    span.symbol.required
+                    |  :
+                  .col-sm-8
+                    select.form-control.search-select(name='titulaire')
+                      option(value='')  
+                      option(value='Titulaire 1') Titulaire 1
+                      option(value='Titulaire 2') Titulaire 2
+                .form-group
+                  label.col-sm-3.control-label
+                    | Attributaire 
+                    span.symbol.required
+                    |  :
+                  .col-sm-8
+                    select.form-control.search-select(name='attributaire')
+                      option(value='')  
+                      option(value='Attributaire 1') Attributaire 1
+                      option(value='Attributaire 2') Attributaire 2
+                .form-group
+                  label.col-sm-3.control-label
+                    | Nature 
+                    span.symbol.required
+                    |  :
+                  .col-sm-8
+                    select.form-control.search-select(name='nature')
+                      option(value='')  
+                      option(value='Nature 1') Nature 1
+                      option(value='Nature 2') Nature 2
+              .col-sm-6
+                .form-group
+                  label.col-sm-3.control-label
+                    | Resumé 
+                    span.symbol.required
+                    |  :
+                  .col-sm-8
+                    textarea.autosize.form-control(placeholder='Saisir le resume du litige', name='resume')
+                .form-group
+                  label.col-sm-3.control-label
+                    | Enjeu 
+                    span.symbol.required
+                    |  :
+                  .col-sm-8
+                    input.form-control(type='text', placeholder='Enjeu', name='montant')
+                .form-group
+                  label.col-sm-3.control-label
+                    | Juridiction 
+                    span.symbol.required
+                    |  :
+                  .col-sm-8
+                    select.form-control.search-select(name='juridiction')
+                      option(value='')  
+                      option(value='Juridiction 1') Juridiction 1
+                      option(value='Juridiction 2') Juridiction 2
+                      option(value='Juridiction 3') Juridiction 3
+    .row
+      .col-md-6
+        .panel.panel-white
+          input#p_type(type='hidden' name='p_type' value='')
+          .panel-heading
+            h4.panel-title
+              span#tiltle_pour.text-bold CLIENT(S)
+            .panel-tools
+              a#retour_pour.btn.btn-xs.btn-transparent-grey.popovers(data-original-title='', data-content='Retour', data-placement='top', data-trigger='hover')
+                i.fa.fa-mail-reply
+              .dropdown
+                a.btn.btn-xs.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
+                  i.fa.fa-cog
+                ul.dropdown-menu.dropdown-light.pull-right(role='menu')
+                  li
+                    a.panel-collapse.collapses(href='#')
+                      i.fa.fa-angle-up
+                      span Cacher
+                  li
+                    a.panel-refresh(href='#')
+                      i.fa.fa-refresh
+                      span Actualiser
+                  li
+                    a.panel-expand(href='#')
+                      i.fa.fa-expand
+                      span Plein écran
+              //
+                <a class="btn btn-xs btn-link panel-close" href="#">
+                <i class="fa fa-times"></i>
+                </a>
+          .panel-body.buttons-widget
+            #type_pour.form-group
+              label.col-sm-3.control-label
+                | Type de client 
+                span.symbol.required
+                |  :
+              .text-center.col-md-4
+                a#btn_physique_pour.btn.btn-primary
+                  | Personne 
+                  span.text-bold PHYSIQUE
+              .text-center.col-md-3
+                a#btn_morale_pour.btn.btn-primary
+                  | Personne 
+                  span.text-bold MORALE
+            #physique_pour
+              .form-group
+                label.col-sm-3.control-label
+                  | Nom 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  input.form-control(type='text', placeholder='Nom du client', name='p_nom')
+              .form-group
+                label.col-sm-3.control-label
+                  | Prenom 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  input.form-control(type='text', placeholder='Prenom du client', name='p_prenom')
+              .form-group
+                label.col-sm-3.control-label
+                  | Date nais. 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  input.form-control.date-picker(type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years' name='p_dob')
+              .form-group
+                label.col-sm-3.control-label
+                  | Lieu nais. 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  input.form-control(type='text', placeholder='Lieu de naissance', name='p_pob')
+              .form-group
+                label.col-sm-3.control-label()
+                  | Prefession 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  input.form-control(type='text', placeholder='Profession du client', name='p_profession')
+              .form-group
+                label.col-sm-3.control-label
+                  | Téléphone 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  input.form-control(type='number', placeholder='Téléphone du client', onkeyup="this.value=this.value.replace(/\D/g,'')", name='pp_tel')
+              .form-group
+                label.col-sm-3.control-label
+                  | e-mail 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  input.form-control(type='email', placeholder='adresse electronique du client', name='pp_email')
+              .form-group
+                label.col-sm-3.control-label
+                  | Domicile 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  input.form-control(type='text', placeholder='Domicile du client', name='p_domicile')
+              #addClient.form-group
+                label.col-sm-3.control-label
+                  | Autres clients
+                .col-sm-8
+                  .row
+                    .col-sm-offset-1.col-sm-2
+                      input#number_pour.form-control.popovers(type='number', data-original-title='', data-content='Nombre', data-placement='top', data-trigger='hover', onkeyup="this.value=this.value.replace(/\D/g,'')")
+                    .col-sm-offset-1.col-sm-5
+                      a#plus_pour.btn.btn-primary
+                        i.fa.fa-plus
+                        |  Autres clients
+              // Ajout de champs apres de div
+              #sec_pour
+            #morale_pour
+              .form-group
+                label.col-sm-3.control-label
+                  | Denomination S. 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  input.form-control(type='text', placeholder='Denommination social', name='p_denomination')
+              .form-group
+                label.col-sm-3.control-label
+                  | Raison Sociale. 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  select.form-control.search-select(name='p_rs')
+                      option(value=null)  Raison Sociale
+                      option(value='SAS') SAS
+                      option(value='SA') SA
+                      option(value='SARL') SARL
+              .form-group
+                label.col-sm-3.control-label
+                  | Capital 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  input.form-control(type='number', placeholder='Capital de la société', name='p_capital' onkeyup="this.value=this.value.replace(/\D/g,'')")
+              .form-group
+                label.col-sm-3.control-label
+                  | RCCM 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  input.form-control(type='text', placeholder='Numero RCCM', name='p_rccm')
+              .form-group
+                label.col-sm-3.control-label
+                  | NIF 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  input.form-control(type='text', placeholder='NIF', name='p_nif')
+              .form-group
+                label.col-sm-3.control-label
+                  | Représentant 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  input.form-control(type='text', placeholder='Représentant Légal', name='p_representant')
+              .form-group
+                label.col-sm-3.control-label
+                  | Siège social 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  input.form-control(type='text', placeholder='Siège social', name='p_siege')
+              .form-group
+                label.col-sm-3.control-label
+                  | Téléphone 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  input.form-control(type='number', placeholder='Téléphone du client', onkeyup="this.value=this.value.replace(/\D/g,'')", name='pm_tel')
+              .form-group
+                label.col-sm-3.control-label
+                  | e-mail 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  input.form-control(type='email', placeholder='Email du client', name='pm_email')
+      .col-md-6
+        .panel.panel-white
+          input#c_type(type='hidden' name='c_type' value='')
+          .panel-heading
+            h4.panel-title
+              span#tiltle_contre.text-bold PARTIE(S) ADVERSE(S)
+            .panel-tools
+              a#retour_contre.btn.btn-xs.btn-transparent-grey.popovers(data-original-title='', data-content='Retour', data-placement='top', data-trigger='hover')
+                i.fa.fa-mail-reply
+              .dropdown
+                a.btn.btn-xs.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
+                  i.fa.fa-cog
+                ul.dropdown-menu.dropdown-light.pull-right(role='menu')
+                  li
+                    a.panel-collapse.collapses(href='#')
+                      i.fa.fa-angle-up
+                      span Cacher
+                  li
+                    a.panel-refresh(href='#')
+                      i.fa.fa-refresh
+                      span Actualiser
+                  li
+                    a.panel-expand(href='#')
+                      i.fa.fa-expand
+                      span Plein écran
+              //
+                <a class="btn btn-xs btn-link panel-close" href="#">
+                <i class="fa fa-times"></i>
+                </a>
+          .panel-body.buttons-widget
+            #type_contre.form-group
+              label.col-sm-3.control-label
+                | Type Adversaire 
+                span.symbol.required
+                |  :
+              .text-center.col-md-4
+                a#btn_physique_contre.btn.btn-warning
+                  | Personne 
+                  span.text-bold PHYSIQUE
+              .text-center.col-md-3
+                a#btn_morale_contre.btn.btn-warning
+                  | Personne 
+                  span.text-bold MORALE
+            #physique_contre
+              .form-group
+                label.col-sm-3.control-label
+                  | Nom 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  input.form-control(type='text', placeholder='Nom du client', name='c_nom')
+              .form-group
+                label.col-sm-3.control-label
+                  | Prenom 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  input.form-control(type='text', placeholder='Prenom du client', name='c_prenom')
+              .form-group
+                label.col-sm-3.control-label
+                  | Date nais. 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  input#c_dob.form-control.date-picker(type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years' name='c_dob')
+              .form-group
+                label.col-sm-3.control-label
+                  | Lieu nais. 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  input.form-control(type='text', placeholder='Lieu de naissance', name='c_pob')
+              .form-group
+                label.col-sm-3.control-label()
+                  | Prefession 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  input.form-control(type='text', placeholder='Profession du client', name='c_profession')
+              .form-group
+                label.col-sm-3.control-label
+                  | Téléphone 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  input.form-control(type='number', placeholder='Téléphone du client', onkeyup="this.value=this.value.replace(/\D/g,'')", name='cp_tel')
+              .form-group
+                label.col-sm-3.control-label
+                  | e-mail 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  input.form-control(type='email', placeholder='adresse electronique du client', name='cp_email')
+              .form-group
+                label.col-sm-3.control-label
+                  | Domicile 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  input.form-control(type='text', placeholder='Domicile du client', name='c_domicile')
+              
+              #addContre.form-group
+                label.col-sm-3.control-label
+                  | Autres Parties adverses
+                .col-sm-8
+                  .row
+                    .col-sm-offset-1.col-sm-2
+                      input#number_contre.form-control.popovers(type='text', data-original-title='', data-content='Nombre', data-placement='top', data-trigger='hover', onkeyup="this.value=this.value.replace(/\D/g,'')")
+                    .col-sm-offset-1.col-sm-5
+                      a#plus_contre.btn.btn-warning
+                        i.fa.fa-plus
+                        |  Parties adverse
+              // Ajout de champs apres de div
+              #sec_contre
+          #morale_contre
+            .form-group
+              label.col-sm-3.control-label
+                | Denomination S. 
+                span.symbol.required
+                |  :
+              .col-sm-8
+                input.form-control(type='text', placeholder='Denommination social', name='c_denomination')
+            .form-group
+              label.col-sm-3.control-label
+                | Raison Sociale. 
+                span.symbol.required
+                |  :
+              .col-sm-8
+                select.form-control.search-select(name='c_rs')
+                    option(value=null)  Raison Sociale
+                    option(value='SAS') SAS
+                    option(value='SA') SA
+                    option(value='SARL') SARL
+            .form-group
+              label.col-sm-3.control-label
+                | Capital 
+                span.symbol.required
+                |  :
+              .col-sm-8
+                input.form-control(type='number', placeholder='Capital de la société', name='c_capital', onkeyup="this.value=this.value.replace(/\D/g,'')")
+            .form-group
+              label.col-sm-3.control-label
+                | RCCM 
+                span.symbol.required
+                |  :
+              .col-sm-8
+                input.form-control(type='text', placeholder='Numero RCCM', name='c_rccm')
+            .form-group
+              label.col-sm-3.control-label
+                | NIF 
+                span.symbol.required
+                |  :
+              .col-sm-8
+                input.form-control(type='text', placeholder='NIF', name='c_nif')
+            .form-group
+              label.col-sm-3.control-label
+                | Représentant 
+                span.symbol.required
+                |  :
+              .col-sm-8
+                input.form-control(type='text', placeholder='Représentant Légal', name='c_representant')
+            .form-group
+              label.col-sm-3.control-label
+                | Siège social 
+                span.symbol.required
+                |  :
+              .col-sm-8
+                input.form-control(type='text', placeholder='Siège social', name='c_siege')
+            .form-group
+              label.col-sm-3.control-label
+                | Téléphone 
+                span.symbol.required
+                |  :
+              .col-sm-8
+                input.form-control(type='number', placeholder='Téléphone du client', onkeyup="this.value=this.value.replace(/\D/g,'')", name='cm_tel')
+            .form-group
+              label.col-sm-3.control-label
+                | e-mail 
+                span.symbol.required
+                |  :
+              .col-sm-8
+                input.form-control(type='email', placeholder='adresse electronique du client', name='cm_email')
+    .row
+      .panel.panel-white
+        .panel-body
+          .col-md-8
+            p
+              // Rassurez-vous que toutes les <span class="text-bold">informations sont correctes</span> avant d'enregistrer
+          .col-md-4
+            button.btn.btn-green.btn-block(type='submit')
+              | Enregistrer 
+              i.fa.fa-arrow-circle-right
+  // end: PAGE CONTENT
+append jscripts
+  script(src='/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js')
+  script(src='/assets/js/custom-new-dossier.js')
+  //script.
+    function aff() {alert($('#c_dob').val())}

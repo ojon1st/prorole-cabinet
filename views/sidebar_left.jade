@@ -1,0 +1,29 @@
+a.closedbar.inner.hidden-sm.hidden-xs(href='#')
+nav#pageslide-left.pageslide.inner.hidden-md.hidden-lg
+  .navbar-content
+    // start: SIDEBAR
+    .main-navigation.left-wrapper.transition-left
+      .navigation-toggler.hidden-sm.hidden-xs
+        a.sb-toggle-left(href='#main-navbar')
+      .user-profile.border-top.padding-horizontal-10.block
+        .inline-block
+          img(src='/assets/images/avatar-1.jpg', alt='')
+        .inline-block
+          h5.no-margin  Bienvenue 
+          h4.no-margin  Richard Elad 
+          a.btn.user-options.sb_toggle
+            i.fa.fa-cog
+      // start: MAIN NAVIGATION MENU
+      ul.main-navigation-menu
+      // end: MAIN NAVIGATION MENU
+      // end: SIDEBAR
+  .slide-tools
+    .col-xs-6.text-left.no-padding
+      a.btn.btn-sm.status(href='#')
+        | Etat 
+        i.fa.fa-dot-circle-o.text-green
+        span Connecté
+    .col-xs-6.text-right.no-padding
+      a.btn.btn-sm.log-out.text-right(href='login_login.php')
+        i.fa.fa-power-off
+        |  Deonnecté

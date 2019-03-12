@@ -1,0 +1,109 @@
+extends ../layout
+
+block content
+  .row
+    .col-md-12
+      ol.breadcrumb
+        li
+          a(href='#')
+            | Accueil
+        li.active
+          | Repertoire de dossiers
+
+  .row
+    .col-md-12
+      // start: DYNAMIC TABLE PANEL
+      .panel.panel-white
+        .panel-heading
+          h4.panel-title
+            | Repertoire de 
+            span.text-bold dossiers
+          .panel-tools
+            .dropdown
+              a.btn.btn-xs.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
+                i.fa.fa-cog
+              ul.dropdown-menu.dropdown-light.pull-right(role='menu')
+                li
+                  a.panel-collapse.collapses(href='#')
+                    i.fa.fa-angle-up
+                    span Cacher
+                li
+                  a.panel-refresh(href='#')
+                    i.fa.fa-refresh
+                    span Actualiser
+                li
+                  a.panel-expand(href='#')
+                    i.fa.fa-expand
+                    span Plein écran
+            //
+              <a class="btn btn-xs btn-link panel-close" href="#">
+              <i class="fa fa-times"></i>
+              </a>
+        .panel-body
+          .row
+            .col-md-12.space20
+              .btn-group.pull-right
+                button.btn.btn-green.dropdown-toggle(data-toggle='dropdown')
+                  | Exporter 
+                  i.fa.fa-angle-down
+                ul.dropdown-menu.dropdown-light.pull-right
+                  li
+                    a.export-pdf(href='#', data-table='#sample-table-2', data-ignorecolumn='3,4')
+                      | Expoter en 
+                      span.text-bold PDF
+                  li
+                    a.export-excel(href='#', data-table='#sample-table-2', data-ignorecolumn='3,4')
+                      | Expoter en 
+                      span.text-bold EXCEL
+                  li
+                    a.export-doc(href='#', data-table='#sample-table-2', data-ignorecolumn='3,4')
+                      | Expoter en 
+                      span.text-bold WORD
+          .table-responsive
+            table#sample-table-2.table.table-striped.table-hover
+              thead
+                tr
+                  th N°
+                  th Référence
+                  th Nom de parties
+              tbody
+                - var i = 0
+                each dossier in list_dossiers
+                  - i++
+                  mixin tableau_dossiers
+                    tr.go_to_dossier
+                      td !{i}
+                      td #{dossier.ref_d}
+                      td 
+                        if block
+                          block
+                  if(dossier.pour && dossier.contre)
+                    if(dossier.pour.p_type == 'pp' && dossier.contre.c_type == 'pp')
+                      +tableau_dossiers
+                        a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.pp.p_prenom} #{dossier.pour.pp.p_nom} c/ #{dossier.contre.pp.c_prenom} #{dossier.contre.pp.c_nom}
+                    if(dossier.pour.p_type == 'pp' && dossier.contre.c_type == 'pm')
+                      +tableau_dossiers
+                        a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.pp.p_prenom} #{dossier.pour.pp.p_nom} c/ #{dossier.contre.pm.c_denomination}
+                    if(dossier.pour.p_type == 'pm' && dossier.contre.c_type == 'pp')
+                      +tableau_dossiers
+                        a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.pm.p_denomination} c/ #{dossier.contre.pp.c_prenom} #{dossier.contre.pp.c_nom}
+                    if(dossier.pour.p_type == 'pm' && dossier.contre.c_type == 'pm')
+                      +tableau_dossiers
+                        a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.pm.p_denomination} c/ #{dossier.contre.pm.c_denomination}
+
+append jscripts
+  // start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
+  script(src='/assets/plugins/holder/holder.js')
+  script(src='/assets/plugins/tableExport/tableExport.js')
+  script(src='/assets/plugins/tableExport/jquery.base64.js')
+  script(src='/assets/plugins/tableExport/html2canvas.js')
+  script(src='/assets/plugins/tableExport/jquery.base64.js')
+  script(src='/assets/plugins/tableExport/jspdf/libs/sprintf.js')
+  script(src='/assets/plugins/tableExport/jspdf/jspdf.js')
+  script(src='/assets/plugins/tableExport/jspdf/libs/base64.js')
+  script(src='/assets/js/table-export.js')
+  script(src='/javascripts/dossier_list.js')
+  script.
+    jQuery(document).ready(function() {
+    TableExport.init();
+    });

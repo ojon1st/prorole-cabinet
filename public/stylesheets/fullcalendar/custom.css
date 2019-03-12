@@ -1,0 +1,12 @@
+
+
+.fc-view-container *, .fc-view-container :after, .fc-view-container :before {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    height: auto!important;
+    box-sizing: content-box;
+}
+
+.fc-basic-view .fc-body .fc-row{
+  height: auto!important;
+}

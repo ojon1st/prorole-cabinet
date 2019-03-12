@@ -1,0 +1,563 @@
+extends layout
+
+block content
+  .row
+    .col-md-12
+      ol.breadcrumb
+        li.active
+          a(href='/')
+            | Accueil
+  // end: BREADCRUMB
+  // start: PAGE CONTENT
+  .row
+    .col-sm-12
+      .panel.panel-white
+        .panel-heading
+          h4.panel-title
+            | Profil 
+            span.text-bold utilisateur
+          .panel-tools
+            .dropdown
+              a.btn.btn-xs.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
+                i.fa.fa-cog
+              ul.dropdown-menu.dropdown-light.pull-right(role='menu')
+                li
+                  a.panel-collapse.collapses(href='#')
+                    i.fa.fa-angle-up
+                    span Cacher
+                li
+                  a.panel-refresh(href='#')
+                    i.fa.fa-refresh
+                    span Actualiser
+                li
+                  a.panel-expand(href='#')
+                    i.fa.fa-expand
+                    span Plein écran
+            // <a class="btn btn-xs btn-link panel-close" href="#"> <i class="fa fa-times"></i> </a>
+        .panel-body
+          .row
+            .col-sm-5.col-md-4
+              .user-left
+                .center
+                  h4 #{utilisateur.prenom} #{utilisateur.nom}
+                  .fileupload.fileupload-new(data-provides='fileupload')
+                    .user-image
+                      .fileupload-new.thumbnail
+                        img#image-preview(src='/media/#{utilisateur._id.toString()}.jpg', alt='')
+                      .fileupload-preview.fileupload-exists.thumbnail
+                      .user-image-buttons
+                        span.btn.btn-azure.btn-file.btn-sm
+                          span.fileupload-new
+                            i.fa.fa-pencil
+                          span.fileupload-exists
+                            i.fa.fa-pencil
+                          //input(type='file' onchange='save_profile_image()')
+                          input(type='file', name='avatar' onchange='uploadavatar(this.files[0])' accept='image/jpeg, image/png' enctype='multipart/form-data')
+                        a.btn.fileupload-exists.btn-red.btn-sm(href='#', data-dismiss='fileupload')
+                          i.fa.fa-times
+                  hr
+                table.table.table-condensed.table-hover
+                  thead
+                    tr
+                      th(colspan='3')  Contact
+                  tbody
+                    tr
+                      td Email:
+                      td
+                        a(href='')
+                          | #{utilisateur.email}
+                      td
+                        a.show-calendar(href='#runEditer')
+                          i.fa.fa-pencil.edit-user-info
+                    tr
+                      td Téléphone:
+                      td #{utilisateur.telephone}
+                      td
+                        a.show-calendar(href='#runEditer')
+                          i.fa.fa-pencil.edit-user-info
+                table.table.table-condensed.table-hover
+                  thead
+                    tr
+                      th(colspan='3') Informations Générales
+                  tbody
+                    tr
+                      td Qualité
+                      td
+                        span.label.label-sm.label-info #{utilisateur.profil.nom_profil}
+                      td
+                        a.show-calendar(href='#runEditer')
+                          i.fa.fa-pencil.edit-user-info
+                    tr
+                      td Idenfiant
+                      td #{utilisateur.pseudo}
+                      td
+                        a.show-calendar(href='#runEditer')
+                          i.fa.fa-pencil.edit-user-info
+            .col-sm-7.col-md-8
+              //
+                <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas convallis porta purus, pulvinar mattis nulla tempus ut. Curabitur quis dui orci. Ut nisi dolor, dignissim a aliquet quis, vulputate id dui. Proin ultrices ultrices ligula, dictum varius turpis faucibus non. Curabitur faucibus ultrices nunc, nec aliquet leo tempor cursus.
+                </p>
+              .row.space20
+                .col-sm-4
+                  a.show-calendar(href='#runDossier')
+                    button.btn.btn-icon.btn-block
+                      i.clip-clip
+                      | 														Dossiers en cours 
+                      span.badge.badge-info  #{nb_dossiers} 
+                  br.hidden-lg.hidden-md.hidden-sm
+                .col-sm-4
+                  a.show-calendar(href='#runMail')
+                    button.btn.btn-icon.btn-block.pulsate
+                      i.clip-bubble-2
+                      | 														Mes messages 
+                      span.badge.badge-info  23 
+                  br.hidden-lg.hidden-md.hidden-sm
+                .col-sm-4
+                  a.sb-toggle-right(href='')
+                    button.btn.btn-icon.btn-block
+                      i.clip-calendar
+                      | 														Tchat 
+                      span.badge.badge-info  5 
+                  br.hidden-lg.hidden-md.hidden-sm
+              .row.space20
+                .col-sm-4
+                  a.show-calendar(href='#runAudience')
+                    button.btn.btn-icon.btn-block
+                      i.clip-list-3
+                      | 														Audiences 
+                      span.badge.badge-info  9 
+                  br.hidden-lg.hidden-md.hidden-sm
+                .col-sm-4
+                  a.show-calendar(href='#runDilligence')
+                    button.btn.btn-icon.btn-block
+                      i.clip-list-3
+                      | 														Ephéméride 
+                      span.badge.badge-info  9 
+                  br.hidden-lg.hidden-md.hidden-sm
+                .col-sm-4
+                  a.show-calendar(href='#runRDV')
+                    button.btn.btn-icon.btn-block
+                      i.clip-list-3
+                      | 														Rendez-vous 
+                      span.badge.badge-info  9 
+                  br.hidden-lg.hidden-md.hidden-sm
+    // end: PAGE CONTENT
+    // Modal for current page
+  .hidden
+    #runEditer
+      .noteWrap.col-md-10.col-md-offset-1
+        br
+        form#form(action='#', role='form')
+          .row
+            .col-md-12
+              h3 Informations du compte
+              hr
+            .col-md-6
+              .form-group
+                label.control-label
+                  | Nom
+                input#firstname.form-control(type='text', placeholder='Richard', name='Nom')
+              .form-group
+                label.control-label
+                  | Prenom
+                input#lastname.form-control(type='text', placeholder='Elad', name='lastname')
+              .form-group
+                label.control-label
+                  | Email
+                input#email.form-control(type='email', placeholder='peter@example.com', name='email')
+              .form-group
+                label.control-label
+                  | Téléphone
+                input#phone.form-control(type='email', placeholder='(641)-734-4763', name='email')
+            .col-md-6
+              .form-group
+                label.control-label
+                  | Mot de passe
+                input#password.form-control(type='password', placeholder='Mot de passe', name='password')
+              .form-group
+                label.control-label
+                  | Confirmation du mot de passe
+                input#password_again.form-control(type='password', placeholder='Confirmer votre mot de passe', name='password_again')
+              .form-group
+                label
+                  | Image Upload
+                .fileupload.fileupload-new(data-provides='fileupload')
+                  .fileupload-new.thumbnail
+                    img(src='assets/images/avatar-1-xl.jpg', alt='')
+                  .fileupload-preview.fileupload-exists.thumbnail
+                  .user-edit-image-buttons
+                    span.btn.btn-azure.btn-file
+                      span.fileupload-new
+                        i.fa.fa-picture
+                        |  Select image
+                      span.fileupload-exists
+                        i.fa.fa-picture
+                        |  Change
+                      input(type='file')
+                    a.btn.fileupload-exists.btn-red(href='#', data-dismiss='fileupload')
+                      i.fa.fa-times
+                      |  Remove
+          .row
+            .col-md-12
+              div
+                | Champs obligatoires
+                hr
+          .row
+            .col-md-8.col-sm-8
+              p
+                | En cliquant sur MISE À JOUR, vous acceptez la politique & les conditions d'utilisation.
+            .col-md-4.col-sm-4
+              button.btn.btn-green.btn-block(type='submit')
+                | Mise à jour 
+                i.fa.fa-arrow-circle-right
+    #runDossier
+      .noteWrap.col-md-10.col-md-offset-1
+        br
+        h3 Dossiers en cours
+        br
+        table#projects.table.table-striped.table-bordered.table-hover
+          thead
+            tr
+              th N°
+              th Réf.
+              th Parties
+              th Statut
+              th.hidden-xs Dilligences
+              // <th class="hidden-xs center">Priortity</th>
+              th Delais
+              th
+          tbody
+            tr
+              td.center
+                .checkbox-table
+                  label
+                    input.flat-grey.foocheck(type='checkbox')
+              td IT Help Desk
+              td.hidden-xs Master Company
+              td 11 november 2014
+              td.hidden-xs
+                .progress.active.progress-xs
+                  .progress-bar.progress-bar-warning(style='width: 70%', aria-valuemax='100', aria-valuemin='0', aria-valuenow='70', role='progressbar')
+                    span.sr-only  70% Complete (danger)
+              td.center.hidden-xs
+                span.label.label-danger Critical
+              td.center
+                .visible-md.visible-lg.hidden-sm.hidden-xs
+                  a.btn.btn-light-blue.tooltips(href='#', data-placement='top', data-original-title='Edit')
+                    i.fa.fa-edit
+                  a.btn.btn-green.tooltips(href='#', data-placement='top', data-original-title='Share')
+                    i.fa.fa-share
+                  a.btn.btn-red.tooltips(href='#', data-placement='top', data-original-title='Remove')
+                    i.fa.fa-times.fa.fa-white
+                .visible-xs.visible-sm.hidden-md.hidden-lg
+                  .btn-group
+                    a.btn.btn-green.dropdown-toggle.btn-sm(data-toggle='dropdown', href='#')
+                      i.fa.fa-cog
+                      span.caret
+                    ul.dropdown-menu.dropdown-dark.pull-right(role='menu')
+                      li(role='presentation')
+                        a(role='menuitem', tabindex='-1', href='#')
+                          i.fa.fa-edit
+                          |  Edit
+                      li(role='presentation')
+                        a(role='menuitem', tabindex='-1', href='#')
+                          i.fa.fa-share
+                          |  Share
+                      li(role='presentation')
+                        a(role='menuitem', tabindex='-1', href='#')
+                          i.fa.fa-times
+                          |  Remove
+            tr
+              td.center
+                .checkbox-table
+                  label
+                    input.flat-grey.foocheck(type='checkbox')
+              td PM New Product Dev
+              td.hidden-xs Brand Company
+              td 12 june 2014
+              td.hidden-xs
+                .progress.active.progress-xs
+                  .progress-bar.progress-bar-info(style='width: 40%', aria-valuemax='100', aria-valuemin='0', aria-valuenow='40', role='progressbar')
+                    span.sr-only  40% Complete
+              td.center.hidden-xs
+                span.label.label-warning High
+              td.center
+                .visible-md.visible-lg.hidden-sm.hidden-xs
+                  a.btn.btn-light-blue.tooltips(href='#', data-placement='top', data-original-title='Edit')
+                    i.fa.fa-edit
+                  a.btn.btn-green.tooltips(href='#', data-placement='top', data-original-title='Share')
+                    i.fa.fa-share
+                  a.btn.btn-red.tooltips(href='#', data-placement='top', data-original-title='Remove')
+                    i.fa.fa-times.fa.fa-white
+                .visible-xs.visible-sm.hidden-md.hidden-lg
+                  .btn-group
+                    a.btn.btn-green.dropdown-toggle.btn-sm(data-toggle='dropdown', href='#')
+                      i.fa.fa-cog
+                      span.caret
+                    ul.dropdown-menu.dropdown-dark.pull-right(role='menu')
+                      li(role='presentation')
+                        a(role='menuitem', tabindex='-1', href='#')
+                          i.fa.fa-edit
+                          |  Edit
+                      li(role='presentation')
+                        a(role='menuitem', tabindex='-1', href='#')
+                          i.fa.fa-share
+                          |  Share
+                      li(role='presentation')
+                        a(role='menuitem', tabindex='-1', href='#')
+                          i.fa.fa-times
+                          |  Remove
+            tr
+              td.center
+                .checkbox-table
+                  label
+                    input.flat-grey.foocheck(type='checkbox')
+              td ClipTheme Web Site
+              td.hidden-xs Internal
+              td 11 november 2014
+              td.hidden-xs
+                .progress.active.progress-xs
+                  .progress-bar.progress-bar-success(style='width: 90%', aria-valuemax='100', aria-valuemin='0', aria-valuenow='90', role='progressbar')
+                    span.sr-only  90% Complete
+              td.center.hidden-xs
+                span.label.label-success Normal
+              td.center
+                .visible-md.visible-lg.hidden-sm.hidden-xs
+                  a.btn.btn-light-blue.tooltips(href='#', data-placement='top', data-original-title='Edit')
+                    i.fa.fa-edit
+                  a.btn.btn-green.tooltips(href='#', data-placement='top', data-original-title='Share')
+                    i.fa.fa-share
+                  a.btn.btn-red.tooltips(href='#', data-placement='top', data-original-title='Remove')
+                    i.fa.fa-times.fa.fa-white
+                .visible-xs.visible-sm.hidden-md.hidden-lg
+                  .btn-group
+                    a.btn.btn-green.dropdown-toggle.btn-sm(data-toggle='dropdown', href='#')
+                      i.fa.fa-cog
+                      span.caret
+                    ul.dropdown-menu.dropdown-dark.pull-right(role='menu')
+                      li(role='presentation')
+                        a(role='menuitem', tabindex='-1', href='#')
+                          i.fa.fa-edit
+                          |  Edit
+                      li(role='presentation')
+                        a(role='menuitem', tabindex='-1', href='#')
+                          i.fa.fa-share
+                          |  Share
+                      li(role='presentation')
+                        a(role='menuitem', tabindex='-1', href='#')
+                          i.fa.fa-times
+                          |  Remove
+            tr
+              td.center
+                .checkbox-table
+                  label
+                    input.flat-grey.foocheck(type='checkbox')
+              td Local Ad
+              td.hidden-xs UI Fab
+              td 15 april 2014
+              td.hidden-xs
+                .progress.active.progress-xs
+                  .progress-bar.progress-bar-warning(style='width: 50%', aria-valuemax='100', aria-valuemin='0', aria-valuenow='50', role='progressbar')
+                    span.sr-only  50% Complete
+              td.center.hidden-xs
+                span.label.label-success Normal
+              td.center
+                .visible-md.visible-lg.hidden-sm.hidden-xs
+                  a.btn.btn-light-blue.tooltips(href='#', data-placement='top', data-original-title='Edit')
+                    i.fa.fa-edit
+                  a.btn.btn-green.tooltips(href='#', data-placement='top', data-original-title='Share')
+                    i.fa.fa-share
+                  a.btn.btn-red.tooltips(href='#', data-placement='top', data-original-title='Remove')
+                    i.fa.fa-times.fa.fa-white
+                .visible-xs.visible-sm.hidden-md.hidden-lg
+                  .btn-group
+                    a.btn.btn-green.dropdown-toggle.btn-sm(data-toggle='dropdown', href='#')
+                      i.fa.fa-cog
+                      span.caret
+                    ul.dropdown-menu.dropdown-dark.pull-right(role='menu')
+                      li(role='presentation')
+                        a(role='menuitem', tabindex='-1', href='#')
+                          i.fa.fa-edit
+                          |  Edit
+                      li(role='presentation')
+                        a(role='menuitem', tabindex='-1', href='#')
+                          i.fa.fa-share
+                          |  Share
+                      li(role='presentation')
+                        a(role='menuitem', tabindex='-1', href='#')
+                          i.fa.fa-times
+                          |  Remove
+            tr
+              td.center
+                .checkbox-table
+                  label
+                    input.flat-grey.foocheck(type='checkbox')
+              td Design new theme
+              td.hidden-xs Internal
+              td 2 october 2014
+              td.hidden-xs
+                .progress.active.progress-xs
+                  .progress-bar.progress-bar-success(style='width: 20%', aria-valuemax='100', aria-valuemin='0', aria-valuenow='20', role='progressbar')
+                    span.sr-only  20% Complete (warning)
+              td.center.hidden-xs
+                span.label.label-danger Critical
+              td.center
+                .visible-md.visible-lg.hidden-sm.hidden-xs
+                  a.btn.btn-light-blue.tooltips(href='#', data-placement='top', data-original-title='Edit')
+                    i.fa.fa-edit
+                  a.btn.btn-green.tooltips(href='#', data-placement='top', data-original-title='Share')
+                    i.fa.fa-share
+                  a.btn.btn-red.tooltips(href='#', data-placement='top', data-original-title='Remove')
+                    i.fa.fa-times.fa.fa-white
+                .visible-xs.visible-sm.hidden-md.hidden-lg
+                  .btn-group
+                    a.btn.btn-green.dropdown-toggle.btn-sm(data-toggle='dropdown', href='#')
+                      i.fa.fa-cog
+                      span.caret
+                    ul.dropdown-menu.dropdown-dark.pull-right(role='menu')
+                      li(role='presentation')
+                        a(role='menuitem', tabindex='-1', href='#')
+                          i.fa.fa-edit
+                          |  Edit
+                      li(role='presentation')
+                        a(role='menuitem', tabindex='-1', href='#')
+                          i.fa.fa-share
+                          |  Share
+                      li(role='presentation')
+                        a(role='menuitem', tabindex='-1', href='#')
+                          i.fa.fa-times
+                          |  Remove
+            tr
+              td.center
+                .checkbox-table
+                  label
+                    input.flat-grey.foocheck(type='checkbox')
+              td IT Help Desk
+              td.hidden-xs Designer TM
+              td 6 december 2014
+              td.hidden-xs
+                .progress.active.progress-xs
+                  .progress-bar.progress-bar-warning(style='width: 40%', aria-valuemax='100', aria-valuemin='0', aria-valuenow='40', role='progressbar')
+                    span.sr-only  40% Complete (warning)
+              td.center.hidden-xs
+                span.label.label-warning High
+              td.center
+                .visible-md.visible-lg.hidden-sm.hidden-xs
+                  a.btn.btn-light-blue.tooltips(href='#', data-placement='top', data-original-title='Edit')
+                    i.fa.fa-edit
+                  a.btn.btn-green.tooltips(href='#', data-placement='top', data-original-title='Share')
+                    i.fa.fa-share
+                  a.btn.btn-red.tooltips(href='#', data-placement='top', data-original-title='Remove')
+                    i.fa.fa-times.fa.fa-white
+                .visible-xs.visible-sm.hidden-md.hidden-lg
+                  .btn-group
+                    a.btn.btn-green.dropdown-toggle.btn-sm(data-toggle='dropdown', href='#')
+                      i.fa.fa-cog
+                      span.caret
+                    ul.dropdown-menu.dropdown-dark.pull-right(role='menu')
+                      li(role='presentation')
+                        a(role='menuitem', tabindex='-1', href='#')
+                          i.fa.fa-edit
+                          |  Edit
+                      li(role='presentation')
+                        a(role='menuitem', tabindex='-1', href='#')
+                          i.fa.fa-share
+                          |  Share
+                      li(role='presentation')
+                        a(role='menuitem', tabindex='-1', href='#')
+                          i.fa.fa-times
+                          |  Remove
+    #runMail
+      .noteWrap.col-md-10.col-md-offset-1
+        br
+        h3 Mails
+        br
+    #runTchat
+      .noteWrap.col-md-10.col-md-offset-1
+        br
+        h3 Discussion instantanée
+        br
+    #runAudience
+      .noteWrap.col-md-10.col-md-offset-1
+        br
+        h3 Audiences en cours
+        br
+        #calendar
+    #runDilligence
+      .noteWrap.col-md-10.col-md-offset-1
+        br
+        h3 Ephéméride
+        br
+        #calendar
+    #runRDV
+      .noteWrap.col-md-10.col-md-offset-1
+        br
+        h3 Rendez-vous
+        br
+        table#projects.table.table-striped.table-bordered.table-hover
+          thead
+            tr
+              th #
+              th Nom & Prenom
+              th Motif
+              th Date
+              th
+          tbody
+            tr
+              td 1
+              td Sofiane Abdou Garba
+              td Rencontrer avocat
+              td 21/01/2019 à 15h30
+              td.center
+                .visible-md.visible-lg.hidden-sm.hidden-xs
+                  a.btn.btn-light-blue.tooltips(href='#', data-placement='top', data-original-title='Edit')
+                    i.fa.fa-edit
+                  a.btn.btn-green.tooltips(href='#', data-placement='top', data-original-title='Share')
+                    i.fa.fa-share
+                  a.btn.btn-red.tooltips(href='#', data-placement='top', data-original-title='Remove')
+                    i.fa.fa-times.fa.fa-white
+                .visible-xs.visible-sm.hidden-md.hidden-lg
+                  .btn-group
+                    a.btn.btn-green.dropdown-toggle.btn-sm(data-toggle='dropdown', href='#')
+                      i.fa.fa-cog
+                      span.caret
+                    ul.dropdown-menu.dropdown-dark.pull-right(role='menu')
+                      li(role='presentation')
+                        a(role='menuitem', tabindex='-1', href='#')
+                          i.fa.fa-edit
+                          |  Edit
+                      li(role='presentation')
+                        a(role='menuitem', tabindex='-1', href='#')
+                          i.fa.fa-share
+                          |  Share
+                      li(role='presentation')
+                        a(role='menuitem', tabindex='-1', href='#')
+                          i.fa.fa-times
+                          |  Remove
+append jscripts
+  script(src='/javascripts/utilisateur_update.js')
+  script.
+    $(document).ready(function () {
+      var img_url = "#{utilisateur.avatar}";
+      if( img_url != ""){
+        $("#image-preview").attr("src", img_url);
+        $("#user-img-cg").attr("src", img_url);
+        $(".myavatar").attr("src", img_url);
+      }
+    });
+    function uploadavatar(file) {
+        document.getElementById('image-preview').src = window.URL.createObjectURL(file);
+        var mon_image = new FormData(); 
+        mon_image.append('avatar', file);
+        $.ajax({
+                 url : '/administrateur/utilisateur/upload_photo',
+                 type : 'POST',
+                 data : mon_image,
+                 processData: false,  // tell jQuery not to process the data
+                 contentType: false,  // tell jQuery not to set contentType */
+                 success : function(data) {
+                     console.log(data);
+                 }
+          });
+    }

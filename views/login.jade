@@ -1,0 +1,113 @@
+doctype html
+html.no-js(lang='fr')
+  // <![endif]
+  // start: HEAD
+  head
+    title Connection
+    // start: META
+    meta(charset='utf-8')
+    //if IE
+      meta(http-equiv='X-UA-Compatible', content='IE=edge,IE=9,IE=8,chrome=1')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0')
+    meta(name='apple-mobile-web-app-capable', content='yes')
+    meta(name='apple-mobile-web-app-status-bar-style', content='black')
+    meta(content='', name='description')
+    meta(content='', name='author')
+    // end: META
+    // start: MAIN CSS
+    link(rel='stylesheet', href='/assets/plugins/bootstrap/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/assets/plugins/font-awesome/css/font-awesome.min.css')
+    link(rel='stylesheet', href='/assets/plugins/animate.css/animate.min.css')
+    link(rel='stylesheet', href='/assets/plugins/iCheck/skins/all.css')
+    link(rel='stylesheet', href='/assets/css/styles.css')
+    link(rel='stylesheet', href='/assets/css/styles-responsive.css')
+    link(rel='stylesheet', href='/assets/plugins/iCheck/skins/all.css')
+    // end: HEAD
+    // start: BODY
+  body.login
+    .row
+      .main-login.col-xs-10.col-xs-offset-1.col-sm-8.col-sm-offset-2.col-md-4.col-md-offset-4
+        // start: LOGIN BOX
+        //
+          <div class="logo">
+          <img src="/assets/images/logo.png">
+          </div>
+        .box-login
+          h3 Connectez-vous à votre compte
+          p
+            | Veuillez entrer votre identifiant et votre mot de passe pour vous connecter.
+          form.form-login(method = 'POST' action='')
+            .errorHandler.alert.alert-danger.no-display
+              i.fa.fa-remove-sign
+              |  Vous avez des erreurs de formulaire. S'il vous plaît vérifier ci-dessous.
+            fieldset
+              .form-group
+                span.input-icon
+                  input.form-control(type='text', name='username', placeholder='Identifiant')
+                  i.fa.fa-user
+              .form-group.form-actions
+                span.input-icon
+                  input.form-control.password(type='password', name='password', placeholder='Mot de passe')
+                  i.fa.fa-lock
+                  a.forgot(href='#')
+                    | Mot de passe oublié
+              .form-actions
+                label.checkbox-inline(for='remember')
+                  input#remember.grey.remember(type='checkbox', name='remember')
+                  | 									Se souvenir de moi
+                button.btn.btn-green.pull-right(type='submit')
+                  | Se connecter 
+                  i.fa.fa-arrow-circle-right
+          // start: COPYRIGHT
+          .copyright
+            // ?php echo date('Y'); ?
+            | © Prorôle une application LegalTech Priorities.
+          // end: COPYRIGHT
+          // end: LOGIN BOX
+          // start: FORGOT BOX
+          .box-forgot
+            h3 Mot de passe oublié ?
+            p
+              | Entrez votre adresse e-mail ci-dessous pour réinitialiser votre mot de passe.
+            form.form-forgot
+              .errorHandler.alert.alert-danger.no-display
+                i.fa.fa-remove-sign
+                |  Vous avez des erreurs de formulaire. S'il vous plaît vérifier ci-dessous.
+              fieldset
+                .form-group
+                  span.input-icon
+                    input.form-control(type='email', name='email', placeholder='email')
+                    i.fa.fa-envelope
+                .form-actions
+                  a.btn.btn-light-grey.go-back
+                    i.fa.fa-chevron-circle-left
+                    |  Se connecter
+                  button.btn.btn-green.pull-right(type='submit')
+                    | Envoyer 
+                    i.fa.fa-arrow-circle-right
+            // start: COPYRIGHT
+            .copyright
+              // ?php echo date('Y'); ?
+              | © Prorôle une application LegalTech Priorities.
+            // end: COPYRIGHT
+
+    script(src='/assets/plugins/jQuery/jquery-2.1.1.min.js')
+    // <![endif]
+    script(src='/assets/plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js')
+    script(src='/assets/plugins/bootstrap/js/bootstrap.min.js')
+    script(src='/assets/plugins/iCheck/jquery.icheck.min.js')
+    script(src='/assets/plugins/jquery.transit/jquery.transit.js')
+    script(src='/assets/plugins/TouchSwipe/jquery.touchSwipe.min.js')
+    script(src='/assets/js/main.js')
+    // end: MAIN JAVASCRIPTS
+    // start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
+    script(src='/assets/plugins/jquery-validation/dist/jquery.validate.min.js')
+    script(src='/assets/js/login.js')
+    // end: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
+    script.
+      jQuery(document).ready(function() {
+      Main.init();
+      Login.init();
+      });
+    // end: BODY
+            

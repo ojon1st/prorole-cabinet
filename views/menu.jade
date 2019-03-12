@@ -1,0 +1,104 @@
+#horizontal-menu.navbar.navbar-inverse.hidden-sm.hidden-xs.inner
+  .container
+    .navbar-collapse
+      ul.nav.navbar-nav
+        li
+          a(href='/')
+            | Accueil
+        li.dropdown
+          a.dropdown-toggle(data-toggle='dropdown', href='#')
+            | Dossier 
+            i.icon-arrow
+          ul.dropdown-menu
+            li
+              a(href='/dossiers/dossier/create')
+                span.title  Nouveau dossier 
+            li
+              a(href='/dossiers')
+                | Repertoire de dossiers
+            li
+              a(href='#')
+                | Dossiers en cours
+            li
+              a(href='#')
+                | Repartition des dossiers
+        li.dropdown
+          a.dropdown-toggle(data-toggle='dropdown', href='#')
+            | Agenda 
+            i.icon-arrow
+          ul.dropdown-menu
+            li
+              a(href='/agenda/audiencier')
+                span.title  Audiencier 
+            li
+              a(href='/agenda/diligences')
+                span.title  Tables des dilligences 
+            li
+              a(href='#')
+                span.title  Rendez-vous 
+            li
+              a(href='#')
+                span.title  Carnet d'adresses 
+        li.dropdown
+          a.dropdown-toggle(href='#', data-toggle='dropdown')
+            | Administrateur 
+            i.icon-arrow
+          ul.dropdown-menu
+            li
+              a(href='/administrateur/configuration_du_cabinet')
+                | Parametre du cabinet
+            li
+              a(href='/administrateur/utilisateurs')
+                | Répertoire des utilisateurs
+        li.dropdown
+          a.dropdown-toggle(data-toggle='dropdown', href='#')
+            | Comptabilité
+            i.icon-arrow
+          ul.dropdown-menu
+            li
+              a(href='#')
+                span.title Table générale
+            li
+              a(href='#')
+                span.title Table de rétrocommissions
+            li
+              a(href='#')
+                span.title Nouvelle convention
+            li
+              a(href='#')
+                span.title Table de créances
+        li.dropdown
+          a.dropdown-toggle(data-toggle='dropdown', href='#')
+            | Bibliothèque
+            i.icon-arrow
+          ul.dropdown-menu
+            li
+              a(href='#')
+                span.title Bases legales
+            li
+              a(href='#')
+                span.title Doctrines
+            li
+              a(href='#')
+                span.title Jurisprudence
+        li.dropdown
+          a(href='#')
+            | Indicateurs
+          //ul.dropdown-menu
+            li
+              a(href='#')
+                span.title Documents en projet
+            li
+              a(href='message.php')
+                span.title Messages
+        //li.dropdown
+          a.dropdown-toggle(data-toggle='dropdown', href='#')
+            | Partage 
+            i.icon-arrow
+          ul.dropdown-menu
+            li
+              a(href='document_en_projet.php')
+                span.title Documents en projet
+            li
+              a(href='message.php')
+                span.title Messages

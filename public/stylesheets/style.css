@@ -1,0 +1,27 @@
+/*body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}*/
+
+.dos-text{
+  padding-top: 7px;
+  text-align: left;
+  margin-bottom: 0;
+}
+
+input[readonly] {
+ background-color: #dddddd;
+}
+
+.text-noir{
+  color: black!important;
+}
+
+
+.text-upper{
+  text-transform: uppercase;
+}
