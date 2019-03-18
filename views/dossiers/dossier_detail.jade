@@ -29,6 +29,8 @@ block content
           a(href='/')
             | Accueil
         li.active
+          | Dossier
+        li.active
           | #{title}
   // end: BREADCRUMB
   // start: PAGE CONTENT
@@ -45,9 +47,9 @@ block content
                   i.fa.fa-cog
                 ul.dropdown-menu.dropdown-light.pull-right(role='menu')
                   li
-                    a.panel-collapse.collapses(href='#')
-                      i.fa.fa-angle-up
-                      span Cacher
+                    a.panel-collapse.expand(href='#')
+                      i.fa.fa-angle-down
+                      span Ouvrir
                   li
                     a.panel-refresh(href='#')
                       i.fa.fa-refresh
@@ -56,11 +58,11 @@ block content
                     a.panel-expand(href='#')
                       i.fa.fa-expand
                       span Plein écran
-              //
+              //-
                 <a class="btn btn-xs btn-link panel-close" href="#">
                 <i class="fa fa-times"></i>
                 </a>
-          .panel-body.buttons-widget
+          .panel-body.buttons-widget.cacher
             .row
               .col-md-12
                 form(method='POST', action='')
@@ -159,9 +161,9 @@ block content
                   i.fa.fa-cog
                 ul.dropdown-menu.dropdown-light.pull-right(role='menu')
                   li
-                    a.panel-collapse.collapses(href='#')
-                      i.fa.fa-angle-up
-                      span Cacher
+                    a.panel-collapse.expand(href='#')
+                      i.fa.fa-angle-down
+                      span Ouvrir
                   li
                     a.panel-refresh(href='#')
                       i.fa.fa-refresh
@@ -170,11 +172,11 @@ block content
                     a.panel-expand(href='#')
                       i.fa.fa-expand
                       span Plein écran
-              //
+              //-
                 <a class="btn btn-xs btn-link panel-close" href="#">
                 <i class="fa fa-times"></i>
                 </a>
-          .panel-body.buttons-widget
+          .panel-body.buttons-widget.cacher
             .row
               .col-md-12
                 //.form-group
@@ -244,18 +246,17 @@ block content
                           span.input-icon
                             input#motif_ins.form-control(type='text', placeholder='Motif')
                             i.fa.fa-quote-left
-                          if(instruction && (!instruction.decision || instruction.decision == "" && instruction.decision == "undefined"))
-                            a#renvoi_instance.btn.input-group-addon.btn-dark-beige(onclick='get_renvoi_infos("#{dossier._id}")')
-                              span.fa.fa-check
+                          a#renvoi_instance.btn.input-group-addon.btn-dark-beige(onclick='get_renvoi_infos("#{dossier._id}")')
+                            span.fa.fa-check
                 .form-group
                   label.col-sm-3.control-label
                     | Décision :
                   .col-sm-8
                     if (instruction && instruction.decision)
-                      textarea.form-control(name='decision', cols='30', rows='10' readonly)
+                      textarea.form-control(name='decision', placeholder='Décision', cols='30', rows='10' readonly)
                         | #{instruction.decision}
                     else
-                      textarea.form-control(name='decision', cols='30', rows='10')
+                      textarea.form-control(name='decision', placeholder='Décision', cols='30', rows='10')
                 .form-group
                   .col-sm-offset-8.col-sm-3.text-center
                     if (instruction)
@@ -273,22 +274,22 @@ block content
                   i.fa.fa-cog
                 ul.dropdown-menu.dropdown-light.pull-right(role='menu')
                   li
-                    a.panel-collapse.collapses(href='#')
-                      i.fa.fa-angle-up
-                      span Collapse
+                    a.panel-collapse.expand(href='#')
+                      i.fa.fa-angle-down
+                      span Ouvrir
                   li
                     a.panel-refresh(href='#')
                       i.fa.fa-refresh
-                      span Refresh
-                  li
-                    a.panel-config(href='#panel-config', data-toggle='modal')
-                      i.fa.fa-wrench
-                      span Configurations
+                      span Actualiser
                   li
                     a.panel-expand(href='#')
                       i.fa.fa-expand
-                      span Fullscreen
-          .panel-body
+                      span Plein écran
+              //-
+                <a class="btn btn-xs btn-link panel-close" href="#">
+                <i class="fa fa-times"></i>
+                </a>
+          .panel-body.cacher
             form.fileupload#pieces-formes(action='', method='POST', enctype='multipart/form-data')
               // The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload
               .row.fileupload-buttonbar
@@ -296,17 +297,17 @@ block content
                   // The fileinput-button span is used to style the file input field as button
                   span.btn.btn-success.fileinput-button(style='margin: 0 5px;')
                     i.glyphicon.glyphicon-plus
-                    span Ajouter des Fichiers ...
+                    span  Ajouter des fichiers
                     input(type='file', name='files[]', multiple='')
                   button.btn.btn-primary.start(type='submit' style='margin: 0 5px;')
                     i.glyphicon.glyphicon-upload
-                    span Envoyer
+                    span  Télécharger
                   button.btn.btn-warning.cancel(type='reset' style='margin: 0 5px;')
                     i.glyphicon.glyphicon-ban-circle
-                    span Annuler l'envoi
+                    span  Annuler
                   button.btn.btn-danger.delete(type='button' style='margin: 0 5px;')
                     i.glyphicon.glyphicon-trash
-                    span Supprimer
+                    span  Supprimer
                   // The loading indicator is shown during file processing
                   span.fileupload-loading
                 // The global progress information
@@ -345,12 +346,12 @@ block content
                           if (file.deleteUrl)
                             button.btn.btn-danger.delete(data-type='POST', data-url=file.deleteUrl)
                               i.glyphicon.glyphicon-trash
-                              span Supprimer
+                              span  Supprimer
                             input.toggle(type='checkbox', name='delete', value='1')
                           else
                             button.btn.btn-warning.cancel
                               i.glyphicon.glyphicon-ban-circle
-                              span Annuler
+                              span  Annuler
       .col-sm-6
         .panel.panel-white
           .panel-heading
@@ -363,22 +364,22 @@ block content
                   i.fa.fa-cog
                 ul.dropdown-menu.dropdown-light.pull-right(role='menu')
                   li
-                    a.panel-collapse.collapses(href='#')
-                      i.fa.fa-angle-up
-                      span Collapse
+                    a.panel-collapse.expand(href='#')
+                      i.fa.fa-angle-down
+                      span Ouvrir
                   li
                     a.panel-refresh(href='#')
                       i.fa.fa-refresh
-                      span Refresh
-                  li
-                    a.panel-config(href='#panel-config', data-toggle='modal')
-                      i.fa.fa-wrench
-                      span Configurations
+                      span Actualiser
                   li
                     a.panel-expand(href='#')
                       i.fa.fa-expand
-                      span Fullscreen
-          .panel-body
+                      span Plein écran
+              //-
+                <a class="btn btn-xs btn-link panel-close" href="#">
+                <i class="fa fa-times"></i>
+                </a>
+          .panel-body.cacher
             form.fileupload#pieces-fonds(action='//jquery-file-upload.appspot.com/', method='POST', enctype='multipart/form-data')
               // The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload
               .row.fileupload-buttonbar
@@ -386,17 +387,17 @@ block content
                   // The fileinput-button span is used to style the file input field as button
                   span.btn.btn-success.fileinput-button(style='margin: 0 5px;')
                     i.glyphicon.glyphicon-plus
-                    span Ajouter des Fichiers ...
+                    span  Ajouter des fichiers
                     input(type='file', name='files[]', multiple='')
                   button.btn.btn-primary.start(type='submit' style='margin: 0 5px;')
                     i.glyphicon.glyphicon-upload
-                    span Envoyer
+                    span  Télécharger
                   button.btn.btn-warning.cancel(type='reset' style='margin: 0 5px;')
                     i.glyphicon.glyphicon-ban-circle
-                    span Annuler l'envoi
+                    span  Annuler
                   button.btn.btn-danger.delete(type='button' style='margin: 0 5px;')
                     i.glyphicon.glyphicon-trash
-                    span Supprimer
+                    span  Supprimer
                   // The loading indicator is shown during file processing
                   span.fileupload-loading
                 // The global progress information
@@ -435,12 +436,12 @@ block content
                           if (file.deleteUrl)
                             button.btn.btn-danger.delete(data-type='POST', data-url=file.deleteUrl)
                               i.glyphicon.glyphicon-trash
-                              span Supprimer
+                              span  Supprimer
                             input.toggle(type='checkbox', name='delete', value='1')
                           else
                             button.btn.btn-warning.cancel
                               i.glyphicon.glyphicon-ban-circle
-                              span Annuler
+                              span  Annuler
     .row
       .col-sm-6
         .panel.panel-white
@@ -454,22 +455,22 @@ block content
                   i.fa.fa-cog
                 ul.dropdown-menu.dropdown-light.pull-right(role='menu')
                   li
-                    a.panel-collapse.collapses(href='#')
-                      i.fa.fa-angle-up
-                      span Collapse
+                    a.panel-collapse.expand(href='#')
+                      i.fa.fa-angle-down
+                      span Ouvrir
                   li
                     a.panel-refresh(href='#')
                       i.fa.fa-refresh
-                      span Refresh
-                  li
-                    a.panel-config(href='#panel-config', data-toggle='modal')
-                      i.fa.fa-wrench
-                      span Configurations
+                      span Actualiser
                   li
                     a.panel-expand(href='#')
                       i.fa.fa-expand
-                      span Fullscreen
-          .panel-body
+                      span Plein écran
+              //-
+                <a class="btn btn-xs btn-link panel-close" href="#">
+                <i class="fa fa-times"></i>
+                </a>
+          .panel-body.cacher
             form.fileupload#ecritures-recues(action='//jquery-file-upload.appspot.com/', method='POST', enctype='multipart/form-data')
               // The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload
               .row.fileupload-buttonbar
@@ -477,17 +478,17 @@ block content
                   // The fileinput-button span is used to style the file input field as button
                   span.btn.btn-success.fileinput-button(style='margin: 0 5px;')
                     i.glyphicon.glyphicon-plus
-                    span Ajouter des Fichiers ...
+                    span  Ajouter des fichiers
                     input(type='file', name='files[]', multiple='')
                   button.btn.btn-primary.start(type='submit' style='margin: 0 5px;')
                     i.glyphicon.glyphicon-upload
-                    span Envoyer
+                    span  Télécharger
                   button.btn.btn-warning.cancel(type='reset' style='margin: 0 5px;')
                     i.glyphicon.glyphicon-ban-circle
-                    span Annuler l'envoi
+                    span  Annuler
                   button.btn.btn-danger.delete(type='button' style='margin: 0 5px;')
                     i.glyphicon.glyphicon-trash
-                    span Supprimer
+                    span  Supprimer
                   // The loading indicator is shown during file processing
                   span.fileupload-loading
                 // The global progress information
@@ -526,12 +527,12 @@ block content
                           if (file.deleteUrl)
                             button.btn.btn-danger.delete(data-type='POST', data-url=file.deleteUrl)
                               i.glyphicon.glyphicon-trash
-                              span Supprimer
+                              span  Supprimer
                             input.toggle(type='checkbox', name='delete', value='1')
                           else
                             button.btn.btn-warning.cancel
                               i.glyphicon.glyphicon-ban-circle
-                              span Annuler
+                              span  Annuler
       .col-sm-6
         .panel.panel-white
           .panel-heading
@@ -544,22 +545,22 @@ block content
                   i.fa.fa-cog
                 ul.dropdown-menu.dropdown-light.pull-right(role='menu')
                   li
-                    a.panel-collapse.collapses(href='#')
-                      i.fa.fa-angle-up
-                      span Collapse
+                    a.panel-collapse.expand(href='#')
+                      i.fa.fa-angle-down
+                      span Ouvrir
                   li
                     a.panel-refresh(href='#')
                       i.fa.fa-refresh
-                      span Refresh
-                  li
-                    a.panel-config(href='#panel-config', data-toggle='modal')
-                      i.fa.fa-wrench
-                      span Configurations
+                      span Actualiser
                   li
                     a.panel-expand(href='#')
                       i.fa.fa-expand
-                      span Fullscreen
-          .panel-body
+                      span Plein écran
+              //-
+                <a class="btn btn-xs btn-link panel-close" href="#">
+                <i class="fa fa-times"></i>
+                </a>
+          .panel-body.cacher
             form.fileupload#ecritures-envoyees(action='//jquery-file-upload.appspot.com/', method='POST', enctype='multipart/form-data')
               // The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload
               .row.fileupload-buttonbar
@@ -567,17 +568,17 @@ block content
                   // The fileinput-button span is used to style the file input field as button
                   span.btn.btn-success.fileinput-button(style='margin: 0 5px;')
                     i.glyphicon.glyphicon-plus
-                    span Ajouter des Fichiers ...
+                    span  Ajouter des fichiers
                     input(type='file', name='files[]', multiple='')
                   button.btn.btn-primary.start(type='submit' style='margin: 0 5px;')
                     i.glyphicon.glyphicon-upload
-                    span Envoyer
+                    span  Télécharger
                   button.btn.btn-warning.cancel(type='reset' style='margin: 0 5px;')
                     i.glyphicon.glyphicon-ban-circle
-                    span Annuler l'envoi
+                    span  Annuler
                   button.btn.btn-danger.delete(type='button' style='margin: 0 5px;')
                     i.glyphicon.glyphicon-trash
-                    span Supprimer
+                    span  Supprimer
                   // The loading indicator is shown during file processing
                   span.fileupload-loading
                 // The global progress information
@@ -616,12 +617,12 @@ block content
                           if (file.deleteUrl)
                             button.btn.btn-danger.delete(data-type='POST', data-url=file.deleteUrl)
                               i.glyphicon.glyphicon-trash
-                              span Supprimer
+                              span  Supprimer
                             input.toggle(type='checkbox', name='delete', value='1')
                           else
                             button.btn.btn-warning.cancel
                               i.glyphicon.glyphicon-ban-circle
-                              span Annuler
+                              span  Annuler
     .row
       .col-sm-6
         .panel.panel-white
@@ -635,9 +636,9 @@ block content
                     i.fa.fa-cog
                   ul.dropdown-menu.dropdown-light.pull-right(role='menu')
                     li
-                      a.panel-collapse.collapses(href='#')
-                        i.fa.fa-angle-up
-                        span Collapse
+                      a.panel-collapse.expand(href='#')
+                        i.fa.fa-angle-down
+                        span Ouvrir
                     li
                       a.panel-refresh(href='#')
                         i.fa.fa-refresh
@@ -650,7 +651,7 @@ block content
                       a.panel-expand(href='#')
                         i.fa.fa-expand
                         span Fullscreen
-            .panel-body
+            .panel-body.cacher
               form.fileupload#courriers-divers(action='//jquery-file-upload.appspot.com/', method='POST', enctype='multipart/form-data')
                 // The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload
                 .row.fileupload-buttonbar
@@ -658,17 +659,17 @@ block content
                     // The fileinput-button span is used to style the file input field as button
                     span.btn.btn-success.fileinput-button(style='margin: 0 5px;')
                       i.glyphicon.glyphicon-plus
-                      span Ajouter des Fichiers ...
+                      span  Ajouter des fichiers
                       input(type='file', name='files[]', multiple='')
                     button.btn.btn-primary.start(type='submit' style='margin: 0 5px;')
                       i.glyphicon.glyphicon-upload
-                      span Envoyer
+                      span  Télécharger
                     button.btn.btn-warning.cancel(type='reset' style='margin: 0 5px;')
                       i.glyphicon.glyphicon-ban-circle
-                      span Annuler l'envoi
+                      span  Annuler
                     button.btn.btn-danger.delete(type='button' style='margin: 0 5px;')
                       i.glyphicon.glyphicon-trash
-                      span Supprimer
+                      span  Supprimer
                     // The loading indicator is shown during file processing
                     span.fileupload-loading
                   // The global progress information
@@ -707,12 +708,12 @@ block content
                             if (file.deleteUrl)
                               button.btn.btn-danger.delete(data-type='POST', data-url=file.deleteUrl)
                                 i.glyphicon.glyphicon-trash
-                                span Supprimer
+                                span  Supprimer
                               input.toggle(type='checkbox', name='delete', value='1')
                             else
                               button.btn.btn-warning.cancel
                                 i.glyphicon.glyphicon-ban-circle
-                                span Annuler
+                                span  Annuler
   .hidden
     #infoPour
       .noteWrap.col-md-10.col-md-offset-1
@@ -723,81 +724,87 @@ block content
           br
         if (dossier.pour && dossier.pour.p_type == 'pp')
           table.table.table-condensed.table-hover
+            thead
+              th.col-md-2.hidden-xs
+              th.col-md-10.hidden-xs
             tbody
               tr
                 td.text-noir Prénom
-                td.text-right
+                td.text-left
                   | #{dossier.pour.pp.p_prenom}
               tr
                 td.text-noir Nom
-                td.text-right
+                td.text-left
                   | #{dossier.pour.pp.p_nom}
               tr
                 td.text-noir Profession
-                td.text-right
+                td.text-left
                   | #{dossier.pour.pp.p_profession}
               tr
                 td.text-noir Nationalité
-                td.text-right
+                td.text-left
                   | #{dossier.pour.pp.p_nationalite}
               tr
                 td.text-noir Date de Naissance
-                td.text-right
+                td.text-left
                   | #{moment(dossier.pour.pp.p_dob).format('DD-MM-YYYY')}
               tr
                 td.text-noir Lieu de Naissance
-                td.text-right
+                td.text-left
                   | #{dossier.pour.pp.p_pob}
               tr
                 td.text-noir Domicile
-                td.text-right
+                td.text-left
                   | #{dossier.pour.pp.p_domicile}
               tr
                 td.text-noir Téléphone
-                td.text-right
+                td.text-left
                   | #{dossier.pour.pp.pp_tel}
               tr
                 td.text-noir Email
-                td.text-right
+                td.text-left
                   | #{dossier.pour.pp.pp_email}
         if (dossier.pour && dossier.pour.p_type == 'pm')
           table.table.table-condensed.table-hover
+            thead
+              th.col-md-2.hidden-xs
+              th.col-md-10.hidden-xs
             tbody
               tr
                 td.text-noir Dénomination
-                td.text-right
+                td.text-left
                   | #{dossier.pour.pm.p_denomination}
               tr
                 td.text-noir Forme Sociale
-                td.text-right
+                td.text-left
                   | #{dossier.pour.pm.p_rs}
               tr
                 td.text-noir CAPITAL (F CFA)
-                td.text-right
+                td.text-left
                   | #{dossier.pour.pm.p_capital}
               tr
                 td.text-noir Siège Social
-                td.text-right
+                td.text-left
                   | #{dossier.pour.pm.p_siege}
               tr
                 td.text-noir RCCM
-                td.text-right
+                td.text-left
                   | #{dossier.pour.pm.p_rccm}
               tr
                 td.text-noir NIF
-                td.text-right
+                td.text-left
                   | #{dossier.pour.pm.p_nif}
               tr
                 td.text-noir Représentant
-                td.text-right
+                td.text-left
                   | #{dossier.pour.pm.p_representant}
               tr
                 td.text-noir Téléphone
-                td.text-right
+                td.text-left
                   | #{dossier.pour.pm.pm_tel}
               tr
                 td.text-noir Email
-                td.text-right
+                td.text-left
                   | #{dossier.pour.pm.pm_email}
 
 
@@ -810,81 +817,87 @@ block content
           br
         if (dossier.contre && dossier.contre.c_type == 'pp')
           table.table.table-condensed.table-hover
+            thead
+              th.col-md-2.hidden-xs
+              th.col-md-10.hidden-xs
             tbody
               tr
                 td.text-noir Prénom
-                td.text-right
+                td.text-left
                   | #{dossier.contre.pp.c_prenom}
               tr
                 td.text-noir Nom
-                td.text-right
+                td.text-left
                   | #{dossier.contre.pp.c_nom}
               tr
                 td.text-noir Profession
-                td.text-right
+                td.text-left
                   | #{dossier.contre.pp.c_profession}
               tr
                 td.text-noir Nationalité
-                td.text-right
+                td.text-left
                   | #{dossier.contre.pp.c_nationalite}
               tr
                 td.text-noir Date de Naissance
-                td.text-right
+                td.text-left
                   | #{dossier.contre.pp.c_dob}
               tr
                 td.text-noir Lieu de Naissance
-                td.text-right
+                td.text-left
                   | #{dossier.contre.pp.c_pob}
               tr
                 td.text-noir Domicile
-                td.text-right
+                td.text-left
                   | #{dossier.contre.pp.c_domicile}
               tr
                 td.text-noir Téléphone
-                td.text-right
+                td.text-left
                   | #{dossier.contre.pp.cp_tel}
               tr
                 td.text-noir Email
-                td.text-right
+                td.text-left
                   | #{dossier.contre.pp.cp_email}
         if (dossier.contre && dossier.contre.c_type == 'pm')
           table.table.table-condensed.table-hover
+            thead
+              th.col-md-2.hidden-xs
+              th.col-md-10.hidden-xs
             tbody
               tr
                 td.text-noir Dénomination
-                td.text-right
+                td.text-left
                   | #{dossier.contre.pm.c_denomination}
               tr
                 td.text-noir Forme Sociale
-                td.text-right
+                td.text-left
                   | #{dossier.contre.pm.c_rs}
               tr
                 td.text-noir CAPITAL (F CFA)
-                td.text-right
+                td.text-left
                   | #{dossier.contre.pm.c_capital}
               tr
                 td.text-noir Siège Social
-                td.text-right
+                td.text-left
                   | #{dossier.contre.pm.c_siege}
               tr
                 td.text-noir RCCM
-                td.text-right
+                td.text-left
                   | #{dossier.contre.pm.c_rccm}
               tr
                 td.text-noir NIF
-                td.text-right
+                td.text-left
                   | #{dossier.contre.pm.c_nif}
               tr
                 td.text-noir Représentant
-                td.text-right
+                td.text-left
                   | #{dossier.contre.pm.c_representant}
               tr
                 td.text-noir Téléphone
-                td.text-right
+                td.text-left
                   | #{dossier.contre.pm.cm_tel}
               tr
                 td.text-noir Email
-                td.text-right
+                td.text-left
                   | #{dossier.contre.pm.cm_email}
     #calendrierMiseEtat
       .noteWrap.col-md-10.col-md-offset-1
@@ -899,9 +912,8 @@ block content
               #mee
               .row
                 .col-md-offset-8.col-md-2.text-center
-                  if(instruction && (!instruction.decision || instruction.decision == "" && instruction.decision == "undefined"))
-                    a#save_mise_en_etat.btn.btn-green
-                      | Sauvegarder
+                  a#save_mise_en_etat.btn.btn-green
+                    | Sauvegarder
                 .col-md-offset-1.col-md-1.text-center
                   a#mee_btn.btn.btn-blue(onclick='mise_en_etat("mee");')
                     span.fa.fa-plus
@@ -919,9 +931,8 @@ block content
               #dil
               .row
                 .col-md-offset-8.col-md-2.text-center
-                  if(instruction && (!instruction.decision || instruction.decision == "" && instruction.decision == "undefined"))
-                    a#save_diligence.btn.btn-green
-                      | Sauvegarder
+                  a#save_diligence.btn.btn-green
+                    | Sauvegarder
                 .col-md-offset-1.col-md-1.text-center
                   a#dil_btn.btn.btn-blue(onclick='mise_en_etat("dil");')
                     span.fa.fa-plus
@@ -963,7 +974,7 @@ append jscripts
     {% if (!o.files.error && !i && !o.options.autoUpload) { %}
     <button class="btn btn-primary start">
     <i class="glyphicon glyphicon-upload"></i>
-    <span> Envoyer</span>
+    <span> Télécharger</span>
     </button>
     {% } %}
     {% if (!i) { %}

@@ -143,12 +143,7 @@ exports.dossier_create_get = function (req, res, next) {
 // Handle Dossier create on POST.
 exports.dossier_create_post = [
 
-    // Validate that the name field is not empty.
-    //body('dossiername', 'Dossier name required').isLength({ min: 1 }).trim(),
-    //body('dossiercode', 'Dossier code required').isLength({ min: 1 }).trim(),
-
-
-    // Process request after validation and sanitization.
+  // Process request after validation and sanitization.
   (req, res, next) => {
 
     // Extract the validation errors from a request.
@@ -311,38 +306,26 @@ exports.dossier_create_post = [
       dossier.contre = contre;
 
       async.parallel([
-                  function (callback) {
-            setTimeout(function () {
-              pour.save(function (err) {
-                if (err) {
-                  return next(err);
-                }
-              });
-              callback(null);
-            }, 1000);
-                  },
-                  function (callback) {
-            setTimeout(function () {
-              contre.save(function (err) {
-                if (err) {
-                  return next(err);
-                }
-              });
-              callback(null);
-            }, 2000);
-                  }
-              ],
+        function (callback) {
+          pour.save(function (err) {
+            if (err) { return next(err); }
+          });
+          callback(null);
+        },
+        function (callback) {
+          contre.save(function (err) {
+            if (err) { return next(err); }
+          });
+          callback(null);
+            
+        } ],
         // optional callback
         function (err) {
-          if (err) {
-            return next(err);
-          }
+          if (err) { return next(err); }
           dossier.hookEnabled = true;
           
           dossier.save(function (err) {
-            if (err) {
-              return next(err);
-            }
+            if (err) { return next(err); }
             res.redirect('/dossiers');
           });
         });

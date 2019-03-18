@@ -7,6 +7,8 @@ block content
         li
           a(href='index.php')
             | Accueil
+        li
+            | Dossier
         li.active
           | Nouveau dossier
   // end: BREADCRUMB
@@ -139,6 +141,15 @@ block content
                 .col-sm-8
                   span.input-icon
                     input.form-control(type='text', placeholder='Lieu de naissance', name='p_pob')
+                    i.fa.fa-home
+              .form-group
+                label.col-sm-3.control-label
+                  | Nationalité 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control(type='text', placeholder='Nationalité', name='p_nationalite')
                     i.fa.fa-home
               .form-group
                 label.col-sm-3.control-label
@@ -393,6 +404,15 @@ block content
                     i.fa.fa-home
               .form-group
                 label.col-sm-3.control-label
+                  | Nationalité 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control(type='text', placeholder='Nationalité', name='c_nationalite')
+                    i.fa.fa-home
+              .form-group
+                label.col-sm-3.control-label
                   | Profession 
                   span.symbol.required
                   |  :
@@ -565,14 +585,9 @@ block content
         .panel.panel-white
           .panel-body
             .row
-              .col-md-12
-                div
+              .col-md-9
                   span.symbol.required
                   | Ces champs sont obligatoires.
-                  hr
-            .row
-              .col-md-9
-                p
               .col-md-2
                 button.btn.btn-green.btn-block(type='submit')
                   | Enregistrer 

@@ -1,15 +1,5 @@
 jQuery(document).ready(function () {
   
-  
-  //Instance
-/*  var instance = 3;
-  $("#plus_instance").click(function () {
-    $("#sec_instance").append('<div class="row"><div class="col-md-1"><label class="col-sm-2 control-label text-bold">Du</label> </div><div class="col-md-2"><span class="input-icon"><input name="du_instance_' + instance + '" type="text" data-date-format="dd-mm-yyyy" data-date-viewmode="years" class="form-control date-picker" placeholder="Saisir une date"><i class="fa fa-calendar"></i></span> </div><div class="col-md-1"><label class="col-sm-2 control-label">au</label> </div><div class="col-md-2"><span class="input-icon"><input name="au_instance_' + instance + '" type="text"data-date-format="dd-mm-yyyy" data-date-viewmode="years" class="form-control date-picker" placeholder="Saisir une date"><i class="fa fa-calendar"></i></span> </div><div class="col-md-1 text-bold"><label class="col-sm-2 control-label" for="form-field-24">à</label> </div><div class="col-md-1"><span class="input-icon"><input maxlength="2" name="heure_instance_' + instance + '" type="text" class="form-control popovers" data-original-title="" data-content="Heure" data-placement="top" data-trigger="hover" onkeyup="this.value=this.value.replace(/\D/g,\'\')"><i class="fa fa-clock-o"></i></span></div><div class="col-md-4"><textarea name="texte_instance_' + instance + '" placeholder="Texte" class=" form-control"></textarea></div></div><br>');
-    instance++;
-  });*/
-
-  
-
   $("#renvoi_instance").click(function () {
     motif = $("#motif_instance").val();
     date = $("#date_instance").val();
@@ -107,7 +97,7 @@ jQuery(document).ready(function () {
     }
   });
   
-  
+  $(".cacher").hide();
   
 });
 
