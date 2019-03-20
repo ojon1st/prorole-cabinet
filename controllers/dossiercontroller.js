@@ -43,6 +43,7 @@ exports.dossier_list = function (req, res, next) {
         .populate('pour')
         .populate('contre')
         .populate('utilisateur')
+        .sort({ _id: 1 })
         .exec(callback);
     },
     

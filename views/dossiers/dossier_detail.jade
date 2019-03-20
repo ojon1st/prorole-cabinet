@@ -250,17 +250,17 @@ block content
                             span.fa.fa-check
                 .form-group
                   label.col-sm-3.control-label
-                    | Décision :
+                    | Délibéré :
                   .col-sm-8
                     if (instruction && instruction.decision)
-                      textarea.form-control(name='decision', placeholder='Décision', cols='30', rows='10' readonly)
+                      textarea.form-control(name='decision', placeholder='Délibéré', cols='30', rows='10' readonly)
                         | #{instruction.decision}
                     else
-                      textarea.form-control(name='decision', placeholder='Décision', cols='30', rows='10')
+                      textarea.form-control(name='decision', placeholder='Délibéré', cols='30', rows='10')
                 .form-group
                   .col-sm-offset-8.col-sm-3.text-center
                     if (instruction)
-                      input.btn.btn-dark-azure(type='button', onclick='save_decision("#{dossier._id}","#{instruction._id}")' , value='Sauvegarder')
+                      input.btn.btn-dark-azure(type='button', onclick='save_decision("#{dossier._id}","#{instruction._id}")' , value='Sauvegarde d Délibéré')
     .row
       .col-sm-6
         .panel.panel-white
