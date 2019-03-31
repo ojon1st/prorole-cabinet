@@ -5,14 +5,15 @@ nav#pageslide-left.pageslide.inner.hidden-md.hidden-lg
     .main-navigation.left-wrapper.transition-left
       .navigation-toggler.hidden-sm.hidden-xs
         a.sb-toggle-left(href='#main-navbar')
-      .user-profile.border-top.padding-horizontal-10.block
-        .inline-block
-          img(src='/assets/images/avatar-1.jpg', alt='')
-        .inline-block
-          h5.no-margin  Bienvenue 
-          h4.no-margin  Richard Elad 
-          a.btn.user-options.sb_toggle
-            i.fa.fa-cog
+      if(utilisateur)
+        .user-profile.border-top.padding-horizontal-10.block
+          .inline-block
+            img(src='#{utilisateur.avatar}', width='auto', height='auto' alt='')
+          .inline-block
+            h5.no-margin  Bienvenue 
+            h4.no-margin  #{utilisateur.prenom} #{utilisateur.nom}
+            a.btn.user-options.sb_toggle
+              i.fa.fa-cog
       // start: MAIN NAVIGATION MENU
       ul.main-navigation-menu
       // end: MAIN NAVIGATION MENU
@@ -24,6 +25,6 @@ nav#pageslide-left.pageslide.inner.hidden-md.hidden-lg
         i.fa.fa-dot-circle-o.text-green
         span Connecté
     .col-xs-6.text-right.no-padding
-      a.btn.btn-sm.log-out.text-right(href='login_login.php')
+      a.btn.btn-sm.log-out.text-right(href='/logout')
         i.fa.fa-power-off
-        |  Deonnecté
+        |  Se Deconnecter

@@ -2,6 +2,8 @@ header.topbar.navbar.navbar-inverse.navbar-fixed-top.inner
   // start: TOPBAR CONTAINER
   .container
     .navbar-header
+      if (message)
+        | #{message}
       a.sb-toggle-left.hidden-md.hidden-lg(href='#main-navbar')
         i.fa.fa-bars
       // start: LOGO
@@ -22,14 +24,8 @@ header.topbar.navbar.navbar-inverse.navbar-fixed-top.inner
               a(href='/')
                 | Mon profil
             li
-              a(href='pages_calendar.php')
+              a(href='/agendas/agenda')
                 | Mon agenda
-            li
-              a(href='pages_messages.php')
-                | Mes Messages (3)
-            li
-              a(href='login_lock_screen.php')
-                | Verrouiler l'écran
             li
               a(href='/logout')
                 | Deconnecter

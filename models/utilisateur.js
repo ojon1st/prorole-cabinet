@@ -9,7 +9,7 @@ var SALT_WORK_FACTOR = 10;
 var Schema = mongoose.Schema;
 
 var UtilisateurSchema = new Schema({
-  pseudo:{type: String},
+  pseudo:{type: String, unique:true},
   nom:{type: String},
   prenom:{type: String},
   profil:{type: Schema.ObjectId, ref: 'Profil'},

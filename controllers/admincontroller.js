@@ -84,36 +84,56 @@ exports.utilisateur_create = [
     
     // Extract the validation errors from a request.
     const errors = validationResult(req);
-    //console.log(req.body);
     
-    // Create a genre object with escaped and trimmed data.
-    var utilisateur = new Utilisateur({
-      pseudo:req.body.u_pseudo,
-      nom:req.body.u_nom,
-      prenom:req.body.u_prenom,
-      profil:req.body.u_profil,
-      telephone:req.body.u_telephone,
-      email:req.body.u_email,
-      taux_horaire:req.body.u_taux_horaire,
-      retro_commission:req.body.u_retro_commission,
-      pswd:req.body.u_pwd
-    });
-    
-    if (!req.body.u_pwd === req.body.u_pwd2) {
-            return res.send({type_of_response: 'echec', msg:'Veuillez confirmer le mot de passe' });
+    Utilisateur.findOne({ $or:[ {'pseudo':req.body.u_pseudo},{'telephone':req.body.u_telephone}, {'email':req.body.u_email}]}, 'telephone email pseudo' ,
+      function(err, exist_user){
+        if (err) return next(err);
+        if(exist_user && exist_user.pseudo == req.body.u_pseudo) {
+          res.send({type_of_response: 'echec', msg:'L\'identifiant saisi existe déjà! Veuillez utiliser un autre identifiant!' });
+          res.end;
         }
-    if (!errors.isEmpty()) {
-      // There are errors. Render the form again with sanitized values/error messages.
-      res.render('administrateur/personnel_list', { title: 'Table des Utilisateurs', errors: errors.array() });
-      return;
-    } else {
-      
-      utilisateur.save(function (err) {
-          if (err) { return next(err); }
-          // Successful - redirect to new author record.
-          res.redirect('/administrateur/utilisateurs');
+        if(exist_user && exist_user.email == req.body.u_email && exist_user.telephone == req.body.u_telephone) {
+          res.send({type_of_response: 'echec', msg:'Veuillez changer de numéro de Téléphone et d\'adresse Email!' });
+          res.end;
+        }
+        if(exist_user && exist_user.telephone == req.body.u_telephone) {
+          res.send({type_of_response: 'echec', msg:'Le Numéro de Téléphone existe déjà! Veuillez changer de numéro de Téléphone!' });
+          res.end;
+        }
+        if(exist_user && exist_user.email == req.body.u_email) {
+          res.send({type_of_response: 'echec', msg:'L\'Email existe déjà! Veuillez changer d\'adresse Email!' });
+          res.end;
+        }
+
+        if(!exist_user){// Create a genre object with escaped and trimmed data.
+        var utilisateur = new Utilisateur({
+          pseudo:req.body.u_pseudo,
+          nom:req.body.u_nom,
+          prenom:req.body.u_prenom,
+          profil:req.body.u_profil,
+          telephone:req.body.u_telephone,
+          email:req.body.u_email,
+          pswd:req.body.u_pwd
+        });
+
+        if (!req.body.u_pwd === req.body.u_pwd2) {
+                return res.send({type_of_response: 'echec', msg:'Veuillez confirmer le mot de passe' });
+            }
+        if (!errors.isEmpty()) {
+          // There are errors. Render the form again with sanitized values/error messages.
+          res.render('administrateur/personnel_list', { title: 'Table des Utilisateurs', errors: errors.array() });
+          return;
+        } else {
+
+          utilisateur.save(function (err) {
+              if (err) { return next(err); }
+              // Successful - redirect to new author record.
+              res.redirect('/administrateur/utilisateurs');
+          });
+        }}
       });
-    }
+    
+    
   }
 ];
 

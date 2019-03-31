@@ -428,7 +428,7 @@
                     |  :
                   .col-sm-8
                     span.input-icon
-                      input#nom.form-control(type='text', name='u_nom', placeholder="Nom de l'utilsateur")
+                      input#nom.form-control(type='text', name='u_nom', placeholder="Nom de l'utilsateur" required)
                       i.fa.fa-user
                 .form-group
                   label.col-sm-3.control-label(for='')
@@ -437,7 +437,7 @@
                     |  :
                   .col-sm-8
                     span.input-icon
-                      input#prenom.form-control(type='text', name='u_prenom' , placeholder="Prenom de l'utilisateur")
+                      input#prenom.form-control(type='text', name='u_prenom' , placeholder="Prenom de l'utilisateur" required)
                       i.fa.fa-user
                 .form-group
                   label.col-sm-3.control-label(for='')
@@ -446,7 +446,7 @@
                     |  :
                   .col-sm-8
                     span.input-icon
-                      input#tel.form-control.input-mask-phone(type='text', name='u_telephone' , placeholder="Téléphone de l'utilisateur")
+                      input#tel.form-control.input-mask-phone(type='text', name='u_telephone' , placeholder="Téléphone de l'utilisateur" required)
                       i.fa.fa-phone
                 .form-group
                   label.col-sm-3.control-label(for='')
@@ -455,7 +455,7 @@
                     |  :
                   .col-sm-8
                     span.input-icon
-                      input#mail.form-control(type='text', name='u_email' , placeholder="email de l'utilisateur")
+                      input#mail.form-control(type='text', name='u_email' , placeholder="email de l'utilisateur" required)
                       i.fa.fa-envelope
               .col-sm-6
                 .form-group
@@ -465,7 +465,7 @@
                     |  :
                   .col-sm-8
                     span.input-icon
-                      input#login.form-control(type='text', name='u_pseudo' , placeholder="Identifiant de l'utilisateur")
+                      input#login.form-control(type='text', name='u_pseudo' , placeholder="Identifiant de l'utilisateur" required)
                       i.fa.fa-user
                 .form-group
                   label.col-sm-3.control-label(for='')
@@ -473,7 +473,7 @@
                     span.symbol.required
                     |  :
                   .col-sm-8
-                    select#profil.form-control.search-select(name='u_profil')
+                    select#profil.form-control.search-select(name='u_profil' required)
 
                 .form-group
                   label.col-sm-3.control-label(for='')
@@ -482,7 +482,7 @@
                     |  :
                   .col-sm-8
                     span.input-icon
-                      input#pass.form-control(type='text', name='u_pwd' , placeholder="Mot de passe de l'utilisateur")
+                      input#pass.form-control(type='text', name='u_pwd', minlength = 6 ,placeholder="Mot de passe de l'utilisateur" required)
                       i.fa.fa-lock
                 #groupConfirm.form-group
                   label.col-sm-3.control-label(for='')
@@ -491,31 +491,10 @@
                     |  :
                   .col-sm-8
                     span.input-icon
-                      input#confirmPass.form-control(type='text', name='u_pwd2' , placeholder="Confirmatin du mot de passe de l'utilisateur")
+                      input#confirmPass.form-control(type='text', name='u_pwd2' , placeholder="Confirmatin du mot de passe de l'utilisateur" required)
                       i.fa.fa-lock
             br
             br
-            //-.row
-              .col-sm-6
-                #groupConfirm.form-group
-                  label.col-sm-3.control-label(for='')
-                    | Taux horaire 
-                    span.symbol.required
-                    |  :
-                  .col-sm-8
-                    span.input-icon
-                      input#tauxHoraire.form-control(type='text', name='u_taux_horaire' , placeholder="Taux horaire de l'utilisateur")
-                      i.fa.fa-money
-              .col-sm-6
-                #groupConfirm.form-group
-                  label.col-sm-3.control-label(for='')
-                    | Rétro-commission 
-                    span.symbol.required
-                    |  :
-                  .col-sm-8
-                    span.input-icon
-                      input#retrocommission.form-control(type='text', name='u_retro_commission' , placeholder="Rétro-commission de l'utilisateur")
-                      i.fa.fa-money
             .row
               .col-md-12
                 div

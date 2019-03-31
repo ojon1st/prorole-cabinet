@@ -39,11 +39,12 @@ exports.dossier_list = function (req, res, next) {
   // Get all dossier for form
   async.parallel({
     dossiers: function (callback) {
-      Dossier.find()
+      Dossier.find({})
+        .select({ "_id": 1, "ref_d": 1, "pour":1, "contre":1})
         .populate('pour')
         .populate('contre')
         .populate('utilisateur')
-        .sort({ _id: 1 })
+        .sort({ _id: -1 })
         .exec(callback);
     },
     
@@ -51,7 +52,7 @@ exports.dossier_list = function (req, res, next) {
     if (err) {
       return next(err);
     }
-
+    console.log(results.dossiers)
     res.render('dossiers/dossier_list', {
       list_dossiers: results.dossiers
     });
@@ -85,31 +86,74 @@ exports.dossier_detail = function (req, res, next) {
     },
     juridictions: function (callback) {
       Juridiction.find()
+        .sort({nom:1})
         .exec(callback);
     },
     utilisateurs:function (callback) {
       Utilisateur.find()
         .exec(callback);
     },
-    last_instruction: function (callback){
-      Instruction.findOne({dossier:req.params.id})
+    instructions: function (callback){
+      Instruction.find({dossier:req.params.id})
+        .populate('juridiction')
         .sort({i_update: -1})
         .exec(callback);
     },
+    /*last_instruction_appel: function (callback){
+      Instruction.findOne({dossier:req.params.id})
+        .populate({path:'juridiction', match:{'division':'appel'}})
+        .sort({i_update: -1})
+        .exec(callback);
+    },
+    last_instruction_cour: function (callback){
+      Instruction.findOne({dossier:req.params.id})
+        .populate({path:'juridiction', match:{'division':'cour'}})
+        .sort({i_update: -1})
+        .exec(callback);
+    },*/
   }, function (err, results) { 
     if (err) {
       return next(err);
     }
+    
     if (results.dossier == null) { // No results.
       var err = new Error('Dossier not found');
       err.status = 404;
       return next(err);
     }
     
+    var j_instance = [];
+    var j_appel = [];
+    var j_cour = [];
+    
+    results.juridictions.forEach(function(j){
+      if(j.division == 'instance'){
+        j_instance.push(j);
+      }else if(j.division == 'appel'){
+        j_appel.push(j);
+      }else if(j.division == 'cour'){
+        j_cour.push(j);
+      }
+    })
+    
+    var i_instance = [];
+    var i_appel = [];
+    var i_cour = [];
+    
+    results.instructions.forEach(function(i){
+      if(i.juridiction.division == 'instance'){
+        i_instance.push(i);
+      }else if(i.juridiction.division == 'appel'){
+        i_appel.push(i);
+      }else if(i.juridiction.division == 'cour'){
+        i_cour.push(i);
+      }
+    })
+    
     // Successful, so render.
     res.render('dossiers/dossier_detail', {
       title: 'Gestionnaire de Dossier',
-      dossier: results.dossier, juridictions: results.juridictions, instruction:results.last_instruction, utilisateurs:results.utilisateurs
+      dossier: results.dossier, juridictions: results.juridictions, instructions:results.instructions, utilisateurs:results.utilisateurs, j_instance:j_instance, j_appel:j_appel, j_cour:j_cour, i_instance:i_instance, i_appel:i_appel, i_cour:i_cour
     });
   });
 
@@ -149,7 +193,22 @@ exports.dossier_create_post = [
 
     // Extract the validation errors from a request.
     const errors = validationResult(req);
-
+    /*if(req.body.titulaire == 'null'){
+      req.flash('Erreur','Veuillez saisir le Titulaire du dossier à créer')
+    }
+    if(req.body.p_type == ''){
+      req.flash('Erreur','Veuillez Choisir le Type de Client')
+    }else if(req.body.c_type == ''){
+      req.flash('Erreur','Veuillez Choisir le Type de la Partie Adverse')
+    }else if(req.body.p_type == 'pp' && (req.body.p_prenom || req.body.p_nom)){
+      req.flash('Erreur','Veuillez Saisir les Nom et Prénom(s) du Client')
+    }else if(req.body.p_type == 'pm' && (req.body.p_denomination)){
+      req.flash('Erreur','Veuillez Saisir la Dénomination du Client')
+    }else if(req.body.c_type == 'pp' && (req.body.c_prenom || req.body.c_nom)){
+      req.flash('Erreur','Veuillez Saisir les Nom et Prénom(s) de la Partie Adverse')
+    }else if(req.body.c_type == 'pm' && (req.body.c_denomination)){
+      req.flash('Erreur','Veuillez Saisir la Dénomination de la Partie Adverse')
+    }*/
     // Create a genre object with escaped and trimmed data.
     var dossier = new Dossier({
       titulaire: req.body.titulaire
@@ -172,7 +231,7 @@ exports.dossier_create_post = [
         pour.pp.p_nom = req.body.p_nom;
         pour.pp.p_profession = req.body.p_profession;
         pour.pp.p_nationalite = req.body.p_nationalite;
-        pour.pp.p_dob = moment(req.body.p_dob, "DD-MM-YYYY");
+        if(req.body.p_dob != '') pour.pp.p_dob = moment(req.body.p_dob, "DD-MM-YYYY");
         pour.pp.p_pob = req.body.p_pob;
         pour.pp.p_domicile = req.body.p_domicile;
         pour.pp.pp_tel = req.body.pp_tel.trim();
@@ -234,7 +293,7 @@ exports.dossier_create_post = [
         contre.pp.c_nom = req.body.c_nom;
         contre.pp.c_profession = req.body.c_profession;
         contre.pp.c_nationalite = req.body.c_nationalite;
-        contre.pp.c_dob = moment(req.body.c_dob, "DD-MM-YYYY");
+        if(req.body.c_dob != '') contre.pp.c_dob = moment(req.body.c_dob, "DD-MM-YYYY");
         contre.pp.c_pob = req.body.c_pob;
         contre.pp.c_domicile = req.body.c_domicile;
         contre.pp.cp_tel = req.body.cp_tel.trim();
@@ -328,6 +387,7 @@ exports.dossier_create_post = [
           dossier.save(function (err) {
             if (err) { return next(err); }
             res.redirect('/dossiers');
+            return;
           });
         });
     }

@@ -67,9 +67,8 @@ block content
                   th Référence
                   th Nom de parties
               tbody
-                - var i = 0
+                - var i = 1
                 each dossier in list_dossiers
-                  - i++
                   mixin tableau_dossiers
                     tr.go_to_dossier
                       td !{i}
@@ -90,6 +89,7 @@ block content
                     if(dossier.pour.p_type == 'pm' && dossier.contre.c_type == 'pm')
                       +tableau_dossiers
                         a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.pm.p_denomination} c/ #{dossier.contre.pm.c_denomination}
+                    - i++
 
 append jscripts
   // start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY

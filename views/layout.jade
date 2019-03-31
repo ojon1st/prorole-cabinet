@@ -66,11 +66,8 @@ html(lang='fr')
         // start: PAGE
         .main-content
           .container
-            //.alert.flash
-              button.close(type='button') ×
-              i.fa.sign
-              strong #{type}
-              span #{message}
+            if(flash)
+              - !{flash}
             block toolbar
               include toolbar
             block content

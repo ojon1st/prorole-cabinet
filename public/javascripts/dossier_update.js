@@ -109,46 +109,42 @@ $("select[name=juridiction]").focus(function () {
       /***************Juridiction************/
 function confirm_new_juridiction(selectObject, id_dossier) {
 
-  
   var new_juridiction = selectObject.options[selectObject.selectedIndex].text;
-  swal({
-      title: "Êtes-vous sûr(e)?",
-      text: "Vous êtes sur le point de changer de juridiction!",
-      type: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#DD6B55",
-      confirmButtonText: "Oui, le dossier change de juridiction",
-      closeOnConfirm: false
-    },
-    function (isConfirm) {
-      if (isConfirm) {
-        if($("input[name=decision]").text() != ""){
+  
+    if($("select[name=juridiction]").val() != ''){
+    swal({
+        title: "Êtes-vous sûr(e)?",
+        text: "Vous êtes sur le point de changer de juridiction!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Oui, le dossier change de juridiction",
+        closeOnConfirm: false
+      },
+      function (isConfirm) {
+        if (isConfirm) {
           create_instance(selectObject.value,id_dossier);
-          if (old_juridiction != ""){
-            swal("Changement de Juridiction!", "L'instruction passe de "+ old_juridiction + " à "+new_juridiction, "success");
-          } else{
-            swal("Nouvelle Juridiction!", "L'instruction débute à la juridiction "+new_juridiction, "success");
-          }
-        }else{
-          var msg = "L'instruction nécessite une décision pour être cloturée";
-          var title = "Nouvelle Instruction du dossier";
+        } else {
           $("select[name=juridiction]").val(previous);
-          show_notification('error', title, msg);
-          swal.close();
         }
-      } else {
-        $("select[name=juridiction]").val(previous);
-      }
-    });
+      });
+    }else{
+      $("select[name=juridiction]").val(previous);
+    }
 };
+
 
 function create_instance(id_juridiction, id_dossier) {
   var route_create_instance_dossier = '/dossiers/dossier/'+id_dossier+'/instruction/create';
   var data = {};
+  
   data.juridiction = id_juridiction;
-  /*data.dossier = id_dossier;
-  data.resume = $('textarea[name=resume]').val();
-  data.montant = $('input[name=montant]').val();*/
+  data.dossier = id_dossier;
+  if($('#id_instruction').val() != ''){
+    data.instruction = $('#id_instruction').val();
+  }
+  /* data.resume = $('textarea[name=resume]').val();
+  data.montant = $('input[name=montant]').val();  */
 
   $.ajax({
     type: 'POST',
@@ -156,36 +152,40 @@ function create_instance(id_juridiction, id_dossier) {
     contentType: 'application/json',
     url: route_create_instance_dossier,
     success: function (data) {
+      //var res = data;
+      if(data.type_of_response == 'success'){
+        if (data.creation == true){
+          swal(data.al_title, data.al_msg, "success");
+          setTimeout(location.reload(), 3000);
+        }else{
+          show_notification('error', data.al_title, data.al_msg)
+        }
+      }
       
-      var msg = "Nouvelle instruction créée au sein de "+JSON.stringify(data.nom_juridiction)+".";
-      var title = "Sauvegarde du dossier";
-      //id_new_instruction = JSON.stringify(data.instruction); A retire
-      show_notification(JSON.stringify(data.type_of_response), title, msg)
-      setTimeout(location.reload(), 3000);
-      return;
     }
   });
 };
 
       /****************Renvois***************/
-function get_renvoi_infos(id_dossier) {
+function get_renvoi_infos(id_dossier, division) {
   
-  var motif = $("#motif_ins").val();
-  var date = $("#date_ins").val();
+  var motif = $("#motif_ins_"+division).val();
+  var date = $("#date_ins_"+division).val();
   var juridiction_value = $("select[name=juridiction]").val();
+  
   if (motif == "" || date == "") {
     swal("La Date saisie ou le Motif est invalide!");
   } else if (juridiction_value == null || juridiction_value == "undefined" || juridiction_value == "") {
     swal("Veuillez choisir la juridiction du dossier en cours");
   } else {
     // save infos renvoi
-    create_renvoi(date, motif, id_dossier);
+    create_renvoi(date, motif, id_dossier, division);
    
   }
 
 };
 
-function create_renvoi(date_renvoi, motif_renvoi, id_dossier) {
+function create_renvoi(date_renvoi, motif_renvoi, id_dossier, division) {
   var route_create_renvoi_instance_dossier= '/dossiers/dossier/'+id_dossier+'/instruction/renvoi/create';
   var data = {};
   data.date_renvoi = date_renvoi;
@@ -197,16 +197,16 @@ function create_renvoi(date_renvoi, motif_renvoi, id_dossier) {
     contentType: 'application/json',
     url: route_create_renvoi_instance_dossier,
     success: function (data) {
-      $("#motif_ins").val('');
-      $("#date_ins").val('');
+      $("#motif_ins"+division).val('');
+      $("#date_ins"+division).val('');
       
-      if($("#bloc_renvoi_ins").is(":hidden")) {
-        $("#bloc_renvoi_ins").toggleClass('hidden');
+      if($("#bloc_renvoi_ins"+division).is(":hidden")) {
+        $("#bloc_renvoi_ins"+division).toggleClass('hidden');
       }
       
-      $("#liste_renvoi_ins").html('');
+      $("#liste_renvoi_ins"+division).html('');
       setTimeout(data.renvois_list.forEach(function(renvoi){
-        $("#liste_renvoi_ins").append('<div class="row"><div class="col-sm-offset-1 col-sm-9"><p>Renvoyé au ' + moment(renvoi.r_date).format("DD-MM-YYYY") + ' pour Motif: ' + renvoi.r_motif + '</p></div></div>');
+        $("#liste_renvoi_ins"+division).append('<div class="row"><div class="col-sm-offset-1 col-sm-9"><p>Renvoyé au ' + moment(renvoi.r_date).format("DD-MM-YYYY") + ' pour Motif: ' + renvoi.r_motif + '</p></div></div>');
       }), 1000);
       
       var msg = "Le dossier vient d'être renvoyé au "+JSON.stringify(data.date_last_renvoi)+".";

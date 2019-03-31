@@ -151,7 +151,7 @@ block content
               .form-group
                 label.control-label
                   | Mot de passe
-                input#m_password.form-control(type='password', placeholder='Mot de passe', name='password', value= '' )
+                input#m_password.form-control(type='text', placeholder='Mot de passe', name='password', value= '' )
             .col-md-4
               .form-group
                 label.control-label
@@ -166,7 +166,7 @@ block content
               .form-group
                 label.control-label
                   | Confirmation du mot de passe
-                input#m_password_again.form-control(type='password', placeholder='Confirmer votre mot de passe', name='password_again')
+                input#m_password_again.form-control(type='text', placeholder='Confirmer votre mot de passe', name='password_again')
             .col-md-4
               
               
@@ -213,7 +213,6 @@ block content
               th.hidden-xs Dilligences
               // <th class="hidden-xs center">Priortity</th>
               th Delais
-              th
           tbody
             - var i = 0
             each element in mes_dossiers
@@ -237,32 +236,6 @@ block content
                       | #{moment(element.instruction.diligence[element.instruction.diligence.length-1].d_fin).format('DD-MM-YYYY')}
                   td.center.hidden-xs
                     span.label.label-danger Critical
-                  td.center
-                    .visible-md.visible-lg.hidden-sm.hidden-xs
-                      a.btn.btn-light-blue.tooltips(href='#', data-placement='top', data-original-title='Edit')
-                        i.fa.fa-edit
-                      a.btn.btn-green.tooltips(href='#', data-placement='top', data-original-title='Share')
-                        i.fa.fa-share
-                      a.btn.btn-red.tooltips(href='#', data-placement='top', data-original-title='Remove')
-                        i.fa.fa-times.fa.fa-white
-                    .visible-xs.visible-sm.hidden-md.hidden-lg
-                      .btn-group
-                        a.btn.btn-green.dropdown-toggle.btn-sm(data-toggle='dropdown', href='#')
-                          i.fa.fa-cog
-                          span.caret
-                        ul.dropdown-menu.dropdown-dark.pull-right(role='menu')
-                          li(role='presentation')
-                            a(role='menuitem', tabindex='-1', href='#')
-                              i.fa.fa-edit
-                              |  Edit
-                          li(role='presentation')
-                            a(role='menuitem', tabindex='-1', href='#')
-                              i.fa.fa-share
-                              |  Share
-                          li(role='presentation')
-                            a(role='menuitem', tabindex='-1', href='#')
-                              i.fa.fa-times
-                              |  Remove
               if(element.dossier.pour && element.dossier.contre && element.dossier.pour.p_type == 'pp' && element.dossier.contre.c_type == 'pp')
                 +row_dossier
                   a(class='button' href='/dossiers/dossier/#{element.dossier.id}') #{element.dossier.pour.pp.p_prenom} #{element.dossier.pour.pp.p_nom} c/ #{element.dossier.contre.pp.c_prenom} #{element.dossier.contre.pp.c_nom}
