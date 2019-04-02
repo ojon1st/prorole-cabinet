@@ -189,7 +189,7 @@ block content
                   select.form-control.search-select(name='juridiction', disabled)
                     option(value=instruction.juridiction._id) #{instruction.juridiction.nom}
                 else
-                  select.form-control.search-select(name='juridiction', onchange='confirm_new_juridiction(this,"#{dossier.id.toString()}")')
+                  select.form-control.search-select(name='juridiction', onchange='confirm_new_juridiction(this,"#{dossier.id.toString()}", "#{division}")')
                     if (juridiction)
                       // rajouter dans les options la valeur sélectionnée
                       each j in juridiction
@@ -241,26 +241,26 @@ block content
               label.col-sm-3.control-label
                 | Délibéré :
               .col-sm-8
-                if (instruction && instruction.decision && instruction.decision != '')
+                if (instruction && instruction.decision && instruction.decision != '' && instruction.juridiction.division == division)
                   textarea.form-control(name='decision', placeholder='Délibéré', cols='30', rows='7' readonly)
                     | #{instruction.decision}
                 else
                   textarea.form-control(name='decision', placeholder='Délibéré', cols='30', rows='7')
             .form-group
-              .col-sm-offset-8.col-sm-3.text-center
-                if (instruction && (!instruction.decision || instruction.decision == ''))
+              .col-sm-offset-7.col-sm-3.text-center
+                if (instruction && (!instruction.decision || instruction.decision == '') && instruction.juridiction.division == division)
                   input.btn.btn-dark-azure(type='button', onclick='save_decision("#{dossier._id}","#{instruction._id}")' , value='Sauvegarde du Délibéré')
           .panel-body.buttons-widget
             .tabbable.tabs-below
               .tab-content
-                #myTab5_instance.tab-pane.fade(class = ((i_appel.length > 0) ? '' : 'in active'))
+                #myTab5_instance.tab-pane.fade(class = ((i_appel.length > 0 || i_cour.length >0) ? '' : 'in active'))
                   +tab_contenu(i_instance[0], j_instance, 'instance')
                 #myTab5_appel.tab-pane.fade(class = ((i_appel.length > 0 && i_cour.length == 0) ? 'in active' : ''))
                   +tab_contenu(i_appel[0], j_appel, 'appel')
                 #myTab5_cour.tab-pane.fade(class = (i_cour.length > 0 ? 'in active' : ''))
                   +tab_contenu(i_cour[0], j_cour, 'cour')
               ul#myTab5.nav.nav-tabs
-                li(class = ((i_appel.length > 0) ? '' : 'active'))
+                li(class = ((i_appel.length > 0 || i_cour.length >0) ? '' : 'active'))
                   a(href='#myTab5_instance', data-toggle='tab')
                     | Instance
                 li(class = ((i_appel.length > 0 && i_cour.length == 0) ? 'active' : ''))

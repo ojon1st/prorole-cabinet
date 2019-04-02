@@ -52,7 +52,7 @@ function empecher_modif() {
 
 function show_notification(shortCutFunction, title, msg) {
   //var shortCutFunction = "success";
-  var $timeOut = 3000;
+  var $timeOut = 5000;
   var $showEasing = "swing";
   var $hideEasing = "linear";
   var $showMethod = "fadeIn";
@@ -107,7 +107,7 @@ $("select[name=juridiction]").focus(function () {
 
 
       /***************Juridiction************/
-function confirm_new_juridiction(selectObject, id_dossier) {
+function confirm_new_juridiction(selectObject, id_dossier, division) {
 
   var new_juridiction = selectObject.options[selectObject.selectedIndex].text;
   
@@ -123,7 +123,7 @@ function confirm_new_juridiction(selectObject, id_dossier) {
       },
       function (isConfirm) {
         if (isConfirm) {
-          create_instance(selectObject.value,id_dossier);
+          create_instance(selectObject.value,id_dossier, division);
         } else {
           $("select[name=juridiction]").val(previous);
         }
@@ -134,12 +134,14 @@ function confirm_new_juridiction(selectObject, id_dossier) {
 };
 
 
-function create_instance(id_juridiction, id_dossier) {
+// instance = instruction
+function create_instance(id_juridiction, id_dossier, division) {
   var route_create_instance_dossier = '/dossiers/dossier/'+id_dossier+'/instruction/create';
   var data = {};
   
   data.juridiction = id_juridiction;
   data.dossier = id_dossier;
+  data.division = division
   if($('#id_instruction').val() != ''){
     data.instruction = $('#id_instruction').val();
   }
@@ -156,9 +158,10 @@ function create_instance(id_juridiction, id_dossier) {
       if(data.type_of_response == 'success'){
         if (data.creation == true){
           swal(data.al_title, data.al_msg, "success");
-          setTimeout(location.reload(), 3000);
+          setTimeout(location.reload(), 5000);
         }else{
           show_notification('error', data.al_title, data.al_msg)
+          setTimeout(location.reload(), 5000);
         }
       }
       

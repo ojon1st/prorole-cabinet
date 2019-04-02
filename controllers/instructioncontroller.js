@@ -49,23 +49,78 @@ exports.instruction_create_post = [
                     al_msg : 'Veuillez choisir une juridiction valide!'})
       }
     } else{ // Il s'agit d'une instruction à modifier : on vérifie si il n'y pas eu de renvois ou de décision
+      // Ou d'un changement de degré
       
-      Instruction.findById(req.body.instruction, function(err, the_instruction){
+      Instruction.findById(req.body.instruction)
+                  .populate('juridiction')
+                  .exec(function(err, the_instruction){
         if (err) return next(err);
         
-        if((!the_instruction.renvois || the_instruction.renvois.length == 0) && (!the_instruction.decision || the_instruction.decision != '')){ // On a ni renvoi ni décision: on permet un changement de juridiction
+        if(the_instruction.juridiction.division != req.body.division){ // il s'agit d'un changement de degré d'instruction
+          
+          
+          /*
+          
+          //on vérifie l'état de l'instruction actuelle
+          if((the_instruction.renvois && the_instruction.renvois.length > 0) || (the_instruction.decision && the_instruction.decision != '') ){ // Si il y a eu renvoi ou décision rendue
+            
+            
+          }else{//
+            //
+            
+            
+          }
+          
+          */
+          // on empêche de revenir à une juridiction inférieure
+          if( (the_instruction.juridiction.division == 'instance' && (req.body.division == 'appel' || req.body.division == 'cour')) || (the_instruction.juridiction.division == 'appel' && req.body.division == 'cour') ){
+            
+            // on vérifie si l'ancienne instruction est cloturée par une décision rendue
+            if( the_instruction.decision && the_instruction.decision != ''){
+              // on crée une nouvelle instruction dans la nouvelle juridiction et division
+              
+              var new_instruction = new Instruction({
+                dossier:req.body.dossier,
+                juridiction : req.body.juridiction
+              })
+
+              new_instruction.save(function(err){
+                if(err) return next(err)
+                res.send({type_of_response: 'success',creation: true,
+                          al_title: 'Nouvelle Juridiction!',
+                          al_msg : 'L\'instruction a été créée avec succès ...'})
+                return;
+              })
+            }else{ // Pas de décision : message d'erreur nécessite la clôture de l'ancien dossier
+              
+              res.send({type_of_response: 'success',creation: false,
+                      al_title: 'Changement de Juridiction!',
+                      al_msg : 'Veuillez d\'abord saisir la décision rendue en ' + the_instruction.juridiction.division + '!'})
+            }
+            
+            
+          }else{ // message d'erreur car juridiction inférieure
+            
+            res.send({type_of_response: 'success',creation: false,
+                      al_title: 'Changement de Juridiction!',
+                      al_msg : 'Le dossier ne peut plus passer en ' + req.body.division})
+          }
+          
+          
+        }else{ // On reste dans le meme degré d'intruction
+          // le front-end empeche de modifier l'instruction lorqu'un renvoi est dréé ou qu'une décision ets rendue
+          
+          // on peut autoriser la modification de l'intruction en cours direcetement
+          
           the_instruction.juridiction = req.body.juridiction;
-          the_instruction.save(function (err) {
-            if (err) {return next(err);}
-            res.send({type_of_response: 'success',creation: true,
-                    al_title: 'Changement de Juridiction!',
-                    al_msg : 'Vous venez de changer de juridiction pour ce dossier'})
-          })
-        }else{ // pas de création de l'instruction
-          res.send({type_of_response: 'success',creation: false,
-                    al_title: 'Changement de Juridiction!',
-                    al_msg : 'L\'instruction ne peut plus être modifiée à ce stade!'})
-        }  
+            the_instruction.save(function (err) {
+              if (err) {return next(err);}
+              res.send({type_of_response: 'success',creation: true,
+                      al_title: 'Changement de Juridiction!',
+                      al_msg : 'Vous venez de changer de juridiction pour ce dossier'})
+            })
+        }
+        
     })
     }
   }
