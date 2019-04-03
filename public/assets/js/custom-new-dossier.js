@@ -1,42 +1,35 @@
 jQuery(document).ready(function () {
 
-  //contenu du pour masque
-  $("#physique_pour").hide();
-  $("#morale_pour").hide();
-
+  
   //affichage de donnees client personne physique
   $("#btn_physique_pour").click(function () {
     $("#p_type").val("pp");
-    $("#type_pour").hide();
-    $("#physique_pour").show();
+    $("#type_pour").addClass("hidden");
+    $("#physique_pour").removeClass("hidden");
     $("#tiltle_pour").text("CLIENT - PHYSIQUE");
   });
 
   //affichage de donnees client personne morale
   $("#btn_morale_pour").click(function () {
     $("#p_type").val("pm");
-    $("#type_pour").hide();
-    $("#morale_pour").show();
+    $("#type_pour").addClass("hidden");
+    $("#morale_pour").removeClass("hidden");
     $("#tiltle_pour").text("CLIENT - MORALE");
   });
-
-  //contenu du pour masque
-  $("#physique_contre").hide();
-  $("#morale_contre").hide();
-
+  
   //affichage de donnees client personne physique
   $("#btn_physique_contre").click(function () {
     $("#c_type").val("pp");
-    $("#type_contre").hide();
-    $("#physique_contre").show();
+    $("#type_contre").addClass("hidden");
+    $("#physique_contre").removeClass("hidden");
     $("#tiltle_contre").text("PARTIE ADVERSE - PHYSIQUE");
   });
 
   //affichage de donnees client personne morale
   $("#btn_morale_contre").click(function () {
     $("#c_type").val("pm");
-    $("#type_contre").hide();
-    $("#morale_contre").show();
+    $("#type_contre").addClass("hidden");
+    $("#morale_contre").removeClass("hidden");
     $("#tiltle_contre").text("PARTIE ADVERSE - MORALE");
   });
 
@@ -50,9 +43,9 @@ jQuery(document).ready(function () {
     $("#autre_avocat").empty();
     $("#sec_pour_morale").empty();
     $("#autre_avocat_morale").empty();
-    $("#type_pour").show();
-    $("#morale_pour").hide();
-    $("#physique_pour").hide();
+    $("#type_pour").removeClass("hidden");
+    $("#morale_pour").addClass("hidden");
+    $("#physique_pour").addClass("hidden");
     $("#tiltle_pour").text("CLIENT(S)");
   });
 
@@ -66,9 +59,9 @@ jQuery(document).ready(function () {
     $("#autre_avocatAdverse").empty();
     $("#sec_contre_morale").empty();
     $("#autre_avocatAdverse_morale").empty();
-    $("#type_contre").show();
-    $("#morale_contre").hide();
-    $("#physique_contre").hide();
+    $("#type_contre").removeClass("hidden");
+    $("#morale_contre").addClass("hidden");
+    $("#physique_contre").addClass("hidden");
     $("#tiltle_contre").text("PARTIE(S) ADVERSE(S)");
   });
 
