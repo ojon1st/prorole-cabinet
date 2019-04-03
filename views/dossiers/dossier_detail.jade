@@ -186,30 +186,32 @@ block content
                 | Juriduction :
               .col-sm-8
                 if(instruction && instruction.renvois && instruction.renvois.length>0)
-                  select.form-control.search-select(name='juridiction', disabled)
-                    option(value=instruction.juridiction._id) #{instruction.juridiction.nom}
+                  .dropdown-wrapper
+                    select.form-control(name='juridiction', id='juridiction_#{division}', readonly)
+                      option(value=instruction.juridiction._id) #{instruction.juridiction.nom}
                 else
-                  select.form-control.search-select(name='juridiction', onchange='confirm_new_juridiction(this,"#{dossier.id.toString()}", "#{division}")')
+                  select.form-control.search-select(name='juridiction', id='juridiction_#{division}', onchange='confirm_new_juridiction(this,"#{dossier.id.toString()}", "#{division}")')
                     if (juridiction)
                       // rajouter dans les options la valeur sélectionnée
                       each j in juridiction
                         option(value=j._id, selected=((instruction && j._id == instruction.juridiction._id.toString()))) #{j.nom}
                       if (!instruction)
                         option(value=null selected = true)
-            .form-group
-              label.col-sm-3.control-label
-                | Calendrier d'instruction
-                br
-                |  ou de mise en état :
-              .col-sm-8(style='margin-top: 20px;')
-                a#renseigner_mide_en_etat.btn.btn-dark-purple.show-calendar(href='#calendrierMiseEtat' ) Voir / Renseigner
-            .form-group
-              label.col-sm-3.control-label
-                | Dilligences :
-              .col-sm-8
-                a#renseigner_diligence.btn.btn-dark-blue.show-calendar(href='#dilligence' ) Voir / Renseigner
+            if (!(instruction && instruction.decision && instruction.decision != '' && instruction.juridiction.division == division))
+              .form-group
+                label.col-sm-3.control-label
+                  | Calendrier d'instruction
+                  br
+                  |  ou de mise en état :
+                .col-sm-8(style='margin-top: 20px;')
+                  a#renseigner_mide_en_etat.btn.btn-dark-purple.show-calendar(href='#calendrierMiseEtat' ) Voir / Renseigner
+              .form-group
+                label.col-sm-3.control-label
+                  | Dilligences :
+                .col-sm-8
+                  a#renseigner_diligence.btn.btn-dark-blue.show-calendar(href='#dilligence' ) Voir / Renseigner
             
-            #bloc_renvoi_ins(class=(instruction && instruction.renvois.length>0) ? '' : 'hidden' )
+            div(id='bloc_renvoi_ins_#{division}' class=(instruction && instruction.renvois.length>0) ? '' : 'hidden' )
               h3 Renvois
               hr
               .form-group(id='liste_renvoi_ins_#{division}')
@@ -219,37 +221,40 @@ block content
                       .col-sm-offset-1.col-sm-9
                         p Renvoyé au #{moment(renvoi.r_date).format("DD-MM-YYYY")} pour Motif: #{renvoi.r_motif}
               hr
-            .form-group
-              label.col-sm-3.control-label
-                | Nouveau Renvoi :
-              .col-sm-8
-                .row
-                  .col-md-4(style='padding-right: 10px')
-                    span.input-icon
-                      input.form-control.date-picker(id='date_ins_#{division}' placeholder='Date', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years')
-                      br.hidden-lg.hidden-md.hidden-sm
-                      i.fa.fa-calendar
-                  .col-md-8(style='padding-left: 0px; padding-right: 0px;')
-                    .input-group
+            if (!(instruction && instruction.decision && instruction.decision != '' && instruction.juridiction.division == division))
+              .form-group
+                label.col-sm-3.control-label
+                  | Nouveau Renvoi :
+                .col-sm-8
+                  .row
+                    .col-md-4(style='padding-right: 10px')
                       span.input-icon
-                        input.form-control(id='motif_ins_#{division}', type='text', placeholder='Motif')
-                        i.fa.fa-quote-left
-                      if(instruction && (!instruction.decision || instruction.decision == ''))
-                        a.btn.input-group-addon.btn-dark-beige(onclick='get_renvoi_infos("#{dossier._id}", "#{division}")')
-                          span.fa.fa-check
-            .form-group
-              label.col-sm-3.control-label
-                | Délibéré :
-              .col-sm-8
-                if (instruction && instruction.decision && instruction.decision != '' && instruction.juridiction.division == division)
-                  textarea.form-control(name='decision', placeholder='Délibéré', cols='30', rows='7' readonly)
+                        input.form-control.date-picker(id='date_ins_#{division}' placeholder='Date', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years')
+                        br.hidden-lg.hidden-md.hidden-sm
+                        i.fa.fa-calendar
+                    .col-md-8(style='padding-left: 0px; padding-right: 0px;')
+                      .input-group
+                        span.input-icon
+                          input.form-control(id='motif_ins_#{division}', type='text', placeholder='Motif')
+                          i.fa.fa-quote-left
+                        if(instruction && (!instruction.decision || instruction.decision == ''))
+                          a.btn.input-group-addon.btn-dark-beige(onclick='get_renvoi_infos("#{dossier._id}", "#{division}")')
+                            span.fa.fa-check
+            if (instruction && instruction.decision && instruction.decision != '' && instruction.juridiction.division == division)
+              .form-group
+                .col-sm-12
+                  textarea.form-control(name='decision', id='decision_#{division}', placeholder='Délibéré', cols='30', rows='7' readonly)
                     | #{instruction.decision}
-                else
-                  textarea.form-control(name='decision', placeholder='Délibéré', cols='30', rows='7')
-            .form-group
-              .col-sm-offset-7.col-sm-3.text-center
-                if (instruction && (!instruction.decision || instruction.decision == '') && instruction.juridiction.division == division)
-                  input.btn.btn-dark-azure(type='button', onclick='save_decision("#{dossier._id}","#{instruction._id}")' , value='Sauvegarde du Délibéré')
+            else
+              .form-group
+                label.col-sm-3.control-label
+                  | Délibéré :
+                .col-sm-9
+                  textarea.form-control(name='decision', id='decision_#{division}', placeholder='Délibéré', cols='30', rows='7')
+            if (instruction && (!instruction.decision || instruction.decision == '') && instruction.juridiction.division == division)
+              .form-group
+                .col-sm-offset-7.col-sm-3.text-center
+                  input.btn.btn-dark-azure(type='button', onclick='save_decision("#{dossier._id}","#{instruction._id}","#{division}")' , value='Sauvegarde du Délibéré')
           .panel-body.buttons-widget
             .tabbable.tabs-below
               .tab-content
@@ -268,7 +273,7 @@ block content
                     | Appel
                 li(class = (i_cour.length > 0 ? 'active' : ''))
                   a(href='#myTab5_cour', data-toggle='tab')
-                    | Cours
+                    | Cassation
 
             // end: PANLEL TABS
                 

@@ -25,3 +25,17 @@ input[readonly] {
 .text-upper{
   text-transform: uppercase;
 }
+
+div.dropdown-wrapper { 
+    /*width: auto; */ /* Sets the width of your dropdown */
+}
+
+div.dropdown-wrapper select { 
+    width:115% /* This hides the arrow icon */; 
+    background-color:transparent /* This hides the background */; 
+    background-image:none; 
+    -webkit-appearance: none /* Webkit Fix */; 
+    border:none; 
+    box-shadow:none; 
+    padding:0.3em 0.5em; 
+}

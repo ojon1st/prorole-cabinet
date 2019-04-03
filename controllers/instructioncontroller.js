@@ -133,12 +133,7 @@ exports.renvoi_create_post = [
     const errors = validationResult(req);
     async.parallel({
       theinstruction: function (callback) {
-        Instruction.findOne({
-            dossier: req.params.id
-          })
-          .sort({
-            i_update: -1
-          })
+        Instruction.findOne({ dossier: req.params.id, juridiction:req.body.juridiction })
           .exec(callback);
       },
 
@@ -146,7 +141,7 @@ exports.renvoi_create_post = [
       if (err) {
         return next(err);
       }
-
+      
       results.theinstruction.renvois.push({
         r_date: moment(req.body.date_renvoi, "DD-MM-YYYY"),
         r_motif: req.body.motif_renvoi
@@ -157,7 +152,7 @@ exports.renvoi_create_post = [
           return next(err);
         }
         res.send({
-          type_of_response: 'success',
+          type_of_response:'success',
           renvois_list: results.theinstruction.renvois,
           date_last_renvoi: date_last_renvoi
         });
