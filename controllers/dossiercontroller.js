@@ -52,7 +52,7 @@ exports.dossier_list = function (req, res, next) {
     if (err) {
       return next(err);
     }
-    console.log(results.dossiers)
+    
     res.render('dossiers/dossier_list', {
       list_dossiers: results.dossiers
     });
