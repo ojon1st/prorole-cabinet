@@ -171,20 +171,15 @@ exports.mise_en_etat_create_post = [
     const errors = validationResult(req);
     async.parallel({
       theinstruction: function (callback) {
-        Instruction.findOne({
-            dossier: req.params.id,
-            juridiction: req.params.id_ins
-          })
-          .sort({
-            i_update: -1
-          })
-          .exec(callback);
+        Instruction.findById(req.params.id_ins).populate('juridiction').exec(callback);
       },
     }, function (err, results) {
       if (err) {
         return next(err);
       }
-      if (results.theinstruction) {
+      if (!results.theinstruction || results.theinstruction.juridiction.division != req.params.juridiction){
+        res.send({type_of_response:'echec', al_title:'', al_msg:''})
+      }else {
         req.body.forEach(function (doc) {
           /*console.log(doc)
           return;*/
@@ -208,12 +203,7 @@ exports.mise_en_etat_create_post = [
           });
           return;
         });
-      } else {
-        res.send({
-          type_of_response: 'echec'
-        });
-        return;
-      }
+      } 
 
 
     });
@@ -228,20 +218,15 @@ exports.diligence_create_post = [
     const errors = validationResult(req);
     async.parallel({
       theinstruction: function (callback) {
-        Instruction.findOne({
-            dossier: req.params.id,
-            juridiction: req.params.id_ins
-          })
-          .sort({
-            i_update: -1
-          })
-          .exec(callback);
+        Instruction.findById(req.params.id_ins).populate('juridiction').exec(callback);
       },
     }, function (err, results) {
       if (err) {
         return next(err);
       }
-      if (results.theinstruction) {
+      if (!results.theinstruction || results.theinstruction.juridiction.division != req.params.juridiction){
+        res.send({type_of_response:'echec', al_title:'', al_msg:''})
+      }else {
         req.body.forEach(function (doc) {
 
           results.theinstruction.diligence.push({
@@ -261,13 +246,7 @@ exports.diligence_create_post = [
             type_of_response: 'success',
             dil_list: results.theinstruction.diligence
           });
-          return;
         });
-      } else {
-        res.send({
-          type_of_response: 'echec'
-        });
-        return;
       }
 
 

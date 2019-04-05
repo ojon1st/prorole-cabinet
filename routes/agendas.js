@@ -16,6 +16,8 @@ router.get('/diligences', agenda_controller.tableau_diligences_get);
 
 router.get('/diligences/get_events', agenda_controller.tableau_diligences_events_get);
 
+router.get('/carnet_adresses', agenda_controller.annuaire_get);
+
 // POST request for creating dossier.
 //router.post('/dossier/create', g_controller.dossier_create_post);
 

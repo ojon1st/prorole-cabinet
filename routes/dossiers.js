@@ -61,10 +61,10 @@ router.post('/dossier/:id/instruction/create', instruction_controller.instructio
 router.post('/dossier/:id/instruction/renvoi/create', instruction_controller.renvoi_create_post);
 
 // Créer un calendrier de mise en état
-router.post('/dossier/:id/instruction/:id_ins/mise_en_etat/add', instruction_controller.mise_en_etat_create_post);
+router.post('/dossier/:id/instruction/:id_ins/:juridiction/mise_en_etat/add', instruction_controller.mise_en_etat_create_post);
 
 // Créer un calendrier des diligences
-router.post('/dossier/:id/instruction/:id_ins/diligence/add', instruction_controller.diligence_create_post);
+router.post('/dossier/:id/instruction/:id_ins/:juridiction/diligence/add', instruction_controller.diligence_create_post);
 
 //Afficher un calendrier de mise en état
 router.post('/dossier/:id/instruction/:id_ins/mise_en_etat/get', instruction_controller.mise_en_etat_get);

@@ -3,12 +3,12 @@
 jQuery(document).ready(function () {
   
   $('#save_mise_en_etat').click(function() {
-    mise_en_etat_create_post($('#id_dossier').val());
+    //mise_en_etat_create_post($('#id_dossier').val());
     //alert( "Handler for .click() called." );
   });
   
   $('#save_diligence').click(function() {
-    diligence_create_post($('#id_dossier').val());
+    //diligence_create_post($('#id_dossier').val());
   });
   
   $('#renseigner_mide_en_etat').click(function() {
@@ -250,10 +250,10 @@ function create_renvoi(date_renvoi, motif_renvoi, id_dossier,juridiction, divisi
     
   }
   
-function mise_en_etat_create_post (id_dossier){
+function mise_en_etat_create_post (id_dossier,id_instruction, juridiction){
     
-  var tribunal_id = $("#juridiction_"+division).val();
-  if (mee == 0){
+  //var tribunal_id = $("#juridiction_"+division).val();
+  if (mee == 0 || id_instruction == '' || juridiction == ''){
     return;
   }
   var datas = [];
@@ -277,7 +277,7 @@ function mise_en_etat_create_post (id_dossier){
     datas.push(data);
   }
   
-  var la_route= '/dossiers/dossier/'+id_dossier+'/instruction/'+tribunal_id+'/mise_en_etat/add';
+  var la_route= '/dossiers/dossier/'+id_dossier+'/instruction/'+id_instruction+'/'+juridiction+'/mise_en_etat/add';
   
   $.ajax({
     type: 'POST',
@@ -319,9 +319,9 @@ function mise_etat_get(id_dossier, id_instruction){
 
       /**************** Diligences *****************/
 
-function diligence_create_post (id_dossier){
-  var tribunal_id = $("select[name=juridiction]").val();
-  if (dil == 0){
+function diligence_create_post (id_dossier,id_instruction, juridiction){
+  //var tribunal_id = $("select[name=juridiction]").val();
+  if (dil == 0 || id_instruction == '' || juridiction == ''){
     return;
   }
   
@@ -346,7 +346,7 @@ function diligence_create_post (id_dossier){
     datas.push(data);
   }
   
-  var la_route= '/dossiers/dossier/'+id_dossier+'/instruction/'+tribunal_id+'/diligence/add';
+  var la_route= '/dossiers/dossier/'+id_dossier+'/instruction/'+id_instruction+'/'+juridiction+'/diligence/add';
   
   $.ajax({
     type: 'POST',

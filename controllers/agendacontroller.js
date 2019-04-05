@@ -3,6 +3,7 @@ var Contre = require('../models/contre');
 var Dossier = require('../models/dossier');
 var Instruction = require('../models/instruction');
 var Juridiction = require('../models/juridiction');
+var Utilisateur = require('../models/utilisateur');
 
 var async = require('async');
 var moment = require('moment');
@@ -185,4 +186,52 @@ exports.tableau_diligences_events_get = function(req, res, next){
       
       res.send({events_doc:events_doc});
   });
+};
+
+
+exports.annuaire_get = function(req, res, next){
+  
+  async.parallel({
+    pours: function (callback) {
+        Pour.find({})
+          .exec(callback);
+      },
+    contres: function(callback){
+      Contre.find({})
+          .exec(callback);
+    },
+    utilisateurs: function(callback){
+      Utilisateur.find({})
+          .exec(callback);
+    }
+    
+    }, async function (err, results) {
+      if (err) { return next(err); }
+    
+    var carnet = [];
+    
+    results.pours.forEach(function(p){
+      //console.log(p)
+      if(p.p_type == 'pp'){
+        carnet.push({"prenom_nom":p.pp.p_prenom + ' ' + p.pp.p_nom, "email":p.pp.pp_email, "tel":p.pp.pp_tel});
+      }else if(p.p_type = 'pm'){
+        carnet.push({"prenom_nom":p.pm.p_denomination, "email":p.pm.pm_email, "tel":p.pm.pm_tel});
+      }
+    });
+    
+    results.contres.forEach(function(c){
+      if(c.c_type == 'pp'){
+        carnet.push({"prenom_nom":c.pp.c_prenom + ' ' + c.pp.c_nom, "email":c.pp.cp_email, "tel":c.pp.cp_tel});
+      }else if(c.c_type = 'pm'){
+        carnet.push({"prenom_nom":c.pm.c_denomination, "email":c.pm.cm_email, "tel":c.pm.cm_tel});
+      }
+    });
+    
+    results.utilisateurs.forEach(function(u){
+      //carnet.push(u);
+    })
+    
+    console.log(carnet)
+    res.render('agenda/annuaire',{carnet:carnet})
+  })
 };

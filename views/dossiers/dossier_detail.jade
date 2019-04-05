@@ -197,20 +197,19 @@ block content
                         option(value=j._id, selected=((instruction && j._id == instruction.juridiction._id.toString()))) #{j.nom}
                       if (!instruction)
                         option(value=null selected = true)
-            if (!(instruction && instruction.decision && instruction.decision != '' && instruction.juridiction.division == division))
+            if (instruction && (!instruction.decision || instruction.decision == '')) 
               .form-group
                 label.col-sm-3.control-label
                   | Calendrier d'instruction
                   br
                   |  ou de mise en état :
                 .col-sm-8(style='margin-top: 20px;')
-                  a#renseigner_mide_en_etat.btn.btn-dark-purple.show-calendar(href='#calendrierMiseEtat' ) Voir / Renseigner
+                  a#renseigner_mide_en_etat.btn.btn-dark-purple.show-calendar(href='#calendrierMiseEtat') Voir / Renseigner
               .form-group
                 label.col-sm-3.control-label
                   | Dilligences :
                 .col-sm-8
-                  a#renseigner_diligence.btn.btn-dark-blue.show-calendar(href='#dilligence' ) Voir / Renseigner
-            
+                  a#renseigner_diligence.btn.btn-dark-blue.show-calendar(href='#dilligence') Voir / Renseigner  
             div(id='bloc_renvoi_ins_#{division}' class=(instruction && instruction.renvois.length>0) ? '' : 'hidden' )
               h3 Renvois
               hr
@@ -250,7 +249,7 @@ block content
                 label.col-sm-3.control-label
                   | Délibéré :
                 .col-sm-9
-                  textarea.form-control(name='decision', id='decision_#{division}', placeholder='Délibéré', cols='30', rows='7')
+                  textarea.form-control(name='decision', id='decision_#{division}', placeholder='', cols='30', rows='7')
             if (instruction && (!instruction.decision || instruction.decision == '') && instruction.juridiction.division == division)
               .form-group
                 .col-sm-offset-7.col-sm-3.text-center
@@ -928,8 +927,17 @@ block content
               #mee
               .row
                 .col-md-offset-8.col-md-2.text-center
-                  a#save_mise_en_etat.btn.btn-green
-                    | Sauvegarder
+                  mixin bouton_save_mee(id_dossier, id_instruction, juridiction)
+                    a#save_mise_en_etat.btn.btn-green(onclick='mise_en_etat_create_post("#{id_dossier}", "#{id_instruction}", "#{juridiction}")')
+                      | Sauvegarder
+                  if (i_instance[0] && !i_appel[0] && !i_cour[0])
+                    +bouton_save_mee(dossier._id, i_instance[0]._id, 'instance')
+                  else if (i_appel[0] && !i_cour[0])
+                    +bouton_save_mee(dossier._id, i_appel[0]._id, 'appel')
+                  else if (i_cour[0])
+                    +bouton_save_mee(dossier._id, i_cour[0]._id, 'cour')
+                  else
+                    +bouton_save_mee(dossier._id, '', '')
                 .col-md-offset-1.col-md-1.text-center
                   a#mee_btn.btn.btn-blue(onclick='mise_en_etat("mee");')
                     span.fa.fa-plus
@@ -947,8 +955,17 @@ block content
               #dil
               .row
                 .col-md-offset-8.col-md-2.text-center
-                  a#save_diligence.btn.btn-green
-                    | Sauvegarder
+                  mixin bouton_save_dil(id_dossier, id_instruction, juridiction)
+                    a#save_diligence.btn.btn-green(onclick='diligence_create_post("#{id_dossier}", "#{id_instruction}", "#{juridiction}")')
+                      | Sauvegarder
+                  if (i_instance[0] && !i_appel[0] && !i_cour[0])
+                    +bouton_save_dil(dossier._id, i_instance[0]._id, 'instance')
+                  else if (i_appel[0] && !i_cour[0])
+                    +bouton_save_dil(dossier._id, i_appel[0]._id, 'appel')
+                  else if (i_cour[0])
+                    +bouton_save_dil(dossier._id, i_cour[0]._id, 'cour')
+                  else
+                    +bouton_save_dil(dossier._id, '')
                 .col-md-offset-1.col-md-1.text-center
                   a#dil_btn.btn.btn-blue(onclick='mise_en_etat("dil");')
                     span.fa.fa-plus
