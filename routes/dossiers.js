@@ -78,6 +78,9 @@ router.post('/dossier/:id/instruction/:id_instruction/is_decision', instruction_
 // Sauvegarger la décision
 router.post('/dossier/:id/instruction/:id_ins/decision/save', instruction_controller.decision_save)
 
+// Recuperation de dossiers sans date de renvoi
+router.get('/manques', instruction_controller.get_manques)
+
 
 
 module.exports = router;

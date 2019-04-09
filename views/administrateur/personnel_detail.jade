@@ -212,7 +212,7 @@ block content
               th Statut
               th.hidden-xs Dilligences
               // <th class="hidden-xs center">Priortity</th>
-              th Delais
+              //th Delais
           tbody
             - var i = 0
             each element in mes_dossiers
@@ -234,7 +234,7 @@ block content
                   td
                     if (element.instruction && element.instruction.diligence && element.instruction.diligence.length > 0)
                       | #{moment(element.instruction.diligence[element.instruction.diligence.length-1].d_fin).format('DD-MM-YYYY')}
-                  td.center.hidden-xs
+                  //td.center.hidden-xs
                     span.label.label-danger Critical
               if(element.dossier.pour && element.dossier.contre && element.dossier.pour.p_type == 'pp' && element.dossier.contre.c_type == 'pp')
                 +row_dossier
