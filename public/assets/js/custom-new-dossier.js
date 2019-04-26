@@ -183,6 +183,34 @@ jQuery(document).ready(function () {
     autreAvocatAdverseMorale++;
   });
 
-
+  function check_form(id_input,regex,msg_vide,erreur) {
+    valid = true;
+    if ($("#"+id_input).length === 0)
+      return false;
+    if($("#"+id_input).val() === "") {
+      $("#"+id_input).next(".form_error").css({"color":"#FF4F4F", "display":"inline-block", "padding:":"10px"}).fadeIn().text(msg_vide);
+      valid = false;
+    }
+    else if(!$("#"+id_input).val().match(regex)) {
+      valid = false;
+      $("#"+id_input).next(".form_error").css({"color":"#FF4F4F", "display":"inline-block", "padding:":"10px"}).fadeIn().text(erreur);
+    }
+    else
+      $("#"+id_input).next(".form_error").fadeOut();
+    return valid;
+} 
+    
+ 
+  $("#formDossier").submit(function(event) {
+    //var res = check_form("titulaire", /./ ,"Selectionner un titulaire", "");
+    var res = check_form("p_type", /./ ,"Selectionner choisir un type", "");
+    //res = check_form("nom_pour", /^[A-Za-z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ]{2,}/,"Champ vide", "au moins 2 caracteres, chiffres et lettres") && res;
+    //res = check_form("prenom_pour", /^[A-Za-z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ]{2,}/,"Champ vide", "au moins 2 caracteres, chiffres et lettres") && res;
+    //res = check_form("nom_contre", /^[A-Za-z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ]{2,}/,"Champ vide", "au moins 2 caracteres, chiffres et lettres") && res;
+    //res = check_form("prenom_contre", /^[A-Za-z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ]{2,}/,"Champ vide", "au moins 2 caracteres, chiffres et lettres") && res;
+    //res = check_form("denom_pour", /^[A-Za-z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ]{3,}/,"Champ vide", "au moins 2 caracteres, chiffres et lettres") && res;
+    //res = check_form("denom_contre", /^[A-Za-z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ]{3,}/,"Champ vide", "au moins 2 caracteres, chiffres et lettres") && res;
+    return res;
+  });
 
 });

@@ -13,7 +13,7 @@ header.topbar.navbar.navbar-inverse.navbar-fixed-top.inner
       // start: TOP NAVIGATION MENU
       ul.nav.navbar-right
         // start: USER DROPDOWN
-        li.dropdown.current-user
+        li.dropdown.current-user.hidden-xs
           a.dropdown-toggle(data-toggle='dropdown', data-hover='dropdown', data-close-others='true', href='#')
             if (utilisateur)
               img.img-circle(src='#{utilisateur.avatar}', width='30px', height='30px',alt='')
@@ -29,6 +29,11 @@ header.topbar.navbar.navbar-inverse.navbar-fixed-top.inner
             li
               a(href='/logout')
                 | Deconnecter
+        li.current-user.visible-xs(style='padding-top:10px;')
+          a(href='#')
+            if (utilisateur)
+              img.img-circle(src='#{utilisateur.avatar}', width='30px', height='30px',alt='')
+              span.username.hidden-xs #{utilisateur.prenom} #{utilisateur.nom}
         // end: USER DROPDOWN
         //- li.right-menu-toggle
           a.sb-toggle-right(href='#')

@@ -424,66 +424,8 @@ exports.get_manques = function(req, res, next){
         }
       });
       //console.log(dossiers_retards)
-
+      
       res.render('dossiers/dossier_sans_renvoi', { title:'Repertoire de dossiers manqués', list_dossiers: dossiers_retards});
-      /*var events_doc = [];
-      var juridictions_date_array = [];
-      results.instructions.forEach(function(instruction){ // Pour chaque instruction
-        //console.log(instruction)
-        if (instruction.renvois.length > 0){ // Si renvoi il y a
-          var nom_de_classe_tribunal = '';
-          var nom_de_classe_affaire = '';
-          instruction.renvois.forEach(function(renvoi){ // pour chaque renvoi
-            
-          if(events_retards.includes(renvoi._id.toString())){
-            nom_de_classe_tribunal = 'text-upper-retard';
-            nom_de_classe_affaire = 'event-bg-affaire-retard';
-            console.log('ok');
-          } else{
-            nom_de_classe_tribunal = 'text-upper';
-            nom_de_classe_affaire = 'event-bg-affaire';
-          }
-          if (!juridictions_date_array.includes(instruction.juridiction._id.toString()+ '_' +moment(renvoi.r_date).format('YYYY-MM-DD'))){ //on vérifie si la juridiction fait partie tu tableau des juridictions avant de l'ajouter comme nex event
-            var new_tribunal = { // On crée l'event Tribunal
-              title: instruction.juridiction.nom,
-              start: moment(renvoi.r_date).format('YYYY-MM-DD'),
-              viewableIn: ["basicWeek", "basicDay", "month"],
-              tribunalId: instruction.juridiction._id.toString(),
-              eventId:renvoi._id.toString(),
-              className: nom_de_classe_tribunal
-            }
-            events_doc.push(new_tribunal); // On ajoute l'event Tribunal
-            juridictions_date_array.push(instruction.juridiction._id.toString()+ '_' +moment(renvoi.r_date).format('YYYY-MM-DD')) // on ajoute le tribunal aux juridictions existantes
-          }
-          
-          var label_pour = '';
-          var label_contre = '';
-            if (instruction.dossier.pour.p_type == 'pp'){
-              label_pour = instruction.dossier.pour.pp.p_prenom+ ' ' +instruction.dossier.pour.pp.p_nom;
-            } else if (instruction.dossier.pour.p_type == 'pm'){
-              label_pour = instruction.dossier.pour.pm.p_denomination;
-            }
-            if (instruction.dossier.contre.c_type == 'pp'){
-              label_contre = instruction.dossier.contre.pp.c_prenom + ' '+instruction.dossier.contre.pp.c_nom;
-            } else if (instruction.dossier.contre.c_type == 'pm'){
-              label_contre = instruction.dossier.contre.pm.c_denomination;
-            }
-          var new_affaire = { // On ajoute l'event Affaire
-            title: label_pour + ' /c ' + label_contre + ' pour motif : ' + renvoi.r_motif,
-            start: moment(renvoi.r_date).format('YYYY-MM-DD'),
-            viewableIn: ["basicDay"],
-            url: '/dossiers/dossier/'+instruction.dossier._id.toString(),
-            tribunalId: instruction.juridiction._id.toString(),
-            eventId:renvoi._id.toString(),
-            className: nom_de_classe_affaire
-          }
-          //events_doc.push(new_tribunal);
-          events_doc.push(new_affaire);
-        });
-        }
-        
-      });
-      console.log(events_doc)
-      res.send({events_doc:events_doc});*/
+      
   });
 };

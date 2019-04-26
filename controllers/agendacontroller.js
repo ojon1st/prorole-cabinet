@@ -65,7 +65,7 @@ exports.renvois_events_get = function(req, res, next){
           if(events_retards.includes(renvoi._id.toString())){
             nom_de_classe_tribunal = 'text-upper-retard';
             nom_de_classe_affaire = 'event-bg-affaire-retard';
-            console.log('ok');
+            //console.log('ok');
           } else{
             nom_de_classe_tribunal = 'text-upper';
             nom_de_classe_affaire = 'event-bg-affaire';
@@ -95,22 +95,34 @@ exports.renvois_events_get = function(req, res, next){
             } else if (instruction.dossier.contre.c_type == 'pm'){
               label_contre = instruction.dossier.contre.pm.c_denomination;
             }
-          var new_affaire = { // On ajoute l'event Affaire
-            title: label_pour + ' /c ' + label_contre + ' pour motif : ' + renvoi.r_motif,
+          var new_affaire_hid = { // On ajoute l'event Affaire | Version desktop
+            title: label_pour + ' /c ' + label_contre,
             start: moment(renvoi.r_date).format('YYYY-MM-DD'),
             viewableIn: ["basicDay"],
             url: '/dossiers/dossier/'+instruction.dossier._id.toString(),
             tribunalId: instruction.juridiction._id.toString(),
             eventId:renvoi._id.toString(),
-            className: nom_de_classe_affaire
+            className: [ 'hidden-xs', nom_de_classe_affaire]
+          }
+
+          var new_affaire_vis = { // On ajoute l'event Affaire | version mobile
+            title: label_pour + ' /c ' + label_contre,
+            start: moment(renvoi.r_date).format('YYYY-MM-DD'),
+            end:  moment(renvoi.r_date).format('YYYY-MM-DD'),
+            content: renvoi.r_motif,
+            viewableIn: ["basicDay"],
+            tribunalId: instruction.juridiction._id.toString(),
+            eventId:renvoi._id.toString(),
+            className: [ 'visible-xs', 'show-calendar', nom_de_classe_affaire],
+            content: renvoi.r_motif
           }
           //events_doc.push(new_tribunal);
-          events_doc.push(new_affaire);
+          events_doc.push(new_affaire_hid,new_affaire_vis);
         });
         }
         
       });
-      console.log(events_doc)
+      //console.log(events_doc)
       res.send({events_doc:events_doc});
   });
 };

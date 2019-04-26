@@ -13,7 +13,7 @@ block content
           | Nouveau dossier
   // end: BREADCRUMB
   // start: PAGE CONTENT
-  form.form-horizontal(method='POST', action='')
+  form#formDossier.form-horizontal(method='POST', action='')
     .row
       .col-md-12
         .panel.panel-white
@@ -55,9 +55,11 @@ block content
                         option(value='null')
                         each utilisateur in utilisateurs
                           option(value=utilisateur._id) #{utilisateur.prenom} #{utilisateur.nom}
+                      span.form_error
                     else
                       select#titulaire.form-control(name='titulaire' readonly)
                         option(value='null') Veuillez créer des utilisateurs
+                      span.form_error
                         
     .row
       .col-md-6
@@ -97,6 +99,7 @@ block content
                 | Type de client 
                 span.symbol.required
                 |  :
+              span.form_error
               .text-center.col-md-4
                 a#btn_physique_pour.btn.btn-primary
                   | Personne 
@@ -113,8 +116,9 @@ block content
                   |  :
                 .col-sm-8
                   span.input-icon
-                    input.form-control(type='text', placeholder='Nom du client', name='p_nom')
+                    input#nom_pour.form-control(type='text', placeholder='Nom du client', name='p_nom')
                     i.fa.fa-user
+                  span.form_error
               .form-group
                 label.col-sm-3.control-label
                   | Prenom 
@@ -122,8 +126,9 @@ block content
                   |  :
                 .col-sm-8
                   span.input-icon
-                    input.form-control(type='text', placeholder='Prenom du client', name='p_prenom')
+                    input#prenom_pour.form-control(type='text', placeholder='Prenom du client', name='p_prenom')
                     i.fa.fa-user
+                  span.form_error
               .form-group
                 label.col-sm-3.control-label
                   | Date nais. 
@@ -221,8 +226,9 @@ block content
                   |  :
                 .col-sm-8
                   span.input-icon
-                    input.form-control(type='text', placeholder='Dénommination sociale', name='p_denomination')
+                    input#denom_pour.form-control(type='text', placeholder='Dénommination sociale', name='p_denomination')
                     i.fa.fa-home
+                  span.form_error
               .form-group
                 label.col-sm-3.control-label
                   | Forme Sociale
@@ -373,8 +379,9 @@ block content
                   |  :
                 .col-sm-8
                   span.input-icon
-                    input.form-control(type='text', placeholder='Nom du client', name='c_nom')
+                    input#nom_contre.form-control(type='text', placeholder='Nom du client', name='c_nom')
                     i.fa.fa-user
+                  span.form_error
               .form-group
                 label.col-sm-3.control-label
                   | Prenom 
@@ -382,8 +389,9 @@ block content
                   |  :
                 .col-sm-8
                   span.input-icon
-                    input.form-control(type='text', placeholder='Prenom du client', name='c_prenom')
+                    input#prenom_contre.form-control(type='text', placeholder='Prenom du client', name='c_prenom')
                     i.fa.fa-user
+                  span.form_error
               .form-group
                 label.col-sm-3.control-label
                   | Date nais. 
@@ -481,8 +489,9 @@ block content
                   |  :
                 .col-sm-8
                   span.input-icon
-                    input.form-control(type='text', placeholder='Dénommination sociale', name='c_denomination')
+                    input#denom_contre.form-control(type='text', placeholder='Dénommination sociale', name='c_denomination')
                     i.fa.fa-home
+                  span.form_error
               .form-group
                 label.col-sm-3.control-label
                   | Forme Sociale
