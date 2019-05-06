@@ -1,0 +1,52 @@
+extends ../layout
+append styles
+    link(rel='stylesheet', href='/assets/plugins/nvd3/nv.d3.min.css')
+block content
+  .row
+    .col-md-12
+      ol.breadcrumb
+        li
+          a(href='/')
+            | Accueil
+        li
+          | Ratios
+        li.active
+          | #{title}
+  .row
+    .col-md-12
+      .panel.panel-white
+        .panel-heading
+          h4.panel-title
+            | Gains 
+            span.text-bold Possibles
+          .panel-tools
+            .dropdown
+              a.btn.btn-xs.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
+                i.fa.fa-cog
+              ul.dropdown-menu.dropdown-light.pull-right(role='menu')
+                li
+                  a.panel-collapse.collapses(href='#')
+                    i.fa.fa-angle-up
+                    span Afficher
+                li
+                  a.panel-refresh(href='#')
+                    i.fa.fa-refresh
+                    span Actualise
+                li
+                  a.panel-expand(href='#')
+                    i.fa.fa-expand
+                    span Plein écran
+        .panel-body
+          #demo-chart-4.height-300
+            svg
+
+append jscripts
+  script(src='/assets/plugins/nvd3/lib/d3.v3.js')
+  script(src='/assets/plugins/nvd3/nv.d3.min.js')
+  script(src='/assets/js/charts.js')
+  script.
+    jQuery(document).ready(function() {
+      Main.init();
+      SVExamples.init();
+      Charts.init();
+    });

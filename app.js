@@ -17,6 +17,7 @@ var dossiersRouter = require('./routes/dossiers');
 var partiesRouter = require('./routes/parties');
 var agendasRouter = require('./routes/agendas');
 var adminsRouter = require('./routes/administrateurs');
+var ratiosRouter = require('./routes/ratios');
 
 var mongoose = require('mongoose');
 var mongoDB = 'mongodb://legaltech_user:legaltech2019@ds251284.mlab.com:51284/legaltech_p_db';
@@ -101,6 +102,7 @@ app.use('/dossiers',ensureAuthenticated, dossiersRouter);
 app.use('/parties',ensureAuthenticated, partiesRouter);
 app.use('/agenda',ensureAuthenticated, agendasRouter);
 app.use('/administrateur',ensureAuthenticated, adminsRouter);
+app.use('/ratios',ensureAuthenticated, ratiosRouter);
 
 
 // catch 404 and forward to error handler

@@ -1,0 +1,92 @@
+extends ../layout
+append styles
+  link(rel='stylesheet', href='/assets/plugins/weather-icons/css/weather-icons.min.css')
+  link(rel='stylesheet', href='/assets/plugins/nvd3/nv.d3.min.css')
+
+block content
+  .row
+    .col-md-12
+      ol.breadcrumb
+        li
+          a(href='/')
+            | Accueil
+        li
+          | Ratios
+        li.active
+          | #{title}
+  .row
+    .col-md-12
+      .panel.panel-white
+        .panel-heading.border-light
+          h4.panel-title
+            | Perte 
+            span.text-bold Encourue
+          ul.panel-heading-tabs.border-light
+            li
+              .pull-right
+                .btn-group
+                  a.btn.btn-green.dropdown-toggle(data-toggle='dropdown', href='#')
+                    | Tools 
+                    span.caret
+                  ul.dropdown-menu(role='menu')
+                    li.dropdown-header(role='presentation')
+                      | Dropdown header
+                    li
+                      a(href='#')
+                        | Action
+                    li
+                      a(href='#')
+                        | Another action
+                    li
+                      a(href='#')
+                        | Something else here
+                    li.divider
+                    li.dropdown-header(role='presentation')
+                      | Dropdown header
+                    li
+                      a(href='#')
+                        | Separated link
+            li
+              .rate
+                i.fa.fa-caret-up.text-green
+                span.value 11
+                span.percentage %
+            li.panel-tools
+              .dropdown
+                a.btn.btn-xs.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
+                  i.fa.fa-cog
+                ul.dropdown-menu.dropdown-light.pull-right(role='menu')
+                  li
+                    a.panel-collapse.collapses(href='#')
+                      i.fa.fa-angle-up
+                      span Afficher
+                  li
+                    a.panel-refresh(href='#')
+                      i.fa.fa-refresh
+                      span Actualise
+                  li
+                    a.panel-expand(href='#')
+                      i.fa.fa-expand
+                      span Plein écran
+        .panel-body.partition-green
+          .col-md-12
+            .height-350
+              #chart4.with-3d-shadow.with-transitions
+                svg
+append jscripts
+  script(src='/assets/plugins/bootstrap-progressbar/bootstrap-progressbar.min.js')
+  script(src='/assets/plugins/nvd3/lib/d3.v3.js')
+  script(src='/assets/plugins/nvd3/nv.d3.min.js')
+  script(src='/assets/plugins/nvd3/src/models/historicalBar.js')
+  script(src='/assets/plugins/nvd3/src/models/historicalBarChart.js')
+  script(src='/assets/plugins/nvd3/src/models/stackedArea.js')
+  script(src='/assets/plugins/nvd3/src/models/stackedAreaChart.js')
+  script(src='/assets/plugins/jquery.sparkline/jquery.sparkline.js')
+  script(src='/assets/plugins/easy-pie-chart/dist/jquery.easypiechart.min.js')
+  script(src='/assets/js/index.js')
+  script.
+    jQuery(document).ready(function() {
+    Main.init();
+    SVExamples.init();
+    Index.init();
+    });
