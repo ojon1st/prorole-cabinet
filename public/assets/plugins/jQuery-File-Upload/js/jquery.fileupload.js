@@ -143,7 +143,7 @@
 
             // Error and info messages:
             messages: {
-                uploadedBytes: 'Votre fichier dépasse la taille autorisée'
+                uploadedBytes: 'Uploaded bytes exceed file size'
             },
 
             // Translation function, gets the message key to be translated

@@ -42,6 +42,12 @@ router.get('/en_cours', dossier_controller.dossiers_en_cours);
 // GET list of current dossiers
 router.get('/repartition', dossier_controller.repartition);
 
+// Recuperation de dossiers sans date de renvoi
+router.get('/manques', instruction_controller.get_manques)
+
+// Recuperation de dossiers dont le type renvoi est role general
+router.get('/role_general', instruction_controller.get_renvoi_role_general)
+
 // SAVE DOCUMENTS RELATIVE TO DOSSIER
 router.post('/dossier/:id/save_pieces/:type_piece',upload.any() , dossier_controller.save_pieces);
 
@@ -55,7 +61,7 @@ router.post('/dossier/:id/type_piece/:type_piece/delete_pieces/:id_piece', dossi
 //router.get('/dossiers', dossier_controller.dossier_list);
 
 // Créer une nouvelle instruction
-router.post('/dossier/:id/instruction/create', instruction_controller.instruction_create_post);
+router.post('/dossier/:id/instruction/create', instruction_controller.instruction_create_post); 
 
 // Créer un nouveau renvoi du dossier
 router.post('/dossier/:id/instruction/renvoi/create', instruction_controller.renvoi_create_post);
@@ -78,8 +84,6 @@ router.post('/dossier/:id/instruction/:id_instruction/is_decision', instruction_
 // Sauvegarger la décision
 router.post('/dossier/:id/instruction/:id_ins/decision/save', instruction_controller.decision_save)
 
-// Recuperation de dossiers sans date de renvoi
-router.get('/manques', instruction_controller.get_manques)
 
 
 

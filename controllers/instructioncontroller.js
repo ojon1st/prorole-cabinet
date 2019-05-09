@@ -144,6 +144,7 @@ exports.renvoi_create_post = [
       
       results.theinstruction.renvois.push({
         r_date: moment(req.body.date_renvoi, "DD-MM-YYYY"),
+        r_type: req.body.type_renvoi,
         r_motif: req.body.motif_renvoi
       });
       var date_last_renvoi = req.body.date_renvoi;
@@ -426,6 +427,35 @@ exports.get_manques = function(req, res, next){
       //console.log(dossiers_retards)
       
       res.render('dossiers/dossier_sans_renvoi', { title:'Repertoire de dossiers manqués', list_dossiers: dossiers_retards});
+      
+  });
+};
+
+
+exports.get_renvoi_role_general = function(req, res, next){
+  async.parallel({
+    
+    last_renvois: function(callback){
+      Instruction.find({}, {'renvois':{'$slice':-1},'_id':1,'decision':1, 'dossier':1, 'juridiction':1})
+          .populate({ path: 'dossier', model: 'Dossier', populate: { path: 'pour contre'} })
+          .populate('juridiction')
+          .exec(callback);
+    },
+    }, function (err, results) {
+      if (err) { return next(err); }
+     
+      var dossiers_retards = [];
+      results.last_renvois.forEach(function(last_renvoi){
+        if(last_renvoi.renvois.length > 0 && last_renvoi.renvois[0].r_type == 'renvoi au role general'  /*moment().diff(moment(last_renvoi.renvois[0].r_date), 'days') > 0*/){
+          //if(!last_renvoi.decision || last_renvoi.decision == ""){
+            console.log(last_renvoi);
+            dossiers_retards.push(last_renvoi)
+          //}
+        }
+      });
+      //console.log(dossiers_retards)
+      
+      res.render('dossiers/dossier_role_general', { title:'Repertoire de dossiers manqués', list_dossiers: dossiers_retards});
       
   });
 };

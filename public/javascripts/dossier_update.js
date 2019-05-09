@@ -225,25 +225,27 @@ function get_renvoi_infos(id_dossier, division) {
   
   var motif = $("#motif_ins_"+division).val();
   var date = $("#date_ins_"+division).val();
+  var type = $("#type_ins_"+division).val();
   var juridiction_value = $("#juridiction_"+division).val();
   
-  if (motif == "" || date == "") {
-    swal("La Date saisie ou le Motif est invalide!");
+  if (motif == "" || date == "" || type == "") {
+    swal("La Date saisie ou le Type choisi ou le Motif est invalide!");
   } else if (juridiction_value == null || juridiction_value == "undefined" || juridiction_value == "") {
     swal("Veuillez choisir la juridiction du dossier en cours");
   } else {
     // save infos renvoi
-    create_renvoi(date, motif, id_dossier, juridiction_value, division);
+    create_renvoi(date, type, motif, id_dossier, juridiction_value, division);
    
   }
 
 };
 
-function create_renvoi(date_renvoi, motif_renvoi, id_dossier,juridiction, division) {
+function create_renvoi(date_renvoi, type_renvoi, motif_renvoi, id_dossier,juridiction, division) {
   
   var route_create_renvoi_instance_dossier= '/dossiers/dossier/'+id_dossier+'/instruction/renvoi/create';
   var data = {};
   data.date_renvoi = date_renvoi;
+  data.type_renvoi = type_renvoi;
   data.motif_renvoi = motif_renvoi;
   data.division = division
   data.juridiction = juridiction
@@ -256,6 +258,7 @@ function create_renvoi(date_renvoi, motif_renvoi, id_dossier,juridiction, divisi
     success: function (data) {
       $("#motif_ins_"+division).val('');
       $("#date_ins_"+division).val('');
+      $("#type_ins_"+division).val('');
       
       if($("#bloc_renvoi_ins_"+division).is(":hidden")) {
         $("#bloc_renvoi_ins_"+division).toggleClass('hidden');
@@ -263,7 +266,7 @@ function create_renvoi(date_renvoi, motif_renvoi, id_dossier,juridiction, divisi
       
       $("#liste_renvoi_ins_"+division).html('');
       setTimeout(data.renvois_list.forEach(function(renvoi){
-        $("#liste_renvoi_ins_"+division).append('<div class="row"><div class="col-sm-offset-1 col-sm-9"><p>Renvoyé au ' + moment(renvoi.r_date).format("DD-MM-YYYY") + ' pour Motif: ' + renvoi.r_motif + '</p></div></div>');
+        $("#liste_renvoi_ins_"+division).append('<div class="row"><div class="col-sm-offset-1 col-sm-9"><p>Renvoyé au ' + moment(renvoi.r_date).format("DD-MM-YYYY") + ' ('+ renvoi.r_type + ') pour ' + renvoi.r_motif + '</p></div></div>');
       }), 1000);
       
       var msg = "Le dossier vient d'être renvoyé au "+data.date_last_renvoi+" .";
@@ -273,6 +276,42 @@ function create_renvoi(date_renvoi, motif_renvoi, id_dossier,juridiction, divisi
     }
   });
 };
+
+function verifDate(champ) {
+  var dateNow = new Date(), 
+      strSaisie = champ.value,
+      dateJour, 
+      dateSaisie;
+
+  dateJour = new Date(dateNow.getFullYear(), dateNow.getMonth(), dateNow.getDate());
+  strSaisie = strSaisie.replace(/-/g,"");
+  dateSaisie = new Date(strSaisie.substr(4,4), strSaisie.substr(2,2)-1, strSaisie.substr(0,2));
+
+  if (dateSaisie < dateJour ) {
+    surligne(champ, true);
+  }
+  else {
+    surligne(champ, false);
+  }
+  }
+
+  function surligne(champ, erreur)
+  {
+  if(erreur)
+  {
+    champ.style.backgroundColor = "#fba";
+    champ.value = "";
+    //document.getElementById("btn_renvoi").style.display = "none";
+    document.getElementById("error").innerHTML = "<div class='alert alert-warning text-center col-sm-offset-2 col-sm-8 col-md-offset-2 col-md-8'><a href='' class='close' data-dismiss='alert'>&times;</a><strong>Attention :</strong> Veuillez une date superieure a aujourd'hui.</div>";
+  }
+
+  else
+  {
+    champ.style.backgroundColor = "";
+    //document.getElementById("btn_renvoi").style.display = "block";
+    document.getElementById("error").innerHTML = "";
+  }
+}
 
       /**************** Mise en état ***************/
 

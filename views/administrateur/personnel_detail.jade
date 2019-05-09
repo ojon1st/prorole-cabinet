@@ -43,7 +43,7 @@ block content
                   .fileupload.fileupload-new(data-provides='fileupload')
                     .user-image
                       .fileupload-new.thumbnail
-                        img#image-preview(src='#{utilisateur.avatar}', alt='')
+                        img#image-preview(src='#{utilisateur.avatar}', alt='' width='100%')
                       .fileupload-preview.fileupload-exists.thumbnail
                       //.user-image-buttons
                         span.btn.btn-azure.btn-file.btn-sm
@@ -51,7 +51,7 @@ block content
                             i.fa.fa-pencil
                           span.fileupload-exists
                             i.fa.fa-pencil
-                          //input(type='file' onchange='save_profile_image()')
+                          input(type='file' onchange='save_profile_image()')
                           input#file-upload(type='file', name='avatar' onchange='uploadavatar(this.files[0],"#{utilisateur._id}")' accept='image/jpeg, image/png' enctype='multipart/form-data')
                         a.btn.fileupload-exists.btn-red.btn-sm(href='#', data-dismiss='fileupload')
                           i.fa.fa-times

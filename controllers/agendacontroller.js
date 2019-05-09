@@ -13,7 +13,7 @@ const { body,validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
 // L'index de la page des parties doit regrouper dans un tab la liste de tous nos clients puis la liste de tous nos adversaires
-exports.index = function(req, res, next){res.redirect('/audiencier')};
+exports.index = function(req, res, next){res.redirect('/agenda/audiencier')};
 
 // Affichier l'audiencier de l'utilisateur
 exports.audiencier_get = function(req, res, next) {

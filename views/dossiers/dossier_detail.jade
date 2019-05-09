@@ -352,20 +352,32 @@ block content
                           each renvoi in instruction.renvois
                             .row
                               .col-sm-offset-1.col-sm-9
-                                p Renvoyé au #{moment(renvoi.r_date).format("DD-MM-YYYY")} pour Motif: #{renvoi.r_motif}
+                                p Renvoyé au #{moment(renvoi.r_date).format("DD-MM-YYYY")} (#{renvoi.r_type}) pour #{renvoi.r_motif}
                       hr
                     if (!(instruction && instruction.decision && instruction.decision != '' && instruction.juridiction.division == division))
                       .form-group
-                        label.col-sm-3.control-label
-                          | Nouveau Renvoi :
-                        .col-sm-8
+                        label.col-sm-2.control-label
+                          | Renvoi :
+                        .col-sm-10
                           .row
                             .col-md-4(style='padding-right: 10px')
                               span.input-icon
-                                input.form-control.date-picker(id='date_ins_#{division}' placeholder='Date', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years')
+                                input.form-control.date-picker(id='date_ins_#{division}' placeholder='Date', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years' onchange='verifDate(this)')
                                 br.hidden-lg.hidden-md.hidden-sm
                                 i.fa.fa-calendar
-                            .col-md-8(style='padding-left: 0px; padding-right: 0px;')
+                            .col-md-2(style='padding:0')
+                              select.form-control(id='type_ins_#{division}')
+                                option(disabled='', selected='', value='') Types
+                                option(value='renvoi simple') R.
+                                option(value='renvoi ferme') RF.
+                                option(value='renvoi au role general') RRG.
+                                option(value='renvoi d\'office') RO
+                                opion(value='non appele') NO
+                                option(value='mise en delibere') D.
+                                option(value='renvoi d\'office') RO
+                                opion(value='rabat de delibere puis renvoi') DRR.
+                                option(value='delibere vide') D. OK
+                            .col-md-6
                               .input-group
                                 span.input-icon
                                   input.form-control(id='motif_ins_#{division}', type='text', placeholder='Motif')
@@ -386,7 +398,16 @@ block content
                           textarea.form-control(name='decision', id='decision_#{division}', placeholder='', cols='30', rows='7')
                     if (instruction && (!instruction.decision || instruction.decision == '') && instruction.juridiction.division == division)
                       .form-group
-                        .col-sm-offset-7.col-sm-3.text-center
+                        .col-sm-offset-2.col-sm-4
+                          label.radio-inline
+                            input.grey(type='radio', value='gagner', name='resultat')
+                            | Gain de cause
+                          label.radio-inline
+                            ///*name='optionsRadios'*/
+                            input.grey(type='radio', value='perdre', name='resultat')
+                            | Condamnation
+                      .form-group  
+                        .col-sm-offset-1.col-sm-3.text-center
                           input.btn.btn-dark-azure(type='button', onclick='save_decision("#{dossier._id}","#{instruction._id}","#{division}")' , value='Sauvegarde du Délibéré')
           
                   .buttons-widget
