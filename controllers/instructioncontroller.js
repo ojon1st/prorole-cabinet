@@ -242,7 +242,7 @@ exports.diligence_create_post = [
           if (err) {
             return next(err);
           }
-
+ 
           res.send({
             type_of_response: 'success',
             dil_list: results.theinstruction.diligence

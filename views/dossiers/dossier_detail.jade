@@ -234,6 +234,8 @@ block content
                       .col-md-5
                         label.control-label.text-bold Texte
                         textarea.form-control(name='', placeholder='Texte')
+                        label.control-label.text-bold Texte
+                        textarea.form-control(name='', placeholder='Texte')
                       .col-md-1
                         label.control-label.text-bold Valider
                         a.btn.btn-dark-beige.margin-rigth-10
@@ -248,10 +250,12 @@ block content
                           #niveau.hidden
                             label#niveau_val.control-label.text-bold.text-center.text-capitalize
                           select.form-control.search-select
-                            option(disabled='', selected='', value='')  Selectionner un degré d'instruction 
-                            option(value='1')  TGIHC
-                            option(value='2')  TGI
-                            option(value='3')  TI
+                            if (j_instance)
+                              // rajouter dans les options la valeur sélectionnée
+                              each j in j_instance
+                                option(value=j._id, selected=((instruction && j._id == instruction.juridiction._id.toString()))) #{j.nom}
+                              if (!instruction)
+                                option(value=null selected = true)
                   br
                   .row
                     .col-md-12
@@ -282,10 +286,12 @@ block content
                             #niveau.hidden
                               label#niveau_val.control-label.text-bold.text-center.text-capitalize
                             select.form-control.search-select
-                              option(disabled='', selected='', value='')  Selectionner un degré d'instruction 
-                              option(value='1')  TGIHC
-                              option(value='2')  TGI
-                              option(value='3')  TI
+                              if (j_instance)
+                                // rajouter dans les options la valeur sélectionnée
+                                each j in j_instance
+                                  option(value=j._id, selected=((instruction && j._id == instruction.juridiction._id.toString()))) #{j.nom}
+                                if (!instruction)
+                                  option(value=null selected = true)
                     br
                     .row
                       .col-md-2

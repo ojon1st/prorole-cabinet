@@ -46,40 +46,6 @@ jQuery(document).ready(function () {
 
 /*****************   page functions    **********************/
 
-function choice_nature()
-{
-  //$('#phase_contenu').addClass('hidden');
-  $('#phase_contenu').empty();
-}
-
-$('#phase').tabs({
-  activate: function (event, ui) {
-    var $activeTab = $('#phase').tabs('option', 'active');
-    var phase_content = {
-      
-    };
-
-    //$('#phase_contenu').append(phase_content[$activeTab]);
-    alert($activeTab);
-  }
-
-});
-// function qui affiche contenu de la phase choisie
-function choice_phase(champ)
-{
-  $('#phase_contenu').empty();
-  //les variables
-  var phase = champ.value;
-  var phase_content = {
-    consultation: '<hr> <h4 class="text-bold"> Calendier de diligence </h4><div class="contenu"></div><div class="row"><div class="col-md-offset-10 col-md-1 text-center"><a id="contenu_btn" class="btn btn-blue" onclick="mise_en_etat(contenu);"><span class="fa fa-plus"></span>Ajouter</a></div></div>', 
-    enquete: '<hr> <div class="form-group"><label for="" class="col-sm-3 control-label">Juridiction :</label><div class="col-sm-8"><select name="" id="" class="form-control search-select"><option disabled="", selected="", value=""> Selectionner la judiction </option><option value="tgihc"> TGIHC </option><option value="tgi"> TGI </option><option value="ti"> TI </option></select></div></div><h4 class="text-bold"> Calendier de diligence </h4><div class="contenu_enq"></div><div class="row"><div class="col-md-offset-10 col-md-1 text-center"><a id="contenu_enq_btn" class="btn btn-blue" onclick="mise_en_etat(contenu_enq);"><span class="fa fa-plus"></span>Ajouter</a></div></div>',
-    chambre: '<hr> <div class="form-group"><label for="" class="col-sm-3 control-label">Juridiction :</label><div class="col-sm-8"><select name="" id="" class="form-control search-select"><option disabled="", selected="", value=""> Selectionner la judiction </option><option value="tgihc"> TGIHC </option><option value="tgi"> TGI </option></select></div></div><h4 class="text-bold"> Calendier de diligence </h4><div class="contenu_enq"></div><div class="row"><div class="col-md-offset-10 col-md-1 text-center"><a id="contenu_enq_btn" class="btn btn-blue" onclick="mise_en_etat(contenu_enq);"><span class="fa fa-plus"></span>Ajouter</a></div></div><br><div class="row"><div class="form-group"><label for="" class="col-sm-3 control-label">Délibéré :</label><div class="col-sm-8"><textarea class="form-control" name="delibere" id="" cols="30" rows="10" placeholder="Délibéré"></textarea></div></div></div>',
-    jugement: '<hr>'
-  };
-    $('#phase_contenu').append(phase_content[phase]);
-    //alert(phase_content[phase]);
-}
-
 function autoriser_modif() {
   $('textarea[name=resume]').attr('readonly', false);
   $('input[name=montant]').attr('readonly', false);
@@ -320,27 +286,27 @@ function verifDate(champ) {
 
 //Mise à l'état
   
-  var mee = 0;//counter mise à l'état form
-  var dil = 0; //counter diligences form
-  function mise_en_etat(le_form){ // x = le nbre de dfois qu'on appelle le form et le form = le formulaire incrémenté
-      var i = 0;
-      if (le_form == 'mee'){
-        i = mee;
-      } else if (le_form == 'dil'){
-        i = dil;
-      }
-    
-      $("#"+le_form).append('<div class="row"><div class="col-md-2"><label class="control-label text-bold">Du</label><input name="du_'+le_form+'_'+i+'" class="form-control date-picker" type="text" data-date-format="dd-mm-yyyy" data-date-viewmode="years" placeholder="Saisir une date" /></div><div class="col-md-2"><label class="control-label">Au</label><input name="au_'+le_form+'_'+i+'" class="form-control date-picker" type="text" data-date-format="dd-mm-yyyy" data-date-viewmode="years" placeholder="Saisir une date" /></div><div class="col-md-2 text-bold"><label class="control-label" for="">À</label><input name="h_'+le_form+'_'+i+'" class="form-control time-picker popovers" type="time" data-original-title="" data-content="Chiffre" data-placement="top" data-trigger="hover" onkeyup="this.value=this.value.replace(/\D/g,\'\')" value="15:00"/></div><div class="col-md-6 "><label class="control-label"></label><textarea name="com_'+le_form+'_'+i+'" class="form-control" placeholder="Texte"></textarea></div></div><br/>');
-      
-      addDatePicker();
-    
-      if (le_form == 'mee'){
-        mee++;
-      } else if (le_form == 'dil'){
-        dil++;
-      }
-    
+var mee = 0;//counter mise à l'état form
+var dil = 0; //counter diligences form
+function mise_en_etat(le_form){ // x = le nbre de dfois qu'on appelle le form et le form = le formulaire incrémenté
+  var i = 0;
+  if (le_form == 'mee'){
+    i = mee;
+  } else if (le_form == 'dil'){
+    i = dil;
   }
+
+  $("#"+le_form).append('<div class="row"><div class="col-md-2"><label class="control-label text-bold">Du</label><input name="du_'+le_form+'_'+i+'" class="form-control date-picker" type="text" data-date-format="dd-mm-yyyy" data-date-viewmode="years" placeholder="Saisir une date" /></div><div class="col-md-2"><label class="control-label">Au</label><input name="au_'+le_form+'_'+i+'" class="form-control date-picker" type="text" data-date-format="dd-mm-yyyy" data-date-viewmode="years" placeholder="Saisir une date" /></div><div class="col-md-2 text-bold"><label class="control-label" for="">À</label><input name="h_'+le_form+'_'+i+'" class="form-control time-picker popovers" type="time" data-original-title="" data-content="Chiffre" data-placement="top" data-trigger="hover" onkeyup="this.value=this.value.replace(/\D/g,\'\')" value="15:00"/></div><div class="col-md-6 "><label class="control-label"></label><textarea name="com_'+le_form+'_'+i+'" class="form-control" placeholder="Texte"></textarea></div></div><br/>');
+  
+  addDatePicker();
+
+  if (le_form == 'mee'){
+    mee++;
+  } else if (le_form == 'dil'){
+    dil++;
+  }
+
+}
   
 function mise_en_etat_create_post (id_dossier,id_instruction, juridiction){
     
@@ -414,6 +380,7 @@ function mise_etat_get(id_dossier, id_instruction){
 function diligence_create_post (id_dossier,id_instruction, juridiction){
   //var tribunal_id = $("select[name=juridiction]").val();
   if (dil == 0 || id_instruction == '' || juridiction == ''){
+    //alert('je suis vide');
     return;
   }
   
