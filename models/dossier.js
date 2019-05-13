@@ -5,10 +5,11 @@ var moment = require('moment');
 var async = require('async');
 var Schema = mongoose.Schema;
 
-var DossierSchema = new Schema({
+var DossierSchema = new Schema({ 
   ref_d: {type: String, unique:true},
   titulaire: {type: Schema.ObjectId, ref: 'Utilisateur'}, //ref liste des utilisateurs
   attributaire: {type: Schema.ObjectId, ref: 'Utilisateur'}, //ref liste des utilisateurs
+  litige: {type: String},
   nature: {type: String}, //ref liste des natures du litige
   resume: {type: String}, 
   montant: {type: Number},

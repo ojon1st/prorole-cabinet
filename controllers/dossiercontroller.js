@@ -480,6 +480,7 @@ exports.dossier_update_post = [
     });
     
     if (req.body.attributaire && req.body.attributaire != ""){dossier.attributaire = req.body.attributaire}
+    if (req.body.litige && req.body.litige != ""){dossier.litige = req.body.litige}
     if (req.body.nature && req.body.nature != ""){dossier.nature = req.body.nature}
     if (req.body.resume && req.body.resume != ""){dossier.resume = req.body.resume}
     if (req.body.montant && req.body.montant != ""){dossier.montant = req.body.montant}

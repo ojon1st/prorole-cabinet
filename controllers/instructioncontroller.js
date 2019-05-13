@@ -426,7 +426,7 @@ exports.get_manques = function(req, res, next){
       });
       //console.log(dossiers_retards)
       
-      res.render('dossiers/dossier_sans_renvoi', { title:'Repertoire de dossiers manqués', list_dossiers: dossiers_retards});
+      res.render('dossiers/dossier_tri_instruction', { title:'dossiers sans date de renvoi', list_dossiers: dossiers_retards});
       
   });
 };
@@ -435,7 +435,7 @@ exports.get_manques = function(req, res, next){
 exports.get_renvoi_role_general = function(req, res, next){
   async.parallel({
     
-    last_renvois: function(callback){
+    renvois_rgs: function(callback){
       Instruction.find({}, {'renvois':{'$slice':-1},'_id':1,'decision':1, 'dossier':1, 'juridiction':1})
           .populate({ path: 'dossier', model: 'Dossier', populate: { path: 'pour contre'} })
           .populate('juridiction')
@@ -444,18 +444,16 @@ exports.get_renvoi_role_general = function(req, res, next){
     }, function (err, results) {
       if (err) { return next(err); }
      
-      var dossiers_retards = [];
-      results.last_renvois.forEach(function(last_renvoi){
-        if(last_renvoi.renvois.length > 0 && last_renvoi.renvois[0].r_type == 'renvoi au role general'  /*moment().diff(moment(last_renvoi.renvois[0].r_date), 'days') > 0*/){
-          //if(!last_renvoi.decision || last_renvoi.decision == ""){
-            console.log(last_renvoi);
-            dossiers_retards.push(last_renvoi)
-          //}
+      var renvoi_role_general = [];
+      results.renvois_rgs.forEach(function(renvois_rg){
+        if(renvois_rg.renvois.length > 0 && renvois_rg.renvois[0].r_type == 'renvoi au role general'){
+          //console.log(last_renvoi);
+          renvoi_role_general.push(renvois_rg)
         }
       });
-      //console.log(dossiers_retards)
+      //console.log(renvoi_role_general)
       
-      res.render('dossiers/dossier_role_general', { title:'Repertoire de dossiers manqués', list_dossiers: dossiers_retards});
+      res.render('dossiers/dossier_tri_instruction', { title:'renvois au rôle général', list_dossiers: renvoi_role_general});
       
   });
 };

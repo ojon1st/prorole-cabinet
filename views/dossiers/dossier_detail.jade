@@ -112,14 +112,24 @@ block content
                     label.col-sm-3.dos-text
                       | Nature de litige :
                     .col-sm-8
-                      select.form-control(name='litige')
-                        option(disabled='', selected='', value='') Selectionner la nature du litige
-                        option(value='Civile et commerciale') Civile et commerciale
-                        option(value='Sociale') Sociale
-                        option(value='Pénale') Pénale
-                        option(value='Administratif') Administratif
-                        opion(value='Electorale') Electorale
-                        option(value='Constitutionnelle') Constitutionnelle
+                      if (dossier.litige)
+                        select.form-control(name='litige', disabled=true)
+                          option(value=value='#{dossier.litige}', selected='#{dossier.litige}') #{dossier.litige}
+                          option(value='Civile et commerciale') Civile et commerciale
+                          option(value='Sociale') Sociale
+                          option(value='Pénale') Pénale
+                          option(value='Administratif') Administratif
+                          opion(value='Electorale') Electorale
+                          option(value='Constitutionnelle') Constitutionnelle
+                      else
+                        select.form-control(name='litige')
+                          option(disabled='', selected='', value='') Selectionner la nature du litige
+                          option(value='Civile et commerciale') Civile et commerciale
+                          option(value='Sociale') Sociale
+                          option(value='Pénale') Pénale
+                          option(value='Administratif') Administratif
+                          opion(value='Electorale') Electorale
+                          option(value='Constitutionnelle') Constitutionnelle
                   .form-group
                     label.col-sm-3.dos-text
                       | Montant de l'enjeu :

@@ -28,7 +28,7 @@ router.post('/dossier/create', dossier_controller.dossier_create_post);
 router.get('/dossier/:id/update', dossier_controller.dossier_update_get);
 
 // POST request to update dossier.
-router.post('/dossier/:id/update', dossier_controller.dossier_update_post);
+router.post('/dossier/:id/update', dossier_controller.dossier_update_post); 
 
 // POST request to update dossier instruction.
 /*router.post('/dossier/:id/update_infos', dossier_controller.dossier_update_instruction_post);*/

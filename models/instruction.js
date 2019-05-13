@@ -12,7 +12,7 @@ var InstructionSchema = new Schema({
   renvois:[{r_date:Date, r_motif:String, r_type:String}],
   decision:{type:String},
   i_update:{type:Date}
-  //type: Date, default:moment()
+  //type: Date, default:moment() 
 });
 
 // Export model.

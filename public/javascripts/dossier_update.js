@@ -85,6 +85,7 @@ function autoriser_modif() {
   $('input[name=montant]').attr('readonly', false);
   $(".nature").toggleClass("hidden");
   $('select[name=attributaire]').attr('disabled', false);
+  $('select[name=litige]').attr('disabled', false);
   $('input[type=text][name=nature]').attr('disabled', true);
   $(".attributaire, .modifier_ou_sauvegarder").toggleClass("hidden"); //, .modifier_ou_sauvegarder
 
@@ -123,6 +124,7 @@ function update_dossier(id_dossier) {
   var route_update_infos_dossier = '/dossiers/dossier/' + id_dossier + '/update';
   var data = {};
   data.attributaire = $('select[name=attributaire]').val();
+  data.litige = $('select[name=litige]').val();
   data.nature = $('input[type=radio][name=nature]:checked').val();
   data.resume = $('textarea[name=resume]').val();
   data.montant = $('input[name=montant]').val();
