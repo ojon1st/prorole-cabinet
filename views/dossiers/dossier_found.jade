@@ -52,6 +52,11 @@ block content
                       th N°
                       th Référence
                       th Nom de parties
+                      th Matière
+                      th Resumé du litige
+                      th Enjeu
+                      th Gain - Perte
+                      th Etat de la procédure
                   tbody
                     - var i = 1
                     each dossier in list_dossiers
@@ -62,6 +67,11 @@ block content
                           td 
                             if block
                               block
+                          td #{dossier.litige}
+                          td #{dossier.resume}
+                          td #{dossier.montant}
+                          td.text-capitalize #{dossier.nature}
+                          td 
                       if(dossier.pour && dossier.contre)
                         if(dossier.pour.p_type == 'pp' && dossier.contre.c_type == 'pp')
                           +tableau_dossiers

@@ -66,7 +66,7 @@ exports.found_client_get = function (req, res, next) {
   async.parallel({
     dossiers: function (callback) {
       Dossier.find({pour: req.params.id})
-        .select({ "_id": 1, "ref_d": 1, "pour":1, "contre":1})
+        .select({ "_id": 1, "ref_d": 1, "litige": 1,"nature": 1, "resume": 1, "montant": 1,  "pour":1, "contre":1})
         .populate('pour')
         .populate('contre')
         .populate('utilisateur')

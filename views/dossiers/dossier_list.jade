@@ -35,7 +35,7 @@ block content
                   a.panel-expand(href='#')
                     i.fa.fa-expand
                     span Plein écran
-            //
+            //-
               <a class="btn btn-xs btn-link panel-close" href="#">
               <i class="fa fa-times"></i>
               </a>
@@ -55,11 +55,8 @@ block content
                             option(value=dossier.pour._id) #{dossier.pour.pp.p_prenom} #{dossier.pour.pp.p_nom}
                           if(dossier.pour.p_type == 'pm')
                             option(value=dossier.pour._id) #{dossier.pour.pm.p_denomination}
-                    #valide_select.col-md-1.hidden
-                      a#valide_btn.btn.btn-light-azure.btn-block
-                        i.fa.fa-search.fa-lg
-                      //-a#valide_btn.btn.btn-light-azure.btn-block.show-calendar(href='#tableauSypnotique')
-                        i.fa.fa-search.fa-lg
+                    #valide_select.col-md-1
+                      #valide_btn
           .row  
             .col-md-12  
               .table-responsive
@@ -93,20 +90,6 @@ block content
                           +tableau_dossiers
                             a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.pm.p_denomination} c/ #{dossier.contre.pm.c_denomination}
                         - i++
-          .hidden
-            #tableauSypnotique
-              .noteWrap.col-md-10.col-md-offset-1
-                br
-                h3 Tableau synoptique
-                br
-                table#projects.table.table-striped.table-bordered.table-hover
-                  thead
-                    tr
-                      th N°
-                      th Réf.
-                      th Parties
-                  tbody
-                    #client
 append jscripts
   // start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
   script(src='/assets/plugins/holder/holder.js')
