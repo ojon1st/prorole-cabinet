@@ -1229,49 +1229,6 @@ block content
                   | Modifier
                 a#upContreSave.hidden.btn.btn-dark-orange
                   | Mise à jour
-
-          //
-            table.table.table-condensed.table-hover
-              thead
-                th.col-md-2.hidden-xs
-                th.col-md-10.hidden-xs
-              tbody
-                tr
-                  td.text-noir Dénomination
-                  td.text-left
-                    | #{dossier.contre.pm.c_denomination}
-                tr
-                  td.text-noir Forme Sociale
-                  td.text-left
-                    | #{dossier.contre.pm.c_rs}
-                tr
-                  td.text-noir CAPITAL (F CFA)
-                  td.text-left
-                    | #{dossier.contre.pm.c_capital}
-                tr
-                  td.text-noir Siège Social
-                  td.text-left
-                    | #{dossier.contre.pm.c_siege}
-                tr
-                  td.text-noir RCCM
-                  td.text-left
-                    | #{dossier.contre.pm.c_rccm}
-                tr
-                  td.text-noir NIF
-                  td.text-left
-                    | #{dossier.contre.pm.c_nif}
-                tr
-                  td.text-noir Représentant
-                  td.text-left
-                    | #{dossier.contre.pm.c_representant}
-                tr
-                  td.text-noir Téléphone
-                  td.text-left
-                    | #{dossier.contre.pm.cm_tel}
-                tr
-                  td.text-noir Email
-                  td.text-left
-                    | #{dossier.contre.pm.cm_email}
     #calendrierMiseEtat
       .noteWrap.col-md-10.col-md-offset-1
         br
@@ -1297,7 +1254,7 @@ block content
                   else
                     +bouton_save_mee(dossier._id, '', '')
                 .col-md-offset-1.col-md-1.text-center
-                  a#mee_btn.btn.btn-blue(onclick='mise_en_etat("mee");')
+                  a#mee_btn.btn.btn-blue(onclick='mise_en_etat("mee");') 
                     span.fa.fa-plus
                     | Ajouter
     #dilligence

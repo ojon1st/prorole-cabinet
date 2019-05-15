@@ -7,8 +7,11 @@ block content
         li
           a(href='/')
             | Accueil
+        li
+          a(href='/dossiers')
+            | Repertoire de dossiers
         li.active
-          | Repertoire de dossiers
+          | Tableau synoptique
 
   .row
     .col-md-12
@@ -16,8 +19,8 @@ block content
       .panel.panel-white
         .panel-heading
           h4.panel-title
-            | Repertoire de 
-            span.text-bold dossiers
+            | Tableau 
+            span.text-bold synoptique
           .panel-tools
             .dropdown
               a.btn.btn-xs.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
@@ -40,26 +43,6 @@ block content
               <i class="fa fa-times"></i>
               </a>
         .panel-body
-          .row
-            .col-md-12.space20
-              form.form-horizontal(method='POST', action='')
-                .row
-                  .form-group
-                    label.col-md-1.control-label
-                      | Client :
-                    .col-md-3  
-                      select#client.form-control(name='client', onchange='serach_autorized(this)')
-                        option(value='null') Selectionner un client
-                        each dossier in list_dossiers
-                          if(dossier.pour.p_type == 'pp')
-                            option(value=dossier.pour._id) #{dossier.pour.pp.p_prenom} #{dossier.pour.pp.p_nom}
-                          if(dossier.pour.p_type == 'pm')
-                            option(value=dossier.pour._id) #{dossier.pour.pm.p_denomination}
-                    #valide_select.col-md-1.hidden
-                      a#valide_btn.btn.btn-light-azure.btn-block
-                        i.fa.fa-search.fa-lg
-                      //-a#valide_btn.btn.btn-light-azure.btn-block.show-calendar(href='#tableauSypnotique')
-                        i.fa.fa-search.fa-lg
           .row  
             .col-md-12  
               .table-responsive
@@ -93,20 +76,6 @@ block content
                           +tableau_dossiers
                             a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.pm.p_denomination} c/ #{dossier.contre.pm.c_denomination}
                         - i++
-          .hidden
-            #tableauSypnotique
-              .noteWrap.col-md-10.col-md-offset-1
-                br
-                h3 Tableau synoptique
-                br
-                table#projects.table.table-striped.table-bordered.table-hover
-                  thead
-                    tr
-                      th N°
-                      th Réf.
-                      th Parties
-                  tbody
-                    #client
 append jscripts
   // start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
   script(src='/assets/plugins/holder/holder.js')

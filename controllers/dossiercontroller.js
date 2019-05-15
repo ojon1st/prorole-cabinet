@@ -60,6 +60,31 @@ exports.dossier_list = function (req, res, next) {
 
 };
 
+exports.found_client_get = function (req, res, next) {
+
+  // Get all dossier for form
+  async.parallel({
+    dossiers: function (callback) {
+      Dossier.find({pour: req.params.id})
+        .select({ "_id": 1, "ref_d": 1, "pour":1, "contre":1})
+        .populate('pour')
+        .populate('contre')
+        .populate('utilisateur')
+        .sort({ _id: -1 })
+        .exec(callback);
+    },
+    
+  }, function (err, results) {
+    if (err) {
+      return next(err);
+    }
+    
+    res.render('dossiers/dossier_found', {
+      list_dossiers: results.dossiers
+    });
+  });
+};
+
 function cleanArray(array) {
   var i, j, len = array.length,
     out = [],

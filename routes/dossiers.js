@@ -42,6 +42,9 @@ router.get('/en_cours', dossier_controller.dossiers_en_cours);
 // GET list of current dossiers
 router.get('/repartition', dossier_controller.repartition);
 
+// Rechercher client pour tableau synoptique
+router.get('/dossier/:id/found', dossier_controller.found_client_get); 
+
 // Recuperation de dossiers sans date de renvoi
 router.get('/manques', instruction_controller.get_manques)
 
