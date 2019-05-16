@@ -50,7 +50,11 @@ block content
                   th Référence
                   th Nom de parties
                   th Juridiction
-                  th Renvois
+                  th
+                    if(title == 'renvois au rôle général')
+                      | Delais
+                    else
+                      | Renvois
               tbody
                 - var i = 1
                 each dossier in list_dossiers

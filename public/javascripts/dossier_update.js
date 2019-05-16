@@ -292,12 +292,12 @@ function mise_en_etat(le_form){ // x = le nbre de dfois qu'on appelle le form et
   var i = 0;
   if (le_form == 'mee'){
     i = mee;
+    $("#"+le_form).append('<div class="row"><div class="col-md-2"><label class="control-label text-bold">Conclusions</label><div><label class="radio-inline"><input type="radio" class="grey contributor-gender" value="nous" name="conclusion_'+le_form+'_'+i+'">Nous</label><label class="radio-inline"><input type="radio" class="grey contributor-gender" value="parties adverses" name="conclusion_'+le_form+'_'+i+'">Parties adverses</label></div></div><div class="col-md-2"><label class="control-label text-bold">Du</label><input name="du_'+le_form+'_'+i+'" class="form-control date-picker" type="text" data-date-format="dd-mm-yyyy" data-date-viewmode="years" placeholder="Saisir une date" /></div><div class="col-md-2"><label class="control-label">Au</label><input name="au_'+le_form+'_'+i+'" class="form-control date-picker" type="text" data-date-format="dd-mm-yyyy" data-date-viewmode="years" placeholder="Saisir une date" /></div><div class="col-md-2 text-bold"><label class="control-label" for="">À</label><input name="h_'+le_form+'_'+i+'" class="form-control time-picker popovers" type="time" data-original-title="" data-content="Chiffre" data-placement="top" data-trigger="hover" onkeyup="this.value=this.value.replace(/\D/g,\'\')" value="15:00"/></div><div class="col-md-4"><label class="control-label"></label><textarea name="com_'+le_form+'_'+i+'" class="form-control" placeholder="Texte"></textarea></div></div><br/>');
   } else if (le_form == 'dil'){
     i = dil;
+    $("#"+le_form).append('<div class="row"><div class="col-md-2"><label class="control-label text-bold">Du</label><input name="du_'+le_form+'_'+i+'" class="form-control date-picker" type="text" data-date-format="dd-mm-yyyy" data-date-viewmode="years" placeholder="Saisir une date" /></div><div class="col-md-2"><label class="control-label">Au</label><input name="au_'+le_form+'_'+i+'" class="form-control date-picker" type="text" data-date-format="dd-mm-yyyy" data-date-viewmode="years" placeholder="Saisir une date" /></div><div class="col-md-2 text-bold"><label class="control-label" for="">À</label><input name="h_'+le_form+'_'+i+'" class="form-control time-picker popovers" type="time" data-original-title="" data-content="Chiffre" data-placement="top" data-trigger="hover" onkeyup="this.value=this.value.replace(/\D/g,\'\')" value="15:00"/></div><div class="col-md-6"><label class="control-label"></label><textarea name="com_'+le_form+'_'+i+'" class="form-control" placeholder="Texte"></textarea></div></div><br/>');
   }
 
-  $("#"+le_form).append('<div class="row"><div class="col-md-2"><label class="control-label text-bold">Du</label><input name="du_'+le_form+'_'+i+'" class="form-control date-picker" type="text" data-date-format="dd-mm-yyyy" data-date-viewmode="years" placeholder="Saisir une date" /></div><div class="col-md-2"><label class="control-label">Au</label><input name="au_'+le_form+'_'+i+'" class="form-control date-picker" type="text" data-date-format="dd-mm-yyyy" data-date-viewmode="years" placeholder="Saisir une date" /></div><div class="col-md-2 text-bold"><label class="control-label" for="">À</label><input name="h_'+le_form+'_'+i+'" class="form-control time-picker popovers" type="time" data-original-title="" data-content="Chiffre" data-placement="top" data-trigger="hover" onkeyup="this.value=this.value.replace(/\D/g,\'\')" value="15:00"/></div><div class="col-md-6 "><label class="control-label"></label><textarea name="com_'+le_form+'_'+i+'" class="form-control" placeholder="Texte"></textarea></div></div><br/>');
-  
   addDatePicker();
 
   if (le_form == 'mee'){
@@ -318,16 +318,19 @@ function mise_en_etat_create_post (id_dossier,id_instruction, juridiction){
   for (i=0; i<mee; i++){
     var data = {};
     
+    var conclusion_name = "conclusion_mee_"+i;
     var du_name = "du_mee_"+i;
     var au_name = "au_mee_"+i;
     var h_name = "h_mee_"+i;
     var com_name = "com_mee_"+i;
     
+    var con = $("input[name='"+conclusion_name+"']").val()
     var du = $("input[name='"+du_name+"']").val()
     var au = $("input[name='"+au_name+"']").val()
     var h = $("input[name='"+h_name+"']").val()
     var com_name = $("textarea[name='"+com_name+"']").val();
     
+    data.con = con;
     data.du = du;
     data.au = au;
     data.h = h;

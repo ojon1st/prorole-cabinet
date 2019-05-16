@@ -13,10 +13,6 @@ jQuery(document).ready(function () {
       motif = $("#motif_instance").val("");
       date = $("#date_instance").val("");
     }
-    /*$.get("EnregistrerReport.php",{motif:motif,date:date,id_dossier:id_dossier,type_hidden:type_hidden},function(dat){
-    	
-    });*/
-
   });
 
   $("#gestion").click(function () {

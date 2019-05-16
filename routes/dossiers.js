@@ -51,6 +51,9 @@ router.get('/manques', instruction_controller.get_manques)
 // Recuperation de dossiers dont le type renvoi est role general
 router.get('/role_general', instruction_controller.get_renvoi_role_general)
 
+// Recuperation de dossiers dont le type renvoi est role general
+router.get('/conclusion_a_prendre', instruction_controller.get_renvoi_general)
+
 // SAVE DOCUMENTS RELATIVE TO DOSSIER
 router.post('/dossier/:id/save_pieces/:type_piece',upload.any() , dossier_controller.save_pieces);
 

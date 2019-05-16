@@ -185,6 +185,7 @@ exports.mise_en_etat_create_post = [
           /*console.log(doc)
           return;*/
           results.theinstruction.calendrier.push({
+            c_conclusion: doc.con,
             c_debut: moment(doc.du, "DD-MM-YYYY"),
             c_fin: moment(doc.au, "DD-MM-YYYY"),
             c_heure: doc.h,
@@ -205,8 +206,6 @@ exports.mise_en_etat_create_post = [
           return;
         });
       } 
-
-
     });
     }
 ];
@@ -447,13 +446,39 @@ exports.get_renvoi_role_general = function(req, res, next){
       var renvoi_role_general = [];
       results.renvois_rgs.forEach(function(renvois_rg){
         if(renvois_rg.renvois.length > 0 && renvois_rg.renvois[0].r_type == 'renvoi au role general'){
-          //console.log(last_renvoi);
+          //console.log(renvois_rg);
           renvoi_role_general.push(renvois_rg)
         }
       });
       //console.log(renvoi_role_general)
       
       res.render('dossiers/dossier_tri_instruction', { title:'renvois au rôle général', list_dossiers: renvoi_role_general});
+      
+  });
+};
+
+exports.get_renvoi_general = function(req, res, next){
+  async.parallel({
+    
+    renvois_rgs: function(callback){
+      Instruction.find({}, {'renvois':{'$slice':-1},'_id':1,'decision':1, 'dossier':1, 'juridiction':1})
+          .populate({ path: 'dossier', model: 'Dossier', populate: { path: 'pour contre'} })
+          .populate('juridiction')
+          .exec(callback);
+    },
+    }, function (err, results) {
+      if (err) { return next(err); }
+     
+      var renvoi_general = [];
+      results.renvois_rgs.forEach(function(renvois_rg){
+        if(renvois_rg.renvois.length > 0 && renvois_rg.renvois[0].r_type == 'nos conclusions' && renvois_rg.calendrier[0].c_commentaire == 'nous'){
+          console.log(renvois_rg);
+          renvoi_general.push(renvois_rg)
+        }
+      });
+      console.log(renvoi_general)
+      
+      res.render('dossiers/dossier_tri_instruction', { title:'conclusions à prendre', list_dossiers: renvoi_general});
       
   });
 };

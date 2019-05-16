@@ -8,7 +8,7 @@ var InstructionSchema = new Schema({
   phase:{type: Schema.ObjectId, ref: 'Phase'},
   degre_instruction:{type:String},
   juridiction:{type: Schema.ObjectId, ref: 'Juridiction'},
-  calendrier:[{c_debut:Date,c_fin:Date,c_heure:String,c_commentaire:String}],
+  calendrier:[{c_conclusion:String,c_debut:Date,c_fin:Date,c_heure:String,c_commentaire:String}],
   diligence:[{d_debut:Date,d_fin:Date,d_heure:String,d_commentaire:String}],
   renvois:[{r_date:Date, r_motif:String,r_type:String}],
   decision:{type:String},

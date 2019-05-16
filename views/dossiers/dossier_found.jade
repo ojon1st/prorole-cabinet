@@ -49,29 +49,29 @@ block content
                 table#sample-table-2.table.table-striped.table-hover
                   thead
                     tr
-                      th N°
-                      th Référence
-                      th Nom de parties
-                      th Matière
-                      th Resumé du litige
-                      th Enjeu
-                      th Gain - Perte
-                      th Etat de la procédure
+                      th.text-center(style='width:5%') N°
+                      th.text-center(style='width:10%') Référence
+                      th.text-center(style='width:15%') Nom de parties
+                      th.text-center(style='width:15%') Matière
+                      th.text-center(style='width:25%') Resumé du litige
+                      th.text-center(style='width:10%') Enjeu
+                      th.text-center(style='width:10%') Gain - Perte
+                      th.text-center(style='width:10%') Etat de la procédure
                   tbody
                     - var i = 1
                     each dossier in list_dossiers
                       mixin tableau_dossiers
                         tr.go_to_dossier
-                          td !{i}
-                          td #{dossier.ref_d}
-                          td 
+                          td.text-center !{i}
+                          td.text-center #{dossier.ref_d}
+                          td.text-center 
                             if block
                               block
-                          td #{dossier.litige}
-                          td #{dossier.resume}
-                          td #{dossier.montant}
-                          td.text-capitalize #{dossier.nature}
-                          td 
+                          td.text-center #{dossier.litige}
+                          td.text-center.text-justify #{dossier.resume}
+                          td.text-center #{dossier.montant}
+                          td.text-center.text-capitalize #{dossier.nature}
+                          td.text-center 
                       if(dossier.pour && dossier.contre)
                         if(dossier.pour.p_type == 'pp' && dossier.contre.c_type == 'pp')
                           +tableau_dossiers
