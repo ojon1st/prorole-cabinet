@@ -111,6 +111,21 @@ block content
             #physique_pour.hidden
               .form-group
                 label.col-sm-3.control-label
+                  | Clients :
+                .col-sm-8
+                  if (pours)
+                    select#pour.form-control(name='clientP')
+                      option(disabled='', selected='', value='')
+                      each pour in pours
+                        if(pour.p_type == 'pp')
+                          option(value=pour._id) #{pour.pp.p_prenom} #{pour.pp.p_nom}
+                    span.form_error
+                  else
+                    select#pour.form-control(name='clientP' readonly)
+                      option(disabled='', selected='', value='') Veuillez créer des clients
+                    span.form_error
+              .form-group
+                label.col-sm-3.control-label
                   | Nom 
                   span.symbol.required
                   |  :
@@ -219,6 +234,21 @@ block content
                         i.fa.fa-plus
                         |  Autres avocats
             #morale_pour.hidden
+              .form-group
+                label.col-sm-3.control-label
+                  | Clients :
+                .col-sm-8
+                  if (pours)
+                    select#pour.form-control(name='clientM')
+                      option(disabled='', selected='', value='')
+                      each pour in pours
+                        if(pour.p_type == 'pm')
+                          option(value=pour._id) #{pour.pm.p_denomination}
+                    span.form_error
+                  else
+                    select#pour.form-control(name='clientM' readonly)
+                      option(disabled='', selected='', value='') Veuillez créer des clients
+                    span.form_error
               .form-group
                 label.col-sm-3.control-label
                   | Dénomination S. 
@@ -374,6 +404,21 @@ block content
             #physique_contre.hidden
               .form-group
                 label.col-sm-3.control-label
+                  | Parties adverses :
+                .col-sm-8
+                  if (contres)
+                    select#contre.form-control(name='adverseP')
+                      option(disabled='', selected='', value='')
+                      each contre in contres
+                        if(contre.c_type == 'pp')
+                          option(value=contre._id) #{contre.pp.c_prenom} #{contre.pp.c_nom}
+                    span.form_error
+                  else
+                    select#contre.form-control(name='adverseP' readonly)
+                      option(disabled='', selected='', value='') Veuillez créer des contres
+                    span.form_error
+              .form-group
+                label.col-sm-3.control-label
                   | Nom 
                   span.symbol.required
                   |  :
@@ -482,6 +527,21 @@ block content
                         i.fa.fa-plus
                         |  Autres avocats
             #morale_contre.hidden
+              .form-group
+                label.col-sm-3.control-label
+                  | Parties adverses :
+                .col-sm-8
+                  if (contres)
+                    select#contre.form-control(name='adverseM')
+                      option(disabled='', selected='', value='')
+                      each contre in contres
+                        if(contre.c_type == 'pm')
+                          option(value=contre._id) #{contre.pm.c_denomination}
+                    span.form_error
+                  else
+                    select#contre.form-control(name='adverseM' readonly)
+                      option(disabled='', selected='', value='') Veuillez créer des contres
+                    span.form_error
               .form-group
                 label.col-sm-3.control-label
                   | Dénomination S. 

@@ -445,7 +445,7 @@ exports.get_renvoi_role_general = function(req, res, next){
      
       var renvoi_role_general = [];
       results.renvois_rgs.forEach(function(renvois_rg){
-        if(renvois_rg.renvois.length > 0 && renvois_rg.renvois[0].r_type == 'renvoi au role general'){
+        if(renvois_rg.renvois.length > 0 && renvois_rg.renvois[0].r_type == 'renvoi au role general' && renvois_rg.decision == null){
           //console.log(renvois_rg);
           renvoi_role_general.push(renvois_rg)
         }
@@ -461,18 +461,16 @@ exports.get_renvoi_general = function(req, res, next){
   async.parallel({
     
     renvois_rgs: function(callback){
-      Instruction.find({}, {'renvois':{'$slice':-1},'_id':1,'decision':1, 'dossier':1, 'juridiction':1})
+      Instruction.find({}, {'renvois':{'$slice':-1},'_id':1,'decision':1, 'dossier':1, 'juridiction':1, 'calendrier':1})
           .populate({ path: 'dossier', model: 'Dossier', populate: { path: 'pour contre'} })
           .populate('juridiction')
           .exec(callback);
     },
     }, function (err, results) {
       if (err) { return next(err); }
-     
       var renvoi_general = [];
       results.renvois_rgs.forEach(function(renvois_rg){
-        if(renvois_rg.renvois.length > 0 && renvois_rg.renvois[0].r_type == 'nos conclusions' && renvois_rg.calendrier[0].c_commentaire == 'nous'){
-          console.log(renvois_rg);
+        if(renvois_rg.renvois.length > 0 && renvois_rg.renvois[0].r_type == 'nos conclusions' && renvois_rg.calendrier[0].c_conclusion == 'nous' && renvois_rg.decision == null ){
           renvoi_general.push(renvois_rg)
         }
       });

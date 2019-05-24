@@ -224,10 +224,10 @@ block content
                     .col-md-12
                       .col-md-2
                         label.control-label.text-center.text-bold Du
-                        input.form-control.date-picker(name='', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years', placeholder='Saisir une date')
+                        input.form-control.date-picker(name='', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years', placeholder='Saisir une date' onchange='verifDate(this)')
                       .col-md-2
                         label.control-label.text-bold Au
-                        input.form-control.date-picker(name='', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years', placeholder='Saisir une date')
+                        input.form-control.date-picker(name='', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years', placeholder='Saisir une date' onchange='verifDate(this)')
                       .col-md-2.text-bold
                         label.control-label.text-bold(for='') À
                         input.form-control.time-picker.popovers(name='', type='time', data-original-title='', data-content='Chiffre', data-placement='top', data-trigger='hover', onkeyup="this.value=this.value.replace(/\D/g,\'\')")
@@ -261,10 +261,10 @@ block content
                     .col-md-12
                       .col-md-2
                         label.control-label.text-center.text-bold Du
-                        input.form-control.date-picker(name='', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years', placeholder='Saisir une date')
+                        input.form-control.date-picker(name='', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years', placeholder='Saisir une date' onchange='verifDate(this)')
                       .col-md-2
                         label.control-label.text-bold Au
-                        input.form-control.date-picker(name='', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years', placeholder='Saisir une date')
+                        input.form-control.date-picker(name='', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years', placeholder='Saisir une date' onchange='verifDate(this)')
                       .col-md-2.text-bold
                         label.control-label.text-bold(for='') À
                         input.form-control.time-picker.popovers(name='', type='time', data-original-title='', data-content='Chiffre', data-placement='top', data-trigger='hover', onkeyup="this.value=this.value.replace(/\D/g,\'\')")
@@ -296,10 +296,10 @@ block content
                     .row
                       .col-md-2
                         label.control-label.text-center.text-bold Du
-                        input.form-control.date-picker(name='', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years', placeholder='Saisir une date')
+                        input.form-control.date-picker(name='', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years', placeholder='Saisir une date' onchange='verifDate(this)')
                       .col-md-2
                         label.control-label.text-bold Au
-                        input.form-control.date-picker(name='', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years', placeholder='Saisir une date')
+                        input.form-control.date-picker(name='', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years', placeholder='Saisir une date' onchange='verifDate(this)')
                       .col-md-2.text-bold
                         label.control-label.text-bold(for='') À
                         input.form-control.time-picker.popovers(name='', type='time', data-original-title='', data-content='Chiffre', data-placement='top', data-trigger='hover', onkeyup="this.value=this.value.replace(/\D/g,\'\')")
@@ -384,16 +384,15 @@ block content
                             .col-md-2(style='padding:0')
                               select.form-control(id='type_ins_#{division}')
                                 option(disabled='', selected='', value='') Types
-                                option(value='renvoi simple') R.
-                                option(value='renvoi ferme') RF.
-                                option(value='renvoi au role general') RRG.
-                                option(value='renvoi d\'office') RO
-                                opion(value='non appele') NO
-                                option(value='mise en delibere') D.
-                                option(value='renvoi d\'office') RO
-                                opion(value='rabat de delibere puis renvoi') DRR.
-                                option(value='delibere vide') D. OK
-                                option(value='nos conclusions') N. C.
+                                option(value='renvoi simple' title='Renvoi simple') R.
+                                option(value='renvoi ferme' title='Renvoi ferme') RF.
+                                option(value='renvoi au role general' title='Renvoi au rôle général') RRG.
+                                option(value='renvoi d\'office' title='Renvoi d\'office') RO
+                                option(value='non appele' title='Non appelé') NA
+                                option(value='mise en delibere' title='Mise en délibéré') D.
+                                option(value='rabat de delibere puis renvoi' title='Rabat de délibéré puis renvoi') DRR.
+                                option(value='delibere vide' title='Délibéré vide') D. OK
+                                option(value='nos conclusions' title='Nos conclusions') N. C.
                             .col-md-6
                               .input-group
                                 span.input-icon
@@ -415,18 +414,25 @@ block content
                           textarea.form-control(name='decision', id='decision_#{division}', placeholder='', cols='30', rows='7')
                     if (instruction && (!instruction.decision || instruction.decision == '') && instruction.juridiction.division == division)
                       .form-group
-                        .col-sm-offset-2.col-sm-4
+                        .col-sm-6
                           label.radio-inline
-                            input.grey(type='radio', value='gagner', name='resultat')
+                            input.grey(type='radio', value='gain', name='etat')
                             | Gain de cause
                           label.radio-inline
                             ///*name='optionsRadios'*/
-                            input.grey(type='radio', value='perdre', name='resultat')
-                            | Condamnation
-                      .form-group  
+                            input.grey(type='radio', value='perte', name='etat')
+                            | Perte de cause
                         .col-sm-offset-1.col-sm-3.text-center
                           input.btn.btn-dark-azure(type='button', onclick='save_decision("#{dossier._id}","#{instruction._id}","#{division}")' , value='Sauvegarde du Délibéré')
-          
+                    if (instruction && (instruction.decision || instruction.decision != '') && instruction.juridiction.division == division)
+                      .form-group
+                        label.col-sm-4.control-label
+                          | Télécharger le délibéré :
+                        .col-sm-6
+                          input.btn.btn-info(type='file' name='delibere_filde')
+                        
+                        a.col-sm-offset-1.col-sm-1.btn.btn-dark-beige(onclick='')
+                          span.fa.fa-check
                   .buttons-widget
                     .tabbable.tabs-below
                       .tab-content
