@@ -484,6 +484,26 @@ function addDatePicker(){
       });
 };
 
+function upload_decision_file(file, instruction_id) {
+  
+  var mon_pdf = new FormData();
+  mon_pdf.append('decision_file', file);
+  console.log(mon_pdf);
+  var ma_route = '/dossiers/dossier/instruction/' + instruction_id + '/save_delibere_file';
+  
+  $.ajax({
+    url: ma_route,
+    type: 'POST',
+    data: mon_pdf,
+    cache:false,
+    processData: false, // tell jQuery not to process the data
+    contentType: false, // tell jQuery not to set contentType 
+  }).done(function( data ) {
+      location.reload();
+  })
+  .fail(console.log)
+};
+
 function uploadfiles(file, user_id) {
   /*console.log(file)
   return;*/
@@ -498,14 +518,8 @@ function uploadfiles(file, user_id) {
     cache:false,
     processData: false, // tell jQuery not to process the data
     contentType: false, // tell jQuery not to set contentType 
-    
-    
   }).done(function( data ) {
-
-      
-
       location.reload();
-
   })
   .fail(console.log)
 };

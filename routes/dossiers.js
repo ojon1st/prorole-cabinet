@@ -51,8 +51,11 @@ router.get('/manques', instruction_controller.get_manques)
 // Recuperation de dossiers dont le type renvoi est role general
 router.get('/role_general', instruction_controller.get_renvoi_role_general)
 
-// Recuperation de dossiers dont le type renvoi est role general
+// Recuperation de dossiers dont le type renvoi est nos conclusion et la conclusion dans le calendrier est nous
 router.get('/conclusion_a_prendre', instruction_controller.get_renvoi_general)
+
+// Recuperation de dossiers dont la decision n'est pas telechargee
+router.get('/decision_a_lever', instruction_controller.get_decision_a_lever)
 
 // SAVE DOCUMENTS RELATIVE TO DOSSIER
 router.post('/dossier/:id/save_pieces/:type_piece',upload.any() , dossier_controller.save_pieces);
@@ -90,7 +93,7 @@ router.post('/dossier/:id/instruction/:id_instruction/is_decision', instruction_
 // Sauvegarger la décision
 router.post('/dossier/:id/instruction/:id_ins/decision/save', instruction_controller.decision_save)
 
-
-
+// Sauvegarger la décision
+router.post('/dossier/instruction/:id/save_delibere_file',upload.any() , instruction_controller.save_decision_file)
 
 module.exports = router;

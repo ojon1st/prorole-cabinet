@@ -50,11 +50,12 @@ block content
                   th Référence
                   th Nom de parties
                   th Juridiction
-                  th
-                    if(title == 'renvois au rôle général')
-                      | Delais
-                    else
-                      | Renvois
+                  if(title != 'décision à prendre')
+                    th
+                      if(title == 'renvois au rôle général')
+                        | Delais
+                      else
+                        | Renvois
               tbody
                 - var i = 1
                 each dossier in list_dossiers
@@ -68,8 +69,9 @@ block content
                           block
                       td.text-capitalize
                         | #{dossier.juridiction.division} #{dossier.juridiction.nom}
-                      td 
-                        | #{moment(dossier.renvois[0].r_date).format("DD-MM-YYYY")}
+                      if(title != 'décision à prendre')
+                        td 
+                          | #{moment(dossier.renvois[0].r_date).format("DD-MM-YYYY")}
                   if(dossier.dossier.pour && dossier.dossier.contre)
                     if(dossier.dossier.pour.p_type == 'pp' && dossier.dossier.contre.c_type == 'pp')
                       +tableau_dossiers

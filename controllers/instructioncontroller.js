@@ -13,6 +13,16 @@ const {
   sanitizeBody
 } = require('express-validator/filter');
 
+var cloudinary = require('cloudinary');
+
+//const NotifySend = require('node-notifier').NotifySend;
+//var notifier = new NotifySend();
+cloudinary.config({ 
+    cloud_name: 'prorole', 
+    api_key: '675842782989895', 
+    api_secret: 'Lc5kh5dKKKla8Brcci87Jf8BOL0' 
+});
+
 exports.instruction_create_post = [
 
     // Validate that the name field is not empty.
@@ -480,3 +490,49 @@ exports.get_renvoi_general = function(req, res, next){
       
   });
 };
+
+exports.get_decision_a_lever = function(req, res, next){
+  async.parallel({
+    
+    decision_uploads : function(callback){
+      Instruction.find({}, {'decision':1, '_id':1, 'dossier':1, 'juridiction':1, 'deliberer_file':{'$slice':-1}})
+          .populate({ path: 'dossier', model: 'Dossier', populate: { path: 'pour contre'} })
+          .populate('juridiction')
+          .exec(callback);
+    },
+    }, function (err, results) {
+      if (err) { return next(err); }
+      var no_upload = [];
+      console.log( results.decision_uploads)
+      results.decision_uploads.forEach(function(decision_upload){
+        if(decision_upload.decision != null && decision_upload.deliberer_file != null){
+          no_upload.push(decision_upload)
+        }
+      });
+      console.log(no_upload)
+      
+      res.render('dossiers/dossier_tri_instruction', { title:'décision à prendre', list_dossiers: no_upload});
+      
+  });
+};
+
+exports.save_decision_file = [
+  async (req, res, next) => {  
+    // Is there any file?
+    if(!(req.file && (req.file.fieldname == 'decision_file'))) return next(new Error('No decision_file to upload'));
+
+    // Upload to Cloudinary
+  try {
+    var result = await cloudinary.v2.uploader.upload(req.file.path, {folder:'decision/files'}); // rajouter la var nom du cabinet
+    console.log(result.secure_url.toString());
+    Instruction.findByIdAndUpdate(req.params.id, {decision_file: result.secure_url.toString()}, (err) => {
+        if(err) return next(err);
+        
+        res.send(result);
+    });
+  } catch(error) {
+    console.log(error)
+    return next(new Error('Failed to upload decision_file'));
+  }
+}
+];

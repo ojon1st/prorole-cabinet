@@ -12,6 +12,7 @@ var InstructionSchema = new Schema({
   diligence:[{d_debut:Date,d_fin:Date,d_heure:String,d_commentaire:String}],
   renvois:[{r_date:Date, r_motif:String,r_type:String}],
   decision:{type:String},
+  decision_file:{type: String },
   i_update:{type:Date}
   //type: Date, default:moment() 
 });

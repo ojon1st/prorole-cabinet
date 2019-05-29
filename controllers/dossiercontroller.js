@@ -656,10 +656,6 @@ exports.save_pieces = [
             dossier_piece = 'documents/courriers_divers';
             tableau_piece = 'courriers_divers';
             break;
-            case 'delibere_piece':
-            dossier_piece = 'documents/delibere_piece';
-            tableau_piece = 'delibere_piece';
-            break;
           
           default:
             // code block

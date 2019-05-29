@@ -21,14 +21,8 @@ function uploadavatar(file, user_id) {
     cache:false,
     processData: false, // tell jQuery not to process the data
     contentType: false, // tell jQuery not to set contentType 
-    
-    
   }).done(function( data ) {
-
-      
-
       location.reload();
-
   })
   .fail(console.log)
 };

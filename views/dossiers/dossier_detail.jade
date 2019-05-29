@@ -406,6 +406,13 @@ block content
                         .col-sm-12
                           textarea.form-control(name='decision', id='decision_#{division}', placeholder='Délibéré', cols='30', rows='7' readonly)
                             | #{instruction.decision}
+                      .form-group
+                        label.col-sm-4.control-label
+                          | Télécharger le délibéré :
+                        .col-sm-6
+                          input.btn.btn-info(type='file' name='decision_file' onchange='upload_decision_file(this.files[0],"#{instruction._id}")' accept='application/pdf' enctype='multipart/form-data')
+                        //a.col-sm-offset-1.col-sm-1.btn.btn-dark-beige(onclick='')
+                          span.fa.fa-check
                     else
                       .form-group
                         label.col-sm-3.control-label
@@ -424,15 +431,6 @@ block content
                             | Perte de cause
                         .col-sm-offset-1.col-sm-3.text-center
                           input.btn.btn-dark-azure(type='button', onclick='save_decision("#{dossier._id}","#{instruction._id}","#{division}")' , value='Sauvegarde du Délibéré')
-                    if (instruction && (instruction.decision || instruction.decision != '') && instruction.juridiction.division == division)
-                      .form-group
-                        label.col-sm-4.control-label
-                          | Télécharger le délibéré :
-                        .col-sm-6
-                          input.btn.btn-info(type='file' name='delibere_filde')
-                        
-                        a.col-sm-offset-1.col-sm-1.btn.btn-dark-beige(onclick='')
-                          span.fa.fa-check
                   .buttons-widget
                     .tabbable.tabs-below
                       .tab-content
