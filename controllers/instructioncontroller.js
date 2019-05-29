@@ -505,7 +505,7 @@ exports.get_decision_a_lever = function(req, res, next){
       var no_upload = [];
       console.log( results.decision_uploads)
       results.decision_uploads.forEach(function(decision_upload){
-        if(decision_upload.decision != null && decision_upload.deliberer_file != null){
+        if(decision_upload.decision != null && decision_upload.decision_file == null){
           no_upload.push(decision_upload)
         }
       });
