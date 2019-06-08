@@ -6,8 +6,8 @@ var Schema = mongoose.Schema;
 var PourSchema = new Schema({
   p_type:{type:String, required:true}, //Pour type (pp personne physique ou pm personne morale)
   pp:{
-    p_prenom:{type:String},
-    p_nom:{type:String},
+    p_prenom: { iv: String, encryptedData: String }, //{type:String},
+    p_nom:{ iv: String, encryptedData: String }, // {type:String},
     p_profession:{type:String},
     p_nationalite:{type:String},
     p_dob:{type:Date},
@@ -17,7 +17,7 @@ var PourSchema = new Schema({
     pp_email:{type:String}
   },
   pm:{
-    p_denomination:{type:String},
+    p_denomination:{ iv: String, encryptedData: String }, //{type:String},
     p_rs:{type:String}, //rs: raison sociale ----- on peut stocker toutes les rs ds une table à part
     p_capital:{type:Number},
     p_devise:{type:String}, //on doit rajouter une devise à coté du capital dans un selectbox

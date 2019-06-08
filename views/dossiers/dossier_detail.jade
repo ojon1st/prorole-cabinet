@@ -76,18 +76,19 @@ block content
                   .form-group
                     label.col-sm-9.dos-text
                       if dossier.pour.p_type == 'pp'
-                        | Pour : #{dossier.pour.pp.p_prenom} #{dossier.pour.pp.p_nom}
+                        | Pour : #{endcrypt.decrypt(dossier.pour.pp.p_prenom)} #{endcrypt.decrypt(dossier.pour.pp.p_nom)}
+                        | Pour : #{endcrypt.decrypt(dossier.pour.pp.p_prenom)} #{endcrypt.decrypt(dossier.pour.pp.p_nom)}
                       else if dossier.pour.p_type == 'pm'
-                        | Pour: #{dossier.pour.pm.p_denomination}
+                        | Pour: #{endcrypt.decrypt(dossier.pour.pm.p_denomination)}
                     .col-sm-3
                       a.btn.btn-link.show-calendar(href='#infoPour')
                         span.fa.fa-plus  d'infos
                   .form-group
                     label.col-sm-9.dos-text
                       if dossier.contre.c_type == 'pp'
-                        | Contre : #{dossier.contre.pp.p_prenom} #{dossier.contre.pp.c_nom}
+                        | Contre : #{endcrypt.decrypt(dossier.contre.pp.p_prenom)} #{endcrypt.decrypt(dossier.contre.pp.c_nom)}
                       else if dossier.contre.c_type == 'pm'
-                        | Contre: #{dossier.contre.pm.c_denomination}
+                        | Contre: #{endcrypt.decrypt(dossier.contre.pm.c_denomination)}
                     .col-sm-3
                       a.btn.btn-link.show-calendar(href='#infoContre')
                         span.fa.fa-plus  d'infos
@@ -112,8 +113,18 @@ block content
                     label.col-sm-3.dos-text
                       | Montant de l'enjeu :
                     .col-sm-5
-                      if (dossier.montant)
-                        input.form-control.readonly(type='text', name='montant' value='#{dossier.montant}', readonly=true)
+                      script.
+                        function isEmpty(obj) {
+                            for(var key in obj) {
+                                if(obj.hasOwnProperty(key))
+                                    return false;
+                            }
+                            return true;
+                        }
+                        var typeOmontant = isEmpty(dossier.montant);
+                        var typeOresume = isEmpty(dossier.resume);
+                      if (dossier.montant && typeOmontant == false)
+                        input.form-control.readonly(type='text', name='montant' value='#{endcrypt.decrypt(dossier.montant)}', readonly=true)
                       else 
                         input.form-control(type='text', name='montant')
                     .col-sm-4
@@ -139,9 +150,9 @@ block content
                     label.col-sm-3.control-label
                       | Résumé du litige :
                     .col-sm-8
-                      if (dossier.resume)
+                      if (dossier.resume && typeOresume == false)
                         textarea.form-control(name='resume', placeholder='Résumé du litige', cols='30', rows='10', readonly=true)
-                          | #{dossier.resume}
+                          | #{endcrypt.decrypt(dossier.resume)}
                       else
                         textarea.form-control(name='resume', placeholder='Résumé du litige', cols='30', rows='10')
                   .form-group
@@ -788,7 +799,7 @@ block content
               tr
                 td.text-noir Dénomination
                 td.text-left
-                  | #{dossier.pour.pm.p_denomination}
+                  | #{endcrypt.decrypt(dossier.pour.pm.p_denomination)}
               tr
                 td.text-noir Forme Sociale
                 td.text-left
@@ -843,7 +854,7 @@ block content
               tr
                 td.text-noir Nom
                 td.text-left
-                  | #{dossier.contre.pp.c_nom}
+                  | #{endcrypt.decrypt(dossier.contre.pp.c_nom)}
               tr
                 td.text-noir Profession
                 td.text-left

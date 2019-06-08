@@ -68,7 +68,7 @@ block content
                   th Nom de parties
               tbody
                 - var i = 1
-                each dossier in list_dossiers
+                each dossier in list_dossiers  
                   mixin tableau_dossiers
                     tr.go_to_dossier
                       td !{i}
@@ -79,16 +79,16 @@ block content
                   if(dossier.pour && dossier.contre)
                     if(dossier.pour.p_type == 'pp' && dossier.contre.c_type == 'pp')
                       +tableau_dossiers
-                        a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.pp.p_prenom} #{dossier.pour.pp.p_nom} c/ #{dossier.contre.pp.c_prenom} #{dossier.contre.pp.c_nom}
+                        a(class='button' href="/dossiers/dossier/#{dossier._id}") #{endcrypt.decrypt(dossier.pour.pp.p_prenom)} #{endcrypt.decrypt(dossier.pour.pp.p_nom)} c/ #{endcrypt.decrypt(dossier.contre.pp.c_prenom)} #{endcrypt.decrypt(dossier.contre.pp.c_nom)}
                     if(dossier.pour.p_type == 'pp' && dossier.contre.c_type == 'pm')
                       +tableau_dossiers
-                        a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.pp.p_prenom} #{dossier.pour.pp.p_nom} c/ #{dossier.contre.pm.c_denomination}
+                        a(class='button' href="/dossiers/dossier/#{dossier._id}") #{endcrypt.decrypt(dossier.pour.pp.p_prenom)} #{endcrypt.decrypt(dossier.pour.pp.p_nom)} c/ #{endcrypt.decrypt(dossier.contre.pm.c_denomination)}
                     if(dossier.pour.p_type == 'pm' && dossier.contre.c_type == 'pp')
                       +tableau_dossiers
-                        a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.pm.p_denomination} c/ #{dossier.contre.pp.c_prenom} #{dossier.contre.pp.c_nom}
+                        a(class='button' href="/dossiers/dossier/#{dossier._id}") #{endcrypt.decrypt(dossier.pour.pm.p_denomination)} c/ #{endcrypt.decrypt(dossier.contre.pp.c_prenom)} #{endcrypt.decrypt(dossier.contre.pp.c_nom)}
                     if(dossier.pour.p_type == 'pm' && dossier.contre.c_type == 'pm')
                       +tableau_dossiers
-                        a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.pm.p_denomination} c/ #{dossier.contre.pm.c_denomination}
+                        a(class='button' href="/dossiers/dossier/#{dossier._id}") #{endcrypt.decrypt(dossier.pour.pm.p_denomination)} c/ #{endcrypt.decrypt(dossier.contre.pm.c_denomination)}
                     - i++
 
 append jscripts

@@ -32,6 +32,7 @@ const {
 
 // L'index de la page des dossiers nous redirige vers la liste des dossiers
 exports.index = function(req, res, next) {
+  
   res.redirect('/administrateur/utilisateurs');
 };
 // Display list of all Dossier.
@@ -132,8 +133,7 @@ exports.utilisateur_create = [
           });
         }}
       });
-    
-    
+
   }
 ];
 

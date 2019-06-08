@@ -13,6 +13,8 @@ var moment = require('moment');
 const flash = require('express-flash-notification');
 var cloudinary = require('cloudinary');
 
+var endcrypt = require('../middles/encryption.js')
+
 //const NotifySend = require('node-notifier').NotifySend;
 //var notifier = new NotifySend();
 cloudinary.config({ 
@@ -227,8 +229,8 @@ exports.dossier_create_post = [
       case 'pp':
         // alimentation du pour personne physique
 
-        pour.pp.p_prenom = req.body.p_prenom;
-        pour.pp.p_nom = req.body.p_nom;
+        pour.pp.p_prenom = endcrypt.encrypt(req.body.p_prenom);
+        pour.pp.p_nom = endcrypt.encrypt(req.body.p_nom);
         pour.pp.p_profession = req.body.p_profession;
         pour.pp.p_nationalite = req.body.p_nationalite;
         if(req.body.p_dob != '') pour.pp.p_dob = moment(req.body.p_dob, "DD-MM-YYYY");
@@ -239,14 +241,14 @@ exports.dossier_create_post = [
         if (Number(req.body.nb_other_client_pour) > 0) {
           for (i = 1; i <= Number(req.body.nb_other_client_pour); i++) {
             dossier.autres_pour.push({
-              prenom_nom: req.body["autres_pour_" + i]
+              prenom_nom: endcrypt.encrypt(req.body["autres_pour_" + i])
             });
           }
         };
         if (Number(req.body.nb_other_avocat_pour) > 0) {
           for (i = 1; i <= Number(req.body.nb_other_avocat_pour); i++) {
             dossier.autres_avocats_pour.push({
-              prenom_nom: req.body["autres_avocats_pour_prenom_nom_" + i],
+              prenom_nom: endcrypt.encrypt(req.body["autres_avocats_pour_prenom_nom_" + i]),
               tel: req.body["autres_avocats_pour_tel_" + i],
               email: req.body["autres_avocats_pour_email_" + i]
             });
@@ -256,7 +258,7 @@ exports.dossier_create_post = [
       case 'pm':
         // alimentation du pour personne morale
 
-        pour.pm.p_denomination = req.body.p_denomination;
+        pour.pm.p_denomination = endcrypt.encrypt(req.body.p_denomination);
         pour.pm.p_rs = req.body.p_rs;
         pour.pm.p_capital = req.body.p_capital.trim();
         pour.pm.p_devise = req.body.p_devise;
@@ -269,7 +271,7 @@ exports.dossier_create_post = [
         if (Number(req.body.nb_other_client_pour) > 0) {
           for (i = 1; i <= Number(req.body.nb_other_client_pour); i++) {
             dossier.autres_pour.push({
-              rs: req.body["autres_pour_" + i]
+              rs: endcrypt.encrypt(req.body["autres_pour_" + i])
             });
           }
         };
@@ -289,8 +291,8 @@ exports.dossier_create_post = [
     switch (req.body.c_type) {
       case 'pp':
 
-        contre.pp.c_prenom = req.body.c_prenom;
-        contre.pp.c_nom = req.body.c_nom;
+        contre.pp.c_prenom = endcrypt.encrypt(req.body.c_prenom);
+        contre.pp.c_nom = endcrypt.encrypt(req.body.c_nom);
         contre.pp.c_profession = req.body.c_profession;
         contre.pp.c_nationalite = req.body.c_nationalite;
         if(req.body.c_dob != '') contre.pp.c_dob = moment(req.body.c_dob, "DD-MM-YYYY");
@@ -301,14 +303,14 @@ exports.dossier_create_post = [
         if (Number(req.body.nb_other_client_contre) > 0) {
           for (i = 1; i <= Number(req.body.nb_other_client_contre); i++) {
             dossier.autres_contre.push({
-              prenom_nom: req.body["autres_contre_" + i]
+              prenom_nom: endcrypt.encrypt(req.body["autres_contre_" + i])
             });
           }
         };
         if (Number(req.body.nb_other_avocat_contre) > 0) {
           for (i = 1; i <= Number(req.body.nb_other_avocat_contre); i++) {
             dossier.autres_avocats_contre.push({
-              prenom_nom: req.body["autres_avocats_contre_prenom_nom_" + i],
+              prenom_nom: endcrypt.encrypt(req.body["autres_avocats_contre_prenom_nom_" + i]),
               tel: req.body["autres_avocats_contre_tel_" + i],
               email: req.body["autres_avocats_contre_email_" + i]
             });
@@ -318,7 +320,7 @@ exports.dossier_create_post = [
       case 'pm':
         // creation du contre
 
-        contre.pm.c_denomination = req.body.c_denomination;
+        contre.pm.c_denomination = endcrypt.encrypt(req.body.c_denomination);
         contre.pm.c_rs = req.body.c_rs;
         contre.pm.c_capital = req.body.c_capital.trim();
         contre.pm.c_devise = req.body.c_devise;
@@ -332,14 +334,14 @@ exports.dossier_create_post = [
         if (Number(req.body.nb_other_client_contre) > 0) {
           for (i = 1; i <= Number(req.body.nb_other_client_contre); i++) {
             dossier.autres_contre.push({
-              rs: req.body["autres_contre_" + i]
+              rs: endcrypt.encrypt(req.body["autres_contre_" + i])
             });
           }
         };
         if (Number(req.body.nb_other_avocat_contre) > 0) {
           for (i = 1; i <= Number(req.body.nb_other_avocat_contre); i++) {
             dossier.autres_avocats_contre.push({
-              prenom_nom: req.body["autres_avocats_contre_prenom_nom_" + i],
+              prenom_nom: endcrypt.encrypt(req.body["autres_avocats_contre_prenom_nom_" + i]),
               tel: req.body["autres_avocats_contre_tel_" + i],
               email: req.body["autres_avocats_contre_email_" + i]
             });
@@ -481,8 +483,8 @@ exports.dossier_update_post = [
     
     if (req.body.attributaire && req.body.attributaire != ""){dossier.attributaire = req.body.attributaire}
     if (req.body.nature && req.body.nature != ""){dossier.nature = req.body.nature}
-    if (req.body.resume && req.body.resume != ""){dossier.resume = req.body.resume}
-    if (req.body.montant && req.body.montant != ""){dossier.montant = req.body.montant}
+    if (req.body.resume && req.body.resume != ""){dossier.resume = endcrypt.encrypt(req.body.resume)}
+    if (req.body.montant && req.body.montant != ""){dossier.montant = endcrypt.encrypt(req.body.montant)}
     
     if (!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values and error messages.

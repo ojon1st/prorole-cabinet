@@ -10,6 +10,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 //var flash = require('connect-flash');
 var bcrypt = require('bcryptjs');
+var crypto = require('crypto');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -38,6 +39,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.locals.moment = require('moment');
+app.locals.endcrypt = require('./middles/encryption.js');
+app.locals.isEmpty = require('./middles/emptyObject.js');
 app.use(session({secret: 'ungrainderizsemécentrécoltés', resave: false, saveUninitialized: true, cookie: { maxAge:3600000}
 }));
 app.use(flash(app, {
@@ -126,4 +129,7 @@ function ensureAuthenticated(req, res, next){
   }
   res.redirect('/login');
 };
+
+
+
 module.exports = app;

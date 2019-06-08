@@ -6,8 +6,8 @@ var Schema = mongoose.Schema;
 var ContreSchema = new Schema({ 
   c_type:{type:String, required:true}, //Contre type (pp personne physique ou pm personne morale)
   pp:{
-    c_prenom:{type:String},
-    c_nom:{type:String},
+    c_prenom:{ iv: String, encryptedData: String }, //{type:String},
+    c_nom:{ iv: String, encryptedData: String }, //{type:String},
     c_profession:{type:String},
     c_nationalite:{type:String},
     c_dob:{type:Date},
@@ -17,7 +17,7 @@ var ContreSchema = new Schema({
     cp_email:{type:String}
   },
   pm:{
-    c_denomination:{type:String},
+    c_denomination:{ iv: String, encryptedData: String }, //{type:String},
     c_rs:{type:String}, //rs: raison sociale ----- on peut stocker toutes les rs ds une table à part
     c_capital:{type:Number},
     c_devise:{type:String, default:'F CFA'}, //on doit rajouter une devise à coté du capital dans un selectbox

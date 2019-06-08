@@ -10,22 +10,23 @@ var DossierSchema = new Schema({
   titulaire: {type: Schema.ObjectId, ref: 'Utilisateur'}, //ref liste des utilisateurs
   attributaire: {type: Schema.ObjectId, ref: 'Utilisateur'}, //ref liste des utilisateurs
   nature: {type: String}, //ref liste des natures du litige
-  resume: {type: String}, 
-  montant: {type: Number},
+  resume: { iv: String, encryptedData: String }, //{type: String}, 
+  montant: { iv: String, encryptedData: String }, //{type: Number},
   doc:{type: Date, default:moment()}, //doc: date of creation -- now
   pour:{type: Schema.ObjectId, ref: 'Pour'},
   contre:{type: Schema.ObjectId, ref: 'Contre'},
-  autres_pour:[{prenom_nom:String, rs:String}],
-  autres_avocats_pour:[{prenom_nom:String, tel:String, email:String}],
-  autres_contre:[{prenom:String, nom:String, rs:String}],
-  autres_avocats_contre:[{prenom_nom:String, tel:String, email:String}],
+  autres_pour:[{prenom_nom:{ iv: String, encryptedData: String }, rs:String}],
+  autres_avocats_pour:[{prenom_nom:{ iv: String, encryptedData: String }, tel:String, email:String}],
+  autres_contre:[{prenom:{ iv: String, encryptedData: String }, nom:String, rs:String}],
+  autres_avocats_contre:[{prenom_nom:{ iv: String, encryptedData: String }, tel:String, email:String}],
   d_update:{type:Date, default:moment()},
-  pieces:{pieces_formes:[{doa:Date, originalname:String, classeur:String, size:Number, piece_url:String, public_id:String, deleteUrl:String}],
-         pieces_fonds:[{doa:Date, originalname:String, classeur:String, size:Number, piece_url:String, public_id:String, deleteUrl:String}],
-         ecritures_recues:[{doa:Date, originalname:String, classeur:String, size:Number, piece_url:String, public_id:String, deleteUrl:String}],
-         ecritures_envoyees:[{doa:Date, originalname:String, classeur:String, size:Number, piece_url:String, public_id:String, deleteUrl:String}],
-         courriers_divers:[{doa:Date, originalname:String, classeur:String, size:Number, piece_url:String, public_id:String, deleteUrl:String}]},
-  hookEnabled:{ type: Boolean, required: false, default: false }
+  pieces:{
+    pieces_formes:[{doa:Date, originalname:String, classeur:String, size:Number, piece_url:String, public_id:String, deleteUrl:String}],
+    pieces_fonds:[{doa:Date, originalname:String, classeur:String, size:Number, piece_url:String, public_id:String, deleteUrl:String}],
+    ecritures_recues:[{doa:Date, originalname:String, classeur:String, size:Number, piece_url:String, public_id:String, deleteUrl:String}],
+    ecritures_envoyees:[{doa:Date, originalname:String, classeur:String, size:Number, piece_url:String, public_id:String, deleteUrl:String}],
+    courriers_divers:[{doa:Date, originalname:String, classeur:String, size:Number, piece_url:String, public_id:String, deleteUrl:String}]},
+  hookEnabled:{type: Boolean, required: false, default: false}
 });
 
 // ref_c: {type: String}, //Référence convention à modifier en faisant ref à la convention
@@ -35,6 +36,7 @@ var DossierSchema = new Schema({
 
   DossierSchema.pre('save', function(next){
     var doc = this;
+    
     if (this.hookEnabled){
       async.parallel({
         seq: function (callback) {
