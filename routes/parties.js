@@ -10,6 +10,9 @@ router.get('/', partie_controller.index);
 
 /// partie POUR ROUTES ///
 
+// GET request for parties
+router.get('/partie/', partie_controller.get_parties);
+
 // GET request for creating a partie. NOTE This must come before routes that display partie (uses id).
 router.get('/partie/pour/create', partie_controller.partie_pour_create_get);
 

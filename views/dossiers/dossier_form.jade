@@ -111,29 +111,19 @@ block content
             #physique_pour.hidden
               .form-group
                 label.col-sm-3.control-label
-                  | Clients :
-                .col-sm-8
-                  if (pours)
-                    select#pour.form-control(name='clientP')
-                      option(disabled='', selected='', value='')
-                      each pour in pours
-                        if(pour.p_type == 'pp')
-                          option(value=pour._id) #{pour.pp.p_prenom} #{pour.pp.p_nom}
-                    span.form_error
-                  else
-                    select#pour.form-control(name='clientP' readonly)
-                      option(disabled='', selected='', value='') Veuillez créer des clients
-                    span.form_error
-              .form-group
-                label.col-sm-3.control-label
                   | Nom 
                   span.symbol.required
                   |  :
                 .col-sm-8
                   span.input-icon
-                    input#nom_pour.form-control(type='text', placeholder='Nom du client', name='p_nom')
+                    input#nom_pour.form-control(type='text', placeholder='Nom du client', name='p_nom' list='clientP_list' onchange='verifiClientExiste(this)')
                     i.fa.fa-user
                   span.form_error
+                  datalist#clientP_list
+                    if (pours)
+                      each pour in pours
+                        if(pour.p_type == 'pp')
+                          option(value=pour._id) #{pour.pp.p_prenom} #{pour.pp.p_nom}
               .form-group
                 label.col-sm-3.control-label
                   | Prenom 
@@ -236,29 +226,19 @@ block content
             #morale_pour.hidden
               .form-group
                 label.col-sm-3.control-label
-                  | Clients :
-                .col-sm-8
-                  if (pours)
-                    select#pour.form-control(name='clientM')
-                      option(disabled='', selected='', value='')
-                      each pour in pours
-                        if(pour.p_type == 'pm')
-                          option(value=pour._id) #{pour.pm.p_denomination}
-                    span.form_error
-                  else
-                    select#pour.form-control(name='clientM' readonly)
-                      option(disabled='', selected='', value='') Veuillez créer des clients
-                    span.form_error
-              .form-group
-                label.col-sm-3.control-label
                   | Dénomination S. 
                   span.symbol.required
                   |  :
                 .col-sm-8
                   span.input-icon
-                    input#denom_pour.form-control(type='text', placeholder='Dénommination sociale', name='p_denomination')
+                    input#denom_pour.form-control(type='text', placeholder='Dénommination sociale', name='p_denomination', list='clientM_list', onchange='verifiClientExiste(this)')
                     i.fa.fa-home
                   span.form_error
+                  datalist#clientM_list
+                    if (pours)
+                      each pour in pours
+                        if(pour.p_type == 'pm')
+                          option(value=pour._id) #{pour.pm.p_denomination}
               .form-group
                 label.col-sm-3.control-label
                   | Forme Sociale
@@ -404,29 +384,19 @@ block content
             #physique_contre.hidden
               .form-group
                 label.col-sm-3.control-label
-                  | Parties adverses :
-                .col-sm-8
-                  if (contres)
-                    select#contre.form-control(name='adverseP')
-                      option(disabled='', selected='', value='')
-                      each contre in contres
-                        if(contre.c_type == 'pp')
-                          option(value=contre._id) #{contre.pp.c_prenom} #{contre.pp.c_nom}
-                    span.form_error
-                  else
-                    select#contre.form-control(name='adverseP' readonly)
-                      option(disabled='', selected='', value='') Veuillez créer des contres
-                    span.form_error
-              .form-group
-                label.col-sm-3.control-label
                   | Nom 
                   span.symbol.required
                   |  :
                 .col-sm-8
                   span.input-icon
-                    input#nom_contre.form-control(type='text', placeholder='Nom du client', name='c_nom')
+                    input#nom_contre.form-control(type='text', placeholder='Nom du contre', name='c_nom' list='contreP_list' onchange='verifiContreExiste(this)')
                     i.fa.fa-user
                   span.form_error
+                  datalist#contreP_list
+                    if (contres)
+                      each contre in contres
+                        if(contre.c_type == 'pp')
+                          option(value=contre._id) #{contre.pp.c_prenom} #{contre.pp.c_nom}
               .form-group
                 label.col-sm-3.control-label
                   | Prenom 
@@ -529,29 +499,19 @@ block content
             #morale_contre.hidden
               .form-group
                 label.col-sm-3.control-label
-                  | Parties adverses :
-                .col-sm-8
-                  if (contres)
-                    select#contre.form-control(name='adverseM')
-                      option(disabled='', selected='', value='')
-                      each contre in contres
-                        if(contre.c_type == 'pm')
-                          option(value=contre._id) #{contre.pm.c_denomination}
-                    span.form_error
-                  else
-                    select#contre.form-control(name='adverseM' readonly)
-                      option(disabled='', selected='', value='') Veuillez créer des contres
-                    span.form_error
-              .form-group
-                label.col-sm-3.control-label
                   | Dénomination S. 
                   span.symbol.required
                   |  :
                 .col-sm-8
                   span.input-icon
-                    input#denom_contre.form-control(type='text', placeholder='Dénommination sociale', name='c_denomination')
+                    input#denom_contre.form-control(type='text', placeholder='Dénommination sociale', name='c_denomination', list='ContreM_list', onchange='verifiContreExiste(this)')
                     i.fa.fa-home
                   span.form_error
+                  datalist#ContreM_list
+                    if (contres)
+                      each contre in contres
+                        if(contre.c_type == 'pm')
+                          option(value=contre._id) #{contre.pm.c_denomination}
               .form-group
                 label.col-sm-3.control-label
                   | Forme Sociale
@@ -661,7 +621,6 @@ block content
                 button.btn.btn-green.btn-block(type='submit')
                   | Enregistrer 
                   i.fa.fa-arrow-circle-right
-
   // end: PAGE CONTENT
 append jscripts
   script(src='/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js')

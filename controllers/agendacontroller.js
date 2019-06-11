@@ -47,7 +47,7 @@ exports.renvois_events_get = function(req, res, next){
         //console.log(last_renvoi);
         if(last_renvoi.renvois.length > 0 && moment().diff(moment(last_renvoi.renvois[0].r_date), 'days') > 0){
           if( !last_renvoi.decision || last_renvoi.decision == ""){
-            
+             
             events_retards.push(last_renvoi.renvois[0]._id.toString())
           }
         }

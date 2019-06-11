@@ -1,6 +1,20 @@
+var tab_pour = [];
+var tab_contre = [];
 jQuery(document).ready(function () {
-
-  
+  jQuery.ajax({
+    contentType: 'application/json',
+    url: '/parties/partie',
+    type: 'GET',
+    dataType: 'json',
+    success: function(doc) {
+      tab_pour = doc.tab_client;
+      tab_contre = doc.tab_adverse;
+    }
+  });
+  $('#number').on('input', function() {
+    var value = $(this).val();
+    alert($('#browser [value="' + value + '"]').data('customvalue'));
+  });
   //affichage de donnees client personne physique
   $("#btn_physique_pour").click(function () {
     $("#p_type").val("pp");
@@ -213,4 +227,71 @@ jQuery(document).ready(function () {
     return res;
   });
 
+
 });
+
+function verifiClientExiste(client){
+  var id = client.value;
+  res = find_in_tableau(tab_pour, id);
+  if(res.pp != undefined){
+    $('input[name=p_nom]').val(res.pp.p_nom);
+    $('input[name=p_prenom]').val(res.pp.p_prenom);
+    if(res.pp.p_dob != undefined){$('input[name=p_dob]').val(res.pp.p_dob);}
+    $('input[name=p_pob]').val(res.pp.p_pob);
+    $('input[name=p_nationalite]').val(res.pp.p_nationalite);
+    $('input[name=p_profession]').val(res.pp.p_profession);
+    $('input[name=pp_tel]').val(res.pp.pp_tel);
+    $('input[name=pp_email]').val(res.pp.pp_email);
+    $('input[name=p_domicile]').val(res.pp.p_domicile);
+    console.log(res.type);
+  }
+
+  if(res.pm != undefined){
+    $('input[name=p_denomination]').val(res.pm.p_denomination);
+    $('select[name=p_rs]').val(res.pm.p_rs);
+    $('input[name=p_capital]').val(res.pm.p_capital);
+    $('input[name=p_rccm]').val(res.pm.p_rccm);
+    $('input[name=p_nif]').val(res.pm.p_nif);
+    $('input[name=p_siege]').val(res.pm.p_siege);
+    $('input[name=pm_tel]').val(res.pm.pm_tel);
+    $('input[name=pm_email]').val(res.pm.pm_email);
+    console.log(res.pm);
+  }
+}
+
+function verifiContreExiste(contre){
+  var id = contre.value;
+  res = find_in_tableau(tab_contre, id);
+  if(res.pp != undefined){
+    $('input[name=c_nom]').val(res.pp.c_nom);
+    $('input[name=c_prenom]').val(res.pp.c_prenom);
+    if(res.pp.c_dob != undefined){$('input[name=c_dob]').val(res.pp.c_dob);}
+    $('input[name=c_pob]').val(res.pp.c_pob);
+    $('input[name=c_nationalite]').val(res.pp.c_nationalite);
+    $('input[name=c_profession]').val(res.pp.c_profession);
+    $('input[name=cp_tel]').val(res.pp.cp_tel);
+    $('input[name=cp_email]').val(res.pp.cp_email);
+    $('input[name=c_domicile]').val(res.pp.cp_domicile);
+    console.log(res.type);
+  }
+
+  if(res.pm != undefined){
+    $('input[name=c_denomination]').val(res.pm.c_denomination);
+    $('select[name=c_rs]').val(res.pm.c_rs);
+    $('input[name=c_capital]').val(res.pm.c_capital);
+    $('input[name=c_rccm]').val(res.pm.c_rccm);
+    $('input[name=c_nif]').val(res.pm.c_nif);
+    $('input[name=c_siege]').val(res.pm.c_siege);
+    $('input[name=cm_tel]').val(res.pm.cm_tel);
+    $('input[name=cm_email]').val(res.pm.cm_email);
+    console.log(res.cm);
+  }
+}
+
+function find_in_tableau(mon_tableau, id_partie){
+  for(var i in mon_tableau){
+    if(mon_tableau[i]._id == id_partie){
+      return mon_tableau[i];
+    }
+  }
+}
