@@ -227,13 +227,11 @@ jQuery(document).ready(function () {
     return res;
   });
 
+  $('#nom_pour').on('input', function() {
+    var id = $(this).val();
+    res = find_in_tableau(tab_pour, id);
 
-});
-
-function verifiClientExiste(client){
-  var id = client.value;
-  res = find_in_tableau(tab_pour, id);
-  if(res.pp != undefined){
+    $('input[name=clientP]').val(id);
     $('input[name=p_nom]').val(res.pp.p_nom);
     $('input[name=p_prenom]').val(res.pp.p_prenom);
     if(res.pp.p_dob != undefined){$('input[name=p_dob]').val(res.pp.p_dob);}
@@ -243,10 +241,14 @@ function verifiClientExiste(client){
     $('input[name=pp_tel]').val(res.pp.pp_tel);
     $('input[name=pp_email]').val(res.pp.pp_email);
     $('input[name=p_domicile]').val(res.pp.p_domicile);
-    console.log(res.type);
-  }
+    $('input[name=clientM]').empty();
+  });
 
-  if(res.pm != undefined){
+  $('#denom_pour').on('input', function() {
+    var id = $(this).val();
+    res = find_in_tableau(tab_pour, id);
+    
+    $('input[name=clientM]').val(id);
     $('input[name=p_denomination]').val(res.pm.p_denomination);
     $('select[name=p_rs]').val(res.pm.p_rs);
     $('input[name=p_capital]').val(res.pm.p_capital);
@@ -255,14 +257,14 @@ function verifiClientExiste(client){
     $('input[name=p_siege]').val(res.pm.p_siege);
     $('input[name=pm_tel]').val(res.pm.pm_tel);
     $('input[name=pm_email]').val(res.pm.pm_email);
-    console.log(res.pm);
-  }
-}
+    $('input[name=clientP]').empty();
+  });
 
-function verifiContreExiste(contre){
-  var id = contre.value;
-  res = find_in_tableau(tab_contre, id);
-  if(res.pp != undefined){
+  $('#nom_contre').on('input', function() {
+    var id = $(this).val();
+    res = find_in_tableau(tab_client, id);
+
+    $('input[name=adverseP]').val(id);
     $('input[name=c_nom]').val(res.pp.c_nom);
     $('input[name=c_prenom]').val(res.pp.c_prenom);
     if(res.pp.c_dob != undefined){$('input[name=c_dob]').val(res.pp.c_dob);}
@@ -272,10 +274,14 @@ function verifiContreExiste(contre){
     $('input[name=cp_tel]').val(res.pp.cp_tel);
     $('input[name=cp_email]').val(res.pp.cp_email);
     $('input[name=c_domicile]').val(res.pp.cp_domicile);
-    console.log(res.type);
-  }
+    $('input[name=adverseM]').empty();
+  });
 
-  if(res.pm != undefined){
+  $('#denom_contre').on('input', function() {
+    var id = $(this).val();
+    res = find_in_tableau(tab_contre, id);
+    
+    $('input[name=adverseM]').val(id);
     $('input[name=c_denomination]').val(res.pm.c_denomination);
     $('select[name=c_rs]').val(res.pm.c_rs);
     $('input[name=c_capital]').val(res.pm.c_capital);
@@ -284,9 +290,9 @@ function verifiContreExiste(contre){
     $('input[name=c_siege]').val(res.pm.c_siege);
     $('input[name=cm_tel]').val(res.pm.cm_tel);
     $('input[name=cm_email]').val(res.pm.cm_email);
-    console.log(res.cm);
-  }
-}
+    $('input[name=adverseP]').empty();
+  });
+});
 
 function find_in_tableau(mon_tableau, id_partie){
   for(var i in mon_tableau){

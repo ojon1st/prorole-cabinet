@@ -67,6 +67,8 @@ block content
           input#p_type(type='hidden' name='p_type' value='')
           input(type='hidden', id='nb_other_client_pour', name='nb_other_client_pour', value='0')
           input(type='hidden',id='nb_other_avocat_pour', name='nb_other_avocat_pour', value='0')
+          input(type='hidden', name='clientP')
+          input(type='hidden', name='clientM')
           .panel-heading
             h4.panel-title
               span#tiltle_pour.text-bold CLIENT(S)
@@ -116,7 +118,7 @@ block content
                   |  :
                 .col-sm-8
                   span.input-icon
-                    input#nom_pour.form-control(type='text', placeholder='Nom du client', name='p_nom' list='clientP_list' onchange='verifiClientExiste(this)')
+                    input#nom_pour.form-control(type='text', placeholder='Nom du client', name='p_nom' list='clientP_list')
                     i.fa.fa-user
                   span.form_error
                   datalist#clientP_list
@@ -131,7 +133,7 @@ block content
                   |  :
                 .col-sm-8
                   span.input-icon
-                    input#prenom_pour.form-control(type='text', placeholder='Prenom du client', name='p_prenom')
+                    input.form-control(type='text', placeholder='Prenom du client', name='p_prenom')
                     i.fa.fa-user
                   span.form_error
               .form-group
@@ -231,7 +233,7 @@ block content
                   |  :
                 .col-sm-8
                   span.input-icon
-                    input#denom_pour.form-control(type='text', placeholder='Dénommination sociale', name='p_denomination', list='clientM_list', onchange='verifiClientExiste(this)')
+                    input#denom_pour.form-control(type='text', placeholder='Dénommination sociale', name='p_denomination', list='clientM_list')
                     i.fa.fa-home
                   span.form_error
                   datalist#clientM_list
@@ -341,6 +343,8 @@ block content
           input#c_type(type='hidden' name='c_type' value='')
           input(type='hidden', id='nb_other_client_contre', name='nb_other_client_contre', value='0')
           input(type='hidden',id='nb_other_avocat_contre', name='nb_other_avocat_contre', value='0')
+          input(type='hidden', name='adverseP')
+          input(type='hidden', name='adverseM')
           .panel-heading
             h4.panel-title
               span#tiltle_contre.text-bold PARTIE(S) ADVERSE(S)
