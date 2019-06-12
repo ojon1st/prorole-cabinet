@@ -517,13 +517,28 @@ exports.get_decision_a_lever = function(req, res, next){
 };
 
 exports.save_decision_file = [
-  async (req, res, next) => {  
+  
+  /*[ { fieldname: 'decision_file',
+    originalname: 'api_new.pdf',
+    encoding: '7bit',
+    mimetype: 'application/pdf',
+    destination: 'C:\\Users\\agarb\\AppData\\Local\\Temp',
+    filename: 'f67c681a8510e0e4efb46b972f354453',
+    path: 'C:\\Users\\agarb\\AppData\\Local\\Temp\\f67c681a8510e0e4efb46b972f354453',
+    size: 132618 } ]*/
+  async (req, res, next) => { 
+        
+    
+    
     // Is there any file?
-    if(!(req.file && (req.file.fieldname == 'decision_file'))) return next(new Error('No decision_file to upload'));
-
+    if(!(req.files && (req.files[0].fieldname == 'decision_file'))) return next(new Error('No decision_file to upload'));
+    console.log('No error! File is processing ... ')
+    
+    console.log('Saving file process ... !!!!! START ...')
+    //return;
     // Upload to Cloudinary
   try {
-    var result = await cloudinary.v2.uploader.upload(req.file.path, {folder:'decision/files'}); // rajouter la var nom du cabinet
+    var result = await cloudinary.v2.uploader.upload(req.files[0].path, {folder:'decisions/id_cabinet/id_dossier'}); // rajouter la var nom du cabinet
     console.log(result.secure_url.toString());
     Instruction.findByIdAndUpdate(req.params.id, {decision_file: result.secure_url.toString()}, (err) => {
         if(err) return next(err);

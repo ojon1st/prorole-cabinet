@@ -77,7 +77,10 @@ block content
                             if block
                               block
                       if(dossier.pour && dossier.contre)
-                        if(dossier.pour.p_type == 'pp' && dossier.contre.c_type == 'pp')
+                        if(dossier.pour.p_type == 'pp' && dossier.contre.c_type == 'pp' && dossier.ref_d == '19aA20190608')
+                          +tableau_dossiers  
+                            a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.pp.p_prenom} #{dossier.pour.pp.p_nom} c/ #{dossier.contre.pp.c_prenom} #{dossier.contre.pp.c_nom}
+                        if(dossier.pour.p_type == 'pp' && dossier.contre.c_type == 'pp' && dossier.ref_d != '19aA20190608')
                           +tableau_dossiers
                             a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.pp.p_prenom} #{dossier.pour.pp.p_nom} c/ #{dossier.contre.pp.c_prenom} #{dossier.contre.pp.c_nom}
                         if(dossier.pour.p_type == 'pp' && dossier.contre.c_type == 'pm')
@@ -102,6 +105,7 @@ append jscripts
   script(src='/assets/plugins/tableExport/jspdf/libs/base64.js')
   script(src='/assets/js/table-export.js')
   script(src='/javascripts/dossier_list.js')
+  script(src='./middles/encryption.js')
   script.
     jQuery(document).ready(function() {
       TableExport.init();

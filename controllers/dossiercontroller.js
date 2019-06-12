@@ -13,6 +13,12 @@ var moment = require('moment');
 const flash = require('express-flash-notification');
 var cloudinary = require('cloudinary');
 
+var encryption = require('../middles/encryption.js');
+var encrypt = encryption.encrypt;
+var decrypt = encryption.decrypt;
+
+
+
 //const NotifySend = require('node-notifier').NotifySend;
 //var notifier = new NotifySend();
 cloudinary.config({ 
@@ -52,7 +58,15 @@ exports.dossier_list = function (req, res, next) {
     if (err) {
       return next(err);
     }
-    
+        
+    /*results.dossiers.forEach(function(dos){
+      if(dos.pour._id == '5cfc2896fef9175a40e1d47d' || dos.pour._id == '5cfbd642077717192410d6f9'){
+        //return
+        //dos.pour.pp.p_prenom = decrypt(JSON.parse(dos.pour.pp.p_prenom))
+        //dos.pour.pp.p_nom = decrypt(JSON.parse(dos.pour.pp.p_nom))
+        console.log(dos)
+      }
+    })*/
     res.render('dossiers/dossier_list', {
       list_dossiers: results.dossiers
     });
@@ -187,6 +201,7 @@ exports.dossier_detail = function (req, res, next) {
 // Display Dossier create form on GET.
 exports.dossier_create_get = function (req, res, next) {
   
+  
   async.parallel({
     utilisateurs: function (callback) {
       Utilisateur.find({})
@@ -236,6 +251,11 @@ exports.dossier_create_post = [
 
   // Process request after validation and sanitization.
   (req, res, next) => {
+    
+    /*console.log(encrypt(req.body.p_prenom));
+    console.log(encrypt(req.body.p_nom));
+    return;*/
+        
     var boolClt = boolContre = 0
     //console.log('okkkkk')
     // Extract the validation errors from a request.
@@ -303,8 +323,8 @@ exports.dossier_create_post = [
         case 'pp':
           // alimentation du pour personne physique
 
-          pour.pp.p_prenom = req.body.p_prenom;
-          pour.pp.p_nom = req.body.p_nom;
+          pour.pp.p_prenom = encrypt(req.body.p_prenom);
+          pour.pp.p_nom = encrypt(req.body.p_nom);
           pour.pp.p_profession = req.body.p_profession;
           pour.pp.p_nationalite = req.body.p_nationalite;
           if(req.body.p_dob != '') pour.pp.p_dob = moment(req.body.p_dob, "DD-MM-YYYY");
@@ -580,28 +600,28 @@ exports.dossier_update_post = [
 
 exports.dossiers_en_cours = function (req, res, next) {
     async.parallel({
-    dossier: function (callback) {
-      Dossier.findById(req.params.id)
-        .populate('pour')
-        .populate('contre')
-        .exec(callback);
-    },
-  }, function (err, results) {
-    if (err) {
-      return next(err);
-    }
-    if (results.dossier == null) { // No results.
-      var err = new Error('Dossier not found');
-      err.status = 404;
-      return next(err);
-    }
+      dossier: function (callback) {
+        Dossier.findById(req.params.id)
+          .populate('pour')
+          .populate('contre')
+          .exec(callback);
+      },
+    }, function (err, results) {
+      if (err) {
+        return next(err);
+      }
+      if (results.dossier == null) { // No results.
+        var err = new Error('Dossier not found');
+        err.status = 404;
+        return next(err);
+      }
 
-    // Successful, so render.
-    res.render('dossiers/dossier_detail', {
-      title: 'Gestionnaire de Dossier',
-      dossier: results.dossier
+      // Successful, so render.
+      res.render('dossiers/dossier_detail', {
+        title: 'Gestionnaire de Dossier',
+        dossier: results.dossier
+      });
     });
-  });
 };
 
 exports.repartition = function (req, res, next) { 
@@ -630,29 +650,61 @@ exports.repartition = function (req, res, next) {
   });
 };
 
+exports.get_list_pieces = function (req, res, next){
+  
+  async.parallel({
+      dossier: function (callback) {
+          Dossier.findById(req.params.id, 'pieces')
+            .exec(callback);
+        },
+      }, function (err, results) {
+        if (err) {
+          return next(err);
+        }
+        if (results.dossier == null) { // No results.
+          var err = new Error('Dossier not found');
+          err.status = 404;
+          return next(err);
+        }
+        
+        
+        //console.log(results.dossier.pieces[req.params.type_piece])
+        res.send(results.dossier.pieces[req.params.type_piece])
+    
+        // Successful, so render.
+        /*res.render('dossiers/dossier_detail', {
+          title: 'Gestionnaire de Dossier',
+          dossier: results.dossier
+        });*/
+      });
+  
+};
+
 exports.save_pieces = [
     async (req, res, next) => {
+      
+              
         var dossier_piece = '';
         var tableau_piece = '';
         
         switch (req.params.type_piece) {
-          case 'pieces-formes':
+          case 'pieces_formes':
             dossier_piece = 'documents/pieces_formes';
             tableau_piece = 'pieces_formes';
             break;
-          case 'pieces-fonds':
+          case 'pieces_fonds':
             dossier_piece = 'documents/pieces_fonds';
             tableau_piece = 'pieces_fonds';
             break;
-          case 'ecritures-recues':
+          case 'ecritures_recues':
             dossier_piece = 'documents/ecritures_recues';
             tableau_piece = 'ecritures_recues';
             break;
-          case 'ecritures-envoyees':
+          case 'ecritures_envoyees':
             dossier_piece = 'documents/ecritures_envoyees';
             tableau_piece = 'ecritures_envoyees';
             break;
-          case 'courriers-divers':
+          case 'courriers_divers':
             dossier_piece = 'documents/courriers_divers';
             tableau_piece = 'courriers_divers';
             break;

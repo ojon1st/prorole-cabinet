@@ -63,6 +63,9 @@ router.post('/dossier/:id/save_pieces/:type_piece',upload.any() , dossier_contro
 // DELETE DOCUMENTS RELATIVE TO DOSSIER
 router.post('/dossier/:id/type_piece/:type_piece/delete_pieces/:id_piece', dossier_controller.delete_pieces);
 
+// GET LIST OF DOCUMENTS RELATIVE TO DOSSIER
+router.get('/dossier/:id/type_piece/:type_piece/get_liste_des_pieces', dossier_controller.get_list_pieces);
+
 
 /// Instructions ROUTES ///
 

@@ -11,6 +11,8 @@ var LocalStrategy = require('passport-local').Strategy;
 //var flash = require('connect-flash');
 var bcrypt = require('bcryptjs');
 
+//require('middles/encryption');
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var dossiersRouter = require('./routes/dossiers');
@@ -18,6 +20,13 @@ var partiesRouter = require('./routes/parties');
 var agendasRouter = require('./routes/agendas');
 var adminsRouter = require('./routes/administrateurs');
 var ratiosRouter = require('./routes/ratios');
+
+//
+//var encryption = require('./middles/encryption.js');
+//var encrypt = encryption.encrypt;
+//var decrypt = encryption.decrypt;
+//
+
 
 var mongoose = require('mongoose');
 var mongoDB = 'mongodb://legaltech_user:legaltech2019@ds251284.mlab.com:51284/legaltech_p_db';
@@ -39,6 +48,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.locals.moment = require('moment');
+//app.locals.decrypt = require('./middles/encryption.js').decrypt; ////////////////////
+//app.locals.decrypt = encryption.decrypt; ////////////////////
 app.use(session({secret: 'ungrainderizsemécentrécoltés', resave: false, saveUninitialized: true, cookie: { maxAge:3600000}
 }));
 app.use(flash(app, {

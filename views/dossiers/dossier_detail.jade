@@ -39,8 +39,8 @@ block content
   // end: BREADCRUMB
   // start: PAGE CONTENT
   .form-horizontal
-    .row
-      .col-md-6
+    .col-md-6
+      .row.padding-horizontal-10
         .panel.panel-white
           .panel-heading
             h4.panel-title
@@ -176,8 +176,69 @@ block content
                         .modifier_ou_sauvegarder.hidden
                           a.btn.btn-dark-azure(onclick='update_dossier("#{dossier._id}")') Sauvegarder
                       //a.button#search.btn.btn-dark-azure Sauvegarder
-            
-      .col-sm-6
+      .row.padding-horizontal-10
+        .panel.panel-white
+          .panel-heading
+            h4.panel-title
+              | Enregistrement des 
+              span.text-bold pièces du dossier
+            .panel-tools
+              .dropdown
+                a.btn.btn-xs.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
+                  i.fa.fa-cog
+                ul.dropdown-menu.dropdown-light.pull-right(role='menu')
+                  li
+                    a.panel-collapse.expand(href='#')
+                      i.fa.fa-angle-down
+                      span Ouvrir
+                  li
+                    a.panel-refresh(href='#')
+                      i.fa.fa-refresh
+                      span Actualiser
+                  li
+                    a.panel-expand(href='#')
+                      i.fa.fa-expand
+                      span Plein écran
+              //-
+                <a class="btn btn-xs btn-link panel-close" href="#">
+                <i class="fa fa-times"></i>
+                </a>
+          .panel-body.cacher
+              //form.fileupload#pieces-formes(action='', method='POST', enctype='multipart/form-data')
+              // The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload
+            .row.padding-20
+              .col-lg-12.col-md-12.col-sm-12
+                select.form-control(id='type_pieces_du_dossier')
+                  option(disabled='', selected='', value='null') Sélectionner le type de la pièce
+                  option(value='pieces_formes') Pièce de formes
+                  option(value='pieces_fonds') Pièce de fonds
+                  option(value='ecritures_recues') Ecriture recue
+                  option(value='ecritures_envoyees' ) Ecriture envoyée
+                  option(value='courriers_divers' ) Courrier divers
+            .row.fileupload-buttonbar.padding-20
+              .col-lg-12.col-md-12.col-sm-12
+                .fileupload.fileupload-new(data-provides='fileupload')
+                  .input-group
+                    .form-control.uneditable-input
+                      i.fa.fa-file.fileupload-exists
+                      span.fileupload-preview
+                    .input-group-btn
+                      .btn.btn-light-grey.btn-file
+                        span.fileupload-new
+                          i.fa.fa-folder-open-o
+                          |  Select file
+                        span.fileupload-exists
+                          i.fa.fa-folder-open-o
+                          |  Change
+                        input.file-input(type='file', id='pieces_du_dossier')
+                      a.btn.btn-red.fileupload-exists(href='#', data-dismiss='fileupload')
+                        i.fa.fa-times
+                        |  Remove
+                    .input-group-btn
+                      a.btn.btn-light-green(onclick='save_pieces_du_dossier("#{dossier._id}")')
+                        span.fa.fa-check
+    .col-sm-6
+      .row.padding-horizontal-10
         .panel.panel-white
           .panel-heading
             h4.panel-title
@@ -407,10 +468,34 @@ block content
                           textarea.form-control(name='decision', id='decision_#{division}', placeholder='Délibéré', cols='30', rows='7' readonly)
                             | #{instruction.decision}
                       .form-group
+                        label.col-sm-3.control-label
+                          | Télécharger le délibéré :
+                        .col-sm-9
+                          .fileupload.fileupload-new(data-provides='fileupload')
+                            .input-group
+                              .form-control.uneditable-input
+                                i.fa.fa-file.fileupload-exists
+                                span.fileupload-preview
+                              .input-group-btn
+                                .btn.btn-light-grey.btn-file
+                                  span.fileupload-new
+                                    i.fa.fa-folder-open-o
+                                    |  Select file
+                                  span.fileupload-exists
+                                    i.fa.fa-folder-open-o
+                                    |  Change
+                                  input.file-input(type='file', id='udf')
+                                a.btn.btn-light-grey.fileupload-exists(href='#', data-dismiss='fileupload')
+                                  i.fa.fa-times
+                                  |  Remove
+                              .input-group-btn
+                                a.btn.btn-light-green(onclick='upload_decision_file("#{instruction._id}")')
+                                  span.fa.fa-check
+                      //.form-group
                         label.col-sm-4.control-label
                           | Télécharger le délibéré :
                         .col-sm-6
-                          input.btn.btn-info(type='file' name='decision_file' onchange='upload_decision_file(this.files[0],"#{instruction._id}")' accept='application/pdf' enctype='multipart/form-data')
+                          input.btn.btn-info(type='file' name='decision_file'  accept='application/pdf' enctype='multipart/form-data')
                         //a.col-sm-offset-1.col-sm-1.btn.btn-dark-beige(onclick='')
                           span.fa.fa-check
                     else
@@ -450,14 +535,13 @@ block content
                         li(class = (i_cour.length > 0 ? 'active' : ''))
                           a(href='#myTab5_cour', data-toggle='tab')
                             | Cassation  
-                        
-    .row
-      .col-sm-6
+
+      .row.padding-horizontal-10
         .panel.panel-white
           .panel-heading
             h4.panel-title
-              | Pièces 
-              span.text-bold Formes
+              | Visualisation des 
+              span.text-bold pièces du dossier
             .panel-tools
               .dropdown
                 a.btn.btn-xs.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
@@ -480,430 +564,21 @@ block content
                 <i class="fa fa-times"></i>
                 </a>
           .panel-body.cacher
-            form.fileupload#pieces-formes(action='', method='POST', enctype='multipart/form-data')
+              //form.fileupload#pieces-formes(action='', method='POST', enctype='multipart/form-data')
               // The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload
-              .row.fileupload-buttonbar
-                .col-lg-12.col-md-12.col-sm-12
-                  // The fileinput-button span is used to style the file input field as button
-                  span.btn.btn-success.fileinput-button(style='margin: 0 5px;')
-                    i.glyphicon.glyphicon-plus
-                    span  Ajouter des fichiers
-                    input(type='file', name='files[]', multiple='')
-                  button.btn.btn-primary.start(type='submit' style='margin: 0 5px;')
-                    i.glyphicon.glyphicon-upload
-                    span  Télécharger
-                  button.btn.btn-warning.cancel(type='reset' style='margin: 0 5px;')
-                    i.glyphicon.glyphicon-ban-circle
-                    span  Annuler
-                  button.btn.btn-danger.delete(type='button' style='margin: 0 5px;')
-                    i.glyphicon.glyphicon-trash
-                    span  Supprimer
-                  // The loading indicator is shown during file processing
-                  span.fileupload-loading
-                // The global progress information
-                .col-lg-5.fileupload-progress.fade
-                  // The global progress bar
-                  .progress.progress-striped.active(role='progressbar', aria-valuemin='0', aria-valuemax='100')
-                    .progress-bar.progress-bar-success(style='width:0%;')
-                  // The extended global progress information
-                  .progress-extended
-              // The table listing the files available for upload/download
-              table.table.table-striped(role='presentation')
+            .row.padding-20
+              .col-lg-12.col-md-12.col-sm-12
+                select.form-control(id='type_pieces_visualisation', onchange='afficher_pieces_du_dossier("#{dossier._id}")')
+                  option(disabled='', selected='', value='null') Sélectionner le type de la pièce
+                  option(value='pieces_formes') Pièce de formes
+                  option(value='pieces_fonds') Pièce de fonds
+                  option(value='ecritures_recues') Ecriture recue
+                  option(value='ecritures_envoyees') Ecriture envoyée
+                  option(value='courriers_divers') Courrier divers
+              table.table.table-striped(id='table_des_pieces', role='presentation')
                 tbody.files
-                  if (dossier.pieces && dossier.pieces.pieces_formes)
-                    each file in dossier.pieces.pieces_formes
-                      tr.template-download.fade.in
-                        td
-                          span.preview
-                          if (file.piece_url && checkURL(file.piece_url) == false)
-                            a(href=file.piece_url, title=file.name, download=file.originalname, data-gallery='')
-                              iframe(src=file.piece_url, width='80', height='80', scrolling='no')
-                          else
-                            a(href=file.piece_url, title=file.name, download=file.originalname, data-gallery='')
-                              img(src=file.piece_url, width='80', height='80', scrolling='no')
-                        td
-                          p.name
-                          if (file.piece_url)
-                            a(href=file.piece_url, title=file.originalname, download=file.originalname ) #{file.originalname}
-                          else
-                            span #{file.originalname}
-                          if file.error
-                            span.label.label-danger Error
-                              | #{file.error}
-                        td
-                          span.size #{formatBytes(file.size,2)}
-                        td
-                          if (file.deleteUrl)
-                            button.btn.btn-danger.delete(data-type='POST', data-url=file.deleteUrl)
-                              i.glyphicon.glyphicon-trash
-                              span  Supprimer
-                            input.toggle(type='checkbox', name='delete', value='1')
-                          else
-                            button.btn.btn-warning.cancel
-                              i.glyphicon.glyphicon-ban-circle
-                              span  Annuler
-      .col-sm-6
-        .panel.panel-white
-          .panel-heading
-            h4.panel-title
-              | Pièces 
-              span.text-bold Fonds
-            .panel-tools
-              .dropdown
-                a.btn.btn-xs.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
-                  i.fa.fa-cog
-                ul.dropdown-menu.dropdown-light.pull-right(role='menu')
-                  li
-                    a.panel-collapse.expand(href='#')
-                      i.fa.fa-angle-down
-                      span Ouvrir
-                  li
-                    a.panel-refresh(href='#')
-                      i.fa.fa-refresh
-                      span Actualiser
-                  li
-                    a.panel-expand(href='#')
-                      i.fa.fa-expand
-                      span Plein écran
-              //-
-                <a class="btn btn-xs btn-link panel-close" href="#">
-                <i class="fa fa-times"></i>
-                </a>
-          .panel-body.cacher
-            form.fileupload#pieces-fonds(action='//jquery-file-upload.appspot.com/', method='POST', enctype='multipart/form-data')
-              // The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload
-              .row.fileupload-buttonbar
-                .col-lg-12.col-md-12.col-sm-12
-                  // The fileinput-button span is used to style the file input field as button
-                  span.btn.btn-success.fileinput-button(style='margin: 0 5px;')
-                    i.glyphicon.glyphicon-plus
-                    span  Ajouter des fichiers
-                    input(type='file', name='files[]', multiple='')
-                  button.btn.btn-primary.start(type='submit' style='margin: 0 5px;')
-                    i.glyphicon.glyphicon-upload
-                    span  Télécharger
-                  button.btn.btn-warning.cancel(type='reset' style='margin: 0 5px;')
-                    i.glyphicon.glyphicon-ban-circle
-                    span  Annuler
-                  button.btn.btn-danger.delete(type='button' style='margin: 0 5px;')
-                    i.glyphicon.glyphicon-trash
-                    span  Supprimer
-                  // The loading indicator is shown during file processing
-                  span.fileupload-loading
-                // The global progress information
-                .col-lg-5.fileupload-progress.fade
-                  // The global progress bar
-                  .progress.progress-striped.active(role='progressbar', aria-valuemin='0', aria-valuemax='100')
-                    .progress-bar.progress-bar-success(style='width:0%;')
-                  // The extended global progress information
-                  .progress-extended
-              // The table listing the files available for upload/download
-              table.table.table-striped(role='presentation')
-                tbody.files
-                  if (dossier.pieces && dossier.pieces.pieces_fonds)
-                    each file in dossier.pieces.pieces_fonds
-                      tr.template-download.fade.in
-                        td
-                          span.preview
-                          if (file.piece_url && checkURL(file.piece_url) == false)
-                            a(href=file.piece_url, title=file.name, download=file.originalname, data-gallery='')
-                              iframe(src=file.piece_url, width='80', height='80', scrolling='no')
-                          else
-                            a(href=file.piece_url, title=file.name, download=file.originalname, data-gallery='')
-                              img(src=file.piece_url, width='80', height='80', scrolling='no')
-                        td
-                          p.name
-                          if (file.piece_url)
-                            a(href=file.piece_url, title=file.originalname, download=file.originalname ) #{file.originalname}
-                          else
-                            span #{file.originalname}
-                          if file.error
-                            span.label.label-danger Error
-                              | #{file.error}
-                        td
-                          span.size #{file.size}
-                        td
-                          if (file.deleteUrl)
-                            button.btn.btn-danger.delete(data-type='POST', data-url=file.deleteUrl)
-                              i.glyphicon.glyphicon-trash
-                              span  Supprimer
-                            input.toggle(type='checkbox', name='delete', value='1')
-                          else
-                            button.btn.btn-warning.cancel
-                              i.glyphicon.glyphicon-ban-circle
-                              span  Annuler
-    .row
-      .col-sm-6
-        .panel.panel-white
-          .panel-heading
-            h4.panel-title
-              | Ecritures 
-              span.text-bold Reçues
-            .panel-tools
-              .dropdown
-                a.btn.btn-xs.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
-                  i.fa.fa-cog
-                ul.dropdown-menu.dropdown-light.pull-right(role='menu')
-                  li
-                    a.panel-collapse.expand(href='#')
-                      i.fa.fa-angle-down
-                      span Ouvrir
-                  li
-                    a.panel-refresh(href='#')
-                      i.fa.fa-refresh
-                      span Actualiser
-                  li
-                    a.panel-expand(href='#')
-                      i.fa.fa-expand
-                      span Plein écran
-              //-
-                <a class="btn btn-xs btn-link panel-close" href="#">
-                <i class="fa fa-times"></i>
-                </a>
-          .panel-body.cacher
-            form.fileupload#ecritures-recues(action='//jquery-file-upload.appspot.com/', method='POST', enctype='multipart/form-data')
-              // The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload
-              .row.fileupload-buttonbar
-                .col-lg-12.col-md-12.col-sm-12
-                  // The fileinput-button span is used to style the file input field as button
-                  span.btn.btn-success.fileinput-button(style='margin: 0 5px;')
-                    i.glyphicon.glyphicon-plus
-                    span  Ajouter des fichiers
-                    input(type='file', name='files[]', multiple='')
-                  button.btn.btn-primary.start(type='submit' style='margin: 0 5px;')
-                    i.glyphicon.glyphicon-upload
-                    span  Télécharger
-                  button.btn.btn-warning.cancel(type='reset' style='margin: 0 5px;')
-                    i.glyphicon.glyphicon-ban-circle
-                    span  Annuler
-                  button.btn.btn-danger.delete(type='button' style='margin: 0 5px;')
-                    i.glyphicon.glyphicon-trash
-                    span  Supprimer
-                  // The loading indicator is shown during file processing
-                  span.fileupload-loading
-                // The global progress information
-                .col-lg-5.fileupload-progress.fade
-                  // The global progress bar
-                  .progress.progress-striped.active(role='progressbar', aria-valuemin='0', aria-valuemax='100')
-                    .progress-bar.progress-bar-success(style='width:0%;')
-                  // The extended global progress information
-                  .progress-extended
-              // The table listing the files available for upload/download
-              table.table.table-striped(role='presentation')
-                tbody.files
-                  if (dossier.pieces && dossier.pieces.ecritures_recues)
-                    each file in dossier.pieces.ecritures_recues
-                      tr.template-download.fade.in
-                        td
-                          span.preview
-                          if (file.piece_url && checkURL(file.piece_url) == false)
-                            a(href=file.piece_url, title=file.name, download=file.originalname, data-gallery='')
-                              iframe(src=file.piece_url, width='80', height='80', scrolling='no')
-                          else
-                            a(href=file.piece_url, title=file.name, download=file.originalname, data-gallery='')
-                              img(src=file.piece_url, width='80', height='80', scrolling='no')
-                        td
-                          p.name
-                          if (file.piece_url)
-                            a(href=file.piece_url, title=file.originalname, download=file.originalname ) #{file.originalname}
-                          else
-                            span #{file.originalname}
-                          if file.error
-                            span.label.label-danger Error
-                              | #{file.error}
-                        td
-                          span.size #{file.size}
-                        td
-                          if (file.deleteUrl)
-                            button.btn.btn-danger.delete(data-type='POST', data-url=file.deleteUrl)
-                              i.glyphicon.glyphicon-trash
-                              span  Supprimer
-                            input.toggle(type='checkbox', name='delete', value='1')
-                          else
-                            button.btn.btn-warning.cancel
-                              i.glyphicon.glyphicon-ban-circle
-                              span  Annuler
-      .col-sm-6
-        .panel.panel-white
-          .panel-heading
-            h4.panel-title
-              | Ecritures 
-              span.text-bold Envoyées
-            .panel-tools
-              .dropdown
-                a.btn.btn-xs.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
-                  i.fa.fa-cog
-                ul.dropdown-menu.dropdown-light.pull-right(role='menu')
-                  li
-                    a.panel-collapse.expand(href='#')
-                      i.fa.fa-angle-down
-                      span Ouvrir
-                  li
-                    a.panel-refresh(href='#')
-                      i.fa.fa-refresh
-                      span Actualiser
-                  li
-                    a.panel-expand(href='#')
-                      i.fa.fa-expand
-                      span Plein écran
-              //-
-                <a class="btn btn-xs btn-link panel-close" href="#">
-                <i class="fa fa-times"></i>
-                </a>
-          .panel-body.cacher
-            form.fileupload#ecritures-envoyees(action='//jquery-file-upload.appspot.com/', method='POST', enctype='multipart/form-data')
-              // The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload
-              .row.fileupload-buttonbar
-                .col-lg-12.col-md-12.col-sm-12
-                  // The fileinput-button span is used to style the file input field as button
-                  span.btn.btn-success.fileinput-button(style='margin: 0 5px;')
-                    i.glyphicon.glyphicon-plus
-                    span  Ajouter des fichiers
-                    input(type='file', name='files[]', multiple='')
-                  button.btn.btn-primary.start(type='submit' style='margin: 0 5px;')
-                    i.glyphicon.glyphicon-upload
-                    span  Télécharger
-                  button.btn.btn-warning.cancel(type='reset' style='margin: 0 5px;')
-                    i.glyphicon.glyphicon-ban-circle
-                    span  Annuler
-                  button.btn.btn-danger.delete(type='button' style='margin: 0 5px;')
-                    i.glyphicon.glyphicon-trash
-                    span  Supprimer
-                  // The loading indicator is shown during file processing
-                  span.fileupload-loading
-                // The global progress information
-                .col-lg-5.fileupload-progress.fade
-                  // The global progress bar
-                  .progress.progress-striped.active(role='progressbar', aria-valuemin='0', aria-valuemax='100')
-                    .progress-bar.progress-bar-success(style='width:0%;')
-                  // The extended global progress information
-                  .progress-extended
-              // The table listing the files available for upload/download
-              table.table.table-striped(role='presentation')
-                tbody.files
-                  if (dossier.pieces && dossier.pieces.ecritures_envoyees)
-                    each file in dossier.pieces.ecritures_envoyees
-                      tr.template-download.fade.in
-                        td
-                          span.preview
-                          if (file.piece_url && checkURL(file.piece_url) == false)
-                            a(href=file.piece_url, title=file.name, download=file.originalname, data-gallery='')
-                              iframe(src=file.piece_url, width='80', height='80', scrolling='no')
-                          else
-                            a(href=file.piece_url, title=file.name, download=file.originalname, data-gallery='')
-                              img(src=file.piece_url, width='80', height='80', scrolling='no')
-                        td
-                          p.name
-                          if (file.piece_url)
-                            a(href=file.piece_url, title=file.originalname, download=file.originalname ) #{file.originalname}
-                          else
-                            span #{file.originalname}
-                          if file.error
-                            span.label.label-danger Error
-                              | #{file.error}
-                        td
-                          span.size #{file.size}
-                        td
-                          if (file.deleteUrl)
-                            button.btn.btn-danger.delete(data-type='POST', data-url=file.deleteUrl)
-                              i.glyphicon.glyphicon-trash
-                              span  Supprimer
-                            input.toggle(type='checkbox', name='delete', value='1')
-                          else
-                            button.btn.btn-warning.cancel
-                              i.glyphicon.glyphicon-ban-circle
-                              span  Annuler
-    .row
-      .col-sm-6
-        .panel.panel-white
-            .panel-heading
-              h4.panel-title
-                | Courriers 
-                span.text-bold Divers
-              .panel-tools
-                .dropdown
-                  a.btn.btn-xs.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
-                    i.fa.fa-cog
-                  ul.dropdown-menu.dropdown-light.pull-right(role='menu')
-                    li
-                      a.panel-collapse.expand(href='#')
-                        i.fa.fa-angle-down
-                        span Ouvrir
-                    li
-                      a.panel-refresh(href='#')
-                        i.fa.fa-refresh
-                        span Refresh
-                    li
-                      a.panel-config(href='#panel-config', data-toggle='modal')
-                        i.fa.fa-wrench
-                        span Configurations
-                    li
-                      a.panel-expand(href='#')
-                        i.fa.fa-expand
-                        span Fullscreen
-            .panel-body.cacher
-              form.fileupload#courriers-divers(action='//jquery-file-upload.appspot.com/', method='POST', enctype='multipart/form-data')
-                // The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload
-                .row.fileupload-buttonbar
-                  .col-lg-12.col-md-12.col-sm-12
-                    // The fileinput-button span is used to style the file input field as button
-                    span.btn.btn-success.fileinput-button(style='margin: 0 5px;')
-                      i.glyphicon.glyphicon-plus
-                      span  Ajouter des fichiers
-                      input(type='file', name='files[]', multiple='')
-                    button.btn.btn-primary.start(type='submit' style='margin: 0 5px;')
-                      i.glyphicon.glyphicon-upload
-                      span  Télécharger
-                    button.btn.btn-warning.cancel(type='reset' style='margin: 0 5px;')
-                      i.glyphicon.glyphicon-ban-circle
-                      span  Annuler
-                    button.btn.btn-danger.delete(type='button' style='margin: 0 5px;')
-                      i.glyphicon.glyphicon-trash
-                      span  Supprimer
-                    // The loading indicator is shown during file processing
-                    span.fileupload-loading
-                  // The global progress information
-                  .col-lg-5.fileupload-progress.fade
-                    // The global progress bar
-                    .progress.progress-striped.active(role='progressbar', aria-valuemin='0', aria-valuemax='100')
-                      .progress-bar.progress-bar-success(style='width:0%;')
-                    // The extended global progress information
-                    .progress-extended
-                // The table listing the files available for upload/download
-                table.table.table-striped(role='presentation')
-                  tbody.files
-                    if (dossier.pieces && dossier.pieces.courriers_divers)
-                      each file in dossier.pieces.courriers_divers
-                        tr.template-download.fade.in
-                          td
-                            span.preview
-                            if (file.piece_url && checkURL(file.piece_url) == false)
-                              a(href=file.piece_url, title=file.name, download=file.originalname, data-gallery='')
-                                iframe(src=file.piece_url, width='80', height='80', scrolling='no')
-                            else
-                              a(href=file.piece_url, title=file.name, download=file.originalname, data-gallery='')
-                                img(src=file.piece_url, width='80', height='80', scrolling='no')
-                          td
-                            p.name
-                            if (file.piece_url)
-                              a(href=file.piece_url, title=file.originalname, download=file.originalname ) #{file.originalname}
-                            else
-                              span #{file.originalname}
-                            if file.error
-                              span.label.label-danger Error
-                                | #{file.error}
-                          td
-                            span.size #{file.size}
-                          td
-                            if (file.deleteUrl)
-                              button.btn.btn-danger.delete(data-type='POST', data-url=file.deleteUrl)
-                                i.glyphicon.glyphicon-trash
-                                span  Supprimer
-                              input.toggle(type='checkbox', name='delete', value='1')
-                            else
-                              button.btn.btn-warning.cancel
-                                i.glyphicon.glyphicon-ban-circle
-                                span  Annuler
+        
+                  
   .hidden
     #infoPour
       .noteWrap.col-md-10.col-md-offset-1
@@ -1409,7 +1084,7 @@ append jscripts
   script(src='/assets/plugins/jQuery-File-Upload/js/jquery.fileupload-ui.js')
   // The main application script
   script(src='/assets/plugins/jQuery-File-Upload/js/main.js')
-  // The XDomainRequest Transport is included for cross-domain file deletion for IE 8 and IE 9
+  // The XDomainRequest Transport is included for cross-domain file deletio88//////n for IE 8 and IE 9
   //if (gte IE 8)&(lt IE 10)
     script(src='js/cors/jquery.xdr-transport.js')
   // end: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY

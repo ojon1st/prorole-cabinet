@@ -47,6 +47,53 @@ html(lang='fr')
       link(rel='stylesheet', href='/assets/css/print.css', type='text/css', media='print')
       // end: CORE CSS
       link(rel='shortcut icon', href='/images/favicon.ico')
+      script(src='/assets/plugins/jQuery/jquery-2.1.1.min.js')
+      // <![endif]
+      script(defer ='', src='/assets/plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js')
+      script(defer ='', src='/assets/plugins/bootstrap/js/bootstrap.min.js')
+      script(defer ='', src='/assets/plugins/blockUI/jquery.blockUI.js')
+      script(defer ='', src='/assets/plugins/iCheck/jquery.icheck.min.js')
+      script(defer ='', src='/assets/plugins/moment/min/moment.min.js')
+      script(defer ='', src='/assets/plugins/perfect-scrollbar/src/jquery.mousewheel.js')
+      script(defer ='', src='/assets/plugins/perfect-scrollbar/src/perfect-scrollbar.js')
+      script(defer ='', src='/assets/plugins/bootbox/bootbox.min.js')
+      script(defer ='', src='/assets/plugins/jquery.scrollTo/jquery.scrollTo.min.js')
+      script(defer ='', src='/assets/plugins/ScrollToFixed/jquery-scrolltofixed-min.js')
+      script(defer ='', src='/assets/plugins/jquery.appear/jquery.appear.js')
+      script(defer ='', src='/assets/plugins/jquery-cookie/jquery.cookie.js')
+      script(defer ='', src='/assets/plugins/velocity/jquery.velocity.min.js')
+      script(defer ='', src='/assets/plugins/TouchSwipe/jquery.touchSwipe.min.js')
+      script(defer ='', src='/javascripts/jquery.loading.js')
+      // end: MAIN JAVASCRIPTS
+      // start: JAVASCRIPTS REQUIRED FOR SUBVIEW CONTENTS
+      script(defer ='', src='/assets/plugins/owl-carousel/owl-carousel/owl.carousel.js')
+      script(defer ='', src='/assets/plugins/jquery-mockjax/jquery.mockjax.js')
+      script(defer ='', src='/assets/plugins/toastr/toastr.js')
+      script(defer ='', src='/assets/plugins/bootstrap-modal/js/bootstrap-modal.js')
+      script(defer ='', src='/assets/plugins/bootstrap-modal/js/bootstrap-modalmanager.js')
+      script(defer ='', src='/assets/plugins/fullcalendar/fullcalendar/fullcalendar.min.js')
+      script(defer ='', src='/assets/plugins/bootstrap-switch/dist/js/bootstrap-switch.min.js')
+      script(defer ='', src='/assets/plugins/bootstrap-select/bootstrap-select.min.js')
+      script(defer ='', src='/assets/plugins/jquery-validation/dist/jquery.validate.min.js')
+      script(defer ='', src='/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.min.js')
+      script(defer ='', src='/assets/plugins/DataTables/media/js/jquery.dataTables.min.js')
+      script(defer ='', src='/assets/plugins/truncate/jquery.truncate.js')
+      script(defer ='', src='/assets/plugins/summernote/dist/summernote.min.js')
+      script(defer ='', src='/assets/plugins/bootstrap-daterangepicker/daterangepicker.js')
+      script(defer ='', src='/assets/js/ui-notifications.js')
+      script(defer ='', src='/assets/plugins/sweetalert/lib/sweet-alert.min.js')
+      script(defer ='', src='/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js')
+      script(defer ='', src='/assets/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js')
+      script(defer ='', src='/assets/js/form-elements.js')
+
+      
+      script(defer ='', src='/assets/js/subview.js')
+      script(defer ='', src='/assets/js/subview-examples.js')
+      // end: JAVASCRIPTS REQUIRED FOR SUBVIEW CONTENTS
+      // start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
+      script(defer ='', src='/assets/plugins/holder/holder.js')
+      // end: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
+      script(defer ='', src='/assets/js/main.js')
   body.sidebar-close.horizontal-menu-fixed.footer-fixed
     #process_img(style='display:none')
       img(src='/images/ajaxloader.gif')
@@ -79,54 +126,6 @@ html(lang='fr')
     block footer
       include footer
     block jscripts
-      script(src='/assets/plugins/jQuery/jquery-2.1.1.min.js')
-      // <![endif]
-      script(src='/assets/plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js')
-      script(src='/assets/plugins/bootstrap/js/bootstrap.min.js')
-      script(src='/assets/plugins/blockUI/jquery.blockUI.js')
-      script(src='/assets/plugins/iCheck/jquery.icheck.min.js')
-      script(src='/assets/plugins/moment/min/moment.min.js')
-      script(src='/assets/plugins/perfect-scrollbar/src/jquery.mousewheel.js')
-      script(src='/assets/plugins/perfect-scrollbar/src/perfect-scrollbar.js')
-      script(src='/assets/plugins/bootbox/bootbox.min.js')
-      script(src='/assets/plugins/jquery.scrollTo/jquery.scrollTo.min.js')
-      script(src='/assets/plugins/ScrollToFixed/jquery-scrolltofixed-min.js')
-      script(src='/assets/plugins/jquery.appear/jquery.appear.js')
-      script(src='/assets/plugins/jquery-cookie/jquery.cookie.js')
-      script(src='/assets/plugins/velocity/jquery.velocity.min.js')
-      script(src='/assets/plugins/TouchSwipe/jquery.touchSwipe.min.js')
-      script(src='/javascripts/jquery.loading.js')
-      // end: MAIN JAVASCRIPTS
-      // start: JAVASCRIPTS REQUIRED FOR SUBVIEW CONTENTS
-      script(src='/assets/plugins/owl-carousel/owl-carousel/owl.carousel.js')
-      script(src='/assets/plugins/jquery-mockjax/jquery.mockjax.js')
-      script(src='/assets/plugins/toastr/toastr.js')
-      script(src='/assets/plugins/bootstrap-modal/js/bootstrap-modal.js')
-      script(src='/assets/plugins/bootstrap-modal/js/bootstrap-modalmanager.js')
-      script(src='/assets/plugins/fullcalendar/fullcalendar/fullcalendar.min.js')
-      script(src='/assets/plugins/bootstrap-switch/dist/js/bootstrap-switch.min.js')
-      script(src='/assets/plugins/bootstrap-select/bootstrap-select.min.js')
-      script(src='/assets/plugins/jquery-validation/dist/jquery.validate.min.js')
-      script(src='/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.min.js')
-      script(src='/assets/plugins/DataTables/media/js/jquery.dataTables.min.js')
-      script(src='/assets/plugins/truncate/jquery.truncate.js')
-      script(src='/assets/plugins/summernote/dist/summernote.min.js')
-      
-      script(src='/assets/plugins/bootstrap-daterangepicker/daterangepicker.js')
-      script(src='/assets/js/ui-notifications.js')
-      script(src='/assets/plugins/sweetalert/lib/sweet-alert.min.js')
-      script(src='/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js')
-      script(src='/assets/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js')
-      script(src='/assets/js/form-elements.js')
-
-      
-      script(src='/assets/js/subview.js')
-      script(src='/assets/js/subview-examples.js')
-      // end: JAVASCRIPTS REQUIRED FOR SUBVIEW CONTENTS
-      // start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
-      script(src='/assets/plugins/holder/holder.js')
-      // end: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
-      script(src='/assets/js/main.js')
       script.
         jQuery(document).ready(function() {
           Main.init();

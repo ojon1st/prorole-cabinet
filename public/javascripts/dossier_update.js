@@ -1,5 +1,7 @@
 // INITIALIZE FUNCTIONS
 
+var liste_des_pieces = [];
+
 jQuery(document).ready(function () {
   
   $('#save_mise_en_etat').click(function() {
@@ -40,7 +42,7 @@ jQuery(document).ready(function () {
     $("#upContreSave").removeClass("hidden");
     $(".upContre").attr("readonly", false); 
   });
-  
+    
 });
 
 
@@ -484,11 +486,13 @@ function addDatePicker(){
       });
 };
 
-function upload_decision_file(file, instruction_id) {
+function upload_decision_file(instruction_id) {
+  
+  var file = $('#udf').prop('files')[0];
   
   var mon_pdf = new FormData();
   mon_pdf.append('decision_file', file);
-  console.log(mon_pdf);
+  
   var ma_route = '/dossiers/dossier/instruction/' + instruction_id + '/save_delibere_file';
   
   $.ajax({
@@ -499,10 +503,111 @@ function upload_decision_file(file, instruction_id) {
     processData: false, // tell jQuery not to process the data
     contentType: false, // tell jQuery not to set contentType 
   }).done(function( data ) {
+    
+      
       location.reload();
   })
   .fail(console.log)
 };
+
+
+function save_pieces_du_dossier(dossier_id) {
+  
+  
+  
+  var file = $('#pieces_du_dossier').prop('files')[0];
+  var piece_type = $('#type_pieces_du_dossier').val();
+  
+  if(file != undefined && piece_type != null && dossier_id != ''){
+    var my_file = new FormData();
+    my_file.append(piece_type, file);
+
+    var ma_route = '/dossiers/dossier/'+dossier_id+'/save_pieces/'+piece_type;
+
+    $.ajax({
+      url: ma_route,
+      type: 'POST',
+      data: my_file,
+      cache:false,
+      processData: false, // tell jQuery not to process the data
+      contentType: false, // tell jQuery not to set contentType 
+    }).done(function( data ) {
+
+
+        location.reload();
+    })
+    .fail(console.log)
+} else{
+  if(piece_type == null){
+           alert('Veuillez renseigner le type de pièce');
+  }else if(file == undefined){
+    alert('Veuillez sélectionner une pièce');
+           }else if(dossier_id == ''){
+                    alert('Aucun numéro de dossier en cours') ;
+                    }
+}
+};
+
+
+function afficher_pieces_du_dossier(dossier_id){
+  
+  var type_piece = $('#type_pieces_visualisation').val();
+  
+  
+    $.ajax({
+    type: 'GET',
+    //data: ,
+    contentType: 'application/json',
+    url: '/dossiers/dossier/'+dossier_id+'/type_piece/'+type_piece+'/get_liste_des_pieces',
+    success: function (data) {
+      console.log(typeof(data))
+      
+      var tableRef = document.getElementById('table_des_pieces').getElementsByTagName('tbody')[0];
+      while(tableRef.hasChildNodes())
+      {
+         tableRef.removeChild(tableRef.firstChild);
+      }
+      
+      data.forEach(function(piece){
+        console.log(piece)
+        
+
+        // Insert a row in the table at the last row
+        var newRow   = tableRef.insertRow(tableRef.rows.length);
+
+        // Insert a cell in the row at index 0
+        var Cell1  = newRow.insertCell(0);
+        var Cell2  = newRow.insertCell(1);
+        var Cell3  = newRow.insertCell(2);
+        var Cell4  = newRow.insertCell(3);
+        
+        if (piece.piece_url && checkURL(piece.piece_url) == false){
+          Cell1.innerHTML = '<td><span class="preview"></span><a href="'+piece.piece_url+'" download="'+piece.originalname+'"  title="'+piece.name+'" data-gallery=""><iframe src="'+piece.piece_url+'" width="80" height="80" scrolling="no"></iframe></a></td>'
+        }else{
+          Cell1.innerHTML = '<td><span class="preview"></span><a href="'+piece.piece_url+'" download="'+piece.originalname+'"  title="'+piece.name+'" data-gallery=""><img src="'+piece.piece_url+'" width="80" height="80" scrolling="no"></a></td>'
+        }
+        
+        if (piece.error){
+          Cell2.innerHTML = '<td><span class="label label-danger"> Error </span> '+piece.error+' </td>';
+        }else{
+          if(piece.piece_url){
+            Cell2.innerHTML = '<td><a href="'+piece.piece_url+'" title="'+piece.originalname+'" download="'+piece.originalname+'">'+piece.originalname+'</a></td>'
+          }else{
+            Cell2.innerHTML = '<td><span class=""> '+piece.originalname+' </span> </td>';
+          }
+        }
+                
+        Cell3.innerHTML = '<td><span class="size"> '+ formatBytes(piece.size,2) +' </span> </td>';
+        
+        Cell4.innerHTML = '<td><span > '+ piece.classeur +' </span> </td>';
+        
+      })
+      
+    }
+  });
+  
+}
+
 
 function uploadfiles(file, user_id) {
   /*console.log(file)
@@ -529,3 +634,5 @@ function formatBytes(a,b){
   var c=1024,d=b||2,e=["Bytes","KB","MB","GB","TB","PB","EB","ZB","YB"],f=Math.floor(Math.log(a)/Math.log(c));
   return parseFloat((a/Math.pow(c,f)).toFixed(d))+" "+e[f];
 };
+
+function checkURL(url) { return(url.match(/\.(jpeg|jpg|gif|png)$/) != null); };
