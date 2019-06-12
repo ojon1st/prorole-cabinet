@@ -1,5 +1,6 @@
 var tab_pour = [];
 var tab_contre = [];
+
 jQuery(document).ready(function () {
   jQuery.ajax({
     contentType: 'application/json',
@@ -11,10 +12,12 @@ jQuery(document).ready(function () {
       tab_contre = doc.tab_adverse;
     }
   });
+  
   $('#number').on('input', function() {
     var value = $(this).val();
     alert($('#browser [value="' + value + '"]').data('customvalue'));
   });
+    
   //affichage de donnees client personne physique
   $("#btn_physique_pour").click(function () {
     $("#p_type").val("pp");
@@ -226,8 +229,9 @@ jQuery(document).ready(function () {
     //res = check_form("denom_contre", /^[A-Za-z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ]{3,}/,"Champ vide", "au moins 2 caracteres, chiffres et lettres") && res;
     return res;
   });
-
-  $('#nom_pour').on('input', function() {
+  
+  
+    $('#nom_pour').on('input', function() {
     var id = $(this).val();
     res = find_in_tableau(tab_pour, id);
 
@@ -292,6 +296,7 @@ jQuery(document).ready(function () {
     $('input[name=cm_email]').val(res.pm.cm_email);
     $('input[name=adverseP]').empty();
   });
+
 });
 
 function find_in_tableau(mon_tableau, id_partie){
