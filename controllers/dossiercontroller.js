@@ -89,13 +89,9 @@ exports.found_client_get = function (req, res, next) {
     },
     
   }, function (err, results) {
-    if (err) {
-      return next(err);
-    }
-    
-    res.render('dossiers/dossier_found', {
-      list_dossiers: results.dossiers
-    });
+    if (err) { return next(err); }
+
+    res.render('dossiers/dossier_found', {list_dossiers: results.dossiers});
   });
 };
 
@@ -459,7 +455,8 @@ exports.dossier_create_post = [
         errors: errors.array()
       });
       return;
-    } else {
+    }
+    else {
       // Data from form is valid.
       // Check if Dossier with same name already exists.
       dossier.pour = pour;

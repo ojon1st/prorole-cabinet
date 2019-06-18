@@ -51,7 +51,7 @@ block content
                     |  :
                   .col-sm-8
                     if (utilisateurs)
-                      select#titulaire.form-control(name='titulaire')
+                      select#titulaire.form-control(name='titulaire', required='required')
                         option(value='null')
                         each utilisateur in utilisateurs
                           option(value=utilisateur._id) #{utilisateur.prenom} #{utilisateur.nom}
@@ -67,8 +67,8 @@ block content
           input#p_type(type='hidden' name='p_type' value='')
           input(type='hidden', id='nb_other_client_pour', name='nb_other_client_pour', value='0')
           input(type='hidden',id='nb_other_avocat_pour', name='nb_other_avocat_pour', value='0')
-          input(type='hidden', name='clientP')
-          input(type='hidden', name='clientM')
+          input(type='text', name='clientP')
+          input(type='text', name='clientM')
           .panel-heading
             h4.panel-title
               span#tiltle_pour.text-bold CLIENT(S)
@@ -343,8 +343,8 @@ block content
           input#c_type(type='hidden' name='c_type' value='')
           input(type='hidden', id='nb_other_client_contre', name='nb_other_client_contre', value='0')
           input(type='hidden',id='nb_other_avocat_contre', name='nb_other_avocat_contre', value='0')
-          input(type='hidden', name='adverseP')
-          input(type='hidden', name='adverseM')
+          input(type='text', name='adverseP')
+          input(type='text', name='adverseM')
           .panel-heading
             h4.panel-title
               span#tiltle_contre.text-bold PARTIE(S) ADVERSE(S)

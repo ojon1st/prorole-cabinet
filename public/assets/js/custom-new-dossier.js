@@ -1,5 +1,6 @@
 var tab_pour = [];
 var tab_contre = [];
+//function ajax permettant de recuperer les informations des patrties au chargement de la page
 jQuery(document).ready(function () {
   jQuery.ajax({
     contentType: 'application/json',
@@ -11,10 +12,7 @@ jQuery(document).ready(function () {
       tab_contre = doc.tab_adverse;
     }
   });
-  $('#number').on('input', function() {
-    var value = $(this).val();
-    alert($('#browser [value="' + value + '"]').data('customvalue'));
-  });
+
   //affichage de donnees client personne physique
   $("#btn_physique_pour").click(function () {
     $("#p_type").val("pp");
@@ -196,36 +194,8 @@ jQuery(document).ready(function () {
     $("#nb_other_avocat_contre").val(autreAvocatAdverseMorale);
     autreAvocatAdverseMorale++;
   });
-
-  function check_form(id_input,regex,msg_vide,erreur) {
-    valid = true;
-    if ($("#"+id_input).length === 0)
-      return false;
-    if($("#"+id_input).val() === "") {
-      $("#"+id_input).next(".form_error").css({"color":"#FF4F4F", "display":"inline-block", "padding:":"10px"}).fadeIn().text(msg_vide);
-      valid = false;
-    }
-    else if(!$("#"+id_input).val().match(regex)) {
-      valid = false;
-      $("#"+id_input).next(".form_error").css({"color":"#FF4F4F", "display":"inline-block", "padding:":"10px"}).fadeIn().text(erreur);
-    }
-    else
-      $("#"+id_input).next(".form_error").fadeOut();
-    return valid;
-} 
-    
- 
-  $("#formDossier").submit(function(event) {
-    //var res = check_form("titulaire", /./ ,"Selectionner un titulaire", "");
-    var res = check_form("p_type", /./ ,"Selectionner choisir un type", "");
-    //res = check_form("nom_pour", /^[A-Za-z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ]{2,}/,"Champ vide", "au moins 2 caracteres, chiffres et lettres") && res;
-    //res = check_form("prenom_pour", /^[A-Za-z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ]{2,}/,"Champ vide", "au moins 2 caracteres, chiffres et lettres") && res;
-    //res = check_form("nom_contre", /^[A-Za-z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ]{2,}/,"Champ vide", "au moins 2 caracteres, chiffres et lettres") && res;
-    //res = check_form("prenom_contre", /^[A-Za-z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ]{2,}/,"Champ vide", "au moins 2 caracteres, chiffres et lettres") && res;
-    //res = check_form("denom_pour", /^[A-Za-z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ]{3,}/,"Champ vide", "au moins 2 caracteres, chiffres et lettres") && res;
-    //res = check_form("denom_contre", /^[A-Za-z0-9ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ]{3,}/,"Champ vide", "au moins 2 caracteres, chiffres et lettres") && res;
-    return res;
-  });
+  
+  /*START autocomplete et affichage de l'information existante des parties*/
 
   $('#nom_pour').on('input', function() {
     var id = $(this).val();
@@ -254,6 +224,7 @@ jQuery(document).ready(function () {
     $('input[name=p_capital]').val(res.pm.p_capital);
     $('input[name=p_rccm]').val(res.pm.p_rccm);
     $('input[name=p_nif]').val(res.pm.p_nif);
+    $('input[name=p_representant]').val(res.pm.p_representant);
     $('input[name=p_siege]').val(res.pm.p_siege);
     $('input[name=pm_tel]').val(res.pm.pm_tel);
     $('input[name=pm_email]').val(res.pm.pm_email);
@@ -287,11 +258,14 @@ jQuery(document).ready(function () {
     $('input[name=c_capital]').val(res.pm.c_capital);
     $('input[name=c_rccm]').val(res.pm.c_rccm);
     $('input[name=c_nif]').val(res.pm.c_nif);
+    $('input[name=c_representant]').val(res.pm.c_representant);
     $('input[name=c_siege]').val(res.pm.c_siege);
     $('input[name=cm_tel]').val(res.pm.cm_tel);
     $('input[name=cm_email]').val(res.pm.cm_email);
     $('input[name=adverseP]').empty();
   });
+
+  /*END autocomplete et affichage de l'information existante des parties*/
 });
 
 function find_in_tableau(mon_tableau, id_partie){

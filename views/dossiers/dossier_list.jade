@@ -45,16 +45,17 @@ block content
               form.form-horizontal(method='POST', action='')
                 .row
                   .form-group
-                    label.col-md-1.control-label
-                      | Client :
-                    .col-md-3  
-                      select#client.form-control(name='client', onchange='serach_autorized(this)')
-                        option(value='null') Selectionner un client
-                        each dossier in list_dossiers
-                          if(dossier.pour.p_type == 'pp')
-                            option(value=dossier.pour._id) #{dossier.pour.pp.p_prenom} #{dossier.pour.pp.p_nom}
-                          if(dossier.pour.p_type == 'pm')
-                            option(value=dossier.pour._id) #{dossier.pour.pm.p_denomination}
+                    label.col-md-2.control-label
+                      | Tableau synoptique :
+                    .col-md-3
+                      input#client.form-control(type='text', name='client', placeholder='Saisir le nom du client', list='client_convention')
+                      datalist#client_convention
+                        if (list_dossiers)
+                          each dossier in list_dossiers
+                            if(dossier.pour.p_type == 'pp')
+                              option(value=dossier.pour._id, data-customvalue=dossier.pour.pp.p_prenom + ' ' + dossier.pour.pp.p_nom) #{dossier.pour.pp.p_prenom} #{dossier.pour.pp.p_nom}
+                            if(dossier.pour.p_type == 'pm')
+                              option(value=dossier.pour._id, data-customvalue=dossier.pour.pm.p_denomination) #{dossier.pour.pm.p_denomination}
                     #valide_select.col-md-1
                       #valide_btn
           .row  
