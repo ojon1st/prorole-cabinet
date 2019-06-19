@@ -19,6 +19,7 @@ jQuery(document).ready(function () {
     $("#type_pour").addClass("hidden");
     $("#physique_pour").removeClass("hidden");
     $("#tiltle_pour").text("CLIENT - PHYSIQUE");
+    vider_pour_morale();
   });
 
   //affichage de donnees client personne morale
@@ -27,6 +28,7 @@ jQuery(document).ready(function () {
     $("#type_pour").addClass("hidden");
     $("#morale_pour").removeClass("hidden");
     $("#tiltle_pour").text("CLIENT - MORALE");
+    vider_pour_physique();
   });
   
   //affichage de donnees client personne physique
@@ -35,6 +37,7 @@ jQuery(document).ready(function () {
     $("#type_contre").addClass("hidden");
     $("#physique_contre").removeClass("hidden");
     $("#tiltle_contre").text("PARTIE ADVERSE - PHYSIQUE");
+    vider_contre_morale();
   });
 
   //affichage de donnees client personne morale
@@ -43,6 +46,7 @@ jQuery(document).ready(function () {
     $("#type_contre").addClass("hidden");
     $("#morale_contre").removeClass("hidden");
     $("#tiltle_contre").text("PARTIE ADVERSE - MORALE");
+    vider_contre_physique();
   });
 
   //affiche les buttons physique et morale partie client
@@ -200,69 +204,78 @@ jQuery(document).ready(function () {
   $('#nom_pour').on('input', function() {
     var id = $(this).val();
     res = find_in_tableau(tab_pour, id);
-
-    $('input[name=clientP]').val(id);
-    $('input[name=p_nom]').val(res.pp.p_nom);
-    $('input[name=p_prenom]').val(res.pp.p_prenom);
-    if(res.pp.p_dob != undefined){$('input[name=p_dob]').val(res.pp.p_dob);}
-    $('input[name=p_pob]').val(res.pp.p_pob);
-    $('input[name=p_nationalite]').val(res.pp.p_nationalite);
-    $('input[name=p_profession]').val(res.pp.p_profession);
-    $('input[name=pp_tel]').val(res.pp.pp_tel);
-    $('input[name=pp_email]').val(res.pp.pp_email);
-    $('input[name=p_domicile]').val(res.pp.p_domicile);
-    $('input[name=clientM]').empty();
+    
+    if(res != undefined)
+    {
+      $('input[name=clientP]').val(id);
+      $('input[name=p_nom]').val(res.pp.p_nom);
+      $('input[name=p_prenom]').val(res.pp.p_prenom);
+      if(res.pp.p_dob != undefined){$('input[name=p_dob]').val(res.pp.p_dob);}
+      $('input[name=p_pob]').val(res.pp.p_pob);
+      $('input[name=p_nationalite]').val(res.pp.p_nationalite);
+      $('input[name=p_profession]').val(res.pp.p_profession);
+      $('input[name=pp_tel]').val(res.pp.pp_tel);
+      $('input[name=pp_email]').val(res.pp.pp_email);
+      $('input[name=p_domicile]').val(res.pp.p_domicile);
+      $('input[name=clientM]').empty();
+    }
   });
 
   $('#denom_pour').on('input', function() {
     var id = $(this).val();
     res = find_in_tableau(tab_pour, id);
-    
-    $('input[name=clientM]').val(id);
-    $('input[name=p_denomination]').val(res.pm.p_denomination);
-    $('select[name=p_rs]').val(res.pm.p_rs);
-    $('input[name=p_capital]').val(res.pm.p_capital);
-    $('input[name=p_rccm]').val(res.pm.p_rccm);
-    $('input[name=p_nif]').val(res.pm.p_nif);
-    $('input[name=p_representant]').val(res.pm.p_representant);
-    $('input[name=p_siege]').val(res.pm.p_siege);
-    $('input[name=pm_tel]').val(res.pm.pm_tel);
-    $('input[name=pm_email]').val(res.pm.pm_email);
-    $('input[name=clientP]').empty();
+
+    if(res != undefined)
+    {
+      $('input[name=clientM]').val(id);
+      $('input[name=p_denomination]').val(res.pm.p_denomination);
+      $('select[name=p_rs]').val(res.pm.p_rs);
+      $('input[name=p_capital]').val(res.pm.p_capital);
+      $('input[name=p_rccm]').val(res.pm.p_rccm);
+      $('input[name=p_nif]').val(res.pm.p_nif);
+      $('input[name=p_representant]').val(res.pm.p_representant);
+      $('input[name=p_siege]').val(res.pm.p_siege);
+      $('input[name=pm_tel]').val(res.pm.pm_tel);
+      $('input[name=pm_email]').val(res.pm.pm_email);
+    }
   });
 
   $('#nom_contre').on('input', function() {
     var id = $(this).val();
-    res = find_in_tableau(tab_client, id);
+    res = find_in_tableau(tab_contre, id);
 
-    $('input[name=adverseP]').val(id);
-    $('input[name=c_nom]').val(res.pp.c_nom);
-    $('input[name=c_prenom]').val(res.pp.c_prenom);
-    if(res.pp.c_dob != undefined){$('input[name=c_dob]').val(res.pp.c_dob);}
-    $('input[name=c_pob]').val(res.pp.c_pob);
-    $('input[name=c_nationalite]').val(res.pp.c_nationalite);
-    $('input[name=c_profession]').val(res.pp.c_profession);
-    $('input[name=cp_tel]').val(res.pp.cp_tel);
-    $('input[name=cp_email]').val(res.pp.cp_email);
-    $('input[name=c_domicile]').val(res.pp.cp_domicile);
-    $('input[name=adverseM]').empty();
+    if(res != undefined)
+    {
+      $('input[name=adverseP]').val(id);
+      $('input[name=c_nom]').val(res.pp.c_nom);
+      $('input[name=c_prenom]').val(res.pp.c_prenom);
+      if(res.pp.c_dob != undefined){$('input[name=c_dob]').val(res.pp.c_dob);}
+      $('input[name=c_pob]').val(res.pp.c_pob);
+      $('input[name=c_nationalite]').val(res.pp.c_nationalite);
+      $('input[name=c_profession]').val(res.pp.c_profession);
+      $('input[name=cp_tel]').val(res.pp.cp_tel);
+      $('input[name=cp_email]').val(res.pp.cp_email);
+      $('input[name=c_domicile]').val(res.pp.cp_domicile);
+    }
   });
 
   $('#denom_contre').on('input', function() {
     var id = $(this).val();
     res = find_in_tableau(tab_contre, id);
     
-    $('input[name=adverseM]').val(id);
-    $('input[name=c_denomination]').val(res.pm.c_denomination);
-    $('select[name=c_rs]').val(res.pm.c_rs);
-    $('input[name=c_capital]').val(res.pm.c_capital);
-    $('input[name=c_rccm]').val(res.pm.c_rccm);
-    $('input[name=c_nif]').val(res.pm.c_nif);
-    $('input[name=c_representant]').val(res.pm.c_representant);
-    $('input[name=c_siege]').val(res.pm.c_siege);
-    $('input[name=cm_tel]').val(res.pm.cm_tel);
-    $('input[name=cm_email]').val(res.pm.cm_email);
-    $('input[name=adverseP]').empty();
+    if(res != undefined)
+    {
+      $('input[name=adverseM]').val(id);
+      $('input[name=c_denomination]').val(res.pm.c_denomination);
+      $('select[name=c_rs]').val(res.pm.c_rs);
+      $('input[name=c_capital]').val(res.pm.c_capital);
+      $('input[name=c_rccm]').val(res.pm.c_rccm);
+      $('input[name=c_nif]').val(res.pm.c_nif);
+      $('input[name=c_representant]').val(res.pm.c_representant);
+      $('input[name=c_siege]').val(res.pm.c_siege);
+      $('input[name=cm_tel]').val(res.pm.cm_tel);
+      $('input[name=cm_email]').val(res.pm.cm_email);
+    }
   });
 
   /*END autocomplete et affichage de l'information existante des parties*/
@@ -274,4 +287,60 @@ function find_in_tableau(mon_tableau, id_partie){
       return mon_tableau[i];
     }
   }
+}
+
+function vider_pour_physique()
+{
+  $('input[name=clientP]').val('');
+  $('input[name=p_nom]').val('');
+  $('input[name=p_prenom]').val('');
+  $('input[name=p_dob]').val('');
+  $('input[name=p_pob]').val('');
+  $('input[name=p_nationalite]').val('');
+  $('input[name=p_profession]').val('');
+  $('input[name=pp_tel]').val('');
+  $('input[name=pp_email]').val('');
+  $('input[name=p_domicile]').val('');
+}
+
+function vider_pour_morale()
+{
+  $('input[name=clientM]').val('');
+  $('input[name=p_denomination]').val('');
+  $('select[name=p_rs]').val('');
+  $('input[name=p_capital]').val('');
+  $('input[name=p_rccm]').val('');
+  $('input[name=p_nif]').val('');
+  $('input[name=p_representant]').val('');
+  $('input[name=p_siege]').val('');
+  $('input[name=pm_tel]').val('');
+  $('input[name=pm_email]').val('');
+}
+
+function vider_contre_physique()
+{
+  $('input[name=adverseP]').val('');
+  $('input[name=c_nom]').val('');
+  $('input[name=c_prenom]').val('');
+  $('input[name=c_dob]').val('');
+  $('input[name=c_pob]').val('');
+  $('input[name=c_nationalite]').val('');
+  $('input[name=c_profession]').val('');
+  $('input[name=cp_tel]').val('');
+  $('input[name=cp_email]').val('');
+  $('input[name=c_domicile]').val('');
+}
+
+function vider_contre_morale()
+{
+  $('input[name=adverseM]').val('');
+  $('input[name=c_denomination]').val('');
+  $('select[name=c_rs]').val('');
+  $('input[name=c_capital]').val('');
+  $('input[name=c_rccm]').val('');
+  $('input[name=c_nif]').val('');
+  $('input[name=c_representant]').val('');
+  $('input[name=c_siege]').val('');
+  $('input[name=cm_tel]').val('');
+  $('input[name=cm_email]').val('');
 }

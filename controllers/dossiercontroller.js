@@ -280,37 +280,50 @@ exports.dossier_create_post = [
     // creation du pour
     if(req.body.clientP === undefined && req.body.clientM === undefined)
     {
+      //console.log('nouvel client')
       var pour = new Pour({
         p_type: req.body.p_type
       });
     }
-    else if(req.body.clientP != undefined && req.body.clientM === undefined)
-    {
-      boolClt = 1
-      var pour = req.body.clientP
-    }
     else
     {
-      boolClt = 1
-      var pour = req.body.clientM
+      if(req.body.p_type == 'pp')
+      {
+        //console.log('ancien client physique')
+        boolClt = 1
+        var pour = req.body.clientP
+      }
+      else
+      {
+        //console.log('ancien client morale')
+        boolClt = 1
+        var pour = req.body.clientM
+      }
     }
 
     // creation du contre
     if(req.body.adverseP === undefined && req.body.adverseM === undefined)
     {
+      //console.log('nouvel adversaire')
       var contre = new Contre({
         c_type: req.body.c_type
       });
     }
-    else if(req.body.adverseP != undefined && req.body.adverseM === undefined)
-    {
-      boolContre = 1
-      var contre = req.body.adverseP
-    }
     else
     {
-      boolContre = 1
-      var contre = req.body.adverseM
+      if(req.body.c_type == 'pp')
+      {
+        //console.log('ancien adversaire physique')
+        boolContre = 1
+        var contre = req.body.adverseP
+      }
+      else
+      {
+        //console.log('ancien adversaire morale')
+        boolContre = 1
+        var contre = req.body.adverseM
+      }
+      
     }
 
     if(req.body.clientP === undefined && req.body.clientM === undefined)
@@ -459,6 +472,9 @@ exports.dossier_create_post = [
     else {
       // Data from form is valid.
       // Check if Dossier with same name already exists.
+      //console.log(pour)
+
+      //console.log(contre)
       dossier.pour = pour;
       dossier.contre = contre;
       

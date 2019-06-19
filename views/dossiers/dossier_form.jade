@@ -60,15 +60,14 @@ block content
                       select#titulaire.form-control(name='titulaire' readonly)
                         option(value='null') Veuillez créer des utilisateurs
                       span.form_error
-                        
     .row
       .col-md-6
         .panel.panel-white
-          input#p_type(type='hidden' name='p_type' value='')
+          input#p_type(type='hidden', name='p_type', value='')
           input(type='hidden', id='nb_other_client_pour', name='nb_other_client_pour', value='0')
           input(type='hidden',id='nb_other_avocat_pour', name='nb_other_avocat_pour', value='0')
-          input(type='text', name='clientP')
-          input(type='text', name='clientM')
+          input(type='hidden', name='clientP', value='')
+          input(type='hidden', name='clientM', value='')
           .panel-heading
             h4.panel-title
               span#tiltle_pour.text-bold CLIENT(S)
@@ -340,11 +339,11 @@ block content
                         |  Autres avocats
       .col-md-6
         .panel.panel-white
-          input#c_type(type='hidden' name='c_type' value='')
+          input#c_type(type='hidden', name='c_type', value='')
           input(type='hidden', id='nb_other_client_contre', name='nb_other_client_contre', value='0')
           input(type='hidden',id='nb_other_avocat_contre', name='nb_other_avocat_contre', value='0')
-          input(type='text', name='adverseP')
-          input(type='text', name='adverseM')
+          input(type='hidden', name='adverseP', value='')
+          input(type='hidden', name='adverseM', value='')
           .panel-heading
             h4.panel-title
               span#tiltle_contre.text-bold PARTIE(S) ADVERSE(S)
