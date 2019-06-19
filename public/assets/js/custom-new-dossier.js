@@ -12,7 +12,6 @@ jQuery(document).ready(function () {
       tab_contre = doc.tab_adverse;
     }
   });
-
   //affichage de donnees client personne physique
   $("#btn_physique_pour").click(function () {
     $("#p_type").val("pp");
