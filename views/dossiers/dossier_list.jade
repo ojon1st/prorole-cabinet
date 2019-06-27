@@ -43,7 +43,7 @@ block content
           .row
             .col-md-12.space20
               form.form-horizontal(method='POST', action='')
-                .row
+                //-.row
                   .form-group
                     label.col-md-2.control-label
                       | Tableau synoptique :
@@ -52,10 +52,9 @@ block content
                       datalist#client_convention
                         if (list_dossiers)
                           each dossier in list_dossiers
-                            if(dossier.pour.p_type == 'pp')
-                              option(value=dossier.pour._id, data-customvalue=dossier.pour.pp.p_prenom + ' ' + dossier.pour.pp.p_nom) #{dossier.pour.pp.p_prenom} #{dossier.pour.pp.p_nom}
-                            if(dossier.pour.p_type == 'pm')
-                              option(value=dossier.pour._id, data-customvalue=dossier.pour.pm.p_denomination) #{dossier.pour.pm.p_denomination}
+                            option 
+                              | #{dossier.pour.p_type}
+                          
                     #valide_select.col-md-1
                       #valide_btn
           .row  

@@ -480,11 +480,11 @@ exports.get_renvoi_general = function(req, res, next){
       if (err) { return next(err); }
       var renvoi_general = [];
       results.renvois_rgs.forEach(function(renvois_rg){
-        if(renvois_rg.renvois.length > 0 && renvois_rg.renvois[0].r_type == 'nos conclusions' && renvois_rg.calendrier[0].c_conclusion == 'nous' && renvois_rg.decision == null ){
-          renvoi_general.push(renvois_rg)
+        if(renvois_rg.renvois.length > 0 && renvois_rg.renvois[0].r_type == 'nos conclusions' && renvois_rg.calendrier.length > 0 && renvois_rg.calendrier[0].c_conclusion == 'nous' && renvois_rg.decision == null ){
+          renvoi_general.push(renvois_rg) 
         }
       });
-      console.log(renvoi_general)
+     // console.log(renvoi_general)
       
       res.render('dossiers/dossier_tri_instruction', { title:'conclusions à prendre', list_dossiers: renvoi_general});
       
@@ -503,13 +503,13 @@ exports.get_decision_a_lever = function(req, res, next){
     }, function (err, results) {
       if (err) { return next(err); }
       var no_upload = [];
-      console.log( results.decision_uploads)
+      //console.log( results.decision_uploads)
       results.decision_uploads.forEach(function(decision_upload){
         if(decision_upload.decision != null && decision_upload.decision_file == null){
           no_upload.push(decision_upload)
         }
       });
-      console.log(no_upload)
+      //console.log(no_upload)
       
       res.render('dossiers/dossier_tri_instruction', { title:'décision à prendre', list_dossiers: no_upload});
       
@@ -532,21 +532,21 @@ exports.save_decision_file = [
     
     // Is there any file?
     if(!(req.files && (req.files[0].fieldname == 'decision_file'))) return next(new Error('No decision_file to upload'));
-    console.log('No error! File is processing ... ')
+    //console.log('No error! File is processing ... ')
     
-    console.log('Saving file process ... !!!!! START ...')
+    //console.log('Saving file process ... !!!!! START ...')
     //return;
     // Upload to Cloudinary
   try {
     var result = await cloudinary.v2.uploader.upload(req.files[0].path, {folder:'decisions/id_cabinet/id_dossier'}); // rajouter la var nom du cabinet
-    console.log(result.secure_url.toString());
+    //console.log(result.secure_url.toString());
     Instruction.findByIdAndUpdate(req.params.id, {decision_file: result.secure_url.toString()}, (err) => {
         if(err) return next(err);
         
         res.send(result);
     });
   } catch(error) {
-    console.log(error)
+    //console.log(error)
     return next(new Error('Failed to upload decision_file'));
   }
 }

@@ -81,7 +81,7 @@ block content
                         a(class='button' href="/dossiers/dossier/#{dossier.dossier._id}") #{dossier.dossier.pour.pp.p_prenom} #{dossier.dossier.pour.pp.p_nom} c/ #{dossier.dossier.contre.pm.c_denomination}
                     if(dossier.dossier.pour.p_type == 'pm' && dossier.dossier.contre.c_type == 'pp')
                       +tableau_dossiers
-                        a(class='button' href="/dossiers/dossier/#{dossier.dossier._id}") #{dossier.dossier.pour.pm.p_denomination} c/ #{dossier.dossier.contre.pp.c_prenom} #{dossier.contre.pp.c_nom}
+                        a(class='button' href="/dossiers/dossier/#{dossier.dossier._id}") #{dossier.dossier.pour.pm.p_denomination} c/ #{dossier.dossier.contre.pp.c_prenom} #{dossier.dossier.contre.pp.c_nom}
                     if(dossier.dossier.pour.p_type == 'pm' && dossier.dossier.contre.c_type == 'pm')
                       +tableau_dossiers
                         a(class='button' href="/dossiers/dossier/#{dossier.dossier._id}") #{dossier.dossier.pour.pm.p_denomination} c/ #{dossier.dossier.contre.pm.c_denomination}

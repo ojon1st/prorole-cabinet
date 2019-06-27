@@ -209,7 +209,7 @@ jQuery(document).ready(function () {
       $('input[name=clientP]').val(id);
       $('input[name=p_nom]').val(res.pp.p_nom);
       $('input[name=p_prenom]').val(res.pp.p_prenom);
-      if(res.pp.p_dob != undefined){$('input[name=p_dob]').val(res.pp.p_dob);}
+      $('input[name=p_dob]').val(afficheDate(res.pp.p_dob));
       $('input[name=p_pob]').val(res.pp.p_pob);
       $('input[name=p_nationalite]').val(res.pp.p_nationalite);
       $('input[name=p_profession]').val(res.pp.p_profession);
@@ -248,7 +248,7 @@ jQuery(document).ready(function () {
       $('input[name=adverseP]').val(id);
       $('input[name=c_nom]').val(res.pp.c_nom);
       $('input[name=c_prenom]').val(res.pp.c_prenom);
-      if(res.pp.c_dob != undefined){$('input[name=c_dob]').val(res.pp.c_dob);}
+      $('input[name=c_dob]').val(afficheDate(res.pp.c_dob));
       $('input[name=c_pob]').val(res.pp.c_pob);
       $('input[name=c_nationalite]').val(res.pp.c_nationalite);
       $('input[name=c_profession]').val(res.pp.c_profession);
@@ -286,6 +286,75 @@ function find_in_tableau(mon_tableau, id_partie){
       return mon_tableau[i];
     }
   }
+}
+
+//affichage coorecte de la date
+function afficheDate(date)
+{
+  var dob = date;
+  if(dob != undefined)
+  {
+    var coupe = dob.split("-");
+    var jour = coupe[2].split("T");
+    var dateCorrecte = jour[0] + '-' + coupe[1] + '-' + coupe[0];
+    return dateCorrecte;
+  }
+}
+
+function vider_pour_physique()
+{
+  $('input[name=clientP]').val('');
+  $('input[name=p_nom]').val('');
+  $('input[name=p_prenom]').val('');
+  $('input[name=p_dob]').val('');
+  $('input[name=p_pob]').val('');
+  $('input[name=p_nationalite]').val('');
+  $('input[name=p_profession]').val('');
+  $('input[name=pp_tel]').val('');
+  $('input[name=pp_email]').val('');
+  $('input[name=p_domicile]').val('');
+}
+
+function vider_pour_morale()
+{
+  $('input[name=clientM]').val('');
+  $('input[name=p_denomination]').val('');
+  $('select[name=p_rs]').val('');
+  $('input[name=p_capital]').val('');
+  $('input[name=p_rccm]').val('');
+  $('input[name=p_nif]').val('');
+  $('input[name=p_representant]').val('');
+  $('input[name=p_siege]').val('');
+  $('input[name=pm_tel]').val('');
+  $('input[name=pm_email]').val('');
+}
+
+function vider_contre_physique()
+{
+  $('input[name=adverseP]').val('');
+  $('input[name=c_nom]').val('');
+  $('input[name=c_prenom]').val('');
+  $('input[name=c_dob]').val('');
+  $('input[name=c_pob]').val('');
+  $('input[name=c_nationalite]').val('');
+  $('input[name=c_profession]').val('');
+  $('input[name=cp_tel]').val('');
+  $('input[name=cp_email]').val('');
+  $('input[name=c_domicile]').val('');
+}
+
+function vider_contre_morale()
+{
+  $('input[name=adverseM]').val('');
+  $('input[name=c_denomination]').val('');
+  $('select[name=c_rs]').val('');
+  $('input[name=c_capital]').val('');
+  $('input[name=c_rccm]').val('');
+  $('input[name=c_nif]').val('');
+  $('input[name=c_representant]').val('');
+  $('input[name=c_siege]').val('');
+  $('input[name=cm_tel]').val('');
+  $('input[name=cm_email]').val('');
 }
 
 function vider_pour_physique()
