@@ -184,7 +184,7 @@ exports.dossier_detail = function (req, res, next) {
         i_cour.push(i);
       }
     })
-    
+    //console.log(results.instructions)
     // Successful, so render.
     res.render('dossiers/dossier_detail', {
       title: 'Gestionnaire de Dossier',
@@ -247,36 +247,22 @@ exports.dossier_create_post = [
 
   // Process request after validation and sanitization.
   (req, res, next) => {
-    var boolClt = boolContre = 0
+
     // Extract the validation errors from a request.
     const errors = validationResult(req);
-
     // Create a genre object with escaped and trimmed data.
-    var dossier = new Dossier({ titulaire: req.body.titulaire });
-
+    var dossier = new Dossier({
+      titulaire: req.body.titulaire
+    });
+    
     // creation du pour
-    if(req.body.clientP === undefined && req.body.clientM === undefined)
-    {
-      var pour = new Pour({ p_type: req.body.p_type });
-    }
-    else
-    {
-      boolClt = 1
-      if(req.body.p_type == 'pp') {var pour_id = req.body.clientP}
-      else if(req.body.p_type == 'pm'){ var pour_id = req.body.clientM }
-    }
-
+    var pour = new Pour({
+      p_type: req.body.p_type
+    });
     // creation du contre
-    if(req.body.adverseP === undefined && req.body.adverseM === undefined)
-    {
-      var contre = new Contre({ c_type: req.body.c_type });
-    }
-    else
-    {
-      boolContre = 1
-      if(req.body.c_type == 'pp'){ var contre_id = req.body.adverseP }
-      else if(req.body.c_type == 'pm'){ var contre_id = req.body.adverseM }
-    }
+    var contre = new Contre({
+      c_type: req.body.c_type
+    });
 
     switch (req.body.p_type) {
       case 'pp':
@@ -371,7 +357,7 @@ exports.dossier_create_post = [
         };
         break;
       case 'pm':
-        // creation du contre morale
+        // creation du contre
 
         contre.pm.c_denomination = req.body.c_denomination;
         contre.pm.c_rs = req.body.c_rs;
@@ -414,41 +400,39 @@ exports.dossier_create_post = [
         errors: errors.array()
       });
       return;
-    }
-    else {
+    } else {
       // Data from form is valid.
-      
-      // New pour
-      if ( boolClt == 0){
-        dossier.pour = pour;
-      
-        pour.save(function (err) {
+      // Check if Dossier with same name already exists.
+      dossier.pour = pour;
+      dossier.contre = contre;
+
+      async.parallel([
+        function (callback) {
+          pour.save(function (err) {
+            if (err) { return next(err); }
+          });
+          callback(null);
+        },
+        function (callback) {
+          contre.save(function (err) {
+            if (err) { return next(err); }
+          });
+          callback(null);
+            
+        } ],
+        // optional callback
+        function (err) {
           if (err) { return next(err); }
-        })
-      }
-      // Pour existe
-      else if (boolClt == 1){ dossier.pour = pour_id; }
-
-      // New contre
-      if (boolContre == 0){
-        dossier.contre = contre;
-
-        contre.save(function (err) {
-          if (err) { return next(err); }
-        })
-      } 
-      // Contre existe
-      else if (boolContre == 1){ dossier.contre = contre_id; }
-
-      dossier.hookEnabled = true;
+          dossier.hookEnabled = true;
           
-      dossier.save(function (err) {
-        if (err) { return next(err); }
-        res.redirect('/dossiers');
-        return;
-      });
+          dossier.save(function (err) {
+            if (err) { return next(err); }
+            res.redirect('/dossiers');
+            return;
+          });
+        });
     }
-  }
+    }
 ];
 
 
