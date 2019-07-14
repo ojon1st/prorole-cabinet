@@ -4,6 +4,7 @@ $(document).ready(function () {
   var m = date.getMonth();
   var y = date.getFullYear();
 
+  // calendar for desktop
   $('#calendar').fullCalendar({
     
     header: {

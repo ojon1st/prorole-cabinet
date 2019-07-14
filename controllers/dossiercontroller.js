@@ -427,7 +427,9 @@ exports.dossier_create_post = [
         errors: errors.array()
       });
       return;
-    } else {
+    } 
+    else 
+    {
       // Data from form is valid.
       // Check if Dossier with same name already exists.
       //dossier.pour = pour;
@@ -481,7 +483,7 @@ exports.dossier_create_post = [
         return;
       });
     }
-    }
+  }
 ];
 
 
