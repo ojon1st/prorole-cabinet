@@ -12,17 +12,36 @@ var Calendar = function() {
         var m = date.getMonth();
         var y = date.getFullYear();
 
-        jQuery.ajax({
-            contentType: 'application/json',
-            url: '/agenda/audiencier/get_events',
-            type: 'GET',
-            dataType: 'json',
-            success: function(doc) {
-                demoCalendar =doc.events_doc;
-                callback(demoCalendar);
-                return;
-            }
-      });
+        demoCalendar = [{
+            title: 'Networking',
+            start: new Date(y, m, d, 20, 0),
+            end: new Date(y, m, d, 21, 0),
+            className: 'event-job',
+            category: 'Job',
+            allDay: false,
+            content: 'Out to design conference'
+        }, {
+            title: 'Bootstrap Seminar',
+            start: new Date(y, m, d - 5),
+            end: new Date(y, m, d - 2),
+            className: 'event-offsite',
+            category: 'Off-site work',
+            allDay: true
+        }, {
+            title: 'Lunch with Nicole',
+            start: new Date(y, m, d - 3, 12, 0),
+            end: new Date(y, m, d - 3, 12, 30),
+            className: 'event-generic',
+            category: 'Generic',
+            allDay: false
+        }, {
+            title: 'Corporate Website Redesign',
+            start: new Date(y, m, d + 5),
+            end: new Date(y, m, d + 10),
+            className: 'event-todo',
+            category: 'To Do',
+            allDay: true
+        }];
     };
     //function to initiate Full Calendar
     var runFullCalendar = function() {
@@ -68,9 +87,9 @@ var Calendar = function() {
                 next: 'fa fa-chevron-right'
             },
             header: {
-                left: 'prev,next',
+                left: 'prev,next today',
                 center: 'title',
-                right: 'agendaWeek,agendaDay'
+                right: 'month,agendaWeek,agendaDay'
             },
             events: demoCalendar,
             editable: true,

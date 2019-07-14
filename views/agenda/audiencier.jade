@@ -10,7 +10,7 @@ append styles
     font-family: "Lucida Grande", Helvetica, Arial, Verdana, sans-serif;
     font-size: 14px;
     }
-    #calendar, #calendar-xs {
+    #calendar {
     background-color: white;
     max-width: 90%;
     margin: 0 auto;
@@ -40,31 +40,10 @@ block content
           a(href='/')
             | Accueil
         li
-          | Agenda 
+          | Agenda
         li.active
           | #{title}
-  #calendar.padding-10.hidden-xs
-  #calendar-xs.padding-10.visible-xs
-
-  .hidden
-    #modal
-      .noteWrap.col-md-8.col-md-offset-2
-        .row
-          .col-md-12
-            h2.event-title
-          .col-md-6
-            span.event-category.event-cancelled Cancelled
-            span.event-allday
-              i.fa.fa-check
-              |  All-Day
-          .col-md-12
-            .event-start
-              .event-day
-              .event-date
-              .event-time
-            .event-end
-          .col-md-12
-            .event-content
+  #calendar.padding-10
 
 append jscripts
   script.

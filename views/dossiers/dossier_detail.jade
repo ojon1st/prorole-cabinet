@@ -69,15 +69,15 @@ block content
           .panel-body.buttons-widget
             .row
               .col-md-12
-                form(method='POST', action='')
+                form(method='POST')
                   .form-group
                     label.col-sm-12.dos-text
                       | Réf. : #{dossier.ref_d}
                   .form-group
                     label.col-sm-9.dos-text
-                      if dossier.pour.p_type == 'pp'
+                      if (dossier.pour.p_type == 'pp')
                         | Pour : #{dossier.pour.pp.p_prenom} #{dossier.pour.pp.p_nom}
-                      else if dossier.pour.p_type == 'pm'
+                      else if (dossier.pour.p_type == 'pm')
                         | Pour: #{dossier.pour.pm.p_denomination}
                     .col-sm-3
                       a.btn.btn-link.show-calendar(href='#infoPour')
@@ -85,8 +85,8 @@ block content
                   .form-group
                     label.col-sm-9.dos-text
                       if dossier.contre.c_type == 'pp'
-                        | Contre : #{dossier.contre.pp.p_prenom} #{dossier.contre.pp.c_nom}
-                      else if dossier.contre.c_type == 'pm'
+                        | Contre : #{dossier.contre.pp.c_prenom} #{dossier.contre.pp.c_nom}
+                      else if (dossier.contre.c_type == 'pm')
                         | Contre: #{dossier.contre.pm.c_denomination}
                     .col-sm-3
                       a.btn.btn-link.show-calendar(href='#infoContre')
@@ -147,7 +147,7 @@ block content
                           | Gain
                         label.radio-inline.nature.hidden
                           ///*name='optionsRadios'*/
-                          input.grey(type='radio', value='perte', name='nature',checked=('perte'==dossier.nature))
+                          input.grey(type='radio', value='perte', name='nature', checked=('perte'==dossier.nature))
                           | Perte
                       else
                         label.radio-inline
@@ -175,7 +175,6 @@ block content
                           a.btn.btn-dark-yellow(onclick='autoriser_modif()') Modifier
                         .modifier_ou_sauvegarder.hidden
                           a.btn.btn-dark-azure(onclick='update_dossier("#{dossier._id}")') Sauvegarder
-                      //a.button#search.btn.btn-dark-azure Sauvegarder
       .row.padding-horizontal-10
         .panel.panel-white
           .panel-heading
@@ -462,60 +461,62 @@ block content
                                 if(instruction && (!instruction.decision || instruction.decision == ''))
                                   a.btn.input-group-addon.btn-dark-beige(onclick='get_renvoi_infos("#{dossier._id}", "#{division}")')
                                     span.fa.fa-check
-                    if (instruction && instruction.decision && instruction.decision != '' && instruction.juridiction.division == division)
-                      .form-group
-                        .col-sm-12
-                          textarea.form-control(name='decision', id='decision_#{division}', placeholder='Délibéré', cols='30', rows='7' readonly)
-                            | #{instruction.decision}
-                      .form-group
-                        label.col-sm-3.control-label
-                          | Télécharger le délibéré :
-                        .col-sm-9
-                          .fileupload.fileupload-new(data-provides='fileupload')
-                            .input-group
-                              .form-control.uneditable-input
-                                i.fa.fa-file.fileupload-exists
-                                span.fileupload-preview
-                              .input-group-btn
-                                .btn.btn-light-grey.btn-file
-                                  span.fileupload-new
-                                    i.fa.fa-folder-open-o
-                                    |  Select file
-                                  span.fileupload-exists
-                                    i.fa.fa-folder-open-o
-                                    |  Change
-                                  input.file-input(type='file', id='udf')
-                                a.btn.btn-light-grey.fileupload-exists(href='#', data-dismiss='fileupload')
-                                  i.fa.fa-times
-                                  |  Remove
-                              .input-group-btn
-                                a.btn.btn-light-green(onclick='upload_decision_file("#{instruction._id}")')
-                                  span.fa.fa-check
-                      //.form-group
-                        label.col-sm-4.control-label
-                          | Télécharger le délibéré :
-                        .col-sm-6
-                          input.btn.btn-info(type='file' name='decision_file'  accept='application/pdf' enctype='multipart/form-data')
-                        //a.col-sm-offset-1.col-sm-1.btn.btn-dark-beige(onclick='')
-                          span.fa.fa-check
-                    else
-                      .form-group
-                        label.col-sm-3.control-label
-                          | Délibéré :
-                        .col-sm-9
-                          textarea.form-control(name='decision', id='decision_#{division}', placeholder='', cols='30', rows='7')
-                    if (instruction && (!instruction.decision || instruction.decision == '') && instruction.juridiction.division == division)
-                      .form-group
-                        .col-sm-6
-                          label.radio-inline
-                            input.grey(type='radio', value='gain', name='etat')
-                            | Gain de cause
-                          label.radio-inline
-                            ///*name='optionsRadios'*/
-                            input.grey(type='radio', value='perte', name='etat')
-                            | Perte de cause
-                        .col-sm-offset-1.col-sm-3.text-center
-                          input.btn.btn-dark-azure(type='button', onclick='save_decision("#{dossier._id}","#{instruction._id}","#{division}")' , value='Sauvegarde du Délibéré')
+                    //-verification de l'instruction et du division de juridiction
+                    if(instruction && instruction.juridiction.division == division)
+                      //-verification de la decision
+                      if (instruction.decision)
+                        .form-group
+                          .col-sm-12
+                            textarea.form-control(name='decision', id='decision_#{division}', placeholder='Délibéré', cols='30', rows='7' readonly)
+                              | #{instruction.decision}
+                        //-verification du telechargement du deliberer
+                        if(instruction.decision_file)
+                          .form-group
+                            .col-sm-12
+                              embed(src=instruction.decision_file , type='application/pdf', width='100%', height='300')
+                        else
+                          .form-group
+                            .col-sm-6
+                              label.radio-inline
+                                input.grey(type='radio', value='gain', name='etat')
+                                | Gain de cause
+                              label.radio-inline
+                                input.grey(type='radio', value='perte', name='etat')
+                                | Perte de cause
+                          .form-group
+                            label.col-sm-3.control-label
+                              | Télécharger le délibéré :
+                            .col-sm-9
+                              .fileupload.fileupload-new(data-provides='fileupload')
+                                .input-group
+                                  .form-control.uneditable-input
+                                    i.fa.fa-file.fileupload-exists
+                                    span.fileupload-preview
+                                  .input-group-btn
+                                    .btn.btn-light-grey.btn-file
+                                      span.fileupload-new
+                                        i.fa.fa-folder-open-o
+                                        |  Selectionner
+                                      span.fileupload-exists
+                                        i.fa.fa-folder-open-o
+                                        |  Changer
+                                      input.file-input(type='file', id='udf')
+                                    a.btn.btn-light-grey.fileupload-exists(href='#', data-dismiss='fileupload')
+                                      i.fa.fa-times
+                                      |  Supprimer
+                                  .input-group-btn
+                                    a.btn.btn-light-green(onclick='upload_decision_file("#{instruction._id}")')
+                                      span.fa.fa-check
+                      else 
+                        .form-group
+                          label.col-sm-3.control-label
+                            | Délibéré :
+                          .col-sm-9
+                            textarea.form-control(name='decision', id='decision_#{division}', placeholder='', cols='30', rows='7')
+                        .form-group  
+                          .col-sm-offset-7.col-sm-3.text-center
+                            input.btn.btn-dark-azure(type='button', onclick='save_decision("#{dossier._id}","#{instruction._id}","#{division}")' , value='Sauvegarde du Délibéré')
+                      
                   .buttons-widget
                     .tabbable.tabs-below
                       .tab-content

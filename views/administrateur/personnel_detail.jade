@@ -43,7 +43,7 @@ block content
                   .fileupload.fileupload-new(data-provides='fileupload')
                     .user-image
                       .fileupload-new.thumbnail
-                        img#image-preview(src='#{utilisateur.avatar}', alt='' width='100%')
+                        img#image-preview(src='#{utilisateur.avatar}', alt='')
                       .fileupload-preview.fileupload-exists.thumbnail
                       //.user-image-buttons
                         span.btn.btn-azure.btn-file.btn-sm
@@ -51,7 +51,7 @@ block content
                             i.fa.fa-pencil
                           span.fileupload-exists
                             i.fa.fa-pencil
-                          input(type='file' onchange='save_profile_image()')
+                          //input(type='file' onchange='save_profile_image()')
                           input#file-upload(type='file', name='avatar' onchange='uploadavatar(this.files[0],"#{utilisateur._id}")' accept='image/jpeg, image/png' enctype='multipart/form-data')
                         a.btn.fileupload-exists.btn-red.btn-sm(href='#', data-dismiss='fileupload')
                           i.fa.fa-times
@@ -61,7 +61,7 @@ block content
                     tr
                       th(colspan='')  Contact
                       th.text-right
-                        a.show-calendar(href='#runEditer').btn.btn-azure.btn-file.btn-sm.hidden-xs
+                        a.show-calendar(href='#runEditer').btn.btn-azure.btn-file.btn-sm
                           span.fileupload-new
                             | Modifier mes infos 
                             i.fa.fa-pencil
@@ -103,7 +103,7 @@ block content
                 <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas convallis porta purus, pulvinar mattis nulla tempus ut. Curabitur quis dui orci. Ut nisi dolor, dignissim a aliquet quis, vulputate id dui. Proin ultrices ultrices ligula, dictum varius turpis faucibus non. Curabitur faucibus ultrices nunc, nec aliquet leo tempor cursus.
                 </p>
-              .row.space20.hidden-xs
+              .row.space20
                 .col-sm-4
                   a.show-calendar(href='#runDossier')
                     button.btn.btn-icon.btn-block
@@ -112,7 +112,7 @@ block content
                       span.badge.badge-info  #{nb_dossiers} 
                   br.hidden-lg.hidden-md.hidden-sm
                 .col-sm-4
-                  a(href='/agenda/audiencier')
+                  a.show-calendar(href='/agenda/audiencier')
                     button.btn.btn-icon.btn-block
                       i.clip-list-3
                       | 														Audiences 

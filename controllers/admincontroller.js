@@ -188,24 +188,24 @@ exports.utilisateur_page_get = function (req, res, next){
 };
 
 exports.save_avatar_post = [
-  async (req, res, next) => {  
-      // Is there any file?
-      if(!(req.file && (req.file.fieldname == 'avatar'))) return next(new Error('No avatar to upload'));
-
-      // Upload to Cloudinary
-    try {
-      var result = await cloudinary.v2.uploader.upload(req.file.path, {folder:'utilisateurs/photos'}); // rajouter la var nom du cabinet
-      console.log(result.secure_url.toString());
-      Utilisateur.findByIdAndUpdate(req.params.id, {avatar: result.secure_url.toString()}, (err) => {
-          if(err) return next(err);
-          
-          res.send(result);
-      });
-    } catch(error) {
-      console.log(error)
-      return next(new Error('Failed to upload avatar'));
+    async (req, res, next) => {
+        // Is there any file?
+        if(!(req.file && (req.file.fieldname == 'avatar'))) return next(new Error('No avatar to upload'));
+ 
+        // Upload to Cloudinary
+      try {
+        var result = await cloudinary.v2.uploader.upload(req.file.path, {folder:'utilisateurs/photos'}); // rajouter la var nom du cabinet
+        console.log(result.secure_url.toString());
+        Utilisateur.findByIdAndUpdate(req.params.id, {avatar: result.secure_url.toString()}, (err) => {
+            if(err) return next(err);
+            
+            res.send(result);
+        });
+      } catch(error) {
+        console.log(error)
+        return next(new Error('Failed to upload avatar'));
+      }
     }
-  }
 ];
 
 exports.update_utilisateur_post = [

@@ -1,6 +1,6 @@
 var tab_pour = [];
 var tab_contre = [];
-//function ajax permettant de recuperer les informations des patrties au chargement de la page
+//fonction ajax permettant de recuperer les informations des patrties au chargement de la page
 jQuery(document).ready(function () {
   jQuery.ajax({
     contentType: 'application/json',
@@ -18,6 +18,8 @@ jQuery(document).ready(function () {
     $("#type_pour").addClass("hidden");
     $("#physique_pour").removeClass("hidden");
     $("#tiltle_pour").text("CLIENT - PHYSIQUE");
+    
+    //vider le contenu de champs du client morale
     vider_pour_morale();
   });
 
@@ -27,6 +29,8 @@ jQuery(document).ready(function () {
     $("#type_pour").addClass("hidden");
     $("#morale_pour").removeClass("hidden");
     $("#tiltle_pour").text("CLIENT - MORALE");
+
+    //vider le contenu de champs du client physique
     vider_pour_physique();
   });
   
@@ -36,6 +40,8 @@ jQuery(document).ready(function () {
     $("#type_contre").addClass("hidden");
     $("#physique_contre").removeClass("hidden");
     $("#tiltle_contre").text("PARTIE ADVERSE - PHYSIQUE");
+
+    //vider le contenu de champs du contre morale
     vider_contre_morale();
   });
 
@@ -45,6 +51,8 @@ jQuery(document).ready(function () {
     $("#type_contre").addClass("hidden");
     $("#morale_contre").removeClass("hidden");
     $("#tiltle_contre").text("PARTIE ADVERSE - MORALE");
+
+    //vider le contenu de champs du contre physique
     vider_contre_physique();
   });
 
@@ -202,14 +210,14 @@ jQuery(document).ready(function () {
 
   $('#nom_pour').on('input', function() {
     var id = $(this).val();
-    res = find_in_tableau(tab_pour, id);
+    res = find_in_table(tab_pour, id);
     
     if(res != undefined)
     {
       $('input[name=clientP]').val(id);
       $('input[name=p_nom]').val(res.pp.p_nom);
       $('input[name=p_prenom]').val(res.pp.p_prenom);
-      $('input[name=p_dob]').val(afficheDate(res.pp.p_dob));
+      $('input[name=p_dob]').val(corrigeDate(res.pp.p_dob));
       $('input[name=p_pob]').val(res.pp.p_pob);
       $('input[name=p_nationalite]').val(res.pp.p_nationalite);
       $('input[name=p_profession]').val(res.pp.p_profession);
@@ -222,7 +230,7 @@ jQuery(document).ready(function () {
 
   $('#denom_pour').on('input', function() {
     var id = $(this).val();
-    res = find_in_tableau(tab_pour, id);
+    res = find_in_table(tab_pour, id);
 
     if(res != undefined)
     {
@@ -241,14 +249,14 @@ jQuery(document).ready(function () {
 
   $('#nom_contre').on('input', function() {
     var id = $(this).val();
-    res = find_in_tableau(tab_contre, id);
+    res = find_in_table(tab_contre, id);
 
     if(res != undefined)
     {
       $('input[name=adverseP]').val(id);
       $('input[name=c_nom]').val(res.pp.c_nom);
       $('input[name=c_prenom]').val(res.pp.c_prenom);
-      $('input[name=c_dob]').val(afficheDate(res.pp.c_dob));
+      $('input[name=c_dob]').val(corrigeDate(res.pp.c_dob));
       $('input[name=c_pob]').val(res.pp.c_pob);
       $('input[name=c_nationalite]').val(res.pp.c_nationalite);
       $('input[name=c_profession]').val(res.pp.c_profession);
@@ -260,7 +268,7 @@ jQuery(document).ready(function () {
 
   $('#denom_contre').on('input', function() {
     var id = $(this).val();
-    res = find_in_tableau(tab_contre, id);
+    res = find_in_table(tab_contre, id);
     
     if(res != undefined)
     {
@@ -280,7 +288,7 @@ jQuery(document).ready(function () {
   /*END autocomplete et affichage de l'information existante des parties*/
 });
 
-function find_in_tableau(mon_tableau, id_partie){
+function find_in_table(mon_tableau, id_partie){
   for(var i in mon_tableau){
     if(mon_tableau[i]._id == id_partie){
       return mon_tableau[i];
@@ -289,7 +297,7 @@ function find_in_tableau(mon_tableau, id_partie){
 }
 
 //affichage coorecte de la date
-function afficheDate(date)
+function corrigeDate(date)
 {
   var dob = date;
   if(dob != undefined)

@@ -209,10 +209,10 @@ var Index = function() {"use strict";
 
 			createSeries();
 			var data = [{
-				"key": "Enjeu",
+				"key": "Page Views",
 				"values": series1
 			}, {
-				"key": "Perte",
+				"key": "Unique Visits",
 				"values": series2
 			}];
 

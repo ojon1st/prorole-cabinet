@@ -8,23 +8,14 @@ nav#pageslide-left.pageslide.inner.hidden-md.hidden-lg
       if(utilisateur)
         .user-profile.border-top.padding-horizontal-10.block
           .inline-block
-            img(src='#{utilisateur.avatar}', width='30', height='30' alt='')
+            img(src='#{utilisateur.avatar}', width='auto', height='auto' alt='')
           .inline-block
             h5.no-margin  Bienvenue 
             h4.no-margin  #{utilisateur.prenom} #{utilisateur.nom}
-            //a.btn.user-options.sb_toggle
+            a.btn.user-options.sb_toggle
               i.fa.fa-cog
       // start: MAIN NAVIGATION MENU
       ul.main-navigation-menu
-        li
-          a(href='/agenda/audiencier')
-            span.title  Audiencier 
-        li
-          a(href='/agenda/diligences')
-            span.title  Tables des dilligences
-        li
-          a(href='/dossiers/manques')
-            span.title  Defaut de renvoi
       // end: MAIN NAVIGATION MENU
       // end: SIDEBAR
   .slide-tools
