@@ -5,13 +5,72 @@ var router = express.Router();
 // Require our controllers.
 var partie_controller = require('../controllers/partiecontroller'); 
 
+// REQUIRE OUR MODELS
+var Pour = require('../models/pour');
+var Contre = require('../models/contre');
+
 // GET partie home page.
 router.get('/', partie_controller.index); 
 
 /// partie POUR ROUTES ///
 
 // GET request for parties
-router.get('/partie/', partie_controller.get_parties);
+router.get('/partie/', partie_controller.get_parties); 
+
+router.post('/pour/update', [
+  function(req, res, next) {
+    if (('pour_id' in req.body) && req.body.p_type == 'pp'){
+      Pour.findById(req.body.pour_id).exec(function(err, client) {
+        if(err) {
+          console.log(err);
+          return res.redirect('/dossiers/dossier/'+req.body.dossier_id);
+        }
+        req.clientP = client;
+        return next();
+      });
+    }
+
+    if (('pour_id' in req.body) && req.body.p_type == 'pm'){
+      Pour.findById(req.body.pour_id).exec(function(err, client) {
+        if(err) {
+          console.log(err);
+          return res.redirect('/dossiers/dossier/'+req.body.dossier_id);
+        }
+        req.clientM = client;
+        return next();
+      });
+    }
+  },
+  ...partie_controller.pour_update
+]);
+
+router.post('/contre/update', [
+  function(req, res, next) {
+    if (('contre_id' in req.body) && req.body.c_type == 'pp'){
+      Contre.findById(req.body.contre_id).exec(function(err, contre) {
+        if(err) {
+          console.log(err);
+          return res.redirect('/dossiers/dossier/'+req.body.dossier_id);
+        }
+        req.contreP = contre;
+        return next();
+      });
+    }
+
+    if (('contre_id' in req.body) && req.body.c_type == 'pm'){
+      Contre.findById(req.body.contre_id).exec(function(err, contre) {
+        if(err) {
+          console.log(err);
+          return res.redirect('/dossiers/dossier/'+req.body.dossier_id);
+        }
+        req.contreM = contre;
+        return next();
+      });
+    }
+  },
+  ...partie_controller.contre_update
+]);
+
 
 // GET request for creating a partie. NOTE This must come before routes that display partie (uses id).
 router.get('/partie/pour/create', partie_controller.partie_pour_create_get);

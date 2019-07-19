@@ -39,6 +39,76 @@ exports.get_parties = function(req, res, next){
 
 };
 
+exports.pour_update = [
+
+  // Process request after validation and sanitization.
+  (req, res, next) => {
+
+
+    if('clientP' in req) {
+      req.clientP.updateOne({
+        pp: req.body
+      }, function(err) {
+        if(err) {
+          console.log(err)
+        }
+        console.log('CLIENTP UPDATED')
+        return res.redirect('/dossiers/dossier/'+req.body.dossier_id);
+      })
+      .catch(console.log);
+    }
+
+    if('clientM' in req) {
+      req.clientM.updateOne({
+        pp: req.body
+      }, function(err) {
+        if(err) {
+          console.log(err)
+        }
+        console.log('CLIENTM UPDATED')
+        return res.redirect('/dossiers/dossier/'+req.body.dossier_id);
+      })
+      .catch(console.log);
+    }
+  }
+
+];
+
+exports.contre_update = [
+
+  // Process request after validation and sanitization.
+  (req, res, next) => {
+
+
+    if('contreP' in req) {
+      req.contreP.updateOne({
+        pp: req.body
+      }, function(err) {
+        if(err) {
+          console.log(err)
+        }
+        console.log('CONTREP UPDATED')
+        return res.redirect('/dossiers/dossier/'+req.body.dossier_id);
+      })
+      .catch(console.log);
+    }
+
+    if('contreM' in req) {
+      req.contreM.updateOne({
+        pm: req.body
+      }, function(err) {
+        if(err) {
+          console.log(err)
+        }
+        console.log('CONTREM UPDATED')
+        return res.redirect('/dossiers/dossier/'+req.body.dossier_id);
+      })
+      .catch(console.log);
+    }
+  }
+
+];
+
 // L'index de la page des parties doit regrouper dans un tab la liste de tous nos clients puis la liste de tous nos adversaires
 exports.index = function(req, res, next){res.redirect('/')}; 
 exports.partie_pour_create_get = function(req, res, next){res.redirect('/')};

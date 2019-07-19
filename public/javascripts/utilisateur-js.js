@@ -46,11 +46,11 @@ if(u_nom == '' || u_prenom == '' || u_profil == 'null' || u_telephone == '' || u
 }
 
 if (u_pwd.length < 8 ){
-  alert('inf 8')
+  alert('Le mot de passe doit contenir au moins 8 caracteurs')
   return;
 }
  if (u_pwd2 != u_pwd){
-  alert('inf nnon verifié')
+  alert('Le mot de passe n\'est pas confirmé')
    return;
 } 
 
@@ -77,7 +77,8 @@ if (u_pwd.length < 8 ){
         alert(data.msg)
         return;
       }
-      location.reload();
+      //location.reload();
+      window.location.href="/administrateur/utilisateurs";
       return;
     }
   });

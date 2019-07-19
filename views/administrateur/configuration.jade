@@ -8,7 +8,7 @@ block content
           a(href='/')
             | Accueil
         li.active
-          | Configuration du compte du cabinet
+          |Informations du compte du cabinet
     // end: BREADCRUMB
     // start: PAGE CONTENT
     form#form.form-horizontal(role='form')
@@ -17,7 +17,7 @@ block content
           .panel.panel-white
             .panel-heading
               h4.panel-title
-                | Creation du 
+                | Informations du 
                 span.text-bold compte de cabinet
               .panel-tools
                 .dropdown
@@ -45,66 +45,52 @@ block content
                 .col-md-6
                   .form-group
                     label.col-sm-3.control-label(for='')
-                      | Identifiant
-                      span.symbol.required
-                      |  :
+                      | Identifiant :
                     .col-sm-8
                       label.form-control(type='text') #{configuration.identifiant}
                   .form-group
                     label.col-sm-3.control-label(for='')
-                      | Denommination S. 
-                      span.symbol.required
-                      |  :
+                      | Denommination S. :
                     .col-sm-8
                       label.form-control(type='text') #{configuration.denomination}
                   .form-group
                     label.col-sm-3.control-label(for='')
-                      | Siège Social 
-                      span.symbol.required
-                      |  :
+                      | Siège Social :
                     .col-sm-8
                       label.form-control(type='text') #{configuration.siege_social}
                   .form-group
                     label.col-sm-3.control-label(for='')
-                      | Adresse complete 
-                      span.symbol.required
-                      |  :
+                      | Adresse complete :
                     .col-sm-8
                       label.form-control(type='text') #{configuration.adresse}
                 .col-sm-6
                   .form-group
                     label.col-sm-3.control-label(for='form-field-24')
-                      | Téléphone 
-                      span.symbol.required
-                      |  :
+                      | Téléphone :
                     .col-sm-8
                       label#form-field-mask-2.form-control.input-mask-phone(type='text') #{configuration.telephone}
                   .form-group
                     label.col-sm-3.control-label(for='')
-                      | email 
-                      span.symbol.required
-                      |  :
+                      | email :
                     .col-sm-8
                       label.form-control(type='email') #{configuration.email}
                   .form-group
                     label.col-sm-3.control-label(for='')
-                      | Mot de passe 
-                      span.symbol.required
-                      |  :
+                      | Mot de passe :
                     .col-sm-8
-                      label.form-control(type='text') #{configuration.password}
-                  .form-group
+                      label.form-control(type='text') ********
+                  //-.form-group
                     label.col-sm-3.control-label(for='')
                       | Modification 
                       span.symbol.required
                       |  :
                     .col-sm-8
                       a.btn.btn-green.btn-block(type='button')
-                        | Cliquer ici pour modifier les infos ou mot de passe 
+                        | Modifier les infos ou mot de passe 
                         i.fa.fa-arrow-circle-right
-              .row
+              //-.row
                 .col-md-12
                   div
                     br
                     span.symbol.required
-                    | 													Ces champs sont obligatoires.      
+                    | Ces champs sont obligatoires.      

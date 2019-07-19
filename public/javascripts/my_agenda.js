@@ -23,7 +23,7 @@ $(document).ready(function () {
     events: function(start, end, timezone, callback) {
       jQuery.ajax({
           contentType: 'application/json',
-          url: '/agenda/audiencier/get_events',
+          url: '/agenda/audiencier/get_my_events',
           type: 'GET',
           dataType: 'json',
           success: function(doc) {

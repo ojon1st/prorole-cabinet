@@ -43,7 +43,7 @@ block content
         .panel-body
           .row
             .col-md-12.space20
-              button.btn.btn-orange.add-row
+              //-button.btn.btn-orange.add-row
                 | Ajouter un nouveau contact 
                 i.fa.fa-plus
               .btn-group.pull-right
@@ -68,12 +68,12 @@ block content
                   th Email
                   th Téléphone
               tbody
-              each p in carnet
-                tr
-                  th #{p.prenom_nom}
-                  th #{p.email}
-                  th #{p.tel}
-
+                each p in carnet
+                  if(p.email != '' || p.tel != null)
+                    tr
+                      th #{p.prenom_nom}
+                      th #{p.email}
+                      th #{p.tel}
 append jscripts
   // start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
   script(src='/assets/plugins/holder/holder.js')

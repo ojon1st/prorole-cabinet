@@ -12,6 +12,7 @@ jQuery(document).ready(function () {
       tab_contre = doc.tab_adverse;
     }
   });
+
   //affichage de donnees client personne physique
   $("#btn_physique_pour").click(function () {
     $("#p_type").val("pp");
@@ -215,16 +216,15 @@ jQuery(document).ready(function () {
     if(res != undefined)
     {
       $('input[name=clientP]').val(id);
-      $('input[name=p_nom]').val(res.pp.p_nom);
-      $('input[name=p_prenom]').val(res.pp.p_prenom);
-      $('input[name=p_dob]').val(corrigeDate(res.pp.p_dob));
-      $('input[name=p_pob]').val(res.pp.p_pob);
-      $('input[name=p_nationalite]').val(res.pp.p_nationalite);
-      $('input[name=p_profession]').val(res.pp.p_profession);
-      $('input[name=pp_tel]').val(res.pp.pp_tel);
-      $('input[name=pp_email]').val(res.pp.pp_email);
-      $('input[name=p_domicile]').val(res.pp.p_domicile);
-      $('input[name=clientM]').empty();
+      $('input[name=p_nom]').val(res.pp.p_nom).attr('disabled', true);
+      $('input[name=p_prenom]').val(res.pp.p_prenom).attr('disabled', true);
+      $('input[name=p_dob]').val(corrigeDate(res.pp.p_dob)).attr('disabled', true);
+      $('input[name=p_pob]').val(res.pp.p_pob).attr('disabled', true);
+      $('input[name=p_nationalite]').val(res.pp.p_nationalite).attr('disabled', true);
+      $('input[name=p_profession]').val(res.pp.p_profession).attr('disabled', true);
+      $('input[name=pp_tel]').val(res.pp.pp_tel).attr('disabled', true);
+      $('input[name=pp_email]').val(res.pp.pp_email).attr('disabled', true);
+      $('input[name=p_domicile]').val(res.pp.p_domicile).attr('disabled', true);
     }
   });
 
@@ -235,15 +235,15 @@ jQuery(document).ready(function () {
     if(res != undefined)
     {
       $('input[name=clientM]').val(id);
-      $('input[name=p_denomination]').val(res.pm.p_denomination);
-      $('select[name=p_rs]').val(res.pm.p_rs);
-      $('input[name=p_capital]').val(res.pm.p_capital);
-      $('input[name=p_rccm]').val(res.pm.p_rccm);
-      $('input[name=p_nif]').val(res.pm.p_nif);
-      $('input[name=p_representant]').val(res.pm.p_representant);
-      $('input[name=p_siege]').val(res.pm.p_siege);
-      $('input[name=pm_tel]').val(res.pm.pm_tel);
-      $('input[name=pm_email]').val(res.pm.pm_email);
+      $('input[name=p_denomination]').val(res.pm.p_denomination).attr('disabled', true);
+      $('select[name=p_rs]').val(res.pm.p_rs).attr('disabled', true);
+      $('input[name=p_capital]').val(res.pm.p_capital).attr('disabled', true);
+      $('input[name=p_rccm]').val(res.pm.p_rccm).attr('disabled', true);
+      $('input[name=p_nif]').val(res.pm.p_nif).attr('disabled', true);
+      $('input[name=p_representant]').val(res.pm.p_representant).attr('disabled', true);
+      $('input[name=p_siege]').val(res.pm.p_siege).attr('disabled', true);
+      $('input[name=pm_tel]').val(res.pm.pm_tel).attr('disabled', true);
+      $('input[name=pm_email]').val(res.pm.pm_email).attr('disabled', true);
     }
   });
 
@@ -254,15 +254,15 @@ jQuery(document).ready(function () {
     if(res != undefined)
     {
       $('input[name=adverseP]').val(id);
-      $('input[name=c_nom]').val(res.pp.c_nom);
-      $('input[name=c_prenom]').val(res.pp.c_prenom);
-      $('input[name=c_dob]').val(corrigeDate(res.pp.c_dob));
-      $('input[name=c_pob]').val(res.pp.c_pob);
-      $('input[name=c_nationalite]').val(res.pp.c_nationalite);
-      $('input[name=c_profession]').val(res.pp.c_profession);
-      $('input[name=cp_tel]').val(res.pp.cp_tel);
-      $('input[name=cp_email]').val(res.pp.cp_email);
-      $('input[name=c_domicile]').val(res.pp.cp_domicile);
+      $('input[name=c_nom]').val(res.pp.c_nom).attr('disabled', true);
+      $('input[name=c_prenom]').val(res.pp.c_prenom).attr('disabled', true);
+      $('input[name=c_dob]').val(corrigeDate(res.pp.c_dob)).attr('disabled', true);
+      $('input[name=c_pob]').val(res.pp.c_pob).attr('disabled', true);
+      $('input[name=c_nationalite]').val(res.pp.c_nationalite).attr('disabled', true);
+      $('input[name=c_profession]').val(res.pp.c_profession).attr('disabled', true);
+      $('input[name=cp_tel]').val(res.pp.cp_tel).attr('disabled', true);
+      $('input[name=cp_email]').val(res.pp.cp_email).attr('disabled', true);
+      $('input[name=c_domicile]').val(res.pp.cp_domicile).attr('disabled', true);
     }
   });
 
@@ -273,15 +273,15 @@ jQuery(document).ready(function () {
     if(res != undefined)
     {
       $('input[name=adverseM]').val(id);
-      $('input[name=c_denomination]').val(res.pm.c_denomination);
-      $('select[name=c_rs]').val(res.pm.c_rs);
-      $('input[name=c_capital]').val(res.pm.c_capital);
-      $('input[name=c_rccm]').val(res.pm.c_rccm);
-      $('input[name=c_nif]').val(res.pm.c_nif);
-      $('input[name=c_representant]').val(res.pm.c_representant);
-      $('input[name=c_siege]').val(res.pm.c_siege);
-      $('input[name=cm_tel]').val(res.pm.cm_tel);
-      $('input[name=cm_email]').val(res.pm.cm_email);
+      $('input[name=c_denomination]').val(res.pm.c_denomination).attr('disabled', true);
+      $('select[name=c_rs]').val(res.pm.c_rs).attr('disabled', true);
+      $('input[name=c_capital]').val(res.pm.c_capital).attr('disabled', true);
+      $('input[name=c_rccm]').val(res.pm.c_rccm).attr('disabled', true);
+      $('input[name=c_nif]').val(res.pm.c_nif).attr('disabled', true);
+      $('input[name=c_representant]').val(res.pm.c_representant).attr('disabled', true);
+      $('input[name=c_siege]').val(res.pm.c_siege).attr('disabled', true);
+      $('input[name=cm_tel]').val(res.pm.cm_tel).attr('disabled', true);
+      $('input[name=cm_email]').val(res.pm.cm_email).attr('disabled', true);
     }
   });
 
@@ -312,111 +312,111 @@ function corrigeDate(date)
 function vider_pour_physique()
 {
   $('input[name=clientP]').val('');
-  $('input[name=p_nom]').val('');
-  $('input[name=p_prenom]').val('');
-  $('input[name=p_dob]').val('');
-  $('input[name=p_pob]').val('');
-  $('input[name=p_nationalite]').val('');
-  $('input[name=p_profession]').val('');
-  $('input[name=pp_tel]').val('');
-  $('input[name=pp_email]').val('');
-  $('input[name=p_domicile]').val('');
+  $('input[name=p_nom]').val('').attr('disabled', false);
+  $('input[name=p_prenom]').val('').attr('disabled', false);
+  $('input[name=p_dob]').val('').attr('disabled', false);
+  $('input[name=p_pob]').val('').attr('disabled', false);
+  $('input[name=p_nationalite]').val('').attr('disabled', false);
+  $('input[name=p_profession]').val('').attr('disabled', false);
+  $('input[name=pp_tel]').val('').attr('disabled', false);
+  $('input[name=pp_email]').val('').attr('disabled', false);
+  $('input[name=p_domicile]').val('').attr('disabled', false);
 }
 
 function vider_pour_morale()
 {
   $('input[name=clientM]').val('');
-  $('input[name=p_denomination]').val('');
-  $('select[name=p_rs]').val('');
-  $('input[name=p_capital]').val('');
-  $('input[name=p_rccm]').val('');
-  $('input[name=p_nif]').val('');
-  $('input[name=p_representant]').val('');
-  $('input[name=p_siege]').val('');
-  $('input[name=pm_tel]').val('');
-  $('input[name=pm_email]').val('');
+  $('input[name=p_denomination]').val('').attr('disabled', false);
+  $('select[name=p_rs]').val('').attr('disabled', false);
+  $('input[name=p_capital]').val('').attr('disabled', false);
+  $('input[name=p_rccm]').val('').attr('disabled', false);
+  $('input[name=p_nif]').val('').attr('disabled', false);
+  $('input[name=p_representant]').val('').attr('disabled', false);
+  $('input[name=p_siege]').val('').attr('disabled', false);
+  $('input[name=pm_tel]').val('').attr('disabled', false);
+  $('input[name=pm_email]').val('').attr('disabled', false);
 }
 
 function vider_contre_physique()
 {
   $('input[name=adverseP]').val('');
-  $('input[name=c_nom]').val('');
-  $('input[name=c_prenom]').val('');
-  $('input[name=c_dob]').val('');
-  $('input[name=c_pob]').val('');
-  $('input[name=c_nationalite]').val('');
-  $('input[name=c_profession]').val('');
-  $('input[name=cp_tel]').val('');
-  $('input[name=cp_email]').val('');
-  $('input[name=c_domicile]').val('');
+  $('input[name=c_nom]').val('').attr('disabled', false);
+  $('input[name=c_prenom]').val('').attr('disabled', false);
+  $('input[name=c_dob]').val('').attr('disabled', false);
+  $('input[name=c_pob]').val('').attr('disabled', false);
+  $('input[name=c_nationalite]').val('').attr('disabled', false);
+  $('input[name=c_profession]').val('').attr('disabled', false);
+  $('input[name=cp_tel]').val('').attr('disabled', false);
+  $('input[name=cp_email]').val('').attr('disabled', false);
+  $('input[name=c_domicile]').val('').attr('disabled', false);
 }
 
 function vider_contre_morale()
 {
   $('input[name=adverseM]').val('');
-  $('input[name=c_denomination]').val('');
-  $('select[name=c_rs]').val('');
-  $('input[name=c_capital]').val('');
-  $('input[name=c_rccm]').val('');
-  $('input[name=c_nif]').val('');
-  $('input[name=c_representant]').val('');
-  $('input[name=c_siege]').val('');
-  $('input[name=cm_tel]').val('');
-  $('input[name=cm_email]').val('');
+  $('input[name=c_denomination]').val('').attr('disabled', false);;
+  $('select[name=c_rs]').val('').val('').attr('disabled', false);
+  $('input[name=c_capital]').val('').val('').attr('disabled', false);
+  $('input[name=c_rccm]').val('').val('').attr('disabled', false);
+  $('input[name=c_nif]').val('').val('').attr('disabled', false);
+  $('input[name=c_representant]').val('').val('').attr('disabled', false);
+  $('input[name=c_siege]').val('').val('').attr('disabled', false);
+  $('input[name=cm_tel]').val('').val('').attr('disabled', false);
+  $('input[name=cm_email]').val('').val('').attr('disabled', false);
 }
 
 function vider_pour_physique()
 {
   $('input[name=clientP]').val('');
-  $('input[name=p_nom]').val('');
-  $('input[name=p_prenom]').val('');
-  $('input[name=p_dob]').val('');
-  $('input[name=p_pob]').val('');
-  $('input[name=p_nationalite]').val('');
-  $('input[name=p_profession]').val('');
-  $('input[name=pp_tel]').val('');
-  $('input[name=pp_email]').val('');
-  $('input[name=p_domicile]').val('');
+  $('input[name=p_nom]').val('').attr('disabled', false);
+  $('input[name=p_prenom]').val('').attr('disabled', false);
+  $('input[name=p_dob]').val('').attr('disabled', false);
+  $('input[name=p_pob]').val('').attr('disabled', false);
+  $('input[name=p_nationalite]').val('').attr('disabled', false);
+  $('input[name=p_profession]').val('').attr('disabled', false);
+  $('input[name=pp_tel]').val('').attr('disabled', false);
+  $('input[name=pp_email]').val('').attr('disabled', false);
+  $('input[name=p_domicile]').val('').attr('disabled', false);
 }
 
 function vider_pour_morale()
 {
   $('input[name=clientM]').val('');
-  $('input[name=p_denomination]').val('');
-  $('select[name=p_rs]').val('');
-  $('input[name=p_capital]').val('');
-  $('input[name=p_rccm]').val('');
-  $('input[name=p_nif]').val('');
-  $('input[name=p_representant]').val('');
-  $('input[name=p_siege]').val('');
-  $('input[name=pm_tel]').val('');
-  $('input[name=pm_email]').val('');
+  $('input[name=p_denomination]').val('').attr('disabled', false);
+  $('select[name=p_rs]').val('').attr('disabled', false);
+  $('input[name=p_capital]').val('').attr('disabled', false);
+  $('input[name=p_rccm]').val('').attr('disabled', false);
+  $('input[name=p_nif]').val('').attr('disabled', false);
+  $('input[name=p_representant]').val('').attr('disabled', false);
+  $('input[name=p_siege]').val('').attr('disabled', false);
+  $('input[name=pm_tel]').val('').attr('disabled', false);
+  $('input[name=pm_email]').val('').attr('disabled', false);
 }
 
 function vider_contre_physique()
 {
-  $('input[name=adverseP]').val('');
-  $('input[name=c_nom]').val('');
-  $('input[name=c_prenom]').val('');
-  $('input[name=c_dob]').val('');
-  $('input[name=c_pob]').val('');
-  $('input[name=c_nationalite]').val('');
-  $('input[name=c_profession]').val('');
-  $('input[name=cp_tel]').val('');
-  $('input[name=cp_email]').val('');
-  $('input[name=c_domicile]').val('');
+  $('input[name=adverseP]').val('')
+  $('input[name=c_nom]').val('').attr('disabled', false);
+  $('input[name=c_prenom]').val('').attr('disabled', false);
+  $('input[name=c_dob]').val('').attr('disabled', false);
+  $('input[name=c_pob]').val('').attr('disabled', false);
+  $('input[name=c_nationalite]').val('').attr('disabled', false);
+  $('input[name=c_profession]').val('').attr('disabled', false);
+  $('input[name=cp_tel]').val('').attr('disabled', false);
+  $('input[name=cp_email]').val('').attr('disabled', false);
+  $('input[name=c_domicile]').val('').attr('disabled', false);
 }
 
 function vider_contre_morale()
 {
   $('input[name=adverseM]').val('');
-  $('input[name=c_denomination]').val('');
-  $('select[name=c_rs]').val('');
-  $('input[name=c_capital]').val('');
-  $('input[name=c_rccm]').val('');
-  $('input[name=c_nif]').val('');
-  $('input[name=c_representant]').val('');
-  $('input[name=c_siege]').val('');
-  $('input[name=cm_tel]').val('');
-  $('input[name=cm_email]').val('');
+  $('input[name=c_denomination]').val('').attr('disabled', false);
+  $('select[name=c_rs]').val('').attr('disabled', false);
+  $('input[name=c_capital]').val('').attr('disabled', false);
+  $('input[name=c_rccm]').val('').attr('disabled', false);
+  $('input[name=c_nif]').val('').attr('disabled', false);
+  $('input[name=c_representant]').val('').attr('disabled', false);
+  $('input[name=c_siege]').val('').attr('disabled', false);
+  $('input[name=cm_tel]').val('').attr('disabled', false);
+  $('input[name=cm_email]').val('').attr('disabled', false);
 }

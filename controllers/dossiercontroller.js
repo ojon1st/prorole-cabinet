@@ -252,6 +252,46 @@ exports.dossier_create_post = [
     var dossier = new Dossier({
       titulaire: req.body.titulaire
     });
+
+    // autre clients
+    if (Number(req.body.nb_other_client_pour) > 0) {
+      for (i = 1; i <= Number(req.body.nb_other_client_pour); i++) {
+        dossier.autres_pour.push({
+          prenom_nom: req.body["autres_pour_" + i]
+        });
+      }
+    };
+
+    //autres avocats parite pour
+    if (Number(req.body.nb_other_avocat_pour) > 0) {
+      for (i = 1; i <= Number(req.body.nb_other_avocat_pour); i++) {
+        dossier.autres_avocats_pour.push({
+          prenom_nom: req.body["autres_avocats_pour_prenom_nom_" + i],
+          tel: req.body["autres_avocats_pour_tel_" + i],
+          email: req.body["autres_avocats_pour_email_" + i]
+        });
+      }
+    };
+
+    //autres contres
+    if (Number(req.body.nb_other_client_contre) > 0) {
+      for (i = 1; i <= Number(req.body.nb_other_client_contre); i++) {
+        dossier.autres_contre.push({
+          prenom_nom: req.body["autres_contre_" + i]
+        });
+      }
+    };
+
+    //autres avocats partie adverse
+    if (Number(req.body.nb_other_avocat_contre) > 0) {
+      for (i = 1; i <= Number(req.body.nb_other_avocat_contre); i++) {
+        dossier.autres_avocats_contre.push({
+          prenom_nom: req.body["autres_avocats_contre_prenom_nom_" + i],
+          tel: req.body["autres_avocats_contre_tel_" + i],
+          email: req.body["autres_avocats_contre_email_" + i]
+        });
+      }
+    };
     
     // creation du pour
     if ((('clientP' in req.body) && (req.body.clientP == '')) && (('clientM' in req.body) && (req.body.clientM == ''))){
@@ -261,7 +301,7 @@ exports.dossier_create_post = [
     }
     else{
       boolClt = true;
-      pour_update = req.body.p_type;
+      //pour_update = req.body.p_type;
       if(req.body.p_type == 'pp'){
         var pour_id = req.body.clientP;
       }
@@ -278,12 +318,12 @@ exports.dossier_create_post = [
     }
     else{
       boolContre = true;
-      contre_update = req.body.c_type;
+      //contre_update = req.body.c_type;
       if(req.body.c_type == 'pp'){
         var contre_id = req.body.adverseP;
       }
 
-      if(req.body.p_type == 'pm'){
+      if(req.body.c_type == 'pm'){
         var contre_id = req.body.adverseM;
       }
     }
@@ -301,22 +341,6 @@ exports.dossier_create_post = [
           pour.pp.p_domicile = req.body.p_domicile;
           pour.pp.pp_tel = req.body.pp_tel.trim();
           pour.pp.pp_email = req.body.pp_email;
-          if (Number(req.body.nb_other_client_pour) > 0) {
-            for (i = 1; i <= Number(req.body.nb_other_client_pour); i++) {
-              dossier.autres_pour.push({
-                prenom_nom: req.body["autres_pour_" + i]
-              });
-            }
-          };
-          if (Number(req.body.nb_other_avocat_pour) > 0) {
-            for (i = 1; i <= Number(req.body.nb_other_avocat_pour); i++) {
-              dossier.autres_avocats_pour.push({
-                prenom_nom: req.body["autres_avocats_pour_prenom_nom_" + i],
-                tel: req.body["autres_avocats_pour_tel_" + i],
-                email: req.body["autres_avocats_pour_email_" + i]
-              });
-            }
-          };
           break;
         case 'pm':
           // alimentation du pour personne morale
@@ -331,22 +355,6 @@ exports.dossier_create_post = [
           pour.pm.p_representant = req.body.p_representant;
           pour.pm.pm_tel = req.body.pm_tel.trim();
           pour.pm.pm_email = req.body.pm_email;
-          if (Number(req.body.nb_other_client_pour) > 0) {
-            for (i = 1; i <= Number(req.body.nb_other_client_pour); i++) {
-              dossier.autres_pour.push({
-                rs: req.body["autres_pour_" + i]
-              });
-            }
-          };
-          if (Number(req.body.nb_other_avocat_pour) > 0) {
-            for (i = 1; i <= Number(req.body.nb_other_avocat_pour); i++) {
-              dossier.autres_avocats_pour.push({
-                prenom_nom: req.body["autres_avocats_pour_prenom_nom_" + i],
-                tel: req.body["autres_avocats_pour_tel_" + i],
-                email: req.body["autres_avocats_pour_email_" + i]
-              });
-            }
-          };
           break;
         default:
           // code block
@@ -365,22 +373,6 @@ exports.dossier_create_post = [
           contre.pp.c_domicile = req.body.c_domicile;
           contre.pp.cp_tel = req.body.cp_tel.trim();
           contre.pp.cp_email = req.body.cp_email;
-          if (Number(req.body.nb_other_client_contre) > 0) {
-            for (i = 1; i <= Number(req.body.nb_other_client_contre); i++) {
-              dossier.autres_contre.push({
-                prenom_nom: req.body["autres_contre_" + i]
-              });
-            }
-          };
-          if (Number(req.body.nb_other_avocat_contre) > 0) {
-            for (i = 1; i <= Number(req.body.nb_other_avocat_contre); i++) {
-              dossier.autres_avocats_contre.push({
-                prenom_nom: req.body["autres_avocats_contre_prenom_nom_" + i],
-                tel: req.body["autres_avocats_contre_tel_" + i],
-                email: req.body["autres_avocats_contre_email_" + i]
-              });
-            }
-          };
           break;
         case 'pm':
           // creation du contre
@@ -396,22 +388,6 @@ exports.dossier_create_post = [
           contre.pm.cm_tel = req.body.cm_tel.trim();
           contre.pm.cm_email = req.body.cm_email;
           break;
-          if (Number(req.body.nb_other_client_contre) > 0) {
-            for (i = 1; i <= Number(req.body.nb_other_client_contre); i++) {
-              dossier.autres_contre.push({
-                rs: req.body["autres_contre_" + i]
-              });
-            }
-          };
-          if (Number(req.body.nb_other_avocat_contre) > 0) {
-            for (i = 1; i <= Number(req.body.nb_other_avocat_contre); i++) {
-              dossier.autres_avocats_contre.push({
-                prenom_nom: req.body["autres_avocats_contre_prenom_nom_" + i],
-                tel: req.body["autres_avocats_contre_tel_" + i],
-                email: req.body["autres_avocats_contre_email_" + i]
-              });
-            }
-          };
         default:
           // code block
       }
@@ -427,9 +403,7 @@ exports.dossier_create_post = [
         errors: errors.array()
       });
       return;
-    } 
-    else 
-    {
+    } else {
       // Data from form is valid.
       // Check if Dossier with same name already exists.
       //dossier.pour = pour;
@@ -444,8 +418,8 @@ exports.dossier_create_post = [
 
       if (boolClt == true){
         dossier.pour = pour_id;
-        console.log(contre_update);
-        /*Pour.findOneAndUpdate({_id:pour_id}, pour_update, function (err) {
+        //console.log(contre_update);
+        /*Pour.findOneAndUpdate({_id:pour_id},  pour_update, function (err) {
           if (err) { next(err); }
   
           // Successful - update pour.
@@ -464,7 +438,7 @@ exports.dossier_create_post = [
 
       if (boolContre == true){
         dossier.contre = contre_id;
-        console.log(contre_update);
+        //console.log(contre_update);
         /*Contre.findOneAndUpdate({_id:contre_id}, contre_update, function (err) {
           if (err) { next(err); }
   
@@ -483,7 +457,7 @@ exports.dossier_create_post = [
         return;
       });
     }
-  }
+    }
 ];
 
 
