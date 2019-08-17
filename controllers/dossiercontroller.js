@@ -40,7 +40,7 @@ exports.dossier_list = function (req, res, next) {
   async.parallel({
     dossiers: function (callback) {
       Dossier.find({})
-        .select({ "_id": 1, "ref_d": 1, "pour":1, "contre":1})
+        .select({ "_id": 1, "ref_d": 1, "pour":1, "contre":1, "autres_pour":1, "autres_contre":1})
         .populate('pour')
         .populate('contre')
         .populate('utilisateur')
@@ -52,7 +52,7 @@ exports.dossier_list = function (req, res, next) {
     if (err) {
       return next(err);
     }
-        
+        console.log(results.dossiers);
     /*results.dossiers.forEach(function(dos){
       if(dos.pour._id == '5cfc2896fef9175a40e1d47d' || dos.pour._id == '5cfbd642077717192410d6f9'){
         //return

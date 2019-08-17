@@ -68,7 +68,25 @@ block content
                       th Nom de parties
                   tbody
                     - var i = 1
+                    - var pours = ''
+                    - var contres = ''
                     each dossier in list_dossiers
+                      if(dossier.autres_pour)
+                        - var et = 1
+                        each other_pour in dossier.autres_pour
+                          if(et == 1)
+                            - pours += "et " + other_pour.prenom_nom
+                          else
+                            - pours += ', et autres'
+                          - et++
+                      if(dossier.autres_contre)
+                        - var et = 1
+                        each other_contre in dossier.autres_contre
+                          if(et == 1)
+                            - pours += "et " + other_contre.prenom_nom
+                          else
+                            - pours += ', et autres'
+                          - et++
                       mixin tableau_dossiers
                         tr.go_to_dossier
                           td !{i}
@@ -77,21 +95,21 @@ block content
                             if block
                               block
                       if(dossier.pour && dossier.contre)
-                        if(dossier.pour.p_type == 'pp' && dossier.contre.c_type == 'pp' && dossier.ref_d == '19aA20190608')
-                          +tableau_dossiers  
-                            a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.pp.p_prenom} #{dossier.pour.pp.p_nom} c/ #{dossier.contre.pp.c_prenom} #{dossier.contre.pp.c_nom}
-                        if(dossier.pour.p_type == 'pp' && dossier.contre.c_type == 'pp' && dossier.ref_d != '19aA20190608')
+                        //- if(dossier.pour.p_type == 'pp' && dossier.contre.c_type == 'pp' && dossier.ref_d == '19aA20190608')
+                        //-   +tableau_dossiers  
+                        //-     a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.pp.p_prenom} #{dossier.pour.pp.p_nom} c/ #{dossier.contre.pp.c_prenom} #{dossier.contre.pp.c_nom}
+                        if(dossier.pour.p_type == 'pp' && dossier.contre.c_type == 'pp')
                           +tableau_dossiers
-                            a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.pp.p_prenom} #{dossier.pour.pp.p_nom} c/ #{dossier.contre.pp.c_prenom} #{dossier.contre.pp.c_nom}
+                            a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.pp.p_prenom} #{dossier.pour.pp.p_nom} !{pours} c/ #{dossier.contre.pp.c_prenom} #{dossier.contre.pp.c_nom}
                         if(dossier.pour.p_type == 'pp' && dossier.contre.c_type == 'pm')
                           +tableau_dossiers
-                            a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.pp.p_prenom} #{dossier.pour.pp.p_nom} c/ #{dossier.contre.pm.c_denomination}
+                            a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.pp.p_prenom} #{dossier.pour.pp.p_nom} !{pours} c/ #{dossier.contre.pm.c_denomination}
                         if(dossier.pour.p_type == 'pm' && dossier.contre.c_type == 'pp')
                           +tableau_dossiers
-                            a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.pm.p_denomination} c/ #{dossier.contre.pp.c_prenom} #{dossier.contre.pp.c_nom}
+                            a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.pm.p_denomination} !{pours} c/ #{dossier.contre.pp.c_prenom} #{dossier.contre.pp.c_nom}
                         if(dossier.pour.p_type == 'pm' && dossier.contre.c_type == 'pm')
                           +tableau_dossiers
-                            a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.pm.p_denomination} c/ #{dossier.contre.pm.c_denomination}
+                            a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.pm.p_denomination} !{pours} c/ #{dossier.contre.pm.c_denomination}
                         - i++
 append jscripts
   // start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
