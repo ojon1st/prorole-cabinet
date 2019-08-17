@@ -51,7 +51,7 @@ jQuery(document).ready(function () {
 function autoriser_modif() {
   $('textarea[name=resume]').attr('readonly', false);
   $('input[name=montant]').attr('readonly', false);
-  $(".nature").toggleClass("hidden");
+  //$(".nature").toggleClass("hidden");
   $('select[name=attributaire]').attr('disabled', false);
   $('select[name=litige]').attr('disabled', false);
   $('input[type=text][name=nature]').attr('disabled', true);
@@ -66,7 +66,7 @@ function empecher_modif() {
   $('select[name=attributaire]').attr('readonly', true);
   $('input[name=nature]').attr('disabled', false);
   $('input[name=montant]').attr('readonly', true);
-  $(".nature").toggleClass("hidden");
+  //$(".nature").toggleClass("hidden");
   $(".attributaire, .modifier_ou_sauvegarder").toggleClass("hidden");
 }
 
@@ -92,6 +92,7 @@ function update_dossier(id_dossier) {
   var route_update_infos_dossier = '/dossiers/dossier/' + id_dossier + '/update';
   var data = {};
   data.attributaire = $('select[name=attributaire]').val();
+  data.qualite = $('select[name=qualite]').val();
   data.litige = $('select[name=litige]').val();
   data.nature = $('input[type=radio][name=nature]:checked').val();
   data.resume = $('textarea[name=resume]').val();
@@ -105,11 +106,11 @@ function update_dossier(id_dossier) {
     success: function (data) {
       //empecher_modif();
       location.reload();
-      var msg = "Les informations du dossier on été mises à jour!";
-      var title = "Sauvegarde du dossier";
-      setTimeout(show_notification(JSON.stringify(data.type_of_response), title, msg),1000);
+      //var msg = "Les informations du dossier on été mises à jour!";
+      //var title = "Sauvegarde du dossier";
+      //setTimeout(show_notification(JSON.stringify(data.type_of_response), title, msg),1000);
       
-      return;
+      //return;
     }
   });
 }
@@ -133,7 +134,8 @@ function confirm_new_juridiction(selectObject, id_dossier, division) {
   var new_juridiction = selectObject.options[selectObject.selectedIndex].text;
   
     if($("select[name=juridiction]").val() != ''){
-    swal({
+      create_instance(selectObject.value,id_dossier, division);
+    /*swal({
         title: "Êtes-vous sûr(e)?",
         text: "Vous êtes sur le point de changer de juridiction!",
         type: "warning",
@@ -148,7 +150,7 @@ function confirm_new_juridiction(selectObject, id_dossier, division) {
         } else {
           $("select[name=juridiction]").val(previous);
         }
-      });
+      });*/
     }else{
       $("select[name=juridiction]").val(previous);
     }
@@ -175,8 +177,9 @@ function create_instance(id_juridiction, id_dossier, division) {
     contentType: 'application/json',
     url: route_create_instance_dossier,
     success: function (data) {
+      window.location.href="/dossiers/dossier/"+id_dossier;
       //var res = data;
-      if(data.type_of_response == 'success'){
+      /*if(data.type_of_response == 'success'){
         if (data.creation == true){
           swal(data.al_title, data.al_msg, "success");
           setTimeout(location.reload(), 5000);
@@ -184,7 +187,7 @@ function create_instance(id_juridiction, id_dossier, division) {
           show_notification('error', data.al_title, data.al_msg)
           setTimeout(location.reload(), 5000);
         }
-      }
+      }*/
       
     }
   });
@@ -636,3 +639,23 @@ function formatBytes(a,b){
 };
 
 function checkURL(url) { return(url.match(/\.(jpeg|jpg|gif|png)$/) != null); };
+
+function type_complete_motif(type){
+  var motif = type.value;
+  var role_general = 'Renvoyé au rôle général';
+  var deliberer = 'Mise en délibéré';
+  if(motif == 'renvoi au role general' || motif == 'mise en delibere'){
+    if(motif == 'renvoi au role general'){ $('.motif').val(role_general).attr('disabled', true);}
+    else { $('.motif').val(deliberer).attr('disabled', true);}
+  }
+  else{$('.motif').val('').attr('disabled', false);}
+}
+
+function nature2instruction(nature){
+  var nature = nature.value;
+  if(nature == 'Consultation' || nature == 'Simple police' || nature == 'Information judiciaire' || nature == 'Correctionnelle Citation Directe' || nature == 'Correctionnelle flagrant délit' || nature == 'Criminelle' || nature == 'Assises' || nature == 'Infractions à caractère économique' || nature == 'Terrorisme'){
+    if(nature == 'Consultation') { $('.actions').append('<li><a href="#consultation" data-toggle="tab" class="active">Consutation</a></li>');}
+    else { $('.actions').append('<li><a href="#enquete" data-toggle="tab" class="active">Enquête préliminaire</a></li> <li><a href="#chambre" data-toggle="tab">Chambre d\'instruction</a></li> <li><a href="#jugement" data-toggle="tab">Jugement</a></li>');}
+  }
+  else { $('.actions').append('<li><a href="#jugement" data-toggle="tab" class="active">Jugement</a></li>');}
+}

@@ -93,7 +93,7 @@ exports.renvois_my_events_get = function(req, res, next){
                 label_contre = instruction.dossier.contre.pm.c_denomination;
               }
             var new_affaire = { // On ajoute l'event Affaire
-              title: label_pour + ' /c ' + label_contre + ' pour motif : ' + renvoi.r_motif,
+              title: label_pour + ' c/ ' + label_contre + ' pour motif : ' + renvoi.r_motif,
               start: moment(renvoi.r_date).format('YYYY-MM-DD'),
               viewableIn: ["basicDay"],
               url: '/dossiers/dossier/'+instruction.dossier._id.toString(),
@@ -187,7 +187,7 @@ exports.renvois_events_get = function(req, res, next){
               label_contre = instruction.dossier.contre.pm.c_denomination;
             }
           var new_affaire = { // On ajoute l'event Affaire
-            title: label_pour + ' /c ' + label_contre + ' pour motif : ' + renvoi.r_motif,
+            title: label_pour + ' c/ ' + label_contre + ' pour motif : ' + renvoi.r_motif,
             start: moment(renvoi.r_date).format('YYYY-MM-DD'),
             viewableIn: ["basicDay"],
             url: '/dossiers/dossier/'+instruction.dossier._id.toString(),

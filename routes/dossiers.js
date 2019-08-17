@@ -33,7 +33,7 @@ router.post('/dossier/:id/update', dossier_controller.dossier_update_post);
 // POST request to update dossier instruction.
 /*router.post('/dossier/:id/update_infos', dossier_controller.dossier_update_instruction_post);*/
 
-// GET request for one dossier.
+// GET request for one dossier (DOSSIER DETAILS).
 router.get('/dossier/:id', dossier_controller.dossier_detail);
 
 // GET list of current dossiers

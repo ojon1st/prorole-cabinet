@@ -331,7 +331,7 @@ exports.dossier_create_post = [
       switch (req.body.p_type) {
         case 'pp':
           // alimentation du pour personne physique
-
+          pour.pp.p_civilite = req.body.p_civilite;
           pour.pp.p_prenom = req.body.p_prenom;
           pour.pp.p_nom = req.body.p_nom;
           pour.pp.p_profession = req.body.p_profession;
@@ -363,7 +363,7 @@ exports.dossier_create_post = [
     if((('adverseP' in req.body) && (req.body.adverseP == '')) && (('adverseM' in req.body) && (req.body.adverseM == ''))){
       switch (req.body.c_type) {
         case 'pp':
-
+          contre.pp.c_civilite = req.body.c_civilite;
           contre.pp.c_prenom = req.body.c_prenom;
           contre.pp.c_nom = req.body.c_nom;
           contre.pp.c_profession = req.body.c_profession;
@@ -546,6 +546,7 @@ exports.dossier_update_post = [
     });
     
     if (req.body.attributaire && req.body.attributaire != ""){dossier.attributaire = req.body.attributaire}
+    if (req.body.qualite && req.body.qualite != ""){dossier.qualite = req.body.qualite}
     if (req.body.litige && req.body.litige != ""){dossier.litige = req.body.litige}
     if (req.body.nature && req.body.nature != ""){dossier.nature = req.body.nature}
     if (req.body.resume && req.body.resume != ""){dossier.resume = req.body.resume}

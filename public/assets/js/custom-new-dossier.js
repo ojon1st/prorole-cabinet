@@ -93,7 +93,7 @@ jQuery(document).ready(function () {
   var nbre = 1;
   $("#plus_pour").click(function () {
 
-    $("#sec_pour").append('<div class="form-group"><label class="col-sm-3 control-label" for="form-field-1">Autre Client ' + nbre + ' <span class="symbol required"></span> : </label><div class="col-sm-8"><span class="input-icon"><input type="text" placeholder="Nom et prenom client" id="addClient_' + nbre + '" name="autres_pour_' + nbre + '" class="form-control"><i class="fa fa-user"></i></span></div></div>');
+    $("#sec_pour").append('<div class="form-group"><label class="col-sm-3 control-label" for="form-field-1">Autre Client ' + nbre + ' <span class="symbol required"></span> : </label><div class="col-sm-8"><span class="input-icon"><input type="text" placeholder="Nom et prénom ou dénomination sociale du client" id="addClient_' + nbre + '" name="autres_pour_' + nbre + '" class="form-control"><i class="fa fa-user"></i></span></div></div>');
 
     $("#titre_client").html('<div class="form-group"><label class="col-sm-offset-4 col-sm-4 control-label text-center" for="form-field-1"><span class="text-bold">Autres clients</span></label></div>');
 
@@ -107,7 +107,7 @@ jQuery(document).ready(function () {
   //function d'ajout autre avocat physique
   var autreAvocat = 1;
   $("#plus_autre").click(function () {
-    $("#autre_avocat").append('<div class="form-group"><label class="col-sm-3 control-label">Nom & prenom <span class="symbol required"></span> :</label><div class="col-sm-8"><span class="input-icon"><input type="text" name="autres_avocats_pour_prenom_nom_' + autreAvocat + '" placeholder="Nom & Prenom de l\'avocat" class="form-control"><i class="fa fa-user"></i></span></div></div><div class="form-group"><label class="col-sm-3 control-label">Téléphone <span class="symbol required"></span> :</label><div class="col-sm-8"><span class="input-icon"><input type="text" name="autres_avocats_pour_tel_' + autreAvocat + '" placeholder="Téléphone de l\'avocat" class="form-control input-mask-phone"><i class="fa fa-phone"></i></span></div></div><div class="form-group"><label class="col-sm-3 control-label">Email <span class="symbol required"></span> :</label><div class="col-sm-8"><span class="input-icon"><input type="email" name="autres_avocats_pour_email_' + autreAvocat + '" placeholder="Adresse electronique de l\'avocat" class="form-control"><i class="fa fa-envelope"></i></span></div></div><br>');
+    $("#autre_avocat").append('<div class="form-group"><label class="col-sm-3 control-label">Nom & prenom <span class="symbol required"></span> :</label><div class="col-sm-8"><span class="input-icon"><input type="text" name="autres_avocats_pour_prenom_nom_' + autreAvocat + '" placeholder="Nom & Prenom de l\'avocat" class="form-control"><i class="fa fa-user"></i></span></div></div><div class="form-group"><label class="col-sm-3 control-label">Téléphone :</label><div class="col-sm-8"><span class="input-icon"><input type="text" name="autres_avocats_pour_tel_' + autreAvocat + '" placeholder="Téléphone de l\'avocat" class="form-control input-mask-phone"><i class="fa fa-phone"></i></span></div></div><div class="form-group"><label class="col-sm-3 control-label">Email :</label><div class="col-sm-8"><span class="input-icon"><input type="email" name="autres_avocats_pour_email_' + autreAvocat + '" placeholder="Adresse electronique de l\'avocat" class="form-control"><i class="fa fa-envelope"></i></span></div></div><br>');
 
     $("#titre_avocat").html('<div class="form-group"><label class="col-sm-offset-4 col-sm-4 control-label text-center" for="form-field-1"><span class="text-bold">Autres avocats</span></label></div>');
 
@@ -136,7 +136,7 @@ jQuery(document).ready(function () {
   //function d'ajout autre avocat morale
   var autreAvocatMorale = 1;
   $("#plus_autre_morale").click(function () {
-    $("#autre_avocat_morale").prepend('<div class="form-group"><label class="col-sm-3 control-label">Nom & prenom <span class="symbol required"></span> :</label><div class="col-sm-8"><span class="input-icon"><input type="text" name="autres_avocats_pour_prenom_nom_' + autreAvocatMorale + '" placeholder="Nom & Prenom de l\'avocat" class="form-control"><i class="fa fa-user"></i></span></div></div><div class="form-group"><label class="col-sm-3 control-label">Téléphone <span class="symbol required"></span> :</label><div class="col-sm-8"><span class="input-icon"><input type="text" name="autres_avocats_pour_tel_' + autreAvocatMorale + '" placeholder="Téléphone de l\'avocat" class="form-control input-mask-phone"><i class="fa fa-phone"></i></span></div></div><div class="form-group"><label class="col-sm-3 control-label">Email <span class="symbol required"></span> :</label><div class="col-sm-8"><span class="input-icon"><input type="email" name="autres_avocats_email_' + autreAvocatMorale + '" placeholder="Adresse electronique de l\'avocat" class="form-control"><i class="fa fa-envelope"></i></span></div></div><br>');
+    $("#autre_avocat_morale").prepend('<div class="form-group"><label class="col-sm-3 control-label">Nom & prenom <span class="symbol required"></span> :</label><div class="col-sm-8"><span class="input-icon"><input type="text" name="autres_avocats_pour_prenom_nom_' + autreAvocatMorale + '" placeholder="Nom & Prenom de l\'avocat" class="form-control"><i class="fa fa-user"></i></span></div></div><div class="form-group"><label class="col-sm-3 control-label">Téléphone :</label><div class="col-sm-8"><span class="input-icon"><input type="text" name="autres_avocats_pour_tel_' + autreAvocatMorale + '" placeholder="Téléphone de l\'avocat" class="form-control input-mask-phone"><i class="fa fa-phone"></i></span></div></div><div class="form-group"><label class="col-sm-3 control-label">Email :</label><div class="col-sm-8"><span class="input-icon"><input type="email" name="autres_avocats_email_' + autreAvocatMorale + '" placeholder="Adresse electronique de l\'avocat" class="form-control"><i class="fa fa-envelope"></i></span></div></div><br>');
 
 
     $("#titre_morale").html('<div class="form-group"><label class="col-sm-offset-4 col-sm-4 control-label text-center" for="form-field-1"><span class="text-bold">Autres avocats</span></label></div>');
@@ -152,7 +152,7 @@ jQuery(document).ready(function () {
   var nombre = 1;
   $("#plus_contre").click(function () {
 
-    $("#sec_contre").append('<div class="form-group"><label class="col-sm-3 control-label" for="form-field-1">Autre contre ' + nombre + ' <span class="symbol required"></span> : </label><div class="col-sm-8"><span class="input-icon"><input type="text" placeholder="Nom et prenom contre" id="addcontre_' + nombre + '" name="autres_contre_' + nombre + '" class="form-control"><i class="fa fa-user"></i></span></div></div>');
+    $("#sec_contre").append('<div class="form-group"><label class="col-sm-3 control-label" for="form-field-1">Autre contre ' + nombre + ' <span class="symbol required"></span> : </label><div class="col-sm-8"><span class="input-icon"><input type="text" placeholder="Nom et prénom ou dénomination sociale du contre" id="addcontre_' + nombre + '" name="autres_contre_' + nombre + '" class="form-control"><i class="fa fa-user"></i></span></div></div>');
 
     $("#titre_contre").html('<div class="form-group"><label class="col-sm-offset-4 col-sm-4 control-label text-center" for="form-field-1"><span class="text-bold">Autres clients</span></label></div>');
 
@@ -365,7 +365,7 @@ function vider_contre_morale()
   $('input[name=cm_email]').val('').val('').attr('disabled', false);
 }
 
-function vider_pour_physique()
+function vider_pour_physique() 
 {
   $('input[name=clientP]').val('');
   $('input[name=p_nom]').val('').attr('disabled', false);

@@ -37,7 +37,7 @@ $(document).ready(function () {
     dayClick: function(date, allDay, jsEvent, view) {
       if (allDay) { $('#calendar').fullCalendar('changeView', 'basicDay',date) }
     },
-    contentHeight: 320,
+    contentHeight: 520,
     
     eventRender: function (event, element, view) {
       var count = 0;

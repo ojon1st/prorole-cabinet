@@ -6,6 +6,7 @@ var Schema = mongoose.Schema;
 var ContreSchema = new Schema({ 
   c_type:{type:String, required:true}, //Contre type (pp personne physique ou pm personne morale)
   pp:{
+    c_civilite:{type:String},
     c_prenom:{type:String},
     c_nom:{type:String},
     c_profession:{type:String},

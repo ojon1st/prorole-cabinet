@@ -6,6 +6,7 @@ var Schema = mongoose.Schema;
 var PourSchema = new Schema({
   p_type:{type:String, required:true}, //Pour type (pp personne physique ou pm personne morale)
   pp:{
+    p_civilite:{type:String},
     p_prenom:{type:String},
     p_nom:{type:String},
     p_profession:{type:String},

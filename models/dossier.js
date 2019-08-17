@@ -9,6 +9,7 @@ var DossierSchema = new Schema({
   ref_d: {type: String, unique:true},
   titulaire: {type: Schema.ObjectId, ref: 'Utilisateur'}, //ref liste des utilisateurs
   attributaire: {type: Schema.ObjectId, ref: 'Utilisateur'}, //ref liste des utilisateurs
+  qualite: {type: String},
   litige: {type: String},
   nature: {type: String}, //ref liste des natures du litige
   resume: {type: String}, 
@@ -57,7 +58,7 @@ var DossierSchema = new Schema({
         }
 
         // Successful, so render.
-        doc.ref_d = results.seq.sequence_value + get_initiales(results.le_titulaire.prenom.toString()+' '+results.le_titulaire.nom.toString()) + moment().format('YYYYMMDD');
+        doc.ref_d = results.seq.sequence_value + get_initiales(results.le_titulaire.prenom.toString()+'/'+results.le_titulaire.nom.toString()) + ' ' + moment().format('DD-MM-YYYY');
         next();
       });
     } else{
@@ -70,7 +71,7 @@ function get_initiales(titulaire_comp) {
   // var reference = "";
 
   //on découpe le prénom puis le nom
-  var titulaire_comp_tab = titulaire_comp.split(" ");
+  var titulaire_comp_tab = titulaire_comp.split("/");
 
   // on crée la variable des initiales et on y ajoute nos initiales
   var initiales = '';

@@ -111,6 +111,19 @@ block content
                   span.text-bold MORALE
             #physique_pour.hidden
               .form-group
+                label.col-sm-3.control-label 
+                  | Civilité 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  label.radio-inline
+                    input.grey(type='radio', value='Monsieur', name='p_civilite')
+                    | Monsieur
+                  label.radio-inline
+                    ///*name='optionsRadios'*/
+                    input.grey(type='radio', value='Madame', name='p_civilite')
+                    | Madame
+              .form-group
                 label.col-sm-3.control-label
                   | Nom 
                   span.symbol.required
@@ -137,63 +150,49 @@ block content
                   span.form_error
               .form-group
                 label.col-sm-3.control-label
-                  | Date nais. 
-                  span.symbol.required
-                  |  :
+                  | Date nais. :
                 .col-sm-8
                   span.input-icon
                     input.form-control.date-picker(placeholder='Date de naissance', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years', name='p_dob')
                     i.fa.fa-calendar
               .form-group
                 label.col-sm-3.control-label
-                  | Lieu nais. 
-                  span.symbol.required
-                  |  :
+                  | Lieu nais. :
                 .col-sm-8
                   span.input-icon
                     input.form-control(type='text', placeholder='Lieu de naissance', name='p_pob')
                     i.fa.fa-home
               .form-group
                 label.col-sm-3.control-label
-                  | Nationalité 
-                  span.symbol.required
-                  |  :
+                  | Nationalité :
                 .col-sm-8
                   span.input-icon
                     input.form-control(type='text', placeholder='Nationalité', name='p_nationalite')
                     i.fa.fa-home
               .form-group
                 label.col-sm-3.control-label
-                  | Profession 
-                  span.symbol.required
-                  |  :
+                  | Profession :
                 .col-sm-8
                   span.input-icon
                     input.form-control(type='text', placeholder='Profession du client', name='p_profession')
                     i.fa.fa-money
               .form-group
                 label.col-sm-3.control-label
-                  | Téléphone 
-                  span.symbol.required
-                  |  :
+                  | Téléphone :
                 .col-sm-8
                   span.input-icon
                     input.form-control.input-mask-phone(type='number', placeholder='Téléphone du client', onkeyup="this.value=this.value.replace(/\D/g,'')", name='pp_tel')
                     i.fa.fa-phone
               .form-group
                 label.col-sm-3.control-label
-                  | e-mail 
-                  span.symbol.required
-                  |  :
+                  | e-mail :
                 .col-sm-8
                   span.input-icon
                     input.form-control(type='email', placeholder='adresse electronique du client', name='pp_email')
                     i.fa.fa-envelope
               .form-group
                 label.col-sm-3.control-label
-                  | Domicile 
-                  span.symbol.required
-                  |  :
+                  | Domicile :
                 .col-sm-8
                   span.input-icon
                     input.form-control(type='text', placeholder='Domicile du client', name='p_domicile')
@@ -242,73 +241,69 @@ block content
                           option(value=pour._id) #{pour.pm.p_denomination}
               .form-group
                 label.col-sm-3.control-label
-                  | Forme Sociale
-                  span.symbol.required
-                  |  :
+                  | Forme Sociale :
                 .col-sm-8
                   span.input-icon
                     select.form-control(name='p_rs')
                         option(value=null)  Forme Sociale
+                        option(value='ETS') Entreprenant (ETS)
                         option(value='SAS') SAS
                         option(value='SA') SA
                         option(value='SARL') SARL
+                        option(value='SASU') SASU
+                        option(value='SAU') SAU
+                        option(value='SARLU') SARLU
+                        option(value='ETAT') ETAT
+                        option(value='EPA') EPA
+                        option(value='EPIC') EPIC
+                        option(value='CT') Collectivité Territoriale
+                        option(value='ONG') ONG
+                        option(value='OI') Organisation Internationale
               .form-group
                 label.col-sm-3.control-label
-                  | Capital 
-                  span.symbol.required
-                  |  :
+                  | Capital :
                 .col-sm-8
                   span.input-icon
                     input.form-control(type='number', placeholder='Capital de la société', name='p_capital' onkeyup="this.value=this.value.replace(/\D/g,'')")
                     i.fa.fa-money
               .form-group
                 label.col-sm-3.control-label
-                  | RCCM 
-                  span.symbol.required
-                  |  :
+                  | RCCM :
                 .col-sm-8
                   span.input-icon
                     input.form-control(type='text', placeholder='Numero RCCM', name='p_rccm')
                     i.fa.fa-quote-left
               .form-group
                 label.col-sm-3.control-label
-                  | NIF 
-                  span.symbol.required
-                  |  :
+                  | NIF :
                 .col-sm-8
                   span.input-icon
                     input.form-control(type='text', placeholder='NIF', name='p_nif')
                     i.fa.fa-home
               .form-group
                 label.col-sm-3.control-label
-                  | Représentant 
-                  span.symbol.required
-                  |  :
+                  | Représentant :
                 .col-sm-8
                   input.form-control(type='text', placeholder='Représentant Légal', name='p_representant')
               .form-group
                 label.col-sm-3.control-label
                   | Siège social 
                   span.symbol.required
-                  |  :
+                  | :
                 .col-sm-8
                   span.input-icon
                     input.form-control(type='text', placeholder='Siège social', name='p_siege')
                     i.fa.fa-home
               .form-group
                 label.col-sm-3.control-label
-                  | Téléphone 
-                  span.symbol.required
-                  |  :
+                  | Téléphone :
                 .col-sm-8
                   span.input-icon
                     input.form-control(type='number', placeholder='Téléphone du client', onkeyup="this.value=this.value.replace(/\D/g,'')", name='pm_tel')
                     i.fa.fa-phone
               .form-group
                 label.col-sm-3.control-label
-                  | e-mail 
-                  span.symbol.required
-                  |  :
+                  | e-mail :
                 .col-sm-8
                   span.input-icon
                     input.form-control(type='email', placeholder='Email du client', name='pm_email')
@@ -386,6 +381,19 @@ block content
                   span.text-bold MORALE
             #physique_contre.hidden
               .form-group
+                label.col-sm-3.control-label 
+                  | Civilité 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  label.radio-inline
+                    input.grey(type='radio', value='Monsieur', name='c_civilite')
+                    | Monsieur
+                  label.radio-inline
+                    ///*name='optionsRadios'*/
+                    input.grey(type='radio', value='Madame', name='c_civilite')
+                    | Madame
+              .form-group
                 label.col-sm-3.control-label
                   | Nom 
                   span.symbol.required
@@ -412,63 +420,49 @@ block content
                   span.form_error
               .form-group
                 label.col-sm-3.control-label
-                  | Date nais. 
-                  span.symbol.required
-                  |  :
+                  | Date nais. :
                 .col-sm-8
                   span.input-icon
                     input.form-control.date-picker(placeholder='Date de naissance', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years', name='c_dob')
                     i.fa.fa-calendar
               .form-group
                 label.col-sm-3.control-label
-                  | Lieu nais. 
-                  span.symbol.required
-                  |  :
+                  | Lieu nais. :
                 .col-sm-8
                   span.input-icon
                     input.form-control(type='text', placeholder='Lieu de naissance', name='c_pob')
                     i.fa.fa-home
               .form-group
                 label.col-sm-3.control-label
-                  | Nationalité 
-                  span.symbol.required
-                  |  :
+                  | Nationalité :
                 .col-sm-8
                   span.input-icon
                     input.form-control(type='text', placeholder='Nationalité', name='c_nationalite')
                     i.fa.fa-home
               .form-group
                 label.col-sm-3.control-label
-                  | Profession 
-                  span.symbol.required
-                  |  :
+                  | Profession :
                 .col-sm-8
                   span.input-icon
                     input.form-control(type='text', placeholder='Profession du client', name='c_profession')
                     i.fa.fa-money
               .form-group
                 label.col-sm-3.control-label
-                  | Téléphone 
-                  span.symbol.required
-                  |  :
+                  | Téléphone :
                 .col-sm-8
                   span.input-icon
                     input.form-control.input-mask-phone(type='number', placeholder='Téléphone du client', onkeyup="this.value=this.value.replace(/\D/g,'')", name='cp_tel')
                     i.fa.fa-phone
               .form-group
                 label.col-sm-3.control-label
-                  | e-mail 
-                  span.symbol.required
-                  |  :
+                  | e-mail :
                 .col-sm-8
                   span.input-icon
                     input.form-control(type='email', placeholder='adresse electronique du client', name='cp_email')
                     i.fa.fa-envelope
               .form-group
                 label.col-sm-3.control-label
-                  | Domicile 
-                  span.symbol.required
-                  |  :
+                  | Domicile :
                 .col-sm-8
                   span.input-icon
                     input.form-control(type='text', placeholder='Domicile du client', name='c_domicile')
@@ -517,73 +511,69 @@ block content
                           option(value=contre._id) #{contre.pm.c_denomination}
               .form-group
                 label.col-sm-3.control-label
-                  | Forme Sociale
-                  span.symbol.required
-                  |  :
+                  | Forme Sociale 
                 .col-sm-8
                   span.input-icon
                     select.form-control(name='c_rs')
                         option(value=null)  Forme Sociale
+                        option(value='ETS') Entreprenant (ETS)
                         option(value='SAS') SAS
                         option(value='SA') SA
                         option(value='SARL') SARL
+                        option(value='SASU') SASU
+                        option(value='SAU') SAU
+                        option(value='SARLU') SARLU
+                        option(value='ETAT') ETAT
+                        option(value='EPA') EPA
+                        option(value='EPIC') EPIC
+                        option(value='CT') Collectivité Territoriale
+                        option(value='ONG') ONG
+                        option(value='OI') Organisation Internationale
               .form-group
                 label.col-sm-3.control-label
-                  | Capital 
-                  span.symbol.required
-                  |  :
+                  | Capital :
                 .col-sm-8
                   span.input-icon
                     input.form-control(type='number', placeholder='Capital de la société', name='c_capital' onkeyup="this.value=this.value.replace(/\D/g,'')")
                     i.fa.fa-money
               .form-group
                 label.col-sm-3.control-label
-                  | RCCM 
-                  span.symbol.required
-                  |  :
+                  | RCCM  :
                 .col-sm-8
                   span.input-icon
                     input.form-control(type='text', placeholder='Numero RCCM', name='c_rccm')
                     i.fa.fa-quote-left
               .form-group
                 label.col-sm-3.control-label
-                  | NIF 
-                  span.symbol.required
-                  |  :
+                  | NIF :
                 .col-sm-8
                   span.input-icon
                     input.form-control(type='text', placeholder='NIF', name='c_nif')
                     i.fa.fa-home
               .form-group
                 label.col-sm-3.control-label
-                  | Représentant 
-                  span.symbol.required
-                  |  :
+                  | Représentant :
                 .col-sm-8
                   input.form-control(type='text', placeholder='Représentant Légal', name='c_representant')
               .form-group
                 label.col-sm-3.control-label
-                  | Siège social 
+                  | Siège social  
                   span.symbol.required
-                  |  :
+                  | :  
                 .col-sm-8
                   span.input-icon
                     input.form-control(type='text', placeholder='Siège social', name='c_siege')
                     i.fa.fa-home
               .form-group
                 label.col-sm-3.control-label
-                  | Téléphone 
-                  span.symbol.required
-                  |  :
+                  | Téléphone :
                 .col-sm-8
                   span.input-icon
                     input.form-control.input-mask-phone(type='number', placeholder='Téléphone du client', onkeyup="this.value=this.value.replace(/\D/g,'')", name='cm_tel')
                     i.fa.fa-phone
               .form-group
                 label.col-sm-3.control-label
-                  | e-mail 
-                  span.symbol.required
-                  |  :
+                  | e-mail :
                 .col-sm-8
                   span.input-icon
                     input.form-control(type='email', placeholder='Email du client', name='cm_email')
