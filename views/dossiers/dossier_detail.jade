@@ -17,7 +17,7 @@ append styles
     .str{
       color: #000;
       text-transform : uppercase;
-      font-size:20px;
+      font-size:16px;
     }
 
 block content
@@ -80,26 +80,43 @@ block content
                   .form-group
                     label.col-sm-12.dos-text
                       | Réf. : #{dossier.ref_d}
+                  - var pours = ''
                   .form-group
                     label.col-sm-9.dos-text
+                      if(dossier.autres_pour)
+                        - var i = 1
+                        each other_pour in dossier.autres_pour
+                          if(i == 1)
+                            - pours += ", " + other_pour.prenom_nom
+                          else
+                            - pours += " et autres"
+                          - i++
                       if dossier.pour.p_type == 'pp'
                         | Pour : 
-                        strong.str #{dossier.pour.pp.p_prenom} #{dossier.pour.pp.p_nom}
+                        strong.str #{dossier.pour.pp.p_prenom} #{dossier.pour.pp.p_nom}!{pours}
                       else if dossier.pour.p_type == 'pm'
                         | Pour: 
-                        strong.str #{dossier.pour.pm.p_denomination}
+                        strong.str #{dossier.pour.pm.p_denomination}!{pours}
                     .col-sm-3
                       a.btn.btn-link.show-calendar(href='#infoPour')
                         span.fa.fa-plus
                         strong d'infos
+                  - var contres = ''
                   .form-group
                     label.col-sm-9.dos-text
+                      - var j = 1
+                        each other_contre in dossier.autres_contre
+                          if(j == 1)
+                            - cobtres += ", " + other_contre.prenom_nom
+                          else
+                            - contres += " et autres"
+                          - j++
                       if dossier.contre.c_type == 'pp'
                         | Contre : 
-                        strong.str #{dossier.contre.pp.p_prenom} #{dossier.contre.pp.c_nom}
+                        strong.str #{dossier.contre.pp.p_prenom} #{dossier.contre.pp.c_nom}!{contres}
                       else if dossier.contre.c_type == 'pm'
                         | Contre: 
-                        strong.str #{dossier.contre.pm.c_denomination}
+                        strong.str #{dossier.contre.pm.c_denomination}!{contres}
                     .col-sm-3
                       a.btn.btn-link.show-calendar(href='#infoContre')
                         span.fa.fa-plus
@@ -1225,7 +1242,7 @@ block content
           br
           form.form-horizontal(role='form')
             .col-md-12
-              #mee
+              #mee 
               .row
                 .col-md-offset-8.col-md-2.text-center
                   mixin bouton_save_mee(id_dossier, id_instruction, juridiction)

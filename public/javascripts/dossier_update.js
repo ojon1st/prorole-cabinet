@@ -164,7 +164,7 @@ function create_instance(id_juridiction, id_dossier, division) {
   
   data.juridiction = id_juridiction;
   data.dossier = id_dossier;
-  data.division = division
+  data.division = division 
   if($('#id_instruction').val() != ''){
     data.instruction = $('#id_instruction').val();
   }

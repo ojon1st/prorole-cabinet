@@ -1,0 +1,97 @@
+extends ../layout
+
+block content
+  .row
+    .col-md-12
+      ol.breadcrumb
+        li
+          a(href='/')
+            | Accueil
+        li.active
+            | Dossiers
+        li.active
+          | Repertoire de #{title}
+
+  .row
+    .col-md-12
+      // start: DYNAMIC TABLE PANEL
+      .panel.panel-white
+        .panel-heading
+          h4.panel-title
+            | Repertoire de 
+            span.text-bold #{title}
+          .panel-tools
+            .dropdown
+              a.btn.btn-xs.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
+                i.fa.fa-cog
+              ul.dropdown-menu.dropdown-light.pull-right(role='menu')
+                li
+                  a.panel-collapse.collapses(href='#')
+                    i.fa.fa-angle-up
+                    span Cacher
+                li
+                  a.panel-refresh(href='#')
+                    i.fa.fa-refresh
+                    span Actualiser
+                li
+                  a.panel-expand(href='#')
+                    i.fa.fa-expand
+                    span Plein écran
+            //
+              <a class="btn btn-xs btn-link panel-close" href="#">
+              <i class="fa fa-times"></i>
+              </a>
+        .panel-body
+          .table-responsive
+            table#sample-table-2.table.table-striped.table-hover
+              thead
+                tr
+                  th N°
+                  th Référence
+                  th Nom de parties
+                  th Juridiction
+                  th Dilligences
+                  th Delais
+              tbody
+                - var i = 1
+                each dossier in list_dossiers
+                  mixin tableau_dossiers
+                    tr.go_to_dossier
+                      td !{i}
+                      td #{dossier.dossier.ref_d}
+                      td 
+                        if block
+                          block
+                      td.text-capitalize #{dossier.juridiction.division} #{dossier.juridiction.nom}
+                       td.text-capitalize #{dossier.diligence[0].d_commentaire}
+                      td #{moment(dossier.diligence[0].d_fin).format("DD-MM-YYYY")}
+                  if(dossier.dossier.pour && dossier.dossier.contre)
+                    if(dossier.dossier.pour.p_type == 'pp' && dossier.dossier.contre.c_type == 'pp')
+                      +tableau_dossiers
+                        a(class='button' href="/dossiers/dossier/#{dossier.dossier._id}") #{dossier.dossier.pour.pp.p_prenom} #{dossier.dossier.pour.pp.p_nom} c/ #{dossier.dossier.contre.pp.c_prenom} #{dossier.dossier.contre.pp.c_nom}
+                    if(dossier.dossier.pour.p_type == 'pp' && dossier.dossier.contre.c_type == 'pm')
+                      +tableau_dossiers
+                        a(class='button' href="/dossiers/dossier/#{dossier.dossier._id}") #{dossier.dossier.pour.pp.p_prenom} #{dossier.dossier.pour.pp.p_nom} c/ #{dossier.dossier.contre.pm.c_denomination}
+                    if(dossier.dossier.pour.p_type == 'pm' && dossier.dossier.contre.c_type == 'pp')
+                      +tableau_dossiers
+                        a(class='button' href="/dossiers/dossier/#{dossier.dossier._id}") #{dossier.dossier.pour.pm.p_denomination} c/ #{dossier.dossier.contre.pp.c_prenom} #{dossier.dossier.contre.pp.c_nom}
+                    if(dossier.dossier.pour.p_type == 'pm' && dossier.dossier.contre.c_type == 'pm')
+                      +tableau_dossiers
+                        a(class='button' href="/dossiers/dossier/#{dossier.dossier._id}") #{dossier.dossier.pour.pm.p_denomination} c/ #{dossier.dossier.contre.pm.c_denomination}
+                    - i++
+append jscripts
+  // start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
+  script(src='/assets/plugins/holder/holder.js')
+  script(src='/assets/plugins/tableExport/tableExport.js')
+  script(src='/assets/plugins/tableExport/jquery.base64.js')
+  script(src='/assets/plugins/tableExport/html2canvas.js')
+  script(src='/assets/plugins/tableExport/jquery.base64.js')
+  script(src='/assets/plugins/tableExport/jspdf/libs/sprintf.js')
+  script(src='/assets/plugins/tableExport/jspdf/jspdf.js')
+  script(src='/assets/plugins/tableExport/jspdf/libs/base64.js')
+  script(src='/assets/js/table-export.js')
+  script(src='/javascripts/dossier_list.js')
+  script.
+    jQuery(document).ready(function() {
+    TableExport.init();
+    });

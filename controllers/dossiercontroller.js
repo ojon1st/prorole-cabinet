@@ -46,22 +46,22 @@ exports.dossier_list = function (req, res, next) {
         .populate('utilisateur')
         .sort({ _id: -1 })
         .exec(callback);
-    },
-    
+    }
   }, function (err, results) {
     if (err) {
       return next(err);
     }
-        console.log(results.dossiers);
-    /*results.dossiers.forEach(function(dos){
-      if(dos.pour._id == '5cfc2896fef9175a40e1d47d' || dos.pour._id == '5cfbd642077717192410d6f9'){
-        //return
-        //dos.pour.pp.p_prenom = decrypt(JSON.parse(dos.pour.pp.p_prenom))
-        //dos.pour.pp.p_nom = decrypt(JSON.parse(dos.pour.pp.p_nom))
-        console.log(dos)
-      }
-    })*/
+        //console.log(results.compte);
+    // results.dossiers.forEach(function(dos){
+    //   if(dos.pour._id == '5cfc2896fef9175a40e1d47d' || dos.pour._id == '5cfbd642077717192410d6f9'){
+    //     //return
+    //     //dos.pour.pp.p_prenom = decrypt(JSON.parse(dos.pour.pp.p_prenom))
+    //     //dos.pour.pp.p_nom = decrypt(JSON.parse(dos.pour.pp.p_nom))
+    //     console.log(dos)
+    //   }
+    // })
     res.render('dossiers/dossier_list', {
+      title: 'Liste de dossiers',
       list_dossiers: results.dossiers
     });
   });
@@ -85,7 +85,10 @@ exports.found_client_get = function (req, res, next) {
   }, function (err, results) {
     if (err) { return next(err); }
 
-    res.render('dossiers/dossier_found', {list_dossiers: results.dossiers});
+    res.render('dossiers/dossier_found', {
+      title: 'Liste de dossiers',
+      list_dossiers: results.dossiers
+    });
   });
 };
 
@@ -178,7 +181,7 @@ exports.dossier_detail = function (req, res, next) {
         i_cour.push(i);
       }
     })
-    //console.log(results.instructions)
+    //console.log(results.dossier)
     // Successful, so render.
     res.render('dossiers/dossier_detail', {
       title: 'Gestionnaire de Dossier',
@@ -245,9 +248,8 @@ exports.dossier_create_post = [
     // Extract the validation errors from a request.
     var boolClt = false;
     var boolContre = false;
-    //var pour_update = []
-    //var contre_update = []
     const errors = validationResult(req);
+
     // Create a genre object with escaped and trimmed data.
     var dossier = new Dossier({
       titulaire: req.body.titulaire
@@ -262,7 +264,7 @@ exports.dossier_create_post = [
       }
     };
 
-    //autres avocats parite pour
+    //autres avocats partie pour
     if (Number(req.body.nb_other_avocat_pour) > 0) {
       for (i = 1; i <= Number(req.body.nb_other_avocat_pour); i++) {
         dossier.autres_avocats_pour.push({
@@ -404,10 +406,6 @@ exports.dossier_create_post = [
       });
       return;
     } else {
-      // Data from form is valid.
-      // Check if Dossier with same name already exists.
-      //dossier.pour = pour;
-      //dossier.contre = contre;
 
       if (boolClt == false){
         dossier.pour = pour;
@@ -418,15 +416,6 @@ exports.dossier_create_post = [
 
       if (boolClt == true){
         dossier.pour = pour_id;
-        //console.log(contre_update);
-        /*Pour.findOneAndUpdate({_id:pour_id},  pour_update, function (err) {
-          if (err) { next(err); }
-  
-          // Successful - update pour.
-          console.log({type_of_response: 'success'});
-          return;
-          
-        });*/
       }
 
       if (boolContre == false){
@@ -438,19 +427,9 @@ exports.dossier_create_post = [
 
       if (boolContre == true){
         dossier.contre = contre_id;
-        //console.log(contre_update);
-        /*Contre.findOneAndUpdate({_id:contre_id}, contre_update, function (err) {
-          if (err) { next(err); }
-  
-          // Successful - update contre.
-          console.log({type_of_response: 'success'});
-          return;
-          
-        });*/
       }
-
       dossier.hookEnabled = true;
-          
+       
       dossier.save(function (err) {
         if (err) { return next(err); }
         res.redirect('/dossiers');
