@@ -126,7 +126,7 @@ block content
                       label.col-sm-3.dos-text
                         | Attributaire : 
                       .col-sm-8
-                        if (dossier.attributaire)
+                        if (dossier.attributaire) 
                           select.form-control(name='attributaire', disabled=true)
                             each utilisateur in utilisateurs 
                               option(value=utilisateur._id.toString(), selected=(utilisateur._id.toString()==dossier.attributaire.id) ) #{utilisateur.prenom} #{utilisateur.nom}

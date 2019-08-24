@@ -213,7 +213,7 @@ jQuery(document).ready(function () {
     var id = $(this).val();
     res = find_in_table(tab_pour, id);
     
-    if(res != undefined)
+    if(res != undefined) 
     {
       $('input[name=clientP]').val(id);
       $('input[name=p_nom]').val(res.pp.p_nom).attr('disabled', true);

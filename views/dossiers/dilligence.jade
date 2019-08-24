@@ -51,6 +51,7 @@ block content
                   th Nom de parties
                   th Juridiction
                   th Dilligences
+                  th Responsable
                   th Delais
               tbody
                 - var i = 1
@@ -63,7 +64,8 @@ block content
                         if block
                           block
                       td.text-capitalize #{dossier.juridiction.division} #{dossier.juridiction.nom}
-                       td.text-capitalize #{dossier.diligence[0].d_commentaire}
+                      td.text-capitalize #{dossier.diligence[0].d_commentaire}
+                      th.text-capitalize #{dossier.attributaire}
                       td #{moment(dossier.diligence[0].d_fin).format("DD-MM-YYYY")}
                   if(dossier.dossier.pour && dossier.dossier.contre)
                     if(dossier.dossier.pour.p_type == 'pp' && dossier.dossier.contre.c_type == 'pp')

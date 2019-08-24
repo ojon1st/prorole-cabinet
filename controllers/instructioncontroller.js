@@ -1,6 +1,7 @@
 var Dossier = require('../models/dossier');
 var Instruction = require('../models/instruction');
 var Juridiction = require('../models/juridiction');
+var Utilisateur = require('../models/utilisateur');
 
 var async = require('async');
 var moment = require('moment');
@@ -403,7 +404,7 @@ exports.get_dossier_dil = function(req, res, next){
     
     dil_dossiers: function(callback){
       Instruction.find({}, {'diligence':{'$slice':-1},'_id':1,'decision':1, 'dossier':1, 'juridiction':1})
-          .populate({ path: 'dossier', model: 'Dossier', populate: { path: 'pour contre'} })
+          .populate({ path: 'dossier', model: 'Dossier', populate: { path: 'pour contre utilisateur'} })
           .populate('juridiction')
           .exec(callback);
     },
@@ -419,7 +420,7 @@ exports.get_dossier_dil = function(req, res, next){
           }
         }
       });
-      //console.log(dossiers_retards)
+      console.log(dossiers_dills)
       
       res.render('dossiers/dilligence', { title:'dossiers à dilligences', list_dossiers: dossiers_dills});
       
