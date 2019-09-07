@@ -46,7 +46,7 @@ block content
   // end: BREADCRUMB
   // start: PAGE CONTENT
   .form-horizontal
-    .col-md-6
+    .col-sm-12.col-md-6
       .row.padding-horizontal-10
         .panel.panel-white
           .panel-heading
@@ -379,7 +379,7 @@ block content
                     .input-group-btn
                       a.btn.btn-light-green(onclick='save_pieces_du_dossier("#{dossier._id}")')
                         span.fa.fa-check
-    .col-sm-6
+    .col-sm-12.col-md-6
       .row.padding-horizontal-10
         .panel.panel-white
           .panel-heading
@@ -607,12 +607,11 @@ block content
                                 | Renvoi :
                               .col-sm-10
                                 .row
-                                  .col-md-4(style='padding-right: 10px')
+                                  .col-sm-4(style='padding-right: 10px')
                                     span.input-icon
                                       input.form-control.date-picker(id='date_ins_#{division}' placeholder='Date', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years' onchange='verifDate(this)')
-                                      br.hidden-lg.hidden-md.hidden-sm
                                       i.fa.fa-calendar
-                                  .col-md-2(style='padding:0')
+                                  .col-sm-2(style='padding:0')
                                     select.form-control(id='type_ins_#{division}', onchange='type_complete_motif(this)')
                                       option(disabled='', selected='', value='') Types
                                       option(value='renvoi simple' title='Renvoi simple') R.
@@ -624,7 +623,7 @@ block content
                                       option(value='rabat de delibere puis renvoi' title='Rabat de délibéré puis renvoi') DRR.
                                       option(value='delibere vide' title='Délibéré vide') D. OK
                                       option(value='nos conclusions' title='Nos conclusions') N. C.
-                                  .col-md-6(style='padding:0')
+                                  .col-sm-6(style='padding:0')
                                     .input-group
                                       input.form-control.motif(id='motif_ins_#{division}', type='text', placeholder='Motif')
                                       if(instruction && (!instruction.decision || instruction.decision == ''))
@@ -755,12 +754,12 @@ block content
                               | Renvoi :
                             .col-sm-10
                               .row
-                                .col-md-4(style='padding-right: 10px')
+                                .col-sm-4(style='padding-right: 10px')
                                   span.input-icon
                                     input.form-control.date-picker(id='date_ins_#{division}' placeholder='Date', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years' onchange='verifDate(this)')
                                     br.hidden-lg.hidden-md.hidden-sm
                                     i.fa.fa-calendar
-                                .col-md-2(style='padding:0')
+                                .col-sm-2(style='padding:0')
                                   select.form-control(id='type_ins_#{division}', onchange='type_complete_motif(this)')
                                     option(disabled='', selected='', value='') Types
                                     option(value='renvoi simple' title='Renvoi simple') R.
@@ -772,7 +771,7 @@ block content
                                     option(value='rabat de delibere puis renvoi' title='Rabat de délibéré puis renvoi') DRR.
                                     option(value='delibere vide' title='Délibéré vide') D. OK
                                     option(value='nos conclusions' title='Nos conclusions') N. C.
-                                .col-md-6(style='padding:0')
+                                .col-sm-6(style='padding:0')
                                   .input-group
                                     input.form-control.motif(id='motif_ins_#{division}', type='text', placeholder='Motif')
                                     if(instruction && (!instruction.decision || instruction.decision == ''))

@@ -152,7 +152,7 @@ jQuery(document).ready(function () {
   var nombre = 1;
   $("#plus_contre").click(function () {
 
-    $("#sec_contre").append('<div class="form-group"><label class="col-sm-3 control-label" for="form-field-1">Autre contre ' + nombre + ' <span class="symbol required"></span> : </label><div class="col-sm-8"><span class="input-icon"><input type="text" placeholder="Nom et prénom ou dénomination sociale du contre" id="addcontre_' + nombre + '" name="autres_contre_' + nombre + '" class="form-control"><i class="fa fa-user"></i></span></div></div>');
+    $("#sec_contre").append('<div class="form-group"><label class="col-sm-3 control-label" for="form-field-1">Autre adversaire ' + nombre + ' <span class="symbol required"></span> : </label><div class="col-sm-8"><span class="input-icon"><input type="text" placeholder="Nom et prénom ou dénomination sociale du contre" id="addcontre_' + nombre + '" name="autres_contre_' + nombre + '" class="form-control"><i class="fa fa-user"></i></span></div></div>');
 
     $("#titre_contre").html('<div class="form-group"><label class="col-sm-offset-4 col-sm-4 control-label text-center" for="form-field-1"><span class="text-bold">Autres clients</span></label></div>');
 
@@ -181,7 +181,7 @@ jQuery(document).ready(function () {
   var nombreContre = 1;
   $("#plus_contre_morale").click(function () {
 
-    $("#sec_contre_morale").append('<div class="form-group"><label class="col-sm-3 control-label" for="form-field-1">Autre contre ' + nombreContre + ' <span class="symbol required"></span> : </label><div class="col-sm-8"><span class="input-icon"><input type="text" placeholder="Denommination sociale du contre" id="contre_morale' + nombreContre + '" name="autres_contre_' + nombreContre + '" class="form-control"><i class="fa fa-home"></i></span></div></div>');
+    $("#sec_contre_morale").append('<div class="form-group"><label class="col-sm-3 control-label" for="form-field-1">Autre adversaire ' + nombreContre + ' <span class="symbol required"></span> : </label><div class="col-sm-8"><span class="input-icon"><input type="text" placeholder="Denommination sociale du contre" id="contre_morale' + nombreContre + '" name="autres_contre_' + nombreContre + '" class="form-control"><i class="fa fa-home"></i></span></div></div>');
 
     $("#titre_contre_morale").html('<div class="form-group"><label class="col-sm-offset-4 col-sm-4 control-label text-center" for="form-field-1"><span class="text-bold">Autres clients</span></label></div>');
 

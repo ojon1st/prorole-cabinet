@@ -101,11 +101,11 @@ block content
                 span.symbol.required
                 |  :
               span.form_error
-              .text-center.col-md-4
+              .text-center.col-sm-4
                 a#btn_physique_pour.btn.btn-primary
                   | Personne 
                   span.text-bold PHYSIQUE
-              .text-center.col-md-3
+              .text-center.col-sm-3
                 a#btn_morale_pour.btn.btn-primary
                   | Personne 
                   span.text-bold MORALE
@@ -116,13 +116,15 @@ block content
                   span.symbol.required
                   |  :
                 .col-sm-8
-                  label.radio-inline
-                    input.grey(type='radio', value='Monsieur', name='p_civilite')
-                    | Monsieur
-                  label.radio-inline
-                    ///*name='optionsRadios'*/
-                    input.grey(type='radio', value='Madame', name='p_civilite')
-                    | Madame
+                  select.form-control(name='p_civilite', required='required')
+                    option(value='null')
+                    option(value='M.') Monsieur
+                    option(value='Madame') Madame
+                    option(value='Melle') Mademoiselle
+                    option(value='Elh') El Hadj
+                    option(value='Dr') Docteur
+                    option(value='Pr') Professeur
+                    option(value='Me') Metre
               .form-group
                 label.col-sm-3.control-label
                   | Nom 
@@ -371,11 +373,11 @@ block content
                 | Partie adverse 
                 span.symbol.required
                 |  :
-              .text-center.col-md-4
+              .text-center.col-sm-4
                 button#btn_physique_contre.btn.btn-warning(type='button')
                   | Personne 
                   span.text-bold PHYSIQUE
-              .text-center.col-md-3
+              .text-center.col-sm-3
                 button#btn_morale_contre.btn.btn-warning(type='button')
                   | Personne 
                   span.text-bold MORALE
@@ -386,13 +388,15 @@ block content
                   span.symbol.required
                   |  :
                 .col-sm-8
-                  label.radio-inline
-                    input.grey(type='radio', value='Monsieur', name='c_civilite')
-                    | Monsieur
-                  label.radio-inline
-                    ///*name='optionsRadios'*/
-                    input.grey(type='radio', value='Madame', name='c_civilite')
-                    | Madame
+                  select.form-control(name='c_civilite', required='required')
+                    option(value='null')
+                    option(value='M.') Monsieur
+                    option(value='Madame') Madame
+                    option(value='Melle') Mademoiselle
+                    option(value='Elh') El Hadj
+                    option(value='Dr') Docteur
+                    option(value='Pr') Professeur
+                    option(value='Me') Metre
               .form-group
                 label.col-sm-3.control-label
                   | Nom 
@@ -473,13 +477,13 @@ block content
               #sec_contre
               .form-group
                 label#contreLabel.col-sm-3.control-label
-                  | Autres contres
+                  | Autres adversaires
                 #contreRow.col-sm-8
                   .row
                     #contreInput.col-sm-offset-1.col-sm-5.col-xs-4
                       a#plus_contre.btn.btn-primary
                         i.fa.fa-plus
-                        |  Autres contres
+                        |  Autres adversaires
               // Ajout de champs pour autres avocats
               #titre_avocatAdverse
               
@@ -583,13 +587,13 @@ block content
               #sec_contre_morale
               .form-group
                 label#contreMoraleLabel.col-sm-3.control-label
-                  | Autres contres
+                  | Autres adversaires
                 #contreMoraleRow.col-sm-8
                   .row
                     #contreMoraleInput.col-sm-offset-1.col-sm-5.col-xs-4
                       a#plus_contre_morale.btn.btn-primary
                         i.fa.fa-plus
-                        |  Autres contres
+                        |  Autres adversaires
               // Ajout de champs pour autres avocats
               #titre_avocatAdverse_morale
               #autre_avocatAdverse_morale
