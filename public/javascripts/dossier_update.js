@@ -91,6 +91,7 @@ function show_notification(shortCutFunction, title, msg) {
 function update_dossier(id_dossier) {
   var route_update_infos_dossier = '/dossiers/dossier/' + id_dossier + '/update';
   var data = {};
+  data.ref_d_p = $('input[name=ref_d_p]').val();
   data.attributaire = $('select[name=attributaire]').val();
   data.qualite = $('select[name=qualite]').val();
   data.litige = $('select[name=litige]').val();

@@ -207,9 +207,10 @@ block content
           thead
             tr
               th N°
-              th Réf.
+              th Réf. dossier informatisé
               th Parties
-              th Statut
+              th Réf. dossier physique
+              th Renvois
               th.hidden-xs Dilligences
               // <th class="hidden-xs center">Priortity</th>
               //th Delais
@@ -228,6 +229,7 @@ block content
                   td
                     if block
                       block
+                  td #{element.dossier.ref_d_p}
                   td 
                     if (element.instruction && element.instruction.renvois && element.instruction.renvois.length > 0)
                       | #{moment(element.instruction.renvois[element.instruction.renvois.length-1].r_date).format('DD-MM-YYYY')}

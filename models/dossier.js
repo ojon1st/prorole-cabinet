@@ -7,15 +7,17 @@ var Schema = mongoose.Schema;
 
 var DossierSchema = new Schema({ 
   ref_d: {type: String, unique:true},
+  ref_d_p: {type: String, unique:true},
   titulaire: {type: Schema.ObjectId, ref: 'Utilisateur'}, //ref liste des utilisateurs
   attributaire: {type: Schema.ObjectId, ref: 'Utilisateur'}, //ref liste des utilisateurs
   qualite: {type: String},
   litige: {type: String},
   nature: {type: String}, //ref liste des natures du litige
-  resume: {type: String}, 
+  resume: {type: String},
   montant: {type: Number},
   doc:{type: Date, default:moment()}, //doc: date of creation -- now
   pour:{type: Schema.ObjectId, ref: 'Pour'},
+  correspondance:[{dossier_id:String, ref:String}],
   contre:{type: Schema.ObjectId, ref: 'Contre'},
   autres_pour:[{prenom_nom:String, rs:String}],
   autres_avocats_pour:[{prenom_nom:String, tel:String, email:String}],

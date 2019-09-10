@@ -40,7 +40,7 @@ exports.dossier_list = function (req, res, next) {
   async.parallel({
     dossiers: function (callback) {
       Dossier.find({})
-        .select({ "_id": 1, "ref_d": 1, "pour":1, "contre":1, "autres_pour":1, "autres_contre":1})
+        .select({ "_id": 1, "ref_d": 1, "ref_d_p": 1, "pour":1, "contre":1, "autres_pour":1, "autres_contre":1, "ref_d": 1})
         .populate('pour')
         .populate('contre')
         .populate('utilisateur')
@@ -252,7 +252,8 @@ exports.dossier_create_post = [
 
     // Create a genre object with escaped and trimmed data.
     var dossier = new Dossier({
-      titulaire: req.body.titulaire
+      titulaire: req.body.titulaire,
+      ref_d_p: req.body.ref_d_p
     });
 
     // autre clients
@@ -523,7 +524,8 @@ exports.dossier_update_post = [
     var dossier = new Dossier({
       _id: req.params.id
     });
-    
+    console.log(req.body.ref_d_p);
+    if (req.body.ref_d_p && req.body.ref_d_p != ""){dossier.ref_d_p = req.body.ref_d_p}
     if (req.body.attributaire && req.body.attributaire != ""){dossier.attributaire = req.body.attributaire}
     if (req.body.qualite && req.body.qualite != ""){dossier.qualite = req.body.qualite}
     if (req.body.litige && req.body.litige != ""){dossier.litige = req.body.litige}

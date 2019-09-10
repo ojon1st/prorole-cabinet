@@ -64,8 +64,10 @@ block content
                   thead
                     tr
                       th N°
-                      th Référence
+                      th Référence dossier informatisé
                       th Nom de parties
+                      th Référence dossier physique
+                      th Dossiers correspondants
                   tbody
                     - var i = 1
                     each dossier in list_dossiers
@@ -76,6 +78,10 @@ block content
                           td 
                             if block
                               block
+                          td #{dossier.ref_d_p}
+                          td 
+                            if(dossier.correspondance)
+                              | #{dossier.correspondance.ref}
                       if(dossier.pour && dossier.contre)
                         if(dossier.pour.p_type == 'pp' && dossier.contre.c_type == 'pp')
                           +tableau_dossiers

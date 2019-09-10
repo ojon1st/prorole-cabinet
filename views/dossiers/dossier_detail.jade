@@ -77,9 +77,16 @@ block content
             .row
               .col-md-12
                 form(method='POST', action='')
-                  .form-group
-                    label.col-sm-12.dos-text
-                      | Réf. : #{dossier.ref_d}
+                  .row
+                    .col-md-6
+                      .form-group
+                        label.col-sm-12.dos-text
+                          | Réf. dossier informatisé : #{dossier.ref_d}
+                    .col-md-6
+                      .form-group
+                        label.col-sm-12.dos-text
+                          if(dossier.ref_d)
+                            | Réf. dossier physique : #{dossier.ref_d_p}
                   - var pours = ''
                   .form-group
                     label.col-sm-9.dos-text
@@ -93,7 +100,7 @@ block content
                           - i++
                       if dossier.pour.p_type == 'pp'
                         | Pour : 
-                        strong.str #{dossier.pour.pp.p_prenom} #{dossier.pour.pp.p_nom}!{pours}
+                        strong.str #{dossier.pour.pp.p_civilite} #{dossier.pour.pp.p_prenom} #{dossier.pour.pp.p_nom}!{pours}
                       else if dossier.pour.p_type == 'pm'
                         | Pour: 
                         strong.str #{dossier.pour.pm.p_denomination}!{pours}
@@ -116,11 +123,18 @@ block content
                         strong.str #{dossier.contre.pp.p_prenom} #{dossier.contre.pp.c_nom}!{contres}
                       else if dossier.contre.c_type == 'pm'
                         | Contre: 
-                        strong.str #{dossier.contre.pm.c_denomination}!{contres}
+                        strong.str #{dossier.contre.pp.c_civilite} #{dossier.contre.pm.c_denomination}!{contres}
                     .col-sm-3
                       a.btn.btn-link.show-calendar(href='#infoContre')
                         span.fa.fa-plus
                         strong d'infos
+                  if(dossier.ref_d_p == '' || dossier.ref_d_p == undefined)
+                    .form-group
+                      label.col-sm-3.dos-text
+                        | Dossier physique :
+                      .col-sm-8
+                        input.form-control(name='ref_d_p', placeholder='Saisir la réference du dossier physique')
+                  
                   .form-group
                     if(utilisateurs)
                       label.col-sm-3.dos-text
