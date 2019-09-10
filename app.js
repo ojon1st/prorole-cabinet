@@ -20,8 +20,8 @@ var adminsRouter = require('./routes/administrateurs');
 var ratiosRouter = require('./routes/ratios');
 
 var mongoose = require('mongoose');
-//var mongoDB = 'mongodb://legaltech_user:legaltech2019@ds251284.mlab.com:51284/legaltech_p_db'; //en ligne
-var mongoDB = 'mongodb://127.0.0.1:27017/legaltech'; //local
+var mongoDB = 'mongodb://legaltech_user:legaltech2019@ds251284.mlab.com:51284/legaltech_p_db'; //en ligne
+//var mongoDB = 'mongodb://127.0.0.1:27017/legaltech'; //local
 mongoose.connect(mongoDB,  {useNewUrlParser: true});
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
