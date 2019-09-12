@@ -236,7 +236,7 @@
 				subview_action = "";
 				if(subview_id.length < 3) {
 					if(supportTransition) {
-						$(".back-subviews").css({
+						$(".back-subviews").css({ 
 							opacity: 0,
 							left: "20px"
 						}).on('webkitTransitionEnd oTransitionEnd otransitionend transitionend msTransitionEnd', function() {

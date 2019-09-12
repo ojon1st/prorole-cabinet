@@ -1,511 +1,101 @@
 .hidden
-  //- Show calendar
-  #showCalendar.col-md-10.col-md-offset-1
-    .barTopSubview
-      a.new-event.button-sv(href='#newEvent', data-subviews-options='{"onShow": "editEvent()"}')
-        i.fa.fa-plus
-        |  Ajouter un evenement
-    #calendar
-
-  //- Read event
-  #readEvent
-    .noteWrap.col-md-8.col-md-offset-2
-      .row
-        .col-md-12
-          h2.event-title Titre de l'evenement
-          .btn-group.options-toggle.pull-right
-            button.btn.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
-              i.fa.fa-cog
-              span.caret
-            ul.dropdown-menu.dropdown-light.pull-right(role='menu')
-              li
-                a.edit-event(href='#newEvent')
-                  i.fa.fa-pencil
-                  |  Modifier
-              li
-                a.delete-event(href='#')
-                  i.fa.fa-times
-                  |  Supprimer
-        .col-md-6
-          span.event-category.event-cancelled Cancelled
-          span.event-allday
-            i.fa.fa-check
-            |  Tous les jours
-        .col-md-12
-          .event-start
-            .event-day
-            .event-date
-            .event-time
-          .event-end
-        .col-md-12
-          .event-content
-  //- Read note
-
-  #readNote
-    .barTopSubview
-      a.new-note.button-sv(href='#newNote')
-        i.fa.fa-plus
-        |  Adjouter une note
-    .noteWrap.col-md-8.col-md-offset-2
-      .panel.panel-note
-        .e-slider.owl-carousel.owl-theme
-          .item
-            .panel-heading
-              h3 Ca, c'est une note
-            .panel-body
-              .note-short-content
-                | Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam...
-              .note-content
-                | Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua.
-                | Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat.
-                | Quis aute iure reprehenderit in 
-                strong voluptate velit
-                |  esse cillum dolore eu fugiat nulla pariatur.
-                br
-                | 							Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                br
-                | 							Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit, amet, consectetur, adipisci v'elit, sed quia non numquam eius modi tempora incidunt, ut labore et dolore magnam aliquam quaerat voluptatem.
-                br
-                | 							Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut 
-                strong aliquid ex ea commodi consequatur?
-                br
-                | 							Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur?
-                br
-                | 							At vero eos et accusamus et iusto odio dignissimos ducimus, qui blanditiis praesentium voluptatum deleniti atque corrupti, quos dolores et quas molestias excepturi sint, obcaecati cupiditate non provident, similique sunt in culpa, qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.
-                br
-                | 							Nam libero tempore, cum soluta nobis est eligendi optio, cumque nihil impedit, quo minus id, quod maxime placeat, facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet, ut et voluptates repudiandae sint et molestiae non recusandae.
-                br
-                | 							Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
-              .note-options.pull-right
-                a.read-note(href='#readNote')
-                  i.fa.fa-chevron-circle-right
-                  |  Lire
-                a.delete-note(href='#')
-                  i.fa.fa-times
-                  |  Supprimer
-            .panel-footer
-              .avatar-note
-                img(src='/assets/images/avatar-2-small.jpg', alt='')
-              span.author-note Nicole Bell
-              time.timestamp(title='2014-02-18T00:00:00-05:00')
-                | 2014-02-18T00:00:00-05:00
-          .item
-            .panel-heading
-              h3 This is the second Note
-            .panel-body
-              .note-short-content
-                | Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nemo enim ipsam voluptatem, quia voluptas sit...
-              .note-content
-                | Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                br
-                | 							Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit, amet, consectetur, adipisci v'elit, sed quia non numquam eius modi tempora incidunt, ut labore et dolore magnam aliquam quaerat voluptatem.
-                br
-                | 							Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut 
-                strong aliquid ex ea commodi consequatur?
-                br
-                | 							Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur?
-                br
-                | 							Nam libero tempore, cum soluta nobis est eligendi optio, cumque nihil impedit, quo minus id, quod maxime placeat, facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet, ut et voluptates repudiandae sint et molestiae non recusandae.
-                br
-                | 							Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.
-              .note-options.pull-right
-                a.read-note(href='#')
-                  i.fa.fa-chevron-circle-right
-                  |  Read
-                a.delete-note(href='#')
-                  i.fa.fa-times
-                  |  Delete
-            .panel-footer
-              .avatar-note
-                img(src='/assets/images/avatar-3-small.jpg', alt='')
-              span.author-note Steven Thompson
-              time.timestamp(title='2014-02-18T00:00:00-05:00')
-                | 2014-02-18T00:00:00-05:00
-          .item
-            .panel-heading
-              h3 This is yet another Note
-            .panel-body
-              .note-short-content
-                | At vero eos et accusamus et iusto odio dignissimos ducimus, qui blanditiis praesentium voluptatum deleniti atque corrupti, quos dolores...
-              .note-content
-                | At vero eos et accusamus et iusto odio dignissimos ducimus, qui blanditiis praesentium voluptatum deleniti atque corrupti, quos dolores et quas molestias excepturi sint, obcaecati cupiditate non provident, similique sunt in culpa, qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.
-                br
-                | 							Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                br
-                | 							Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt, neque porro quisquam est, qui dolorem ipsum, quia dolor sit, amet, consectetur, adipisci v'elit, sed quia non numquam eius modi tempora incidunt, ut labore et dolore magnam aliquam quaerat voluptatem.
-                br
-                | 							Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut 
-                strong aliquid ex ea commodi consequatur?
-              .note-options.pull-right
-                a.read-note(href='#')
-                  i.fa.fa-chevron-circle-right
-                  |  Read
-                a.delete-note(href='#')
-                  i.fa.fa-times
-                  |  Delete
-            .panel-footer
-              .avatar-note
-                img(src='/assets/images/avatar-4-small.jpg', alt='')
-              span.author-note Ella Patterson
-              time.timestamp(title='2014-02-18T00:00:00-05:00')
-                | 2014-02-18T00:00:00-05:00
-  //- read note end
-
-  //- new note
-  #newNote
-    .noteWrap.col-md-8.col-md-offset-2
-      h3 Ajouter une note
-      form.form-note
-        .form-group
-          input.note-title.form-control(name='noteTitle', type='text', placeholder='Note Title...')
-        .form-group
-          textarea#noteEditor.hide(name='noteEditor')
-          textarea.summernote(placeholder='Write note here...')
-        .pull-right
-          .btn-group
-            a.btn.btn-info.close-subview-button(href='#')
-              | Fermer
-          .btn-group
-            button.btn.btn-info.save-note(type='submit')
-              | Ajouter
-
-  //- end new note
-
-  //- new event
-  #newEvent
-    .noteWrap.col-md-8.col-md-offset-2
-      h3 Ajouter un evenement
-      form.form-event
-        .row
-          .col-md-12
-            .form-group
-              input.event-id.hide(type='text')
-              input.event-name.form-control(name='eventName', type='text', placeholder='Event Name...')
-          .col-md-4
-            .form-group
-              input.all-day(type='checkbox', data-label-text='All-Day', data-on-text='True', data-off-text='False')
-          .no-all-day-range
-            .col-md-8
-              .form-group
-                .form-group
-                  span.input-icon
-                    input.event-range-date.form-control(type='text', name='eventRangeDate', placeholder='Range date')
-                    i.fa.fa-clock-o
-          .all-day-range
-            .col-md-8
-              .form-group
-                .form-group
-                  span.input-icon
-                    input.event-range-date.form-control(type='text', name='ad_eventRangeDate', placeholder='Range date')
-                    i.fa.fa-calendar
-          .hide
-            input.event-start-date(type='text', name='eventStartDate')
-            input.event-end-date(type='text', name='eventEndDate')
-          .col-md-12
-            .form-group
-              select.form-control.selectpicker.event-categories
-                option(data-content="<span class='event-category event-cancelled'>Cancelled</span>", value='event-cancelled') Cancelled
-                option(data-content="<span class='event-category event-home'>Home</span>", value='event-home') Home
-                option(data-content="<span class='event-category event-overtime'>Overtime</span>", value='event-overtime') Overtime
-                option(data-content="<span class='event-category event-generic'>Generic</span>", value='event-generic', selected='selected') Generic
-                option(data-content="<span class='event-category event-job'>Job</span>", value='event-job') Job
-                option(data-content="<span class='event-category event-offsite'>Off-site work</span>", value='event-offsite') Off-site work
-                option(data-content="<span class='event-category event-todo'>To Do</span>", value='event-todo') To Do
-          .col-md-12
-            .form-group
-              textarea.summernote(placeholder='Write note here...')
-        .pull-right
-          .btn-group
-            a.btn.btn-info.close-subview-button(href='#')
-              | Fermer
-          .btn-group
-            button.btn.btn-info.save-new-event(type='submit')
-              | Ajouter
-
-  //- end new event
-
-
-  //- new contributor
-  #newContributor
-    .noteWrap.col-md-8.col-md-offset-2
-      h3 Ajouter un contributeur
-      form.form-contributor
-        .row
-          .col-md-12
-            .errorHandler.alert.alert-danger.no-display
-              i.fa.fa-times-sign
-              |  Vous avez des erreurs de formulaire. S'il vous plaît vérifier ci-dessous.
-            .successHandler.alert.alert-success.no-display
-              i.fa.fa-ok
-              |  Votre validation de formulaire est réussie!
-          .col-md-6
-            .form-group
-              input.contributor-id.hide(type='text')
-              label.control-label
-                | Nom 
-                span.symbol.required
-              input.form-control.contributor-firstname(type='text', placeholder='Insert your First Name', name='firstname')
-            .form-group
-              label.control-label
-                | Prenom 
-                span.symbol.required
-              input.form-control.contributor-lastname(type='text', placeholder='Insert your Last Name', name='lastname')
-            .form-group
-              label.control-label
-                | Email 
-                span.symbol.required
-              input.form-control.contributor-email(type='email', placeholder='Text Field', name='email')
-            .form-group
-              label.control-label
-                | Mot de passe 
-                span.symbol.required
-              input.form-control.contributor-password(type='password', name='password')
-            .form-group
-              label.control-label
-                | Confirmation du mot de passe 
-                span.symbol.required
-              input.form-control.contributor-password-again(type='password', name='password_again')
-          .col-md-6
-            .form-group
-              label.control-label
-                | Sexe 
-                span.symbol.required
-              div
-                label.radio-inline
-                  input.grey.contributor-gender(type='radio', value='F', name='gender')
-                  | 								Feminin
-                label.radio-inline
-                  input.grey.contributor-gender(type='radio', value='M', name='gender')
-                  | 								Masculin
-            .form-group
-              label.control-label
-                | Permits 
-                span.symbol.required
-              select.form-control.contributor-permits(name='permits')
-                option(value='View and Edit') View and Edit
-                option(value='View Only') View Only
-            .form-group
-              .fileupload.fileupload-new.contributor-avatar(data-provides='fileupload')
-                .fileupload-new.thumbnail
-                  img(src='/assets/images/anonymous.jpg', alt='', width='50', height='50')
-                .fileupload-preview.fileupload-exists.thumbnail
-                .contributor-avatar-options
-                  span.btn.btn-light-grey.btn-file
-                    span.fileupload-new
-                      i.fa.fa-picture-o
-                      |  Selectionner une image
-                    span.fileupload-exists
-                      i.fa.fa-picture-o
-                      |  Changer
-                    input(type='file')
-                  a.btn.fileupload-exists.btn-light-grey(href='#', data-dismiss='fileupload')
-                    i.fa.fa-times
-                    |  Supprimer
-            .form-group
-              label.control-label
-                | ENVOI DE MESSAGE (Optionel)
-              textarea.form-control.contributor-message
-        .pull-right
-          .btn-group
-            a.btn.btn-info.close-subview-button(href='#')
-              | Fermer
-          .btn-group
-            button.btn.btn-info.save-contributor(type='submit')
-              | Ajouter
-  //- end new contributor
-
-  //- modifier profil
-  //- .hidden
-    #runEditerProfil
-      .noteWrap.col-md-10.col-md-offset-1
-        br
-        form(action='#', role='form')
-          .row
-            .col-md-12
-              h3 Informations du compte
-              hr
-            .col-md-6
-              .form-group
-                label.control-label
-                  | Nom
-                input#firstname.form-control(type='text', placeholder='Richard', name='Nom')
-              .form-group
-                label.control-label
-                  | Prenom
-                input#lastname.form-control(type='text', placeholder='Elad', name='lastname')
-              .form-group
-                label.control-label
-                  | Email
-                input#email.form-control(type='email', placeholder='peter@example.com', name='email')
-              .form-group
-                label.control-label
-                  | Téléphone
-                input#phone.form-control(type='number', placeholder='(641)-734-4763', name='telephone')
-            .col-md-6
-              .form-group
-                label.control-label
-                  | Mot de passe
-                input#password.form-control(type='password', placeholder='Mot de passe', name='password')
-              .form-group
-                label.control-label
-                  | Confirmation du mot de passe
-                input#password_again.form-control(type='password', placeholder='Confirmer votre mot de passe', name='password_again')
-              .form-group
-                label
-                  | Image Upload
-                .fileupload.fileupload-new(data-provides='fileupload')
-                  .fileupload-new.thumbnail
-                    img(src='/assets/images/avatar-1-xl.jpg', alt='')
-                  .fileupload-preview.fileupload-exists.thumbnail
-                  .user-edit-image-buttons
-                    span.btn.btn-azure.btn-file
-                      span.fileupload-new
-                        i.fa.fa-picture
-                        |  Select image
-                      span.fileupload-exists
-                        i.fa.fa-picture
-                        |  Change
-                      input(type='file')
-                    a.btn.fileupload-exists.btn-red(href='#', data-dismiss='fileupload')
-                      i.fa.fa-times
-                      |  Remove
-          .row
-            .col-md-12
-              div
-                | Champs obligatoires
-                hr
-          .row
-            .col-md-8.col-sm-8
-              p
-                | En cliquant sur MISE À JOUR, vous acceptez la politique & les conditions d'utilisation.
-            .col-md-4.col-sm-4
-              button.btn.btn-green.btn-block(type='submit')
-                | Mise à jour 
-                i.fa.fa-arrow-circle-right
-  //- end modifier profil
-
-  //- show contributor
-  #showContributors
-    .barTopSubview
-      a.new-contributor.button-sv(href='#newContributor')
-        i.fa.fa-plus
-        |  Ajouter contributeur
+  #addUser
     .noteWrap.col-md-10.col-md-offset-1
-      .panel.panel-default
-        .panel-body
-          #contributors
-            .options-contributors.hide
-              .btn-group
-                button.btn.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
-                  i.fa.fa-cog
-                  span.caret
-                ul.dropdown-menu.dropdown-light.pull-right(role='menu')
-                  li
-                    a.show-subviews.edit-contributor(href='#newContributor')
-                      i.fa.fa-pencil
-                      |  Modifier
-                  li
-                    a.delete-contributor(href='#')
-                      i.fa.fa-times
-                      |  Supprimer
-  //- Gestionnaire des dossiers
-
-  .hidden
-    #addUser
-      .noteWrap.col-md-10.col-md-offset-1
+      br
+      h3 Nouvel utilisateur
+      br
+      .row
         br
-        h3 Nouvel utilisateur
-        br
-        .row
-          br
-          form.form-horizontal(role='form')
-            .row
-              .col-md-6
-                .form-group
-                  label.col-sm-3.control-label(for='')
-                    | Nom 
-                    span.symbol.required
-                    |  :
-                  .col-sm-8
-                    span.input-icon
-                      input#nom.form-control(type='text', name='u_nom', placeholder="Nom de l'utilsateur" required)
-                      i.fa.fa-user
-                .form-group
-                  label.col-sm-3.control-label(for='')
-                    | Prenom 
-                    span.symbol.required
-                    |  :
-                  .col-sm-8
-                    span.input-icon
-                      input#prenom.form-control(type='text', name='u_prenom' , placeholder="Prenom de l'utilisateur" required)
-                      i.fa.fa-user
-                .form-group
-                  label.col-sm-3.control-label(for='')
-                    | Téléphone 
-                    span.symbol.required
-                    |  :
-                  .col-sm-8
-                    span.input-icon
-                      input#tel.form-control.input-mask-phone(type='text', name='u_telephone' , placeholder="Téléphone de l'utilisateur" required)
-                      i.fa.fa-phone
-                .form-group
-                  label.col-sm-3.control-label(for='')
-                    | email 
-                    span.symbol.required
-                    |  :
-                  .col-sm-8
-                    span.input-icon
-                      input#mail.form-control(type='text', name='u_email' , placeholder="email de l'utilisateur" required)
-                      i.fa.fa-envelope
-              .col-sm-6
-                .form-group
-                  label.col-sm-3.control-label(for='')
-                    | Identifiant 
-                    span.symbol.required
-                    |  :
-                  .col-sm-8
-                    span.input-icon
-                      input#login.form-control(type='text', name='u_pseudo' , placeholder="Identifiant de l'utilisateur" required)
-                      i.fa.fa-user
-                .form-group
-                  label.col-sm-3.control-label(for='')
-                    | Profil 
-                    span.symbol.required
-                    |  :
-                  .col-sm-8
-                    select#profil.form-control.search-select(name='u_profil' required)
-
-                .form-group
-                  label.col-sm-3.control-label(for='')
-                    | Mot de passe 
-                    span.symbol.required
-                    |  :
-                  .col-sm-8
-                    span.input-icon
-                      input#pass.form-control(type='text', name='u_pwd', minlength = 6 ,placeholder="Mot de passe de l'utilisateur" required)
-                      i.fa.fa-lock
-                #groupConfirm.form-group
-                  label.col-sm-3.control-label(for='')
-                    | Confirmation 
-                    span.symbol.required
-                    |  :
-                  .col-sm-8
-                    span.input-icon
-                      input#confirmPass.form-control(type='text', name='u_pwd2' , placeholder="Confirmatin du mot de passe de l'utilisateur" required)
-                      i.fa.fa-lock
-            br
-            br
-            .row
-              .col-md-12
-                div
-                  br
+        form.form-horizontal(role='form')
+          .row
+            .col-md-6
+              .form-group
+                label.col-sm-3.control-label(for='')
+                  | Nom 
                   span.symbol.required
-                  | Ces champs sont obligatoires.
-            .row
-              .col-md-12
-                .col-md-9
-                  p
-                .col-md-2
-                  a.btn.btn-green.btn-block(onclick='create_new_utilisateur()')
-                    | Enregistrer 
-                    i.fa.fa-arrow-circle-right
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input#nom.form-control(type='text', name='u_nom', placeholder="Nom de l'utilsateur" required)
+                    i.fa.fa-user
+              .form-group
+                label.col-sm-3.control-label(for='')
+                  | Prenom 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input#prenom.form-control(type='text', name='u_prenom' , placeholder="Prenom de l'utilisateur" required)
+                    i.fa.fa-user
+              .form-group
+                label.col-sm-3.control-label(for='')
+                  | Téléphone 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input#tel.form-control.input-mask-phone(type='text', name='u_telephone' , placeholder="Téléphone de l'utilisateur" required)
+                    i.fa.fa-phone
+              .form-group
+                label.col-sm-3.control-label(for='')
+                  | email 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input#mail.form-control(type='text', name='u_email' , placeholder="email de l'utilisateur" required)
+                    i.fa.fa-envelope
+            .col-sm-6
+              .form-group
+                label.col-sm-3.control-label(for='')
+                  | Identifiant 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input#login.form-control(type='text', name='u_pseudo' , placeholder="Identifiant de l'utilisateur" required)
+                    i.fa.fa-user
+              .form-group
+                label.col-sm-3.control-label(for='')
+                  | Profil 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  select#profil.form-control.search-select(name='u_profil' required)
+
+              .form-group
+                label.col-sm-3.control-label(for='')
+                  | Mot de passe 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input#pass.form-control(type='text', name='u_pwd', minlength = 6 ,placeholder="Mot de passe de l'utilisateur" required)
+                    i.fa.fa-lock
+              #groupConfirm.form-group
+                label.col-sm-3.control-label(for='')
+                  | Confirmation 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input#confirmPass.form-control(type='text', name='u_pwd2' , placeholder="Confirmatin du mot de passe de l'utilisateur" required)
+                    i.fa.fa-lock
+          br
+          br
+          .row
+            .col-md-12
+              div
+                br
+                span.symbol.required
+                | Ces champs sont obligatoires.
+          .row
+            .col-md-12
+              .col-md-9
+                p
+              .col-md-2
+                a.btn.btn-green.btn-block(onclick='create_new_utilisateur()')
+                  | Enregistrer 
+                  i.fa.fa-arrow-circle-right
+
+

@@ -40,7 +40,7 @@ exports.dossier_list = function (req, res, next) {
   async.parallel({
     dossiers: function (callback) {
       Dossier.find({})
-        .select({ "_id": 1, "ref_d": 1, "ref_d_p": 1, "pour":1, "contre":1, "autres_pour":1, "autres_contre":1, "ref_d": 1})
+        .select({ "_id": 1, "ref_d": 1, "ref_d_p": 1, "pour":1, "contre":1, "autres_pour":1, "autres_contre":1, "ref_d_p": 1})
         .populate('pour')
         .populate('contre')
         .populate('utilisateur')
@@ -51,6 +51,24 @@ exports.dossier_list = function (req, res, next) {
     if (err) {
       return next(err);
     }
+      // var list_dossier = [];
+      // results.dossiers.forEach(function(dos){
+      //   console.log(dos.titulaire)
+      //   if(dos.titulaire == req.user.id){
+      //     var taille = dos.correspondance.length;
+      //     var ref_cor = '';
+      //     for(i==0; i < taille; i++){
+      //       ref_cor += dos.correspondance.ref;
+      //     }
+      //     list_dossier.push({
+      //       ref_i: dos.ref_d,
+      //       ref_p: dos.ref_d_p,
+      //       correspondant: ref_cor,
+      //       pour: dos.pour,
+      //       contre: dos.contre
+      //     });
+      //   }
+      // });
         //console.log(results.compte);
     // results.dossiers.forEach(function(dos){
     //   if(dos.pour._id == '5cfc2896fef9175a40e1d47d' || dos.pour._id == '5cfbd642077717192410d6f9'){
@@ -60,6 +78,8 @@ exports.dossier_list = function (req, res, next) {
     //     console.log(dos)
     //   }
     // })
+    // console.log(list_dossier)
+    // res.end();
     res.render('dossiers/dossier_list', {
       title: 'Liste de dossiers',
       list_dossiers: results.dossiers

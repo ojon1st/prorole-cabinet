@@ -1,276 +1,276 @@
 #pageslide-right.pageslide.slide-fixed.inner
-  .right-wrapper
-    ul#sidebar-tab.nav.nav-tabs.nav-justified
-      li.active
-        a(href='#users', role='tab', data-toggle='tab')
-          i.fa.fa-users
-      li
-        a(href='#notifications', role='tab', data-toggle='tab')
-          i.fa.fa-bookmark
-      li
-        a(href='#settings', role='tab', data-toggle='tab')
-          i.fa.fa-gear
-    .tab-content
-      #users.tab-pane.active
-        .users-list
-          h5.sidebar-title On-line
-          ul.media-list
-            li.media
-              a(href='#')
-                i.fa.fa-circle.status-online
-                img.media-object(alt='...', src='/assets/images/avatar-2.jpg')
-                .media-body
-                  h4.media-heading Nicole Bell
-                  span  Content Designer 
-            li.media
-              a(href='#')
-                .user-label
-                  span.label.label-default 3
-                i.fa.fa-circle.status-online
-                img.media-object(alt='...', src='/assets/images/avatar-3.jpg')
-                .media-body
-                  h4.media-heading Steven Thompson
-                  span  Visual Designer 
-            li.media
-              a(href='#')
-                i.fa.fa-circle.status-online
-                img.media-object(alt='...', src='/assets/images/avatar-4.jpg')
-                .media-body
-                  h4.media-heading Ella Patterson
-                  span  Web Editor 
-            li.media
-              a(href='#')
-                i.fa.fa-circle.status-online
-                img.media-object(alt='...', src='/assets/images/avatar-5.jpg')
-                .media-body
-                  h4.media-heading Kenneth Ross
-                  span  Senior Designer 
-          h5.sidebar-title Off-line
-          ul.media-list
-            li.media
-              a(href='#')
-                img.media-object(alt='...', src='/assets/images/avatar-6.jpg')
-                .media-body
-                  h4.media-heading Nicole Bell
-                  span  Content Designer 
-            li.media
-              a(href='#')
-                .user-label
-                  span.label.label-default 3
-                img.media-object(alt='...', src='/assets/images/avatar-7.jpg')
-                .media-body
-                  h4.media-heading Steven Thompson
-                  span  Visual Designer 
-            li.media
-              a(href='#')
-                img.media-object(alt='...', src='/assets/images/avatar-8.jpg')
-                .media-body
-                  h4.media-heading Ella Patterson
-                  span  Web Editor 
-            li.media
-              a(href='#')
-                img.media-object(alt='...', src='/assets/images/avatar-9.jpg')
-                .media-body
-                  h4.media-heading Kenneth Ross
-                  span  Senior Designer 
-            li.media
-              a(href='#')
-                img.media-object(alt='...', src='/assets/images/avatar-10.jpg')
-                .media-body
-                  h4.media-heading Ella Patterson
-                  span  Web Editor 
-            li.media
-              a(href='#')
-                img.media-object(alt='...', src='/assets/images/avatar-5.jpg')
-                .media-body
-                  h4.media-heading Kenneth Ross
-                  span  Senior Designer 
-        .user-chat
-          .sidebar-content
-            a.sidebar-back(href='#')
-              i.fa.fa-chevron-circle-left
-              |  Back
-          .user-chat-form.sidebar-content
-            .input-group
-              input.form-control(type='text', placeholder='Type a message here...')
-              .input-group-btn
-                button.btn.btn-blue.no-radius(type='button')
-                  i.fa.fa-chevron-right
-          ol.discussion.sidebar-content
-            li.other
-              .avatar
-                img(src='/assets/images/avatar-4.jpg', alt='')
-              .messages
-                p
-                  | Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-                span.time  51 min 
-            li.self
-              .avatar
-                img(src='/assets/images/avatar-1.jpg', alt='')
-              .messages
-                p
-                  | Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-                span.time  37 mins 
-            li.other
-              .avatar
-                img(src='/assets/images/avatar-4.jpg', alt='')
-              .messages
-                p
-                  | Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-      #notifications.tab-pane
-        .notifications
-          .pageslide-title
-            | You have 11 notifications
-          ul.pageslide-list
-            li
-              a(href='javascript:void(0)')
-                span.label.label-primary
-                  i.fa.fa-user
-                span.message  New user registration
-                span.time  1 min
-            li
-              a(href='javascript:void(0)')
-                span.label.label-success
-                  i.fa.fa-comment
-                span.message  New comment
-                span.time  7 min
-            li
-              a(href='javascript:void(0)')
-                span.label.label-success
-                  i.fa.fa-comment
-                span.message  New comment
-                span.time  8 min
-            li
-              a(href='javascript:void(0)')
-                span.label.label-success
-                  i.fa.fa-comment
-                span.message  New comment
-                span.time  16 min
-            li
-              a(href='javascript:void(0)')
-                span.label.label-primary
-                  i.fa.fa-user
-                span.message  New user registration
-                span.time  36 min
-            li
-              a(href='javascript:void(0)')
-                span.label.label-warning
-                  i.fa.fa-shopping-cart
-                span.message  2 items sold
-                span.time  1 hour
-            li.warning
-              a(href='javascript:void(0)')
-                span.label.label-danger
-                  i.fa.fa-user
-                span.message  User deleted account
-                span.time  2 hour
-          .view-all
-            a(href='javascript:void(0)')
-              | See all notifications 
-              i.fa.fa-arrow-circle-o-right
-      #settings.tab-pane
-        h5.sidebar-title General Settings
-        ul.media-list
-          li.media
-            .checkbox.sidebar-content
-              label
-                input.green(type='checkbox', value='', checked='checked')
-                | 								Enable Notifications
-          li.media
-            .checkbox.sidebar-content
-              label
-                input.green(type='checkbox', value='', checked='checked')
-                | 								Show your E-mail
-          li.media
-            .checkbox.sidebar-content
-              label
-                input.green(type='checkbox', value='')
-                | 								Show Offline Users
-          li.media
-            .checkbox.sidebar-content
-              label
-                input.green(type='checkbox', value='', checked='checked')
-                | 								E-mail Alerts
-          li.media
-            .checkbox.sidebar-content
-              label
-                input.green(type='checkbox', value='')
-                | 								SMS Alerts
-        .sidebar-content
-          button.btn.btn-success
-            i.icon-settings
-            |  Save Changes
-    #style_selector.hidden-xs
-      #style_selector_container
-        .pageslide-title
-          | Style Selector
-        .box-title
-          | Choose Your Layout Style
-        .input-box
-          .input
-            select.form-control(name='layout')
-              option(value='default') Wide
-              option(value='boxed') Boxed
-        .box-title
-          | Choose Your Header Style
-        .input-box
-          .input
-            select.form-control(name='header')
-              option(value='fixed') Fixed
-              option(value='default') Default
-        .box-title
-          | Choose Your Sidebar Style
-        .input-box
-          .input
-            select.form-control(name='sidebar')
-              option(value='fixed') Fixed
-              option(value='default') Default
-        .box-title
-          | Choose Your Footer Style
-        .input-box
-          .input
-            select.form-control(name='footer')
-              option(value='default') Default
-              option(value='fixed') Fixed
-        .box-title
-          | 10 Predefined Color Schemes
-        .images.icons-color
-          a#default(href='#')
-            img.active(src='/assets/images/color-1.png', alt='')
-          a#style2(href='#')
-            img(src='/assets/images/color-2.png', alt='')
-          a#style3(href='#')
-            img(src='/assets/images/color-3.png', alt='')
-          a#style4(href='#')
-            img(src='/assets/images/color-4.png', alt='')
-          a#style5(href='#')
-            img(src='/assets/images/color-5.png', alt='')
-          a#style6(href='#')
-            img(src='/assets/images/color-6.png', alt='')
-          a#style7(href='#')
-            img(src='/assets/images/color-7.png', alt='')
-          a#style8(href='#')
-            img(src='/assets/images/color-8.png', alt='')
-          a#style9(href='#')
-            img(src='/assets/images/color-9.png', alt='')
-          a#style10(href='#')
-            img(src='/assets/images/color-10.png', alt='')
-        .box-title
-          | Backgrounds for Boxed Version
-        .images.boxed-patterns
-          a#bg_style_1(href='#')
-            img(src='/assets/images/bg.png', alt='')
-          a#bg_style_2(href='#')
-            img(src='/assets/images/bg_2.png', alt='')
-          a#bg_style_3(href='#')
-            img(src='/assets/images/bg_3.png', alt='')
-          a#bg_style_4(href='#')
-            img(src='/assets/images/bg_4.png', alt='')
-          a#bg_style_5(href='#')
-            img(src='/assets/images/bg_5.png', alt='')
-        .style-options
-          a.clear_style(href='#')
-            | Clear Styles
-          a.save_style(href='#')
-            | Save Styles
-      .style-toggle.open
+  //- .right-wrapper
+  //-   ul#sidebar-tab.nav.nav-tabs.nav-justified
+  //-     li.active
+  //-       a(href='#users', role='tab', data-toggle='tab')
+  //-         i.fa.fa-users
+  //-     li
+  //-       a(href='#notifications', role='tab', data-toggle='tab')
+  //-         i.fa.fa-bookmark
+  //-     li
+  //-       a(href='#settings', role='tab', data-toggle='tab')
+  //-         i.fa.fa-gear
+  //-   .tab-content
+  //-     #users.tab-pane.active
+  //-       .users-list
+  //-         h5.sidebar-title On-line
+  //-         ul.media-list
+  //-           li.media
+  //-             a(href='#')
+  //-               i.fa.fa-circle.status-online
+  //-               img.media-object(alt='...', src='/assets/images/avatar-2.jpg')
+  //-               .media-body
+  //-                 h4.media-heading Nicole Bell
+  //-                 span  Content Designer 
+  //-           li.media
+  //-             a(href='#')
+  //-               .user-label
+  //-                 span.label.label-default 3
+  //-               i.fa.fa-circle.status-online
+  //-               img.media-object(alt='...', src='/assets/images/avatar-3.jpg')
+  //-               .media-body
+  //-                 h4.media-heading Steven Thompson
+  //-                 span  Visual Designer 
+  //-           li.media
+  //-             a(href='#')
+  //-               i.fa.fa-circle.status-online
+  //-               img.media-object(alt='...', src='/assets/images/avatar-4.jpg')
+  //-               .media-body
+  //-                 h4.media-heading Ella Patterson
+  //-                 span  Web Editor 
+  //-           li.media
+  //-             a(href='#')
+  //-               i.fa.fa-circle.status-online
+  //-               img.media-object(alt='...', src='/assets/images/avatar-5.jpg')
+  //-               .media-body
+  //-                 h4.media-heading Kenneth Ross
+  //-                 span  Senior Designer 
+  //-         h5.sidebar-title Off-line
+  //-         ul.media-list
+  //-           li.media
+  //-             a(href='#')
+  //-               img.media-object(alt='...', src='/assets/images/avatar-6.jpg')
+  //-               .media-body
+  //-                 h4.media-heading Nicole Bell
+  //-                 span  Content Designer 
+  //-           li.media
+  //-             a(href='#')
+  //-               .user-label
+  //-                 span.label.label-default 3
+  //-               img.media-object(alt='...', src='/assets/images/avatar-7.jpg')
+  //-               .media-body
+  //-                 h4.media-heading Steven Thompson
+  //-                 span  Visual Designer 
+  //-           li.media
+  //-             a(href='#')
+  //-               img.media-object(alt='...', src='/assets/images/avatar-8.jpg')
+  //-               .media-body
+  //-                 h4.media-heading Ella Patterson
+  //-                 span  Web Editor 
+  //-           li.media
+  //-             a(href='#')
+  //-               img.media-object(alt='...', src='/assets/images/avatar-9.jpg')
+  //-               .media-body
+  //-                 h4.media-heading Kenneth Ross
+  //-                 span  Senior Designer 
+  //-           li.media
+  //-             a(href='#')
+  //-               img.media-object(alt='...', src='/assets/images/avatar-10.jpg')
+  //-               .media-body
+  //-                 h4.media-heading Ella Patterson
+  //-                 span  Web Editor 
+  //-           li.media
+  //-             a(href='#')
+  //-               img.media-object(alt='...', src='/assets/images/avatar-5.jpg')
+  //-               .media-body
+  //-                 h4.media-heading Kenneth Ross
+  //-                 span  Senior Designer 
+  //-       .user-chat
+  //-         .sidebar-content
+  //-           a.sidebar-back(href='#')
+  //-             i.fa.fa-chevron-circle-left
+  //-             |  Back
+  //-         .user-chat-form.sidebar-content
+  //-           .input-group
+  //-             input.form-control(type='text', placeholder='Type a message here...')
+  //-             .input-group-btn
+  //-               button.btn.btn-blue.no-radius(type='button')
+  //-                 i.fa.fa-chevron-right
+  //-         ol.discussion.sidebar-content
+  //-           li.other
+  //-             .avatar
+  //-               img(src='/assets/images/avatar-4.jpg', alt='')
+  //-             .messages
+  //-               p
+  //-                 | Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+  //-               span.time  51 min 
+  //-           li.self
+  //-             .avatar
+  //-               img(src='/assets/images/avatar-1.jpg', alt='')
+  //-             .messages
+  //-               p
+  //-                 | Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+  //-               span.time  37 mins 
+  //-           li.other
+  //-             .avatar
+  //-               img(src='/assets/images/avatar-4.jpg', alt='')
+  //-             .messages
+  //-               p
+  //-                 | Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+  //-     #notifications.tab-pane
+  //-       .notifications
+  //-         .pageslide-title
+  //-           | You have 11 notifications
+  //-         ul.pageslide-list
+  //-           li
+  //-             a(href='javascript:void(0)')
+  //-               span.label.label-primary
+  //-                 i.fa.fa-user
+  //-               span.message  New user registration
+  //-               span.time  1 min
+  //-           li
+  //-             a(href='javascript:void(0)')
+  //-               span.label.label-success
+  //-                 i.fa.fa-comment
+  //-               span.message  New comment
+  //-               span.time  7 min
+  //-           li
+  //-             a(href='javascript:void(0)')
+  //-               span.label.label-success
+  //-                 i.fa.fa-comment
+  //-               span.message  New comment
+  //-               span.time  8 min
+  //-           li
+  //-             a(href='javascript:void(0)')
+  //-               span.label.label-success
+  //-                 i.fa.fa-comment
+  //-               span.message  New comment
+  //-               span.time  16 min
+  //-           li
+  //-             a(href='javascript:void(0)')
+  //-               span.label.label-primary
+  //-                 i.fa.fa-user
+  //-               span.message  New user registration
+  //-               span.time  36 min
+  //-           li
+  //-             a(href='javascript:void(0)')
+  //-               span.label.label-warning
+  //-                 i.fa.fa-shopping-cart
+  //-               span.message  2 items sold
+  //-               span.time  1 hour
+  //-           li.warning
+  //-             a(href='javascript:void(0)')
+  //-               span.label.label-danger
+  //-                 i.fa.fa-user
+  //-               span.message  User deleted account
+  //-               span.time  2 hour
+  //-         .view-all
+  //-           a(href='javascript:void(0)')
+  //-             | See all notifications 
+  //-             i.fa.fa-arrow-circle-o-right
+  //-     #settings.tab-pane
+  //-       h5.sidebar-title General Settings
+  //-       ul.media-list
+  //-         li.media
+  //-           .checkbox.sidebar-content
+  //-             label
+  //-               input.green(type='checkbox', value='', checked='checked')
+  //-               | 								Enable Notifications
+  //-         li.media
+  //-           .checkbox.sidebar-content
+  //-             label
+  //-               input.green(type='checkbox', value='', checked='checked')
+  //-               | 								Show your E-mail
+  //-         li.media
+  //-           .checkbox.sidebar-content
+  //-             label
+  //-               input.green(type='checkbox', value='')
+  //-               | 								Show Offline Users
+  //-         li.media
+  //-           .checkbox.sidebar-content
+  //-             label
+  //-               input.green(type='checkbox', value='', checked='checked')
+  //-               | 								E-mail Alerts
+  //-         li.media
+  //-           .checkbox.sidebar-content
+  //-             label
+  //-               input.green(type='checkbox', value='')
+  //-               | 								SMS Alerts
+  //-       .sidebar-content
+  //-         button.btn.btn-success
+  //-           i.icon-settings
+  //-           |  Save Changes
+  //-   #style_selector.hidden-xs
+  //-     #style_selector_container
+  //-       .pageslide-title
+  //-         | Style Selector
+  //-       .box-title
+  //-         | Choose Your Layout Style
+  //-       .input-box
+  //-         .input
+  //-           select.form-control(name='layout')
+  //-             option(value='default') Wide
+  //-             option(value='boxed') Boxed
+  //-       .box-title
+  //-         | Choose Your Header Style
+  //-       .input-box
+  //-         .input
+  //-           select.form-control(name='header')
+  //-             option(value='fixed') Fixed
+  //-             option(value='default') Default
+  //-       .box-title
+  //-         | Choose Your Sidebar Style
+  //-       .input-box
+  //-         .input
+  //-           select.form-control(name='sidebar')
+  //-             option(value='fixed') Fixed
+  //-             option(value='default') Default
+  //-       .box-title
+  //-         | Choose Your Footer Style
+  //-       .input-box
+  //-         .input
+  //-           select.form-control(name='footer')
+  //-             option(value='default') Default
+  //-             option(value='fixed') Fixed
+  //-       .box-title
+  //-         | 10 Predefined Color Schemes
+  //-       .images.icons-color
+  //-         a#default(href='#')
+  //-           img.active(src='/assets/images/color-1.png', alt='')
+  //-         a#style2(href='#')
+  //-           img(src='/assets/images/color-2.png', alt='')
+  //-         a#style3(href='#')
+  //-           img(src='/assets/images/color-3.png', alt='')
+  //-         a#style4(href='#')
+  //-           img(src='/assets/images/color-4.png', alt='')
+  //-         a#style5(href='#')
+  //-           img(src='/assets/images/color-5.png', alt='')
+  //-         a#style6(href='#')
+  //-           img(src='/assets/images/color-6.png', alt='')
+  //-         a#style7(href='#')
+  //-           img(src='/assets/images/color-7.png', alt='')
+  //-         a#style8(href='#')
+  //-           img(src='/assets/images/color-8.png', alt='')
+  //-         a#style9(href='#')
+  //-           img(src='/assets/images/color-9.png', alt='')
+  //-         a#style10(href='#')
+  //-           img(src='/assets/images/color-10.png', alt='')
+  //-       .box-title
+  //-         | Backgrounds for Boxed Version
+  //-       .images.boxed-patterns
+  //-         a#bg_style_1(href='#')
+  //-           img(src='/assets/images/bg.png', alt='')
+  //-         a#bg_style_2(href='#')
+  //-           img(src='/assets/images/bg_2.png', alt='')
+  //-         a#bg_style_3(href='#')
+  //-           img(src='/assets/images/bg_3.png', alt='')
+  //-         a#bg_style_4(href='#')
+  //-           img(src='/assets/images/bg_4.png', alt='')
+  //-         a#bg_style_5(href='#')
+  //-           img(src='/assets/images/bg_5.png', alt='')
+  //-       .style-options
+  //-         a.clear_style(href='#')
+  //-           | Clear Styles
+  //-         a.save_style(href='#')
+  //-           | Save Styles
+  //-     .style-toggle.open

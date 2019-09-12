@@ -81,7 +81,7 @@ block content
                     .col-md-6
                       .form-group
                         label.col-sm-12.dos-text
-                          | Réf. dossier informatisé : #{dossier.ref_d}
+                          | Réf. dossier numerique : #{dossier.ref_d}
                     .col-md-6
                       .form-group
                         label.col-sm-12.dos-text
@@ -200,7 +200,8 @@ block content
                           optgroup(label='Consultation')
                             option(value='Consultation') Consultation
                           optgroup(label='Civile et commerciale')
-                            option(value='Défendeur(resse)') Jugement supplétif
+                            option(value='Succession') Succession
+                            option(value='Jugement supplétif') Jugement supplétif
                             option(value='Divorce') Divorce
                             option(value='Paiement') Paiement
                             option(value='esponsabilité civile') Responsabilité civile
@@ -230,8 +231,8 @@ block content
                             option(value='Infractions à caractère économique') Infractions à caractère économique
                             option(value='Terrorisme') Terrorisme
                           optgroup(label='Administratif')
-                            option(value='Exès de pouvoire mesure individuelle') Exès de pouvoire mesure individuelle 
-                            option(value='Exès de pouvoire mesure collective') Exès de pouvoire mesure collective
+                            option(value='Exès de pouvoir mesure individuelle') Exès de pouvoir mesure individuelle 
+                            option(value='Exès de pouvoir mesure collective') Exès de pouvoir mesure collective
                             option(value='Référés administratif') Référés administratif
                           optgroup(label='Electorale')
                             option(value='Pré-electoral') Pré-electoral
@@ -613,7 +614,7 @@ block content
                                 each renvoi in instruction.renvois
                                   .row
                                     .col-sm-offset-1.col-sm-9
-                                      p Renvoyé au #{moment(renvoi.r_date).format("DD-MM-YYYY")} (#{renvoi.r_type}) pour #{renvoi.r_motif}
+                                      p Renvoyé au #{moment(renvoi.r_date).format("DD-MM-YYYY")} #{renvoi.r_motif}
                             hr
                           if (!(instruction && instruction.decision && instruction.decision != '' && instruction.juridiction.division == division))
                             .form-group
@@ -760,7 +761,7 @@ block content
                               each renvoi in instruction.renvois
                                 .row
                                   .col-sm-offset-1.col-sm-9
-                                    p Renvoyé au #{moment(renvoi.r_date).format("DD-MM-YYYY")} (#{renvoi.r_type}) pour #{renvoi.r_motif}
+                                    p Renvoyé au #{moment(renvoi.r_date).format("DD-MM-YYYY")} #{renvoi.r_motif}
                           hr
                         if (!(instruction && instruction.decision && instruction.decision != '' && instruction.juridiction.division == division))
                           .form-group
