@@ -69,7 +69,7 @@ exports.renvois_my_events_get = function(req, res, next){
             }
             if (!juridictions_date_array.includes(instruction.juridiction._id.toString()+ '_' +moment(renvoi.r_date).format('YYYY-MM-DD'))){ //on vérifie si la juridiction fait partie tu tableau des juridictions avant de l'ajouter comme nex event
               var new_tribunal = { // On crée l'event Tribunal
-                title: instruction.juridiction.nom,
+                title: instruction.juridiction.nom + " - " + instruction.dossier.nature,
                 start: moment(renvoi.r_date).format('YYYY-MM-DD'),
                 viewableIn: ["basicWeek", "basicDay", "month"],
                 tribunalId: instruction.juridiction._id.toString(),
@@ -161,9 +161,9 @@ exports.renvois_events_get = function(req, res, next){
             nom_de_classe_tribunal = 'text-upper';
             nom_de_classe_affaire = 'event-bg-affaire';
           }
-          if (!juridictions_date_array.includes(instruction.juridiction._id.toString()+ '_' +moment(renvoi.r_date).format('YYYY-MM-DD'))){ //on vérifie si la juridiction fait partie tu tableau des juridictions avant de l'ajouter comme nex event
+          if (!juridictions_date_array.includes(instruction.dossier.nature+'_'+instruction.juridiction._id.toString()+ '_' +moment(renvoi.r_date).format('YYYY-MM-DD'))){ //on vérifie si la juridiction fait partie tu tableau des juridictions avant de l'ajouter comme nex event
             var new_tribunal = { // On crée l'event Tribunal
-              title: instruction.juridiction.nom,
+              title: instruction.juridiction.nom + " - " + instruction.dossier.nature,
               start: moment(renvoi.r_date).format('YYYY-MM-DD'),
               viewableIn: ["basicWeek", "basicDay", "month"],
               tribunalId: instruction.juridiction._id.toString(),
@@ -171,7 +171,7 @@ exports.renvois_events_get = function(req, res, next){
               className: nom_de_classe_tribunal
             }
             events_doc.push(new_tribunal); // On ajoute l'event Tribunal
-            juridictions_date_array.push(instruction.juridiction._id.toString()+ '_' +moment(renvoi.r_date).format('YYYY-MM-DD')) // on ajoute le tribunal aux juridictions existantes
+            juridictions_date_array.push(instruction.dossier.nature+'_'+instruction.juridiction._id.toString()+ '_' +moment(renvoi.r_date).format('YYYY-MM-DD')) // on ajoute le tribunal aux juridictions existantes
           }
           
           var label_pour = '';
@@ -236,7 +236,7 @@ exports.tableau_diligences_events_get = function(req, res, next){
           instruction.diligence.forEach(function(diligence){ // pour chaque diligence
           if (!juridictions_date_array.includes(instruction.juridiction._id.toString()+ '_' +moment(diligence.d_fin).format('YYYY-MM-DD'))){ //on vérifie si la juridiction fait partie tu tableau des juridictions avant de l'ajouter comme next event
             var new_tribunal = { // On crée l'event Tribunal
-              title: instruction.juridiction.nom,
+              title: instruction.juridiction.nom + " - " + instruction.dossier.nature,
               start: moment(diligence.d_fin).format('YYYY-MM-DD'),
               viewableIn: ["basicWeek", "basicDay", "month"],
               tribunalId: instruction.juridiction._id.toString(),

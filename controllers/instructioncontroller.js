@@ -1,7 +1,4 @@
-var Dossier = require('../models/dossier');
 var Instruction = require('../models/instruction');
-var Juridiction = require('../models/juridiction');
-var Utilisateur = require('../models/utilisateur');
 
 var async = require('async');
 var moment = require('moment');
@@ -45,15 +42,15 @@ exports.instruction_create_post = [
         
         new_instruction.save(function(err){
           if(err) return next(err)
-          res.send({type_of_response: 'success',creation: true
-                    // al_title: 'Nouvelle Juridiction!',
-                    // al_msg : 'L\'instruction a été créée avec succès ...'
+          res.send({type_of_response: 'success',creation: true,
+                    al_title: 'Nouvelle Juridiction!',
+                    al_msg : 'L\'instruction a été créée avec succès ...'
                   })
         })
       } else{ // on a pas de juridiction valide
-        res.send({type_of_response: 'success',creation: false
-                    // al_title: 'Changement de Juridiction!',
-                    // al_msg : 'Veuillez choisir une juridiction valide!'
+        res.send({type_of_response: 'success',creation: false,
+                    al_title: 'Changement de Juridiction!',
+                    al_msg : 'Veuillez choisir une juridiction valide!'
                   })
       }
     } else{ // Il s'agit d'une instruction à modifier : on vérifie si il n'y pas eu de renvois ou de décision
@@ -64,17 +61,13 @@ exports.instruction_create_post = [
                   .populate('juridiction')
                   .exec(function(err, the_instruction){
         if (err) return next(err);
-
-        console.log(the_instruction)
-        
+        //console.log(the_instruction);
         if(the_instruction.juridiction.division != req.body.division){ // il s'agit d'un changement de degré d'instruction
           // on empêche de revenir à une juridiction inférieure
           if( (the_instruction.juridiction.division == 'instance' && (req.body.division == 'appel' || req.body.division == 'cour')) || (the_instruction.juridiction.division == 'appel' && req.body.division == 'cour') ){
             
             // on vérifie si l'ancienne instruction est cloturée par une décision rendue
-            console.log('je suis le renvois ' + the_instruction.renvois)
-            console.log('je suis la longeur du renvois ' + the_instruction.renvois.length)
-            if((!the_instruction.decision) && (the_instruction.renvois && the_instruction.renvois.length == 0)){
+            if(((!the_instruction.decision) && (the_instruction.renvois && the_instruction.renvois.length == 0)) || the_instruction.decision){
               // on crée une nouvelle instruction dans la nouvelle juridiction et division
               var new_instruction = new Instruction({
                 dossier:req.body.dossier,
@@ -118,7 +111,6 @@ exports.instruction_create_post = [
                       al_msg : 'Vous venez de changer de juridiction pour ce dossier'})
             })
         }
-        
     })
     }
   }
@@ -405,7 +397,7 @@ exports.get_dossier_dil = function(req, res, next){
     dil_dossiers: function(callback){
       Instruction.find({}, {'diligence':{'$slice':-1},'_id':1,'decision':1, 'dossier':1, 'juridiction':1})
           .populate({ path: 'dossier', model: 'Dossier', populate: { path: 'pour contre utilisateur'} })
-          .populate('juridiction')
+          .populate('juridiction') 
           .exec(callback);
     },
     }, function (err, results) {
@@ -415,12 +407,10 @@ exports.get_dossier_dil = function(req, res, next){
       results.dil_dossiers.forEach(function(dil_dossier){
         if(dil_dossier.diligence.length > 0 && moment().diff(moment(dil_dossier.diligence[0].d_fin), 'days') > 0){
           if(!dil_dossier.decision || dil_dossier.decision == ""){
-            console.log(dossiers_dills);
-            dossiers_dills.push(dil_dossier)
+            dossiers_dills.push(dil_dossier);
           }
         }
       });
-      console.log(dossiers_dills)
       
       res.render('dossiers/dilligence', { title:'dossiers à dilligences', list_dossiers: dossiers_dills});
       

@@ -53,8 +53,8 @@ function autoriser_modif() {
   $('input[name=montant]').attr('readonly', false);
   //$(".nature").toggleClass("hidden");
   $('select[name=attributaire]').attr('disabled', false);
-  $('select[name=litige]').attr('disabled', false);
-  $('input[type=text][name=nature]').attr('disabled', true);
+  $('select[name=nature]').attr('disabled', false);
+  $('input[type=text][name=gain_perte]').attr('disabled', true);
   $(".attributaire, .modifier_ou_sauvegarder").toggleClass("hidden"); //, .modifier_ou_sauvegarder
 
 }
@@ -62,9 +62,10 @@ function autoriser_modif() {
 function empecher_modif() {
   $('input[type=text][name=nature]').val($('input[type=radio][name=nature]:checked').val());
   $('textarea[name=resume]').attr('readonly', true);
+  $('select[name=nature]').attr('disabled', true);
   $('select[name=attributaire]').val()('readonly', true);
   $('select[name=attributaire]').attr('readonly', true);
-  $('input[name=nature]').attr('disabled', false);
+  $('input[name=gain_perte]').attr('disabled', false);
   $('input[name=montant]').attr('readonly', true);
   //$(".nature").toggleClass("hidden");
   $(".attributaire, .modifier_ou_sauvegarder").toggleClass("hidden");
@@ -94,8 +95,8 @@ function update_dossier(id_dossier) {
   data.ref_d_p = $('input[name=ref_d_p]').val();
   data.attributaire = $('select[name=attributaire]').val();
   data.qualite = $('select[name=qualite]').val();
-  data.litige = $('select[name=litige]').val();
-  data.nature = $('input[type=radio][name=nature]:checked').val();
+  data.nature = $('select[name=nature]').val();
+  data.gain_perte = $('input[type=radio][name=gain_perte]:checked').val();
   data.resume = $('textarea[name=resume]').val();
   data.montant = $('input[name=montant]').val();
 
@@ -179,8 +180,8 @@ function create_instance(id_juridiction, id_dossier, division) {
     url: route_create_instance_dossier,
     success: function (data) {
       window.location.href="/dossiers/dossier/"+id_dossier;
-      //var res = data;
-      /*if(data.type_of_response == 'success'){
+      var res = data;
+      if(data.type_of_response == 'success'){
         if (data.creation == true){
           swal(data.al_title, data.al_msg, "success");
           setTimeout(location.reload(), 5000);
@@ -188,7 +189,7 @@ function create_instance(id_juridiction, id_dossier, division) {
           show_notification('error', data.al_title, data.al_msg)
           setTimeout(location.reload(), 5000);
         }
-      }*/
+      }
       
     }
   });

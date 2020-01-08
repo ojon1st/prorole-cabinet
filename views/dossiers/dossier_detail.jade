@@ -120,10 +120,10 @@ block content
                           - j++
                       if dossier.contre.c_type == 'pp'
                         | Contre : 
-                        strong.str #{dossier.contre.pp.p_prenom} #{dossier.contre.pp.c_nom}!{contres}
+                        strong.str #{dossier.contre.pp.c_civilite} #{dossier.contre.pp.c_prenom} #{dossier.contre.pp.c_nom}!{contres}
                       else if dossier.contre.c_type == 'pm'
                         | Contre: 
-                        strong.str #{dossier.contre.pp.c_civilite} #{dossier.contre.pm.c_denomination}!{contres}
+                        strong.str #{dossier.contre.pm.c_denomination}!{contres}
                     .col-sm-3
                       a.btn.btn-link.show-calendar(href='#infoContre')
                         span.fa.fa-plus
@@ -194,97 +194,30 @@ block content
                     label.col-sm-3.dos-text
                       | Nature de litige :
                     .col-sm-8
-                      if (dossier.litige)
-                        select.form-control(name='litige', disabled=true)
-                          option(value=value='#{dossier.litige}', selected='#{dossier.litige}') #{dossier.litige}
-                          optgroup(label='Consultation')
-                            option(value='Consultation') Consultation
-                          optgroup(label='Civile et commerciale')
-                            option(value='Succession') Succession
-                            option(value='Jugement supplétif') Jugement supplétif
-                            option(value='Divorce') Divorce
-                            option(value='Paiement') Paiement
-                            option(value='esponsabilité civile') Responsabilité civile
-                            option(value='Homologation de conciliation') Homologation de conciliation
-                            option(value='Référés') Référés
-                            option(value='Ordonnance sur requête') Ordonnance sur requête
-                            option(value='Injonction de payer') Injonction de payer
-                            option(value='Injonction de restituer') Injonction de restituer
-                            option(value='Contestation de saisie conservatoire') Contestation de saisie conservatoire
-                            option(value='Contestation de saisie attribution') Contestation de saisie attribution
-                            option(value='Contestation de saisie vente') Contestation de saisie vente
-                            option(value='Saisie immobilière') Saisie immobilière
-                            option(value='Obligations') Obligations
-                            option(value='Sociétés commerciales') Sociétés commerciales
-                            option(value='Entreprises en difficultées') Entreprises en difficultées
-                          optgroup(label='Sociale')
-                            option(value='Licenciement abusif') Licenciement abusif
-                            option(value='Licenciement pour motif économique') Licenciement pour motif économique
-                            option(value='Licenciement de répresentant du personnel') Licenciement de répresentant du personnel
-                          optgroup(label='Pénale')
-                            option(value='Simple police') Simple police
-                            option(value='Information judiciaire') Information judiciaire
-                            option(value='Correctionnelle Citation Directe') Correctionnelle Citation Directe
-                            option(value='Correctionnelle flagrant délit') Correctionnelle flagrant délit
-                            option(value='Criminelle') Criminelle
-                            option(value='Assises') Assises
-                            option(value='Infractions à caractère économique') Infractions à caractère économique
-                            option(value='Terrorisme') Terrorisme
-                          optgroup(label='Administratif')
-                            option(value='Exès de pouvoir mesure individuelle') Exès de pouvoir mesure individuelle 
-                            option(value='Exès de pouvoir mesure collective') Exès de pouvoir mesure collective
-                            option(value='Référés administratif') Référés administratif
-                          optgroup(label='Electorale')
-                            option(value='Pré-electoral') Pré-electoral
-                            option(value='Post-electoral') Post-electoral
-                          optgroup(label='Constitutionnelle')
-                            option(value='Contrôle a priori') Contrôle a priori
-                            option(value='Contrôle a posteriori') Contrôle a posteriori
+                      if (dossier.nature)
+                        select.form-control(name='nature', disabled=true)
+                          option(value=value='#{dossier.nature}', selected='#{dossier.nature}') #{dossier.nature}
+                          option(value='Consultation') Consultation
+                          option(value='Civile') Civile
+                          option(value='Commerciale') Commerciale
+                          option(value='Référés') Référés
+                          option(value='Difficultés d\'execution') Difficultés d'execution
+                          option(value='Sociale') Sociale
+                          option(value='Pénale') Pénale
+                          option(value='Administratif') Administratif
+                          option(value='Electorale') Electorale
                       else
-                        select.form-control(name='litige')
+                        select.form-control(name='nature')
                           option(disabled='', selected='', value='') Selectionner la nature du litige
-                          optgroup(label='Consultation')
-                            option(value='Consultation') Consultation
-                          optgroup(label='Civile et commerciale')
-                            option(value='Défendeur(resse)') Jugement supplétif
-                            option(value='Divorce') Divorce
-                            option(value='Paiement') Paiement
-                            option(value='esponsabilité civile') Responsabilité civile
-                            option(value='Homologation de conciliation') Homologation de conciliation
-                            option(value='Référés') Référés
-                            option(value='Ordonnance sur requête') Ordonnance sur requête
-                            option(value='Injonction de payer') Injonction de payer
-                            option(value='Injonction de restituer') Injonction de restituer
-                            option(value='Contestation de saisie conservatoire') Contestation de saisie conservatoire
-                            option(value='Contestation de saisie attribution') Contestation de saisie attribution
-                            option(value='Contestation de saisie vente') Contestation de saisie vente
-                            option(value='Saisie immobilière') Saisie immobilière
-                            option(value='Obligations') Obligations
-                            option(value='Sociétés commerciales') Sociétés commerciales
-                            option(value='Entreprises en difficultées') Entreprises en difficultées
-                          optgroup(label='Sociale')
-                            option(value='Licenciement abusif') Licenciement abusif
-                            option(value='Licenciement pour motif économique') Licenciement pour motif économique
-                            option(value='Licenciement de répresentant du personnel') Licenciement de répresentant du personnel
-                          optgroup(label='Pénale')
-                            option(value='Simple police') Simple police
-                            option(value='Information judiciaire') Information judiciaire
-                            option(value='Correctionnelle Citation Directe') Correctionnelle Citation Directe
-                            option(value='Correctionnelle flagrant délit') Correctionnelle flagrant délit
-                            option(value='Criminelle') Criminelle
-                            option(value='Assises') Assises
-                            option(value='Infractions à caractère économique') Infractions à caractère économique
-                            option(value='Terrorisme') Terrorisme
-                          optgroup(label='Administratif')
-                            option(value='Exès de pouvoire mesure individuelle') Exès de pouvoire mesure individuelle 
-                            option(value='Exès de pouvoire mesure collective') Exès de pouvoire mesure collective
-                            option(value='Référés administratif') Référés administratif
-                          optgroup(label='Electorale')
-                            option(value='Pré-electoral') Pré-electoral
-                            option(value='Post-electoral') Post-electoral
-                          optgroup(label='Constitutionnelle')
-                            option(value='Contrôle a priori') Contrôle a priori
-                            option(value='Contrôle a posteriori') Contrôle a posteriori
+                          option(value='Consultation') Consultation
+                          option(value='Civile') Civile
+                          option(value='Commerciale') Commerciale
+                          option(value='Référés') Référés
+                          option(value='Difficultés d\'execution') Difficultés d'execution
+                          option(value='Sociale') Sociale
+                          option(value='Pénale') Pénale
+                          option(value='Administratif') Administratif
+                          option(value='Electorale') Electorale
                   .form-group
                     label.col-sm-3.dos-text
                       | Montant de l'enjeu :
@@ -294,25 +227,25 @@ block content
                       else 
                         input.form-control(type='text', name='montant', placeholder='Saisir le montant')
                     .col-sm-4
-                      if (dossier.nature)
+                      if (dossier.gain_perte)
                         //.col-sm-9.nature
-                          input.form-control.readonly(type='text', name='nature' value='#{dossier.nature}', readonly=true)
+                          input.form-control.readonly(type='text', name='gain_perte' value='#{dossier.nature}', readonly=true)
                         label.radio-inline 
                           //-.nature la classe pour le label
-                          input.grey(type='radio', value='gain', name='nature', checked=('gain'==dossier.nature))
+                          input.grey(type='radio', value='gain', name='gain_perte', checked=('gain'==dossier.gain_perte))
                           | Gain
                         label.radio-inline
                           //-.nature
                           ///*name='optionsRadios'*/
-                          input.grey(type='radio', value='perte', name='nature',checked=('perte'==dossier.nature))
+                          input.grey(type='radio', value='perte', name='gain_perte',checked=('perte'==dossier.gain_perte))
                           | Perte
                       else
                         label.radio-inline
-                          input.grey(type='radio', value='gain', name='nature')
+                          input.grey(type='radio', value='gain', name='gain_perte')
                           | Gain
                         label.radio-inline
                           ///*name='optionsRadios'*/
-                          input.grey(type='radio', value='perte', name='nature')
+                          input.grey(type='radio', value='perte', name='gain_perte')
                           | Perte
                   .form-group
                     label.col-sm-3.ods-text
@@ -423,8 +356,8 @@ block content
                 </a>
           .panel-body.buttons-widget
             .tabbable
-              if (dossier.litige)
-                if(dossier.litige == 'Consultation' || dossier.litige == 'Simple police' || dossier.litige == 'Information judiciaire' || dossier.litige == 'Correctionnelle Citation Directe' || dossier.litige == 'Correctionnelle flagrant délit' || dossier.litige == 'Criminelle' || dossier.litige == 'Assises' || dossier.litige == 'Infractions à caractère économique' || dossier.litige == 'Terrorisme')
+              if (dossier.nature)
+                if(dossier.nature == 'Consultation' || dossier.nature == 'Civile' || dossier.nature == 'Commerciale' || dossier.nature == 'Référés' || dossier.nature == 'Difficultés d\'execution' || dossier.nature == 'Sociale' || dossier.nature == 'Pénale' || dossier.nature == 'Electorale')
                   if(dossier.litige == 'Consultation')
                     ul.nav.nav-tabs
                       li.active
@@ -475,7 +408,7 @@ block content
                                 span.input-icon
                                   input.form-control.date-picker(name='', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years', placeholder='Saisir une date' onchange='verifDate(this)')
                                   i.fa.fa-calendar
-                  else
+                  //-else
                     ul.nav.nav-tabs
                       li.active
                         a(href='#enquete', data-toggle='tab')
@@ -624,7 +557,7 @@ block content
                                 .row
                                   .col-sm-4(style='padding-right: 10px')
                                     span.input-icon
-                                      input.form-control.date-picker(id='date_ins_#{division}' placeholder='Date', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years' onchange='verifDate(this)')
+                                      input.form-control.date-picker(id='date_ins_#{division}' placeholder='Date', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years')
                                       i.fa.fa-calendar
                                   .col-sm-2(style='padding:0')
                                     select.form-control(id='type_ins_#{division}', onchange='type_complete_motif(this)')
@@ -717,7 +650,7 @@ block content
                               li(class = (i_cour.length > 0 ? 'active' : ''))
                                 a(href='#myTab5_cour', data-toggle='tab')
                                   | Cassation
-                else
+                if(dossier.nature == 'Civile' || dossier.nature == 'Commerciale' || dossier.nature == 'Référés' || dossier.nature == 'Difficultés d\'execution' || dossier.nature == 'Sociale' || dossier.nature == 'Pénale' || dossier.nature == 'Electorale')
                   ul.nav.nav-tabs
                     li.active
                       a(href='#jugement', data-toggle='tab')
@@ -760,8 +693,37 @@ block content
                             if (instruction && instruction.renvois.length>0 && instruction.juridiction.division == division)
                               each renvoi in instruction.renvois
                                 .row
-                                  .col-sm-offset-1.col-sm-9
+                                  .col-sm-offset-1.col-sm-8
                                     p Renvoyé au #{moment(renvoi.r_date).format("DD-MM-YYYY")} #{renvoi.r_motif}
+                                  //-.col-sm-offset-1.col-sm-2
+                                    a.btn.dark(onchange='modif_renvoi(this)')
+                                      i.fa.fa-pencil
+                                //- .row
+                                //-   .col-sm-offset-1.col-sm-10
+                                //-     .form-group
+                                //-       .col-sm-4(style='padding-right: 10px')
+                                //-         span.input-icon
+                                //-           input.form-control.date-picker(id='date_renvoi' placeholder='Date', value=moment(renvoi.r_date).format("DD-MM-YYYY"), type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years')
+                                //-           br.hidden-lg.hidden-md.hidden-sm
+                                //-           i.fa.fa-calendar
+                                //-       .col-sm-2(style='padding:0')
+                                //-         select.form-control(id='type_ins_#{division}')
+                                //-           option(disabled='', selected='', value='') Types
+                                //-           option(value='renvoi simple' title='Renvoi simple') R.
+                                //-           option(value='renvoi ferme' title='Renvoi ferme') RF.
+                                //-           option(value='renvoi au role general' title='Renvoi au rôle général') RRG.
+                                //-           option(value='renvoi d\'office' title='Renvoi d\'office') RO
+                                //-           option(value='non appele' title='Non appelé') NA
+                                //-           option(value='mise en delibere' title='Mise en délibéré') D.
+                                //-           option(value='rabat de delibere puis renvoi' title='Rabat de délibéré puis renvoi') DRR.
+                                //-           option(value='delibere vide' title='Délibéré vide') D. OK
+                                //-           option(value='nos conclusions' title='Nos conclusions') N. C.
+                                //-       .col-sm-6(style='padding:0')
+                                //-         .input-group
+                                //-           input.form-control.motif(id='motif_ins_#{division}', value=renvoi.r_motif type='text', placeholder='Motif')
+                                //-           a.btn.input-group-addon.btn-dark-beige(onclick='get_renvoi_infos("#{dossier._id}", "#{division}")')
+                                //-             span.fa.fa-check
+                          
                           hr
                         if (!(instruction && instruction.decision && instruction.decision != '' && instruction.juridiction.division == division))
                           .form-group
@@ -771,7 +733,7 @@ block content
                               .row
                                 .col-sm-4(style='padding-right: 10px')
                                   span.input-icon
-                                    input.form-control.date-picker(id='date_ins_#{division}' placeholder='Date', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years' onchange='verifDate(this)')
+                                    input.form-control.date-picker(id='date_ins_#{division}' placeholder='Date', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years')
                                     br.hidden-lg.hidden-md.hidden-sm
                                     i.fa.fa-calendar
                                 .col-sm-2(style='padding:0')

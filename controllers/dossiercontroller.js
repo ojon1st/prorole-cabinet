@@ -6,7 +6,7 @@ var Contre = require('../models/contre');
 var Juridiction = require('../models/juridiction');
 var Instruction = require('../models/instruction');
 var Utilisateur = require('../models/utilisateur');
-var Profil = require('../models/profil');
+var Nature = require('../models/nature');
 
 var async = require('async');
 var moment = require('moment');
@@ -133,7 +133,7 @@ exports.dossier_detail = function (req, res, next) {
       Dossier.findById(req.params.id)
         .populate('pour')
         .populate('contre')
-        .populate('utilisateur')
+        //.populate('nature')
         .exec(callback);
     },
     juridictions: function (callback) {
@@ -151,18 +151,6 @@ exports.dossier_detail = function (req, res, next) {
         .sort({i_update: -1})
         .exec(callback);
     },
-    /*last_instruction_appel: function (callback){
-      Instruction.findOne({dossier:req.params.id})
-        .populate({path:'juridiction', match:{'division':'appel'}})
-        .sort({i_update: -1})
-        .exec(callback);
-    },
-    last_instruction_cour: function (callback){
-      Instruction.findOne({dossier:req.params.id})
-        .populate({path:'juridiction', match:{'division':'cour'}})
-        .sort({i_update: -1})
-        .exec(callback);
-    },*/
   }, function (err, results) { 
     if (err) {
       return next(err);
@@ -201,8 +189,10 @@ exports.dossier_detail = function (req, res, next) {
         i_cour.push(i);
       }
     })
-    //console.log(results.dossier)
+    //console.log(results.dossier.nature)
+   // console.log(results.dossier)
     // Successful, so render.
+    //return res.end();
     res.render('dossiers/dossier_detail', {
       title: 'Gestionnaire de Dossier',
       dossier: results.dossier, juridictions: results.juridictions, instructions:results.instructions, utilisateurs:results.utilisateurs, j_instance:j_instance, j_appel:j_appel, j_cour:j_cour, i_instance:i_instance, i_appel:i_appel, i_cour:i_cour
@@ -548,8 +538,8 @@ exports.dossier_update_post = [
     if (req.body.ref_d_p && req.body.ref_d_p != ""){dossier.ref_d_p = req.body.ref_d_p}
     if (req.body.attributaire && req.body.attributaire != ""){dossier.attributaire = req.body.attributaire}
     if (req.body.qualite && req.body.qualite != ""){dossier.qualite = req.body.qualite}
-    if (req.body.litige && req.body.litige != ""){dossier.litige = req.body.litige}
     if (req.body.nature && req.body.nature != ""){dossier.nature = req.body.nature}
+    if (req.body.gain_perte && req.body.gain_perte != ""){dossier.gain_perte = req.body.gain_perte}
     if (req.body.resume && req.body.resume != ""){dossier.resume = req.body.resume}
     if (req.body.montant && req.body.montant != ""){dossier.montant = req.body.montant}
     
