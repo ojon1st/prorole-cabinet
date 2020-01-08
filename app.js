@@ -10,6 +10,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 //var flash = require('connect-flash');
 var bcrypt = require('bcryptjs');
+var dotenv = require('dotenv');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -19,8 +20,9 @@ var agendasRouter = require('./routes/agendas');
 var adminsRouter = require('./routes/administrateurs');
 var ratiosRouter = require('./routes/ratios');
 
+
 var mongoose = require('mongoose');
-var mongoDB = 'mongodb://legaltech_user:legaltech2019@ds251284.mlab.com:51284/legaltech_p_db'; //en ligne
+var mongoDB = process.env.DATABASE ||'mongodb://legaltech_user:legaltech2019@ds251284.mlab.com:51284/legaltech_p_db'; //en ligne
 //var mongoDB = 'mongodb://127.0.0.1:27017/legaltech'; //local
 mongoose.connect(mongoDB,  {useNewUrlParser: true});
 mongoose.Promise = global.Promise;
