@@ -24,7 +24,7 @@ var ratiosRouter = require('./routes/ratios');
 var mongoose = require('mongoose');
 var mongoDB = process.env.DATABASE ||'mongodb://legaltech_user:legaltech2019@ds251284.mlab.com:51284/legaltech_p_db'; //en ligne
 //var mongoDB = 'mongodb://127.0.0.1:27017/legaltech'; //local
-mongoose.connect(mongoDB,  {useNewUrlParser: true});
+mongoose.connect(mongoDB,  {useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
