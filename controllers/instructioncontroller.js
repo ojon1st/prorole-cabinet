@@ -53,7 +53,8 @@ exports.instruction_create_post = [
                     al_msg : 'Veuillez choisir une juridiction valide!'
                   })
       }
-    } else{ // Il s'agit d'une instruction à modifier : on vérifie si il n'y pas eu de renvois ou de décision
+    } 
+    else{ // Il s'agit d'une instruction à modifier : on vérifie si il n'y pas eu de renvois ou de décision
       // Ou d'un changement de degré
       
       Instruction.findById(req.body.instruction)
@@ -64,23 +65,24 @@ exports.instruction_create_post = [
         //console.log(the_instruction);
         if(the_instruction.juridiction.division != req.body.division){ // il s'agit d'un changement de degré d'instruction
           // on empêche de revenir à une juridiction inférieure
-          if( (the_instruction.juridiction.division == 'instance' && (req.body.division == 'appel' || req.body.division == 'cour')) || (the_instruction.juridiction.division == 'appel' && req.body.division == 'cour') ){
+          if((the_instruction.juridiction.division == 'instance' && (req.body.division == 'appel' || req.body.division == 'cour')) || (the_instruction.juridiction.division == 'appel' && (req.body.division == 'instance' || req.body.division == 'cour')) || (the_instruction.juridiction.division == 'cour' && (req.body.division == 'instance' || req.body.division == 'appel'))){
             
             // on vérifie si l'ancienne instruction est cloturée par une décision rendue
             if(((!the_instruction.decision) && (the_instruction.renvois && the_instruction.renvois.length == 0)) || the_instruction.decision){
               // on crée une nouvelle instruction dans la nouvelle juridiction et division
-              var new_instruction = new Instruction({
-                dossier:req.body.dossier,
+              the_instruction.updateOne({
                 juridiction : req.body.juridiction
-              })
-
-              new_instruction.save(function(err){
-                if(err) return next(err)
+              }, function(err) {
+                if(err) {
+                  console.log(err)
+                }
+                console.log('Instruction Updated')
                 res.send({type_of_response: 'success',creation: true,
                           al_title: 'Nouvelle Juridiction!',
                           al_msg : 'L\'instruction a été créée avec succès ...'})
                 return;
               })
+              .catch(console.log);
             }
             else{ // Pas de décision : message d'erreur nécessite la clôture de l'ancien dossier
               
@@ -201,50 +203,6 @@ exports.mise_en_etat_create_post = [
 ];
 
 
-exports.diligence_create_post = [
-  (req, res, next) => {
-
-    // Extract the validation errors from a request.
-    const errors = validationResult(req);
-    async.parallel({
-      theinstruction: function (callback) {
-        Instruction.findById(req.params.id_ins).populate('juridiction').exec(callback);
-      },
-    }, function (err, results) {
-      if (err) {
-        return next(err);
-      }
-      if (!results.theinstruction || results.theinstruction.juridiction.division != req.params.juridiction){
-        res.send({type_of_response:'echec', al_title:'', al_msg:''})
-      }else {
-        req.body.forEach(function (doc) {
-
-          results.theinstruction.diligence.push({
-            d_debut: moment(doc.du, "DD-MM-YYYY"),
-            d_fin: moment(doc.au, "DD-MM-YYYY"),
-            d_heure: doc.h,
-            d_commentaire: doc.com_name
-          });
-
-        });
-        results.theinstruction.save(function (err) {
-          if (err) {
-            return next(err);
-          }
- 
-          res.send({
-            type_of_response: 'success',
-            dil_list: results.theinstruction.diligence
-          });
-        });
-      }
-
-
-    });
-    }
-];
-
-
 exports.mise_en_etat_get = function (req, res, next) {
 
   async.parallel({
@@ -265,33 +223,6 @@ exports.mise_en_etat_get = function (req, res, next) {
       res.send({
         type_of_response: 'success',
         mee_list: results.instruction.calendrier
-      });
-    }
-
-  });
-
-};
-
-exports.diligence_get = function (req, res, next) {
-
-  async.parallel({
-    instruction: function (callback) {
-      Instruction.findById(req.params.id_ins)
-        .exec(callback);
-    },
-
-  }, function (err, results) {
-    if (err) {
-      return next(err);
-    }
-    if (results.instruction == null) {
-      res.send({
-        type_of_response: 'echec'
-      })
-    } else {
-      res.send({
-        type_of_response: 'success',
-        dil_list: results.instruction.diligence
       });
     }
 
@@ -389,33 +320,6 @@ exports.decision_save = [
     });
     }
 ];
-
-exports.get_dossier_dil = function(req, res, next){
-  
-  async.parallel({
-    
-    dil_dossiers: function(callback){
-      Instruction.find({}, {'diligence':{'$slice':-1},'_id':1,'decision':1, 'dossier':1, 'juridiction':1})
-          .populate({ path: 'dossier', model: 'Dossier', populate: { path: 'pour contre utilisateur'} })
-          .populate('juridiction') 
-          .exec(callback);
-    },
-    }, function (err, results) {
-      if (err) { return next(err); }
-     
-      var dossiers_dills = [];
-      results.dil_dossiers.forEach(function(dil_dossier){
-        if(dil_dossier.diligence.length > 0 && moment().diff(moment(dil_dossier.diligence[0].d_fin), 'days') > 0){
-          if(!dil_dossier.decision || dil_dossier.decision == ""){
-            dossiers_dills.push(dil_dossier);
-          }
-        }
-      });
-      
-      res.render('dossiers/dilligence', { title:'dossiers à dilligences', list_dossiers: dossiers_dills});
-      
-  });
-};
 
 exports.get_manques = function(req, res, next){
   

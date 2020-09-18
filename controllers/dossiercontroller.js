@@ -29,10 +29,6 @@ const {
   sanitizeBody
 } = require('express-validator/filter');
 
-// L'index de la page des dossiers nous redirige vers la liste des dossiers
-/*exports.index = function(req, res, next) {
-  res.redirect('/dossiers');
-};*/
 // Display list of all Dossier.
 exports.dossier_list = function (req, res, next) {
 
@@ -40,46 +36,17 @@ exports.dossier_list = function (req, res, next) {
   async.parallel({
     dossiers: function (callback) {
       Dossier.find({})
-        .select({ "_id": 1, "ref_d": 1, "ref_d_p": 1, "pour":1, "contre":1, "autres_pour":1, "autres_contre":1, "ref_d_p": 1})
+        .select({ "_id": 1, "ref_d": 1, "ref_d_p": 1, "pour":1, "contre":1, "ref_d_p": 1})
         .populate('pour')
         .populate('contre')
         .populate('utilisateur')
-        .sort({ _id: -1 })
+        .sort({ ref_d: 1 })
         .exec(callback);
     }
   }, function (err, results) {
     if (err) {
       return next(err);
     }
-      // var list_dossier = [];
-      // results.dossiers.forEach(function(dos){
-      //   console.log(dos.titulaire)
-      //   if(dos.titulaire == req.user.id){
-      //     var taille = dos.correspondance.length;
-      //     var ref_cor = '';
-      //     for(i==0; i < taille; i++){
-      //       ref_cor += dos.correspondance.ref;
-      //     }
-      //     list_dossier.push({
-      //       ref_i: dos.ref_d,
-      //       ref_p: dos.ref_d_p,
-      //       correspondant: ref_cor,
-      //       pour: dos.pour,
-      //       contre: dos.contre
-      //     });
-      //   }
-      // });
-        //console.log(results.compte);
-    // results.dossiers.forEach(function(dos){
-    //   if(dos.pour._id == '5cfc2896fef9175a40e1d47d' || dos.pour._id == '5cfbd642077717192410d6f9'){
-    //     //return
-    //     //dos.pour.pp.p_prenom = decrypt(JSON.parse(dos.pour.pp.p_prenom))
-    //     //dos.pour.pp.p_nom = decrypt(JSON.parse(dos.pour.pp.p_nom))
-    //     console.log(dos)
-    //   }
-    // })
-    // console.log(list_dossier)
-    // res.end();
     res.render('dossiers/dossier_list', {
       title: 'Liste de dossiers',
       list_dossiers: results.dossiers
@@ -133,7 +100,6 @@ exports.dossier_detail = function (req, res, next) {
       Dossier.findById(req.params.id)
         .populate('pour')
         .populate('contre')
-        //.populate('nature')
         .exec(callback);
     },
     juridictions: function (callback) {
@@ -189,10 +155,7 @@ exports.dossier_detail = function (req, res, next) {
         i_cour.push(i);
       }
     })
-    //console.log(results.dossier.nature)
-   // console.log(results.dossier)
-    // Successful, so render.
-    //return res.end();
+    
     res.render('dossiers/dossier_detail', {
       title: 'Gestionnaire de Dossier',
       dossier: results.dossier, juridictions: results.juridictions, instructions:results.instructions, utilisateurs:results.utilisateurs, j_instance:j_instance, j_appel:j_appel, j_cour:j_cour, i_instance:i_instance, i_appel:i_appel, i_cour:i_cour
@@ -203,8 +166,6 @@ exports.dossier_detail = function (req, res, next) {
 
 // Display Dossier create form on GET.
 exports.dossier_create_get = function (req, res, next) {
-  
-  
   async.parallel({
     utilisateurs: function (callback) {
       Utilisateur.find({})
@@ -229,24 +190,10 @@ exports.dossier_create_get = function (req, res, next) {
       err.status = 404;
       return next(err);
     }
-
-    if (results.pours == null) { // No results.
-      var err = new Error('Pours not found');
-      err.status = 404;
-      return next(err);
-    }
-
-    if (results.contres == null) { // No results.
-      var err = new Error('Contres not found');
-      err.status = 404;
-      return next(err);
-    }
     
     // Successful, so render.
-    res.render('dossiers/dossier_form', { title: 'Creation de Dossier', utilisateurs:results.utilisateurs, pours:results.pours, contres:results.contres });
+    res.render('dossiers/dossier_form', { title: 'Creation de dossier', utilisateurs:results.utilisateurs});
   });
-  
-  
 };
 
 // Handle Dossier create on POST.
@@ -254,158 +201,29 @@ exports.dossier_create_post = [
 
   // Process request after validation and sanitization.
   (req, res, next) => {
-
-    // Extract the validation errors from a request.
-    var boolClt = false;
-    var boolContre = false;
+    // Extract the validation errors from a request .
     const errors = validationResult(req);
-
-    // Create a genre object with escaped and trimmed data.
-    var dossier = new Dossier({
-      titulaire: req.body.titulaire,
-      ref_d_p: req.body.ref_d_p
+    
+    let pour = new Pour({
+      p_nom: req.body[0]['p_nom'],
+      p_tel: req.body[0]['p_tel'],
+      p_email: req.body[0]['p_email']
     });
 
-    // autre clients
-    if (Number(req.body.nb_other_client_pour) > 0) {
-      for (i = 1; i <= Number(req.body.nb_other_client_pour); i++) {
-        dossier.autres_pour.push({
-          prenom_nom: req.body["autres_pour_" + i]
-        });
-      }
-    };
+    let contre = new Contre({
+      c_nom: req.body[0]['c_nom'],
+      c_tel: req.body[0]['c_tel'],
+      c_email: req.body[0]['c_email']
+    });
 
-    //autres avocats partie pour
-    if (Number(req.body.nb_other_avocat_pour) > 0) {
-      for (i = 1; i <= Number(req.body.nb_other_avocat_pour); i++) {
-        dossier.autres_avocats_pour.push({
-          prenom_nom: req.body["autres_avocats_pour_prenom_nom_" + i],
-          tel: req.body["autres_avocats_pour_tel_" + i],
-          email: req.body["autres_avocats_pour_email_" + i]
-        });
-      }
-    };
+    let dossier = new Dossier({
+      ref_d_p: req.body[0]['ref_d_p'],
+      pour: pour,
+      contre: contre
+    });
 
-    //autres contres
-    if (Number(req.body.nb_other_client_contre) > 0) {
-      for (i = 1; i <= Number(req.body.nb_other_client_contre); i++) {
-        dossier.autres_contre.push({
-          prenom_nom: req.body["autres_contre_" + i]
-        });
-      }
-    };
-
-    //autres avocats partie adverse
-    if (Number(req.body.nb_other_avocat_contre) > 0) {
-      for (i = 1; i <= Number(req.body.nb_other_avocat_contre); i++) {
-        dossier.autres_avocats_contre.push({
-          prenom_nom: req.body["autres_avocats_contre_prenom_nom_" + i],
-          tel: req.body["autres_avocats_contre_tel_" + i],
-          email: req.body["autres_avocats_contre_email_" + i]
-        });
-      }
-    };
-    
-    // creation du pour
-    if ((('clientP' in req.body) && (req.body.clientP == '')) && (('clientM' in req.body) && (req.body.clientM == ''))){
-      var pour = new Pour({
-        p_type: req.body.p_type
-      });
-    }
-    else{
-      boolClt = true;
-      //pour_update = req.body.p_type;
-      if(req.body.p_type == 'pp'){
-        var pour_id = req.body.clientP;
-      }
-
-      if(req.body.p_type == 'pm'){
-        var pour_id = req.body.clientM;
-      }
-    }
-    // creation du contre
-    if((('adverseP' in req.body) && (req.body.adverseP == '')) && (('adverseM' in req.body) && (req.body.adverseM == ''))){
-      var contre = new Contre({
-        c_type: req.body.c_type
-      });
-    }
-    else{
-      boolContre = true;
-      //contre_update = req.body.c_type;
-      if(req.body.c_type == 'pp'){
-        var contre_id = req.body.adverseP;
-      }
-
-      if(req.body.c_type == 'pm'){
-        var contre_id = req.body.adverseM;
-      }
-    }
-    if((('clientP' in req.body) && (req.body.clientP == '')) && (('clientM' in req.body) && (req.body.clientM == ''))){
-      switch (req.body.p_type) {
-        case 'pp':
-          // alimentation du pour personne physique
-          pour.pp.p_civilite = req.body.p_civilite;
-          pour.pp.p_prenom = req.body.p_prenom;
-          pour.pp.p_nom = req.body.p_nom;
-          pour.pp.p_profession = req.body.p_profession;
-          pour.pp.p_nationalite = req.body.p_nationalite;
-          if(req.body.p_dob != '') pour.pp.p_dob = moment(req.body.p_dob, "DD-MM-YYYY");
-          pour.pp.p_pob = req.body.p_pob;
-          pour.pp.p_domicile = req.body.p_domicile;
-          pour.pp.pp_tel = req.body.pp_tel.trim();
-          pour.pp.pp_email = req.body.pp_email;
-          break;
-        case 'pm':
-          // alimentation du pour personne morale
-
-          pour.pm.p_denomination = req.body.p_denomination;
-          pour.pm.p_rs = req.body.p_rs;
-          pour.pm.p_capital = req.body.p_capital.trim();
-          pour.pm.p_devise = req.body.p_devise;
-          pour.pm.p_siege = req.body.p_siege;
-          pour.pm.p_rccm = req.body.p_rccm;
-          pour.pm.p_nif = req.body.p_nif;
-          pour.pm.p_representant = req.body.p_representant;
-          pour.pm.pm_tel = req.body.pm_tel.trim();
-          pour.pm.pm_email = req.body.pm_email;
-          break;
-        default:
-          // code block
-      }
-    }
-    if((('adverseP' in req.body) && (req.body.adverseP == '')) && (('adverseM' in req.body) && (req.body.adverseM == ''))){
-      switch (req.body.c_type) {
-        case 'pp':
-          contre.pp.c_civilite = req.body.c_civilite;
-          contre.pp.c_prenom = req.body.c_prenom;
-          contre.pp.c_nom = req.body.c_nom;
-          contre.pp.c_profession = req.body.c_profession;
-          contre.pp.c_nationalite = req.body.c_nationalite;
-          if(req.body.c_dob != '') contre.pp.c_dob = moment(req.body.c_dob, "DD-MM-YYYY");
-          contre.pp.c_pob = req.body.c_pob;
-          contre.pp.c_domicile = req.body.c_domicile;
-          contre.pp.cp_tel = req.body.cp_tel.trim();
-          contre.pp.cp_email = req.body.cp_email;
-          break;
-        case 'pm':
-          // creation du contre
-
-          contre.pm.c_denomination = req.body.c_denomination;
-          contre.pm.c_rs = req.body.c_rs;
-          contre.pm.c_capital = req.body.c_capital.trim();
-          contre.pm.c_devise = req.body.c_devise;
-          contre.pm.c_siege = req.body.c_siege;
-          contre.pm.c_rccm = req.body.c_rccm;
-          contre.pm.c_nif = req.body.c_nif;
-          contre.pm.c_representant = req.body.c_representant;
-          contre.pm.cm_tel = req.body.cm_tel.trim();
-          contre.pm.cm_email = req.body.cm_email;
-          break;
-        default:
-          // code block
-      }
-    }
-
+    dossier.pour = pour;
+    dossier.contre = contre;
     if (!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values/error messages.
       res.render('dossiers/dossier_form', {
@@ -417,37 +235,20 @@ exports.dossier_create_post = [
       });
       return;
     } else {
-
-      if (boolClt == false){
-        dossier.pour = pour;
-        pour.save(function (err) {
-          if (err) { return next(err); }
-        })
-      }
-
-      if (boolClt == true){
-        dossier.pour = pour_id;
-      }
-
-      if (boolContre == false){
-        dossier.contre = contre;
-        contre.save(function (err) {
-          if (err) { return next(err); }
-        })
-      }
-
-      if (boolContre == true){
-        dossier.contre = contre_id;
-      }
+      pour.save(function (err) {
+        if (err) { return next(err); }
+      });
+      contre.save(function (err) {
+        if (err) { return next(err); }
+      });
       dossier.hookEnabled = true;
-       
       dossier.save(function (err) {
         if (err) { return next(err); }
-        res.redirect('/dossiers');
+        res.send({type_of_response: 'success'});
         return;
       });
     }
-    }
+  }
 ];
 
 
@@ -804,3 +605,19 @@ exports.delete_pieces = [
       });
   }
 ];
+
+function get_initiales(titulaire_comp) {
+  // var str = "";
+  // var reference = "";
+
+  //on découpe le prénom puis le nom
+  var titulaire_comp_tab = titulaire_comp.split("/");
+
+  // on crée la variable des initiales et on y ajoute nos initiales
+  var initiales = '';
+  titulaire_comp_tab.forEach(function(element) {
+    initiales += element.charAt(0);
+  });
+
+  return initiales.replace(/[^a-zA-Z0-9]+/g, "");
+};

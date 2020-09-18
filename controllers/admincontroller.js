@@ -1,7 +1,6 @@
 var Dossier = require('../models/dossier');
 var Configuration = require('../models/configuration');
 
-var Profil = require('../models/profil');
 var Utilisateur = require('../models/utilisateur');
 var Instruction = require('../models/instruction');
 
@@ -29,7 +28,7 @@ const {
 const {
   sanitizeBody
 } = require('express-validator/filter');
-
+ 
 // L'index de la page des dossiers nous redirige vers la liste des dossiers
 exports.index = function(req, res, next) {
   res.redirect('/administrateur/utilisateurs');
@@ -54,28 +53,6 @@ exports.utilisateurs_list = function (req, res, next) {
   });
 
 };
-
-
-exports.profils_list = function (req, res, next){
-  
-  // Get all dossier for form
-  async.parallel({
-    profils: function (callback) {
-      Profil.find()
-        .exec(callback);
-    },
-  }, function (err, results) {
-    if (err) {
-      return next(err);
-    }
-    if (results.profils != null){
-      res.send( {list_profils: results.profils });
-    }
-    
-  });
-  
-}
-
 
 exports.utilisateur_create = [
 

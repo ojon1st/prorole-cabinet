@@ -46,9 +46,6 @@ router.get('/repartition', dossier_controller.repartition);
 router.get('/dossier/:id/found', dossier_controller.found_client_get);
 
 // Recuperation de dossiers sans date de renvoi
-router.get('/dilligences', instruction_controller.get_dossier_dil)
-
-// Recuperation de dossiers sans date de renvoi
 router.get('/manques', instruction_controller.get_manques)
 
 // Recuperation de dossiers dont le type renvoi est role general
@@ -84,14 +81,8 @@ router.post('/dossier/:id/instruction/renvoi/create', instruction_controller.ren
 // Créer un calendrier de mise en état
 router.post('/dossier/:id/instruction/:id_ins/:juridiction/mise_en_etat/add', instruction_controller.mise_en_etat_create_post);
 
-// Créer un calendrier des diligences
-router.post('/dossier/:id/instruction/:id_ins/:juridiction/diligence/add', instruction_controller.diligence_create_post);
-
 //Afficher un calendrier de mise en état
 router.post('/dossier/:id/instruction/:id_ins/mise_en_etat/get', instruction_controller.mise_en_etat_get);
-
-//Afficher une nouvelle instruction
-router.post('/dossier/:id/instruction/:id_ins/diligence/get', instruction_controller.diligence_get);
 
 // Vérifier la décision
 router.post('/dossier/:id/instruction/:id_instruction/is_decision', instruction_controller.is_decision)

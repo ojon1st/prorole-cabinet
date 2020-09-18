@@ -16,25 +16,13 @@ header.topbar.navbar.navbar-inverse.navbar-fixed-top.inner
         li.dropdown.current-user
           a.dropdown-toggle(data-toggle='dropdown', data-hover='dropdown', data-close-others='true', href='#')
             if (utilisateur)
-              img.img-circle(src='#{utilisateur.avatar}', width='30px', height='30px',alt='') 
               span.username.hidden-xs 
                 |   #{utilisateur.prenom} #{utilisateur.nom}
               i.fa.fa-caret-down
           ul.dropdown-menu.dropdown-dark
             li
-              a(href='/')
-                | Mon profil
-            li
-              a(href='/agenda/my_agenda')
-                | Mon agenda
-            li
               a(href='/logout')
                 | Deconnecter
         // end: USER DROPDOWN
-        //- li.right-menu-toggle
-          a.sb-toggle-right(href='#')
-            i.fa.fa-globe.toggle-icon
-            i.fa.fa-caret-right
-            span.notifications-count.badge.badge-default.hide  3
       // end: TOP NAVIGATION MENU
       // end: TOPBAR CONTAINER

@@ -48,44 +48,28 @@ block content
                 tr
                   th N°
                   th Référence
-                  th Nom de parties
+                  th Parties
                   th Juridiction
                   if(title != 'décision à prendre')
                     th
                       if(title == 'renvois au rôle général')
                         | Delais
                       else
-                        | Renvois
+                        | Dernière date de renvois
               tbody
                 - var i = 1
                 each dossier in list_dossiers
-                  mixin tableau_dossiers
-                    tr.go_to_dossier
-                      td !{i}
+                  tr.go_to_dossier
+                    td !{i}
+                    td 
+                      | #{dossier.dossier.ref_d}
+                    td 
+                      a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.p_nom} c/ #{dossier.contre.c_nom}
+                    td.text-capitalize
+                      | #{dossier.juridiction.division} #{dossier.juridiction.nom}
+                    if(title != 'décision à prendre')
                       td 
-                        | #{dossier.dossier.ref_d}
-                      td 
-                        if block
-                          block
-                      td.text-capitalize
-                        | #{dossier.juridiction.division} #{dossier.juridiction.nom}
-                      if(title != 'décision à prendre')
-                        td 
-                          | #{moment(dossier.renvois[0].r_date).format("DD-MM-YYYY")}
-                  if(dossier.dossier.pour && dossier.dossier.contre)
-                    if(dossier.dossier.pour.p_type == 'pp' && dossier.dossier.contre.c_type == 'pp')
-                      +tableau_dossiers
-                        a(class='button' href="/dossiers/dossier/#{dossier.dossier._id}") #{dossier.dossier.pour.pp.p_prenom} #{dossier.dossier.pour.pp.p_nom} c/ #{dossier.dossier.contre.pp.c_prenom} #{dossier.dossier.contre.pp.c_nom}
-                    if(dossier.dossier.pour.p_type == 'pp' && dossier.dossier.contre.c_type == 'pm')
-                      +tableau_dossiers
-                        a(class='button' href="/dossiers/dossier/#{dossier.dossier._id}") #{dossier.dossier.pour.pp.p_prenom} #{dossier.dossier.pour.pp.p_nom} c/ #{dossier.dossier.contre.pm.c_denomination}
-                    if(dossier.dossier.pour.p_type == 'pm' && dossier.dossier.contre.c_type == 'pp')
-                      +tableau_dossiers
-                        a(class='button' href="/dossiers/dossier/#{dossier.dossier._id}") #{dossier.dossier.pour.pm.p_denomination} c/ #{dossier.dossier.contre.pp.c_prenom} #{dossier.dossier.contre.pp.c_nom}
-                    if(dossier.dossier.pour.p_type == 'pm' && dossier.dossier.contre.c_type == 'pm')
-                      +tableau_dossiers
-                        a(class='button' href="/dossiers/dossier/#{dossier.dossier._id}") #{dossier.dossier.pour.pm.p_denomination} c/ #{dossier.dossier.contre.pm.c_denomination}
-                    - i++
+                        | #{moment(dossier.renvois[0].r_date).format("DD-MM-YYYY")}
 append jscripts
   // start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
   script(src='/assets/plugins/holder/holder.js')

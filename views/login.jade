@@ -1,7 +1,4 @@
-doctype html
-html.no-js(lang='fr')
-  // <![endif]
-  // start: HEAD
+html
   head
     title Connection
     // start: META
@@ -27,11 +24,9 @@ html.no-js(lang='fr')
   body.login
     .row
       .main-login.col-xs-10.col-xs-offset-1.col-sm-8.col-sm-offset-2.col-md-4.col-md-offset-4
+        .logo
+          //-img(src='assets/images/logo.png')
         // start: LOGIN BOX
-        //
-          <div class="logo">
-          <img src="/assets/images/logo.png">
-          </div>
         .box-login
           h3 Connectez-vous à votre compte
           p
@@ -39,7 +34,7 @@ html.no-js(lang='fr')
           form.form-login(method = 'POST' action='')
             .errorHandler.alert.alert-danger.no-display
               i.fa.fa-remove-sign
-              |  Vous avez des erreurs de formulaire. S'il vous plaît vérifier ci-dessous.
+              |  Vous avez des erreurs dans le formulaire. S'il vous plaît vérifier ci-dessous.
             fieldset
               .form-group
                 span.input-icon
@@ -54,43 +49,122 @@ html.no-js(lang='fr')
               .form-actions
                 label.checkbox-inline(for='remember')
                   input#remember.grey.remember(type='checkbox', name='remember')
-                  | 									Se souvenir de moi
+                  | Se souvenir de moi
                 button.btn.btn-green.pull-right(type='submit')
                   | Se connecter 
                   i.fa.fa-arrow-circle-right
+              .new-account
+                | Créer un compte? 
+                a.register(href='#')
+                  | Enregistrez-vous
           // start: COPYRIGHT
           .copyright
-            // ?php echo date('Y'); ?
-            | © Prorôle une application LegalTech Priorities.
+            script.
+              document.write(`${new Date().getFullYear()} © Prorôle une application LegalTech Priorities.`);
           // end: COPYRIGHT
           // end: LOGIN BOX
           // start: FORGOT BOX
-          .box-forgot
-            h3 Mot de passe oublié ?
-            p
-              | Entrez votre adresse e-mail ci-dessous pour réinitialiser votre mot de passe.
-            form.form-forgot
-              .errorHandler.alert.alert-danger.no-display
-                i.fa.fa-remove-sign
-                |  Vous avez des erreurs de formulaire. S'il vous plaît vérifier ci-dessous.
-              fieldset
-                .form-group
-                  span.input-icon
-                    input.form-control(type='email', name='email', placeholder='email')
-                    i.fa.fa-envelope
-                .form-actions
-                  a.btn.btn-light-grey.go-back
-                    i.fa.fa-chevron-circle-left
-                    |  Se connecter
-                  button.btn.btn-green.pull-right(type='submit')
-                    | Envoyer 
-                    i.fa.fa-arrow-circle-right
-            // start: COPYRIGHT
-            .copyright
-              // ?php echo date('Y'); ?
-              | © Prorôle une application LegalTech Priorities.
-            // end: COPYRIGHT
-
+        .box-forgot
+          h3 Mot de passe oublié ?
+          p
+            | Entrez votre adresse e-mail ci-dessous pour réinitialiser votre mot de passe.
+          form.form-forgot
+            .errorHandler.alert.alert-danger.no-display
+              i.fa.fa-remove-sign
+              |  S'il vous plaît veuillez saisir votre email pour réinitialiser votre mot de passe.
+            fieldset
+              .form-group
+                span.input-icon
+                  input.form-control(type='email', name='email', placeholder='email')
+                  i.fa.fa-envelope
+              .form-actions
+                a.btn.btn-light-grey.go-back
+                  i.fa.fa-chevron-circle-left
+                  |  Se connecter
+                button.btn.btn-green.pull-right(type='submit')
+                  | Envoyer 
+                  i.fa.fa-arrow-circle-right
+          // start: COPYRIGHT
+          .copyright
+           script.
+              document.write(`${new Date().getFullYear()} © Prorôle une application LegalTech Priorities.`);
+          // end: COPYRIGHT
+        .box-register
+          h3 Enregistrer votre compte
+          p
+            |  Entrez données personnelles:
+          form.form-register
+            .errorHandler.alert.alert-danger.no-display
+              i.fa.fa-remove-sign
+              |   Vous avez des erreurs dans le formulaire. S'il vous plaît vérifier ci-dessous.
+            fieldset
+              .form-group
+                span.input-icon
+                  input.form-control(type='text', name='full_name', placeholder='Nom complet')
+                  i.fa.fa-user
+              .form-group
+                span.input-icon
+                  input.form-control(type='text', name='address', placeholder='Dénomination du cabinet')
+                  i.fa.fa-money
+              .form-group
+                span.input-icon
+                  input.form-control(type='text', name='pays', placeholder='Pays')
+                  i.fa.fa-home
+              .form-group
+                span.input-icon
+                  input.form-control(type='text', name='barreau', placeholder='Barreau')
+                  i.fa.fa-gavel
+              .form-group
+                span.input-icon
+                  input.form-control(type='text', name='inscription', placeholder='Inscription')
+                  i.fa.fa-calendar
+              .form-group
+                span.input-icon
+                  input.form-control(type='email', name='mail', placeholder='Adresse électronique')
+                  i.fa.fa-envelope
+              .form-group
+                span.input-icon
+                  input.form-control(type='whatsapp', name='whatsapp', placeholder='Whatsapp')
+                  i.fa.fa-whatsapp
+              p
+                | Entrer les informatinos de votre compte:
+              .form-group
+                span.input-icon
+                  input.form-control(type='pseudo', name='pseudo', placeholder='Identifiant')
+                  i.fa.fa-user
+              .form-group
+                span.input-icon
+                  input#password.form-control(type='password', name='pswd', placeholder='Mot de passe')
+                  i.fa.fa-lock
+              .form-group
+                span.input-icon
+                  input.form-control(type='password', name='pswd_confirm', placeholder='Confirmation mot de passe')
+                  i.fa.fa-lock
+              .form-group
+                div
+                  label.checkbox-inline(for='agree')
+                    input#agree.grey.agree(type='checkbox', name='agree')
+                    | J'accepte les termes et conditions d'utilisation
+              .form-actions
+                | Avez-vous déjà un compte? 
+                a.go-back(href='#')
+                  | Connectez-vous
+                button.btn.btn-green.pull-right(type='submit')
+                  | Soumettre 
+                  i.fa.fa-arrow-circle-right
+          // start: COPYRIGHT
+          .copyright
+            script.
+              document.write(`${new Date().getFullYear()} © Prorôle une application LegalTech Priorities.`);
+      // start: COPYRIGHT
+      // end: COPYRIGHT
+      // end: REGISTER BOX
+    // start: MAIN JAVASCRIPTS
+    //if lt IE 9
+      script(src='assets/plugins/respond.min.js')
+      script(src='assets/plugins/excanvas.min.js')
+      script(type='text/javascript', src='assets/plugins/jQuery/jquery-1.11.1.min.js')
+    // [if gte IE 9] <!
     script(src='/assets/plugins/jQuery/jquery-2.1.1.min.js')
     // <![endif]
     script(src='/assets/plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js')
@@ -110,4 +184,3 @@ html.no-js(lang='fr')
       Login.init();
       });
     // end: BODY
-            

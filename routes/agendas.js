@@ -5,20 +5,9 @@ var agenda_controller = require('../controllers/agendacontroller');
 
 /// GESTIONNAIRE ROUTES ///
 
-// GET catalog home page.
-router.get('/', agenda_controller.index); 
-
-router.get('/my_agenda', agenda_controller.my_agenda_get);
-
-router.get('/audiencier/get_my_events', agenda_controller.renvois_my_events_get);
-
 router.get('/audiencier', agenda_controller.audiencier_get);
 
 router.get('/audiencier/get_events', agenda_controller.renvois_events_get);
-
-router.get('/diligences', agenda_controller.tableau_diligences_get);
-
-router.get('/diligences/get_events', agenda_controller.tableau_diligences_events_get);
 
 router.get('/carnet_adresses', agenda_controller.annuaire_get);
 

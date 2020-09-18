@@ -64,35 +64,16 @@ block content
                   thead
                     tr
                       th Référence dossier numerique
-                      th Nom de parties
+                      th Parties
                       th Référence dossier physique
-                      th Dossiers correspondants
+                      //- Dossiers correspondants
                   tbody
                    each dossier in list_dossiers
-                      mixin tableau_dossiers
-                        tr.go_to_dossier
-                          td #{dossier.ref_d}
-                          td 
-                            if block
-                              block
-                          td #{dossier.ref_d_p}
-                          td 
-                            if(dossier.correspondance)
-                              | #{dossier.correspondance.ref}
-                      if(dossier.pour && dossier.contre)
-                        if(dossier.pour.p_type == 'pp' && dossier.contre.c_type == 'pp')
-                          +tableau_dossiers
-                            a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.pp.p_prenom} #{dossier.pour.pp.p_nom} c/ #{dossier.contre.pp.c_prenom} #{dossier.contre.pp.c_nom}
-                        if(dossier.pour.p_type == 'pp' && dossier.contre.c_type == 'pm')
-                          +tableau_dossiers
-                            a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.pp.p_prenom} #{dossier.pour.pp.p_nom} c/ #{dossier.contre.pm.c_denomination}
-                        if(dossier.pour.p_type == 'pm' && dossier.contre.c_type == 'pp')
-                          +tableau_dossiers
-                            a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.pm.p_denomination}  c/ #{dossier.contre.pp.c_prenom} #{dossier.contre.pp.c_nom}
-                        if(dossier.pour.p_type == 'pm' && dossier.contre.c_type == 'pm')
-                          +tableau_dossiers
-                            a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.pm.p_denomination} c/ #{dossier.contre.pm.c_denomination}
-                        - i++
+                      tr.go_to_dossier
+                        td #{dossier.ref_d}
+                        td 
+                          a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.p_nom} c/ #{dossier.contre.c_nom}
+                        td #{dossier.ref_d_p}
 append jscripts
   // start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
   script(src='/assets/plugins/holder/holder.js')

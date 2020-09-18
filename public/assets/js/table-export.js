@@ -260,7 +260,7 @@ var TableExport = function() {
 				"aTargets" : [0]
 			}],
 			"oLanguage" : {
-				"sLengthMenu" : "Show _MENU_ Rows",
+				"sLengthMenu" : "Voir _MENU_ lignes",
 				"sSearch" : "",
 				"oPaginate" : {
 					"sPrevious" : "",
@@ -268,12 +268,12 @@ var TableExport = function() {
 				}
 			},
 			//"aaSorting" : [[1, 'desc']],
-			"aLengthMenu" : [[5, 10, 15, 20, -1], [5, 10, 15, 20, "All"] // change per page values here
+			"aLengthMenu" : [[100, -1], [100, "All"] // change per page values here
 			],
 			// set the initial value
-			"iDisplayLength" : 10,
+			"iDisplayLength" : 100,
 		});
-		$('#sample-table-2_wrapper .dataTables_filter input').addClass("form-control input-sm").attr("placeholder", "Search");
+		$('#sample-table-2_wrapper .dataTables_filter input').addClass("form-control input-sm").attr("placeholder", "Rechercher");
 		// modify table search input
 		$('#sample-table-2_wrapper .dataTables_length select').addClass("m-wrap small");
 		// modify table per page dropdown

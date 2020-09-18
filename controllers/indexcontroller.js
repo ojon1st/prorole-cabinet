@@ -1,7 +1,5 @@
-var Dossier = require('../models/dossier');
 var Configuration = require('../models/configuration');
 
-var Profil = require('../models/profil');
 var Utilisateur = require('../models/utilisateur');
 
 var async = require('async');
@@ -22,19 +20,31 @@ const {
 } = require('express-validator/filter');
 
 exports.home_get = function(req, res, next){
-    if(req.user){
-      res.redirect('/administrateur/page_utilisateur/'+req.user._id)
-    }else{
-      res.redirect('/login')
-    }
-  ;
+  if(req.user){
+    async.parallel({
+      configuration: function (callback) {
+        Configuration.findOne({}, 'denomination')
+          .exec(callback);
+      },
+      
+    }, function (err, results) {
+      if (err) {
+        return next(err);
+      }
+      // res.locals.others
+      console.log(results.configuration.denomination);
+      res.redirect('/agenda/audiencier');
+    });
+    
+  }else{
+    res.redirect('/login')
+  }
 }
 
 // L'index de la page des dossiers nous redirige vers la liste des dossiers
 exports.login_get = function(req, res, next) {
   
   res.render('login', {title:'Page de connexion'});
-  //res.redirect('/administrateur/utilisateurs');
 };
 
 exports.login_post = [
@@ -47,9 +57,7 @@ exports.login_post = [
   (req, res, next) => {
       //req.flash('success', 'Vous êtes maintenant connecté');
       console.log('Vous êtes maintenant connecté');
-      //console.log(req.user._id)
-      var url_to_redirect = '/administrateur/page_utilisateur/'+req.user._id.toString();
-      res.redirect(url_to_redirect);
+      res.redirect('/');
   }
 ];
 
@@ -74,7 +82,7 @@ passport.use(new LocalStrategy({
     passwordField: 'password'
 
 }, function (username, password, done) {
-    
+    console.log(username)
     Utilisateur.findOne({'pseudo': username})
         .exec(function (err, found_user) {
             if (err) throw err;

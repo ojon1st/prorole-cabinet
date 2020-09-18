@@ -3,72 +3,27 @@
 var liste_des_pieces = [];
 
 jQuery(document).ready(function () {
-  
-  $('#save_mise_en_etat').click(function() {
-    //mise_en_etat_create_post($('#id_dossier').val());
-    //alert( "Handler for .click() called." );
-  });
-  
-  $('#save_diligence').click(function() {
-    //diligence_create_post($('#id_dossier').val());
-  });
-  
-  $('#renseigner_mide_en_etat').click(function() {
+  $('#renseigner_mise_en_etat').on('click', function() {
     if ( $('#id_instruction').val() != "" || $('#id_instruction').val() != 'undefined'){
       mise_etat_get($('#id_dossier').val(),$('#id_instruction').val());
     }
   });
-  
-  $('#renseigner_diligence').click(function() {
-    if ( $('#id_instruction').val() != "" || $('#id_instruction').val() != 'undefined'){
-      diligence_get($('#id_dossier').val(),$('#id_instruction').val());
-    }
-  });
-
-  $(".upClient").attr("readonly", true);  
-  
-  $("#upClientShow").click(function(){
-
-    $("#upClientShow").addClass("hidden");
-    $("#upClientSave").removeClass("hidden");
-    $(".upClient").attr("readonly", false); 
-  });
-
-  $(".upContre").attr("readonly", true); 
-  
-  $("#upContreShow").click(function(){
-
-    $("#upContreShow").addClass("hidden");
-    $("#upContreSave").removeClass("hidden");
-    $(".upContre").attr("readonly", false); 
-  });
-    
 });
 
 
 /*****************   page functions    **********************/
 
 function autoriser_modif() {
-  $('textarea[name=resume]').attr('readonly', false);
-  $('input[name=montant]').attr('readonly', false);
-  //$(".nature").toggleClass("hidden");
-  $('select[name=attributaire]').attr('disabled', false);
+  $('select[name=qualite]').attr('disabled', false);
   $('select[name=nature]').attr('disabled', false);
-  $('input[type=text][name=gain_perte]').attr('disabled', true);
-  $(".attributaire, .modifier_ou_sauvegarder").toggleClass("hidden"); //, .modifier_ou_sauvegarder
+  $(".modifier_ou_sauvegarder").toggleClass("hidden"); // .modifier_ou_sauvegarder
 
 }
 
 function empecher_modif() {
-  $('input[type=text][name=nature]').val($('input[type=radio][name=nature]:checked').val());
-  $('textarea[name=resume]').attr('readonly', true);
   $('select[name=nature]').attr('disabled', true);
-  $('select[name=attributaire]').val()('readonly', true);
-  $('select[name=attributaire]').attr('readonly', true);
-  $('input[name=gain_perte]').attr('disabled', false);
-  $('input[name=montant]').attr('readonly', true);
-  //$(".nature").toggleClass("hidden");
-  $(".attributaire, .modifier_ou_sauvegarder").toggleClass("hidden");
+  $('select[name=qualite]').val()('readonly', true);
+  $(".modifier_ou_sauvegarder").toggleClass("hidden");
 }
 
 function show_notification(shortCutFunction, title, msg) {
@@ -93,12 +48,9 @@ function update_dossier(id_dossier) {
   var route_update_infos_dossier = '/dossiers/dossier/' + id_dossier + '/update';
   var data = {};
   data.ref_d_p = $('input[name=ref_d_p]').val();
-  data.attributaire = $('select[name=attributaire]').val();
   data.qualite = $('select[name=qualite]').val();
   data.nature = $('select[name=nature]').val();
-  data.gain_perte = $('input[type=radio][name=gain_perte]:checked').val();
-  data.resume = $('textarea[name=resume]').val();
-  data.montant = $('input[name=montant]').val();
+  
 
   $.ajax({
     type: 'POST',
@@ -106,20 +58,15 @@ function update_dossier(id_dossier) {
     contentType: 'application/json',
     url: route_update_infos_dossier,
     success: function (data) {
-      //empecher_modif();
-      location.reload();
-      //var msg = "Les informations du dossier on été mises à jour!";
-      //var title = "Sauvegarde du dossier";
-      //setTimeout(show_notification(JSON.stringify(data.type_of_response), title, msg),1000);
-      
-      //return;
+      window.location.href = "/dossiers/dossier/" + id_dossier;
+      return;
     }
   });
 }
 
 var previous;
 var old_juridiction ;
-$("select[name=juridiction]").focus(function () {
+$("select[name=juridiction]").on('focus',function () {
   // Store the current value on focus, before it changes
   previous = this.value;
   old_juridiction = this.options[this.selectedIndex].text;
@@ -133,29 +80,9 @@ $("select[name=juridiction]").focus(function () {
       /***************Juridiction************/
 function confirm_new_juridiction(selectObject, id_dossier, division) {
 
-  var new_juridiction = selectObject.options[selectObject.selectedIndex].text;
-  
-    if($("select[name=juridiction]").val() != ''){
-      create_instance(selectObject.value,id_dossier, division);
-    /*swal({
-        title: "Êtes-vous sûr(e)?",
-        text: "Vous êtes sur le point de changer de juridiction!",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Oui, le dossier change de juridiction",
-        closeOnConfirm: false
-      },
-      function (isConfirm) {
-        if (isConfirm) {
-          create_instance(selectObject.value,id_dossier, division);
-        } else {
-          $("select[name=juridiction]").val(previous);
-        }
-      });*/
-    }else{
-      $("select[name=juridiction]").val(previous);
-    }
+  if($("select[name=juridiction]").val() != ''){
+    create_instance(selectObject.value,id_dossier, division);
+  }
 };
 
 
@@ -166,12 +93,11 @@ function create_instance(id_juridiction, id_dossier, division) {
   
   data.juridiction = id_juridiction;
   data.dossier = id_dossier;
-  data.division = division 
-  if($('#id_instruction').val() != ''){
+  data.division = division
+  let _id = $('#id_instruction').val();
+  if(_id.trim() != ''){
     data.instruction = $('#id_instruction').val();
   }
-  /* data.resume = $('textarea[name=resume]').val();
-  data.montant = $('input[name=montant]').val();  */
 
   $.ajax({
     type: 'POST',
@@ -179,15 +105,15 @@ function create_instance(id_juridiction, id_dossier, division) {
     contentType: 'application/json',
     url: route_create_instance_dossier,
     success: function (data) {
-      window.location.href="/dossiers/dossier/"+id_dossier;
       var res = data;
       if(data.type_of_response == 'success'){
         if (data.creation == true){
-          swal(data.al_title, data.al_msg, "success");
-          setTimeout(location.reload(), 5000);
+          // swal(data.al_title, data.al_msg, "success");
+          // setTimeout(location.reload(), 5000);
+          window.location.href="/dossiers/dossier/"+id_dossier;
         }else{
-          show_notification('error', data.al_title, data.al_msg)
-          setTimeout(location.reload(), 5000);
+          // show_notification('error', data.al_title, data.al_msg)
+          //setTimeout(location.reload(), 5000);
         }
       }
       
@@ -385,75 +311,8 @@ function mise_etat_get(id_dossier, id_instruction){
   });
 }
 
-      /**************** Diligences *****************/
+/**************** Diligences *****************/
 
-function diligence_create_post (id_dossier,id_instruction, juridiction){
-  //var tribunal_id = $("select[name=juridiction]").val();
-  if (dil == 0 || id_instruction == '' || juridiction == ''){
-    //alert('je suis vide');
-    return;
-  }
-  
-  var datas = [];
-  for (i=0; i<dil; i++){
-    var data = {};
-    
-    var du_name = "du_dil_"+i;
-    var au_name = "au_dil_"+i;
-    var h_name = "h_dil_"+i;
-    var com_name = "com_dil_"+i;
-    
-    var du = $("input[name='"+du_name+"']").val()
-    var au = $("input[name='"+au_name+"']").val()
-    var h = $("input[name='"+h_name+"']").val()
-    var com_name = $("textarea[name='"+com_name+"']").val();
-    
-    data.du = du;
-    data.au = au;
-    data.h = h;
-    data.com_name = com_name;
-    datas.push(data);
-  }
-  
-  var la_route= '/dossiers/dossier/'+id_dossier+'/instruction/'+id_instruction+'/'+juridiction+'/diligence/add';
-  
-  $.ajax({
-    type: 'POST',
-    data: JSON.stringify(datas),
-    contentType: 'application/json',
-    url: la_route,
-    success: function (data) {
-      dil=0;
-      $('#dil').html('');
-      data.dil_list.forEach(function (doc) {
-        $('#dil').append('<h3> DU    '+ moment(doc.d_debut).format("DD-MM-YYYY") + '    AU    <b>'+ moment(doc.d_fin).format("DD-MM-YYYY")+'</b>    A   <b>'+ doc.d_heure +'</b>    Objet:    ' + doc.d_commentaire+ '</h3>')
-      })
-      
-      return;
-    }
-  });
-}
-
-
-function diligence_get(id_dossier, id_instruction){
-  var la_route = '/dossiers/dossier/'+id_dossier+'/instruction/'+id_instruction+'/diligence/get'; 
-  var data = {};
-  //data.instruction = id_instruction;
-  $.ajax({
-    type: 'POST',
-    data: JSON.stringify(data),
-    contentType: 'application/json',
-    url: la_route,
-    success: function (data) {
-      $('#dil').html('');
-      data.dil_list.forEach(function (doc) {
-        $('#dil').append('<h3> DU    '+ moment(doc.d_debut).format("DD-MM-YYYY") + '    AU    <b>'+ moment(doc.d_fin).format("DD-MM-YYYY")+'</b>    A   <b>'+ doc.d_heure +'</b>    Objet:    ' + doc.d_commentaire+ '</h3>')
-      })
-      
-      return;
-    }
-  });
-}
 
 /**************** Décision ***************/
 
@@ -482,13 +341,13 @@ function save_decision(id_dossier, id_instruction, division){
 
 
 function addDatePicker(){
-      $(".date-picker").datepicker({
-        showOn: "button",
-        buttonImage: "/calendar.png",
-        buttonImageOnly: true,
-        changeMonth: true,
-        changeYear: true
-      });
+  $(".date-picker").datepicker({
+    showOn: "button",
+    buttonImage: "/calendar.png",
+    buttonImageOnly: true,
+    changeMonth: true,
+    changeYear: true
+  });
 };
 
 function upload_decision_file(instruction_id) {

@@ -13,7 +13,7 @@ block content
           | Nouveau dossier
   // end: BREADCRUMB
   // start: PAGE CONTENT
-  form#formDossier.form-horizontal(method='POST', action='')
+  form.form-horizontal
     .row
       .col-md-12
         .panel.panel-white
@@ -46,574 +46,69 @@ block content
               .col-md-6
                 .form-group
                   label.col-sm-3.control-label
-                    | Réf. dossier physique
-                    span.symbol.required
-                    |  :
-                  .col-sm-8
-                    input.form-control(name='ref_d_p', placeholder='Saisir la réference du dossier physique')
-              .col-md-6
-                .form-group
-                  label.col-sm-3.control-label
-                    | Titulaire 
-                    span.symbol.required
-                    |  :
-                  .col-sm-8
-                    if (utilisateurs)
-                      select#titulaire.form-control(name='titulaire', required='required')
-                        option(value='null')
-                        each utilisateur in utilisateurs
-                          option(value=utilisateur._id) #{utilisateur.prenom} #{utilisateur.nom}
-                      span.form_error
-                    else
-                      select#titulaire.form-control(name='titulaire' readonly)
-                        option(value='null') Veuillez créer des utilisateurs
-                      span.form_error
+                    | Réf. dossier physique :
+                  .col-sm-4
+                    input#ref_d_p.form-control(placeholder='Réference physique')
     .row
       .col-md-6
         .panel.panel-white
-          input#p_type(type='hidden', name='p_type', value='')
-          input(type='hidden', id='nb_other_client_pour', name='nb_other_client_pour', value='0')
-          input(type='hidden',id='nb_other_avocat_pour', name='nb_other_avocat_pour', value='0')
-          input(type='hidden', name='clientP', value='')
-          input(type='hidden', name='clientM', value='')
           .panel-heading
             h4.panel-title
-              span#tiltle_pour.text-bold CLIENT(S)
-            .panel-tools
-              a#retour_pour.btn.btn-xs.btn-transparent-grey.popovers(data-original-title='', data-content='Retour', data-placement='top', data-trigger='hover')
-                i.fa.fa-mail-reply
-              .dropdown
-                a.btn.btn-xs.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
-                  i.fa.fa-cog
-                ul.dropdown-menu.dropdown-light.pull-right(role='menu')
-                  li
-                    a.panel-collapse.collapses(href='#')
-                      i.fa.fa-angle-up
-                      span Cacher
-                  li
-                    a.panel-refresh(href='#')
-                      i.fa.fa-refresh
-                      span Actualiser
-                  li
-                    a.panel-expand(href='#')
-                      i.fa.fa-expand
-                      span Plein écran
-              //
-                <a class="btn btn-xs btn-link panel-close" href="#">
-                <i class="fa fa-times"></i>
-                </a>
+              span#tiltle_p.text-bold CLIENT
           .panel-body.buttons-widget
-            #type_pour.form-group
+            .form-group
               label.col-sm-3.control-label
-                | Type de client 
+                | Dénomination 
                 span.symbol.required
                 |  :
-              span.form_error
-              .text-center.col-sm-4
-                a#btn_physique_pour.btn.btn-primary
-                  | Personne 
-                  span.text-bold PHYSIQUE
-              .text-center.col-sm-3
-                a#btn_morale_pour.btn.btn-primary
-                  | Personne 
-                  span.text-bold MORALE
-            #physique_pour.hidden
-              .form-group
-                label.col-sm-3.control-label 
-                  | Civilité 
-                  span.symbol.required
-                  |  :
-                .col-sm-8
-                  select.form-control(name='p_civilite', required='required')
-                    option(value='null')
-                    option(value='M.') Monsieur
-                    option(value='Madame') Madame
-                    option(value='Melle') Mademoiselle
-                    option(value='Elh') El Hadj
-                    option(value='Dr') Docteur
-                    option(value='Pr') Professeur
-                    option(value='Me') Metre
-              .form-group
-                label.col-sm-3.control-label
-                  | Nom 
-                  span.symbol.required
-                  |  :
-                .col-sm-8
-                  span.input-icon
-                    input#nom_pour.form-control(type='text', placeholder='Nom du client', name='p_nom' list='clientP_list')
-                    i.fa.fa-user
-                  span.form_error
-                  datalist#clientP_list
-                    if (pours)
-                      each pour in pours
-                        if(pour.p_type == 'pp')
-                          option(value=pour._id) #{pour.pp.p_prenom} #{pour.pp.p_nom}
-              .form-group
-                label.col-sm-3.control-label
-                  | Prenom 
-                  span.symbol.required
-                  |  :
-                .col-sm-8
-                  span.input-icon
-                    input.form-control(type='text', placeholder='Prenom du client', name='p_prenom')
-                    i.fa.fa-user
-                  span.form_error
-              .form-group
-                label.col-sm-3.control-label
-                  | Date nais. :
-                .col-sm-8
-                  span.input-icon
-                    input.form-control.date-picker(placeholder='Date de naissance', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years', name='p_dob')
-                    i.fa.fa-calendar
-              .form-group
-                label.col-sm-3.control-label
-                  | Lieu nais. :
-                .col-sm-8
-                  span.input-icon
-                    input.form-control(type='text', placeholder='Lieu de naissance', name='p_pob')
-                    i.fa.fa-home
-              .form-group
-                label.col-sm-3.control-label
-                  | Nationalité :
-                .col-sm-8
-                  span.input-icon
-                    input.form-control(type='text', placeholder='Nationalité', name='p_nationalite')
-                    i.fa.fa-home
-              .form-group
-                label.col-sm-3.control-label
-                  | Profession :
-                .col-sm-8
-                  span.input-icon
-                    input.form-control(type='text', placeholder='Profession du client', name='p_profession')
-                    i.fa.fa-money
-              .form-group
-                label.col-sm-3.control-label
-                  | Téléphone :
-                .col-sm-8
-                  span.input-icon
-                    input.form-control.input-mask-phone(type='number', placeholder='Téléphone du client', onkeyup="this.value=this.value.replace(/\D/g,'')", name='pp_tel')
-                    i.fa.fa-phone
-              .form-group
-                label.col-sm-3.control-label
-                  | e-mail :
-                .col-sm-8
-                  span.input-icon
-                    input.form-control(type='email', placeholder='adresse electronique du client', name='pp_email')
-                    i.fa.fa-envelope
-              .form-group
-                label.col-sm-3.control-label
-                  | Domicile :
-                .col-sm-8
-                  span.input-icon
-                    input.form-control(type='text', placeholder='Domicile du client', name='p_domicile')
-                    i.fa.fa-home
-              // Ajout de champs pour autres clients
-              #titre_client
-              
-              #sec_pour
-              #addClient.form-group
-                label#clientLabel.col-sm-3.control-label
-                  | Autres clients
-                #clientRow.col-sm-8
-                  .row
-                    #clientInput.col-sm-offset-1.col-sm-5.col-xs-4
-                      a#plus_pour.btn.btn-primary
-                        i.fa.fa-plus
-                        |  Autres clients
-              // Ajout de champs pour autres avocats
-              #titre_avocat
-              
-              #autre_avocat
-              #addAutre.form-group
-                label#autreLabel.col-sm-3.control-label
-                  | Autres avocats
-                #autreRow.col-sm-8
-                  .row
-                    #autreInput.col-sm-offset-1.col-sm-5.col-xs-4
-                      a#plus_autre.btn.btn-primary
-                        i.fa.fa-plus
-                        |  Autres avocats
-            #morale_pour.hidden
-              .form-group
-                label.col-sm-3.control-label
-                  | Dénomination S. 
-                  span.symbol.required
-                  |  :
-                .col-sm-8
-                  span.input-icon
-                    input#denom_pour.form-control(type='text', placeholder='Dénommination sociale', name='p_denomination', list='clientM_list')
-                    i.fa.fa-home
-                  span.form_error
-                  datalist#clientM_list
-                    if (pours)
-                      each pour in pours
-                        if(pour.p_type == 'pm')
-                          option(value=pour._id) #{pour.pm.p_denomination}
-              .form-group
-                label.col-sm-3.control-label
-                  | Forme Sociale :
-                .col-sm-8
-                  span.input-icon
-                    select.form-control(name='p_rs')
-                        option(value=null)  Forme Sociale
-                        option(value='ETS') Entreprenant (ETS)
-                        option(value='SAS') SAS
-                        option(value='SA') SA
-                        option(value='SARL') SARL
-                        option(value='SASU') SASU
-                        option(value='SAU') SAU
-                        option(value='SARLU') SARLU
-                        option(value='ETAT') ETAT
-                        option(value='EPA') EPA
-                        option(value='EPIC') EPIC
-                        option(value='CT') Collectivité Territoriale
-                        option(value='ONG') ONG
-                        option(value='OI') Organisation Internationale
-              .form-group
-                label.col-sm-3.control-label
-                  | Capital :
-                .col-sm-8
-                  span.input-icon
-                    input.form-control(type='number', placeholder='Capital de la société', name='p_capital' onkeyup="this.value=this.value.replace(/\D/g,'')")
-                    i.fa.fa-money
-              .form-group
-                label.col-sm-3.control-label
-                  | RCCM :
-                .col-sm-8
-                  span.input-icon
-                    input.form-control(type='text', placeholder='Numero RCCM', name='p_rccm')
-                    i.fa.fa-quote-left
-              .form-group
-                label.col-sm-3.control-label
-                  | NIF :
-                .col-sm-8
-                  span.input-icon
-                    input.form-control(type='text', placeholder='NIF', name='p_nif')
-                    i.fa.fa-home
-              .form-group
-                label.col-sm-3.control-label
-                  | Représentant :
-                .col-sm-8
-                  input.form-control(type='text', placeholder='Représentant Légal', name='p_representant')
-              .form-group
-                label.col-sm-3.control-label
-                  | Siège social 
-                  span.symbol.required
-                  | :
-                .col-sm-8
-                  span.input-icon
-                    input.form-control(type='text', placeholder='Siège social', name='p_siege')
-                    i.fa.fa-home
-              .form-group
-                label.col-sm-3.control-label
-                  | Téléphone :
-                .col-sm-8
-                  span.input-icon
-                    input.form-control(type='number', placeholder='Téléphone du client', onkeyup="this.value=this.value.replace(/\D/g,'')", name='pm_tel')
-                    i.fa.fa-phone
-              .form-group
-                label.col-sm-3.control-label
-                  | e-mail :
-                .col-sm-8
-                  span.input-icon
-                    input.form-control(type='email', placeholder='Email du client', name='pm_email')
-                    i.fa.fa-envelope
-              // Ajout de champs pour autres clients
-              #titre_client_morale
-              #sec_pour_morale
-              .form-group
-                label#clientMoraleLabel.col-sm-3.control-label
-                  | Autres clients
-                #clientMoraleRow.col-sm-8
-                  .row
-                    #clientMoraleInput.col-sm-offset-1.col-sm-5.col-xs-4
-                      a#plus_pour_morale.btn.btn-primary
-                        i.fa.fa-plus
-                        |  Autres clients
-              // Ajout de champs pour autres avocats
-              #titre_morale
-              #autre_avocat_morale
-              #addAutreMorale.form-group
-                label#autreLabelMorale.col-sm-3.control-label
-                  | Autres avocats
-                #autreRowMorale.col-sm-8
-                  .row
-                    #autreInputMorale.col-sm-offset-1.col-sm-5.col-xs-4
-                      a#plus_autre_morale.btn.btn-primary
-                        i.fa.fa-plus
-                        |  Autres avocats
+              .col-sm-8
+                span.input-icon
+                  input#p_nom.form-control.text-capitalize(onchange='checkCell(this)', type='text', placeholder='Nom ou Dénommination sociale du client', list='p_list')
+                  i.fa.fa-home
+                  datalist#p_list
+                span.form_error
+            .form-group
+              label.col-sm-3.control-label Téléphone :
+              .col-sm-8
+                span.input-icon
+                  input#p_tel.form-control(type='number', placeholder='Téléphone du client')
+                  i.fa.fa-phone
+            .form-group
+              label.col-sm-3.control-label e-mail :
+              .col-sm-8
+                span.input-icon
+                  input#p_email.form-control(type='email', placeholder='Adresse electronique du client')
+                  i.fa.fa-envelope    
+      
       .col-md-6
-        .panel.panel-white
-          input#c_type(type='hidden', name='c_type', value='')
-          input(type='hidden', id='nb_other_client_contre', name='nb_other_client_contre', value='0')
-          input(type='hidden',id='nb_other_avocat_contre', name='nb_other_avocat_contre', value='0')
-          input(type='hidden', name='adverseP', value='')
-          input(type='hidden', name='adverseM', value='')
+        .panel.panel-white 
           .panel-heading
             h4.panel-title
-              span#tiltle_contre.text-bold PARTIE(S) ADVERSE(S)
-            .panel-tools
-              a#retour_contre.btn.btn-xs.btn-transparent-grey.popovers(data-original-title='', data-content='Retour', data-placement='top', data-trigger='hover')
-                i.fa.fa-mail-reply
-              .dropdown
-                a.btn.btn-xs.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
-                  i.fa.fa-cog
-                ul.dropdown-menu.dropdown-light.pull-right(role='menu')
-                  li
-                    a.panel-collapse.collapses(href='#')
-                      i.fa.fa-angle-up
-                      span Cacher
-                  li
-                    a.panel-refresh(href='#')
-                      i.fa.fa-refresh
-                      span Actualiser
-                  li
-                    a.panel-expand(href='#')
-                      i.fa.fa-expand
-                      span Plein écran
-              //
-                <a class="btn btn-xs btn-link panel-close" href="#">
-                <i class="fa fa-times"></i>
-                </a>
+              span#tiltle_c.text-bold ADVERSAIRE
           .panel-body.buttons-widget
-            #type_contre.form-group
+            .form-group
               label.col-sm-3.control-label
-                | Partie adverse 
+                | Dénomination 
                 span.symbol.required
                 |  :
-              .text-center.col-sm-4
-                button#btn_physique_contre.btn.btn-warning(type='button')
-                  | Personne 
-                  span.text-bold PHYSIQUE
-              .text-center.col-sm-3
-                button#btn_morale_contre.btn.btn-warning(type='button')
-                  | Personne 
-                  span.text-bold MORALE
-            #physique_contre.hidden
-              .form-group
-                label.col-sm-3.control-label 
-                  | Civilité 
-                  span.symbol.required
-                  |  :
-                .col-sm-8
-                  select.form-control(name='c_civilite', required='required')
-                    option(value='null')
-                    option(value='M.') Monsieur
-                    option(value='Madame') Madame
-                    option(value='Melle') Mademoiselle
-                    option(value='Elh') El Hadj
-                    option(value='Dr') Docteur
-                    option(value='Pr') Professeur
-                    option(value='Me') Metre
-              .form-group
-                label.col-sm-3.control-label
-                  | Nom 
-                  span.symbol.required
-                  |  :
-                .col-sm-8
-                  span.input-icon
-                    input#nom_contre.form-control(type='text', placeholder='Nom du contre', name='c_nom' list='contreP_list' onchange='verifiContreExiste(this)')
-                    i.fa.fa-user
-                  span.form_error
-                  datalist#contreP_list
-                    if (contres)
-                      each contre in contres
-                        if(contre.c_type == 'pp')
-                          option(value=contre._id) #{contre.pp.c_prenom} #{contre.pp.c_nom}
-              .form-group
-                label.col-sm-3.control-label
-                  | Prenom 
-                  span.symbol.required
-                  |  :
-                .col-sm-8
-                  span.input-icon
-                    input#prenom_contre.form-control(type='text', placeholder='Prenom du client', name='c_prenom')
-                    i.fa.fa-user
-                  span.form_error
-              .form-group
-                label.col-sm-3.control-label
-                  | Date nais. :
-                .col-sm-8
-                  span.input-icon
-                    input.form-control.date-picker(placeholder='Date de naissance', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years', name='c_dob')
-                    i.fa.fa-calendar
-              .form-group
-                label.col-sm-3.control-label
-                  | Lieu nais. :
-                .col-sm-8
-                  span.input-icon
-                    input.form-control(type='text', placeholder='Lieu de naissance', name='c_pob')
-                    i.fa.fa-home
-              .form-group
-                label.col-sm-3.control-label
-                  | Nationalité :
-                .col-sm-8
-                  span.input-icon
-                    input.form-control(type='text', placeholder='Nationalité', name='c_nationalite')
-                    i.fa.fa-home
-              .form-group
-                label.col-sm-3.control-label
-                  | Profession :
-                .col-sm-8
-                  span.input-icon
-                    input.form-control(type='text', placeholder='Profession du client', name='c_profession')
-                    i.fa.fa-money
-              .form-group
-                label.col-sm-3.control-label
-                  | Téléphone :
-                .col-sm-8
-                  span.input-icon
-                    input.form-control.input-mask-phone(type='number', placeholder='Téléphone du client', onkeyup="this.value=this.value.replace(/\D/g,'')", name='cp_tel')
-                    i.fa.fa-phone
-              .form-group
-                label.col-sm-3.control-label
-                  | e-mail :
-                .col-sm-8
-                  span.input-icon
-                    input.form-control(type='email', placeholder='adresse electronique du client', name='cp_email')
-                    i.fa.fa-envelope
-              .form-group
-                label.col-sm-3.control-label
-                  | Domicile :
-                .col-sm-8
-                  span.input-icon
-                    input.form-control(type='text', placeholder='Domicile du client', name='c_domicile')
-                    i.fa.fa-home
-              // Ajout de champs pour autres clients
-              #titre_contre
-              
-              #sec_contre
-              .form-group
-                label#contreLabel.col-sm-3.control-label
-                  | Autres adversaires
-                #contreRow.col-sm-8
-                  .row
-                    #contreInput.col-sm-offset-1.col-sm-5.col-xs-4
-                      a#plus_contre.btn.btn-primary
-                        i.fa.fa-plus
-                        |  Autres adversaires
-              // Ajout de champs pour autres avocats
-              #titre_avocatAdverse
-              
-              #autre_avocatAdverse
-              #addAutreContre.form-group
-                label#autreLabel.col-sm-3.control-label
-                  | Autres avocats
-                #autreRowContre.col-sm-8
-                  .row
-                    #autreInputContre.col-sm-offset-1.col-sm-5.col-xs-4
-                      a#plus_autreContre.btn.btn-primary
-                        i.fa.fa-plus
-                        |  Autres avocats
-            #morale_contre.hidden
-              .form-group
-                label.col-sm-3.control-label
-                  | Dénomination S. 
-                  span.symbol.required
-                  |  :
-                .col-sm-8
-                  span.input-icon
-                    input#denom_contre.form-control(type='text', placeholder='Dénommination sociale', name='c_denomination', list='ContreM_list', onchange='verifiContreExiste(this)')
-                    i.fa.fa-home
-                  span.form_error
-                  datalist#ContreM_list
-                    if (contres)
-                      each contre in contres
-                        if(contre.c_type == 'pm')
-                          option(value=contre._id) #{contre.pm.c_denomination}
-              .form-group
-                label.col-sm-3.control-label
-                  | Forme Sociale 
-                .col-sm-8
-                  span.input-icon
-                    select.form-control(name='c_rs')
-                        option(value=null)  Forme Sociale
-                        option(value='ETS') Entreprenant (ETS)
-                        option(value='SAS') SAS
-                        option(value='SA') SA
-                        option(value='SARL') SARL
-                        option(value='SASU') SASU
-                        option(value='SAU') SAU
-                        option(value='SARLU') SARLU
-                        option(value='ETAT') ETAT
-                        option(value='EPA') EPA
-                        option(value='EPIC') EPIC
-                        option(value='CT') Collectivité Territoriale
-                        option(value='ONG') ONG
-                        option(value='OI') Organisation Internationale
-              .form-group
-                label.col-sm-3.control-label
-                  | Capital :
-                .col-sm-8
-                  span.input-icon
-                    input.form-control(type='number', placeholder='Capital de la société', name='c_capital' onkeyup="this.value=this.value.replace(/\D/g,'')")
-                    i.fa.fa-money
-              .form-group
-                label.col-sm-3.control-label
-                  | RCCM  :
-                .col-sm-8
-                  span.input-icon
-                    input.form-control(type='text', placeholder='Numero RCCM', name='c_rccm')
-                    i.fa.fa-quote-left
-              .form-group
-                label.col-sm-3.control-label
-                  | NIF :
-                .col-sm-8
-                  span.input-icon
-                    input.form-control(type='text', placeholder='NIF', name='c_nif')
-                    i.fa.fa-home
-              .form-group
-                label.col-sm-3.control-label
-                  | Représentant :
-                .col-sm-8
-                  input.form-control(type='text', placeholder='Représentant Légal', name='c_representant')
-              .form-group
-                label.col-sm-3.control-label
-                  | Siège social  
-                  span.symbol.required
-                  | :  
-                .col-sm-8
-                  span.input-icon
-                    input.form-control(type='text', placeholder='Siège social', name='c_siege')
-                    i.fa.fa-home
-              .form-group
-                label.col-sm-3.control-label
-                  | Téléphone :
-                .col-sm-8
-                  span.input-icon
-                    input.form-control.input-mask-phone(type='number', placeholder='Téléphone du client', onkeyup="this.value=this.value.replace(/\D/g,'')", name='cm_tel')
-                    i.fa.fa-phone
-              .form-group
-                label.col-sm-3.control-label
-                  | e-mail :
-                .col-sm-8
-                  span.input-icon
-                    input.form-control(type='email', placeholder='Email du client', name='cm_email')
-                    i.fa.fa-envelope
-              // Ajout de champs pour autres clients
-              #titre_contre_morale
-              #sec_contre_morale
-              .form-group
-                label#contreMoraleLabel.col-sm-3.control-label
-                  | Autres adversaires
-                #contreMoraleRow.col-sm-8
-                  .row
-                    #contreMoraleInput.col-sm-offset-1.col-sm-5.col-xs-4
-                      a#plus_contre_morale.btn.btn-primary
-                        i.fa.fa-plus
-                        |  Autres adversaires
-              // Ajout de champs pour autres avocats
-              #titre_avocatAdverse_morale
-              #autre_avocatAdverse_morale
-              #addAutreMoraleContre.form-group
-                label#autreLabelContreMorale.col-sm-3.control-label
-                  | Autres avocats
-                #autreRowContreMorale.col-sm-8
-                  .row
-                    #autreInputContreMorale.col-sm-offset-1.col-sm-5.col-xs-4
-                      a#plus_autreContreMorale.btn.btn-primary
-                        i.fa.fa-plus
-                        | Autres avocats
+              .col-sm-8
+                span.input-icon
+                  input#c_nom.form-control.text-capitalize(onchange='checkCell(this)', type='text', placeholder='Nom ou Dénommination sociale de la partie adverse', list='c_list')
+                  i.fa.fa-home
+                  datalist#c_list
+                span.form_error
+            .form-group
+              label.col-sm-3.control-label Téléphone :
+              .col-sm-8
+                span.input-icon
+                  input#c_tel.form-control(type='number', placeholder='Téléphone  de la partie adverse')
+                  i.fa.fa-phone
+            .form-group
+              label.col-sm-3.control-label e-mail :
+              .col-sm-8
+                span.input-icon
+                  input#c_email.form-control(type='email', placeholder='Adresse electronique  de la partie adverse')
+                  i.fa.fa-envelope    
     .row
       .col-md-12
         .panel.panel-white
@@ -623,9 +118,10 @@ block content
                   span.symbol.required
                   | Ces champs sont obligatoires.
               .col-md-2
-                button.btn.btn-green.btn-block(type='submit')
+                button#btn-validate.btn.btn-green.btn-block(onclick='creation()', data-toggle='modal')
                   | Enregistrer 
                   i.fa.fa-arrow-circle-right
+  
   // end: PAGE CONTENT
 append jscripts
   script(src='/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js')
