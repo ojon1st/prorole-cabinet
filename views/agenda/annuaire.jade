@@ -19,47 +19,7 @@ block content
           h4.panel-title
             | Annuaire 
             span.text-bold téléphonique
-          .panel-tools
-            .dropdown
-              a.btn.btn-xs.dropdown-toggle.btn-transparent-grey(data-toggle='dropdown')
-                i.fa.fa-cog
-              ul.dropdown-menu.dropdown-light.pull-right(role='menu')
-                li
-                  a.panel-collapse.collapses(href='#')
-                    i.fa.fa-angle-up
-                    span Cacher
-                li
-                  a.panel-refresh(href='#')
-                    i.fa.fa-refresh
-                    span Actualiser
-                li
-                  a.panel-expand(href='#')
-                    i.fa.fa-expand
-                    span Plein écran
-            //
-              <a class="btn btn-xs btn-link panel-close" href="#">
-              <i class="fa fa-times"></i>
-              </a>
         .panel-body
-          .row
-            .col-md-12.space20
-              //-button.btn.btn-orange.add-row
-                | Ajouter un nouveau contact 
-                i.fa.fa-plus
-              .btn-group.pull-right
-                button.btn.btn-green.dropdown-toggle(data-toggle='dropdown')
-                  | Exporter 
-                  i.fa.fa-angle-down
-                ul.dropdown-menu.dropdown-light.pull-right
-                  li
-                    a.export-pdf(href='#', data-table='#sample-table-2', data-ignorecolumn='3,4')
-                      | Expoter en PDF
-                  li
-                    a.export-excel(href='#', data-table='#sample-table-2', data-ignorecolumn='3,4')
-                      | Exporter en Excel
-                  li
-                    a.export-doc(href='#', data-table='#sample-table-2', data-ignorecolumn='3,4')
-                      | Exporter en Word
           .table-responsive
             table#sample-table-2.table.table-striped.table-hover
               thead

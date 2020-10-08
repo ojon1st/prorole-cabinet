@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 
 var ContreSchema = new Schema({ 
   c_nom:{type:String},
-  c_tel:{type:Number},
+  c_tel:{type:Number, default:null},
   c_email:{type:String}
 });
 

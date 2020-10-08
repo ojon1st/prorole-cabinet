@@ -1,7 +1,7 @@
 #horizontal-menu.navbar.navbar-inverse.hidden-sm.hidden-xs.inner
   .container
     .navbar-collapse
-      ul.nav.navbar-nav.hidden-xs
+      ul.nav.navbar-nav
         li
           a(href='/')
             | Accueil
@@ -10,7 +10,7 @@
             | Dossiers 
             i.icon-arrow
           ul.dropdown-menu
-            li
+            li.hidden-xs
               a(href='/dossiers/dossier/create')
                 span.title  Créer un nouveau dossier 
             li
@@ -28,9 +28,6 @@
             li
               a(href='/dossiers/decision_a_lever')
                 | Décisions à lever
-            //li
-              a(href='#')
-                | Repartition des dossiers
         li.dropdown
           a.dropdown-toggle(data-toggle='dropdown', href='#')
             | Agendas 
@@ -45,11 +42,11 @@
         //-li
           a(href='/ratios/indicateur')
             span.title  Indicateurs 
-        li.dropdown
+        li.dropdown.hidden-xs
           a.dropdown-toggle(href='#', data-toggle='dropdown')
             | Compte 
             i.icon-arrow
           ul.dropdown-menu
             li
               a(href='/administrateur/configuration_du_cabinet')
-                | Informations du cabinet
+                | Modification du mot de passe

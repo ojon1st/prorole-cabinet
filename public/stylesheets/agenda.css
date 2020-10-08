@@ -1,0 +1,37 @@
+body {
+    margin: 40px 10px;
+    padding: 0;
+    font-family: "Lucida Grande", Helvetica, Arial, Verdana, sans-serif;
+    font-size: 14px;
+}
+#calendar,  #calendar-xs{
+background-color: white;
+max-width: 90%;
+margin: 0 auto;
+}
+.fc-event .fc-content > span:first-child:before, .event-category:before{
+    display:none;
+}
+.event-bg-renvoi{
+    color:#88BBC8!important;
+    background-color:white!important;
+}
+.event-bg-calendrier{
+    color:#55909F!important;
+    background-color:white!important;
+}
+.event-bg-renvoi-retard, .event-bg-calendrier-retard{
+    color:red!important;
+    background-color:white!important;
+}
+.text-upper-retard{
+    color:red!important;
+}
+a.fc-day-grid-event:hover{
+    color:#4a8fa0!important;
+}
+.fc-day-header{
+    padding-top: 5px!important; 
+    padding-bottom: 5px!important;
+    text-transform: capitalize;
+}

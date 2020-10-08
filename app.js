@@ -7,11 +7,11 @@ const flash = require('express-flash-notification');
 const session = require('express-session');
 var methodOverride = require('method-override');
 var passport = require('passport');
+var async = require('async');
 var LocalStrategy = require('passport-local').Strategy;
 //var flash = require('connect-flash');
 var bcrypt = require('bcryptjs');
 var dotenv = require('dotenv');
-
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var dossiersRouter = require('./routes/dossiers');
@@ -22,7 +22,7 @@ var adminsRouter = require('./routes/administrateurs');
 
 var mongoose = require('mongoose');
 mongoose.set('useCreateIndex', true);
-var mongoDB = process.env.DATABASE ||'mongodb://legaltech_user:legaltech2019@ds251284.mlab.com:51284/legaltech_p_db'; //en ligne
+var mongoDB = process.env.DATABASE ||'mongodb://admin_prorole:az34ty78@ds149489.mlab.com:49489/prorole_avocat'; //en ligne
 // var mongoDB = 'mongodb://127.0.0.1:27017/legaltech'; //local
 mongoose.connect(mongoDB,  {useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.Promise = global.Promise;
@@ -97,7 +97,7 @@ app.use(passport.session());
 
 app.use('/', indexRouter);
 app.use(function(req, res, next){
-  res.locals.utilisateur = req.user;
+  res.locals.cabinet = req.user;
   next();
 });
 app.use('/users',ensureAuthenticated, usersRouter);

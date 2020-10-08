@@ -1,8 +1,6 @@
 // INITIALIZE FUNCTIONS
 
-var liste_des_pieces = [];
-
-jQuery(document).ready(function () {
+jQuery(document).on('ready', function () {
   $('#renseigner_mise_en_etat').on('click', function() {
     if ( $('#id_instruction').val() != "" || $('#id_instruction').val() != 'undefined'){
       mise_etat_get($('#id_dossier').val(),$('#id_instruction').val());
@@ -12,35 +10,18 @@ jQuery(document).ready(function () {
 
 
 /*****************   page functions    **********************/
-
-function autoriser_modif() {
-  $('select[name=qualite]').attr('disabled', false);
-  $('select[name=nature]').attr('disabled', false);
-  $(".modifier_ou_sauvegarder").toggleClass("hidden"); // .modifier_ou_sauvegarder
-
-}
-
-function empecher_modif() {
-  $('select[name=nature]').attr('disabled', true);
-  $('select[name=qualite]').val()('readonly', true);
-  $(".modifier_ou_sauvegarder").toggleClass("hidden");
-}
-
 function show_notification(shortCutFunction, title, msg) {
-  //var shortCutFunction = "success";
   var $timeOut = 5000;
   var $showEasing = "swing";
   var $hideEasing = "linear";
   var $showMethod = "fadeIn";
   var $hideMethod = "fadeOut";
 
-
   toastr.options = {
-    closeButton: true,
-    positionClass: 'toast-top-full-width' || 'toast-top-right',
+    closeButton: false,
+    positionClass: 'toast-top-right',
     onclick: null
   };
-
   var $toast = toastr[shortCutFunction](msg, title);
 }
 
@@ -51,15 +32,17 @@ function update_dossier(id_dossier) {
   data.qualite = $('select[name=qualite]').val();
   data.nature = $('select[name=nature]').val();
   
-
   $.ajax({
     type: 'POST',
     data: JSON.stringify(data),
     contentType: 'application/json',
     url: route_update_infos_dossier,
     success: function (data) {
-      window.location.href = "/dossiers/dossier/" + id_dossier;
-      return;
+      if(data.update == true){
+        show_notification(data.type_of_response, data.al_title, data.al_msg);
+        setTimeout(window.location.href="/dossiers/dossier/"+id_dossier, 5000);
+      }
+      
     }
   });
 }
@@ -74,52 +57,93 @@ $("select[name=juridiction]").on('focus',function () {
 
 
 
-/********************  Instance  **********************/
-
+/********************  Instruction  **********************/
+function choice_juridiction (division){
+  show_notification('info', 'Opération non autorisée', 'Veuillez choisir une juridiction du niveau <strong class="text-uppercase">' + division + '</strong> pour pouvoir effectuer une operation d\'instruction');
+}
 
       /***************Juridiction************/
-function confirm_new_juridiction(selectObject, id_dossier, division) {
-
-  if($("select[name=juridiction]").val() != ''){
-    create_instance(selectObject.value,id_dossier, division);
+function confirm_new_juridiction(selectObject, id_dossier, new_division) {
+  if(selectObject.value != 'null'){
+    let division;
+    let control = [];
+    let degre = ['instance', 'appel', 'cour'];
+    for(i in degre){
+      if(new_division == degre[i]){
+        division = check_division (degre[i]);
+      }
+      else{
+        control.push(check_division (degre[i]));
+      }
+    }
+    if(division == false && control[0] == false && control[1] == false){
+      if((new_division == 'instance' && ($('#delibere_appel').val() != 'true' && $('#delibere_cour').val() != 'true')) || (new_division == 'appel' && $('#delibere_cour').val() != 'true') || new_division == 'cour'){
+        create_instance(selectObject.value, id_dossier, new_division);
+      }
+      else{
+        show_notification('error', 'Changement de juriduction', 'Non respect de la procedure judicaire, la juridiction ne peut pas être changer');
+      }
+    }
+    else{
+      show_notification('error', 'Changement de juriduction', 'Il y\'a déjà une instruction en cours, la juridiction ne peut pas être changer');
+    }
   }
 };
 
+function check_division (division){
+  let test = renvoi = mee = decision = false;
+  ($(`#renvoi_${division}`).val() === 'true' ? renvoi = true: '');
+  ($(`#mee_${division}`).val() === 'true' ? mee = true: '');
+  ($(`#delibere_${division}`).val() === 'true' ? decision = true: '');
+  if((renvoi == true && decision == false) || (mee == true && decision == false)){
+    test = true;
+  }
+  return test;
+}
+
+function check_delibere(division){
+  let degre = ['', 'appel', 'cour'];
+  let delibere_instance = delibere_appel = delibere = false;
+  let instance = ($('#delibere_instance').val() != undefined ? $('#delibere_instance').val(): '');
+  let appel = ($('#delibere_appel').val() != undefined ? $('#delibere_appel').val(): '');
+  if(division == degre[1]){
+    delibere_instance = (instance.trim() != ''  ? true: false);
+    (delibere_instance == true  ? delibere = true : '');
+  }
+  if(division == degre[2]){
+    delibere_instance = (instance.trim() != ''  ? true: false);
+    delibere_appel = (appel.trim() != ''  ? true: false);
+    if(delibere_instance == true || delibere_appel == true){
+      delibere = true;
+    }
+  }
+  return delibere;
+}
 
 // instance = instruction
 function create_instance(id_juridiction, id_dossier, division) {
   var route_create_instance_dossier = '/dossiers/dossier/'+id_dossier+'/instruction/create';
   var data = {};
-  
   data.juridiction = id_juridiction;
   data.dossier = id_dossier;
   data.division = division
-  let _id = $('#id_instruction').val();
-  if(_id.trim() != ''){
+  if($('#id_instruction').val() != ''){
     data.instruction = $('#id_instruction').val();
+    data.decision = check_delibere(division);
   }
-
   $.ajax({
     type: 'POST',
     data: JSON.stringify(data),
     contentType: 'application/json',
     url: route_create_instance_dossier,
     success: function (data) {
-      var res = data;
       if(data.type_of_response == 'success'){
-        if (data.creation == true){
-          // swal(data.al_title, data.al_msg, "success");
-          // setTimeout(location.reload(), 5000);
-          window.location.href="/dossiers/dossier/"+id_dossier;
-        }else{
-          // show_notification('error', data.al_title, data.al_msg)
-          //setTimeout(location.reload(), 5000);
-        }
+        show_notification(data.type_of_response, data.al_title, data.al_msg)
+        setTimeout(window.location.href="/dossiers/dossier/"+id_dossier, 5000);
       }
-      
     }
   });
-};
+}
 
       /****************Renvois***************/
 function get_renvoi_infos(id_dossier, division) {
@@ -130,9 +154,9 @@ function get_renvoi_infos(id_dossier, division) {
   var juridiction_value = $("#juridiction_"+division).val();
   
   if (motif == "" || date == "" || type == "") {
-    swal("La Date saisie ou le Type choisi ou le Motif est invalide!");
+    show_notification('info', 'Renvoi non pris en charge', 'Veuillez remplir les champs <strong>date</strong>, <strong>type</strong> et <strong>motif</strong> afin que le systeme le prend en charge')
   } else if (juridiction_value == null || juridiction_value == "undefined" || juridiction_value == "") {
-    swal("Veuillez choisir la juridiction du dossier en cours");
+    show_notification('info', 'Opération non autorisée', 'Veuillez choisir une juridiction pour pouvoir effectuer une operation d\'instruction');
   } else {
     // save infos renvoi
     create_renvoi(date, type, motif, id_dossier, juridiction_value, division);
@@ -142,7 +166,6 @@ function get_renvoi_infos(id_dossier, division) {
 };
 
 function create_renvoi(date_renvoi, type_renvoi, motif_renvoi, id_dossier,juridiction, division) {
-  
   var route_create_renvoi_instance_dossier= '/dossiers/dossier/'+id_dossier+'/instruction/renvoi/create';
   var data = {};
   data.date_renvoi = date_renvoi;
@@ -202,14 +225,12 @@ function verifDate(champ) {
   {
     champ.style.backgroundColor = "#fba";
     champ.value = "";
-    //document.getElementById("btn_renvoi").style.display = "none";
     document.getElementById("error").innerHTML = "<div class='alert alert-warning text-center col-sm-offset-2 col-sm-8 col-md-offset-2 col-md-8'><a href='' class='close' data-dismiss='alert'>&times;</a><strong>Attention :</strong> Veuillez une date superieure a aujourd'hui.</div>";
   }
 
   else
   {
     champ.style.backgroundColor = "";
-    //document.getElementById("btn_renvoi").style.display = "block";
     document.getElementById("error").innerHTML = "";
   }
 }
@@ -225,10 +246,7 @@ function mise_en_etat(le_form){ // x = le nbre de dfois qu'on appelle le form et
   var i = 0;
   if (le_form == 'mee'){
     i = mee;
-    $("#"+le_form).append('<div class="row"><div class="col-md-2"><label class="control-label text-bold">Conclusions</label><select name="conclusion_'+le_form+'_'+i+'"class="form-control"><option disabled="" selected="">Selectionner</option><option value="nous"> Nous </option><option value="parties adverses"> Parties adverses </option></select></div><div class="col-md-2"><label class="control-label text-bold">Du</label><input name="du_'+le_form+'_'+i+'" class="form-control date-picker" type="text" data-date-format="dd-mm-yyyy" data-date-viewmode="years" placeholder="Saisir une date" onchange="verifDate(this)" /></div><div class="col-md-2"><label class="control-label">Au</label><input name="au_'+le_form+'_'+i+'" class="form-control date-picker" type="text" data-date-format="dd-mm-yyyy" data-date-viewmode="years" placeholder="Saisir une date" onchange="verifDate(this)"/></div><div class="col-md-2 text-bold"><label class="control-label" for="">À</label><input name="h_'+le_form+'_'+i+'" class="form-control time-picker popovers" type="time" data-original-title="" data-content="Chiffre" data-placement="top" data-trigger="hover" onkeyup="this.value=this.value.replace(/\D/g,\'\')" value="15:00"/></div><div class="col-md-4"><label class="control-label"></label><textarea name="com_'+le_form+'_'+i+'" class="form-control" placeholder="Texte"></textarea></div></div><br/>');
-  } else if (le_form == 'dil'){
-    i = dil;
-    $("#"+le_form).append('<div class="row"><div class="col-md-2"><label class="control-label text-bold">Du</label><input name="du_'+le_form+'_'+i+'" class="form-control date-picker" type="text" data-date-format="dd-mm-yyyy" data-date-viewmode="years" placeholder="Saisir une date" onchange="verifDate(this)" /></div><div class="col-md-2"><label class="control-label">Au</label><input name="au_'+le_form+'_'+i+'" class="form-control date-picker" type="text" data-date-format="dd-mm-yyyy" data-date-viewmode="years" placeholder="Saisir une date" onchange="verifDate(this)" /></div><div class="col-md-2 text-bold"><label class="control-label" for="">À</label><input name="h_'+le_form+'_'+i+'" class="form-control time-picker popovers" type="time" data-original-title="" data-content="Chiffre" data-placement="top" data-trigger="hover" onkeyup="this.value=this.value.replace(/\D/g,\'\')" value="15:00"/></div><div class="col-md-6"><label class="control-label"></label><textarea name="com_'+le_form+'_'+i+'" class="form-control" placeholder="Texte"></textarea></div></div><br/>');
+    $("#"+le_form).append('<div class="row"><div class="col-md-2"><label class="control-label text-bold">Conclusions</label><select name="conclusion_'+le_form+'_'+i+'"class="form-control"><option disabled="" selected="">Selectionner</option><option value="nous"> Nous </option><option value="parties adverses"> Parties adverses </option></select></div><div class="col-md-2"><label class="control-label text-bold">Du</label><input name="du_'+le_form+'_'+i+'" class="form-control date-picker" type="text" data-date-format="dd-mm-yyyy" data-date-viewmode="years" placeholder="Saisir une date" onchange="" /></div><div class="col-md-2"><label class="control-label">Au</label><input name="au_'+le_form+'_'+i+'" class="form-control date-picker" type="text" data-date-format="dd-mm-yyyy" data-date-viewmode="years" placeholder="Saisir une date" onchange=""/></div><div class="col-md-2 text-bold"><label class="control-label" for="">À</label><input name="h_'+le_form+'_'+i+'" class="form-control time-picker popovers" type="time" data-original-title="" data-content="Chiffre" data-placement="top" data-trigger="hover" onkeyup="this.value=this.value.replace(/\D/g,\'\')" value="15:00"/></div><div class="col-md-4"><label class="control-label"></label><textarea name="com_'+le_form+'_'+i+'" class="form-control" placeholder="Texte"></textarea></div></div><br/>');
   }
 
   addDatePicker();
@@ -320,23 +338,25 @@ function save_decision(id_dossier, id_instruction, division){
   
   var la_route = '/dossiers/dossier/'+id_dossier+'/instruction/'+id_instruction+'/decision/save'; 
   var data = {};
-  data.decision = $('#decision_'+division).val();
-  data.juridiction = $('#juridiction'+division).val();
-  data.division = division;
-  $.ajax({
-    type: 'POST',
-    data: JSON.stringify(data),
-    contentType: 'application/json',
-    url: la_route,
-    success: function (data) {
-      $('textarea[name=decision]').val(data.decision)
-     
-      $('textarea[name=decision]').attr('readonly', true);
-      location.reload()
-      return;
-    }
-  });
-  
+  let decision = $('#decision_'+division).val();
+  if(decision.trim != ''){
+    data.decision = $('#decision_'+division).val();
+    data.juridiction = $('#juridiction_'+division).val();
+    data.division = division;
+    $.ajax({
+      type: 'POST',
+      data: JSON.stringify(data),
+      contentType: 'application/json',
+      url: la_route,
+      success: function (data) {
+        window.location.href="/dossiers/dossier/"+id_dossier;
+      }
+    });
+  }
+  else{
+    $('#decision_'+division).css('backgroundColor', '#ccc');
+  }
+    
 }
 
 
@@ -350,156 +370,6 @@ function addDatePicker(){
   });
 };
 
-function upload_decision_file(instruction_id) {
-  
-  var file = $('#udf').prop('files')[0];
-  
-  var mon_pdf = new FormData();
-  mon_pdf.append('decision_file', file);
-  
-  var ma_route = '/dossiers/dossier/instruction/' + instruction_id + '/save_delibere_file';
-  
-  $.ajax({
-    url: ma_route,
-    type: 'POST',
-    data: mon_pdf,
-    cache:false,
-    processData: false, // tell jQuery not to process the data
-    contentType: false, // tell jQuery not to set contentType 
-  }).done(function( data ) {
-    
-      
-      location.reload();
-  })
-  .fail(console.log)
-};
-
-
-function save_pieces_du_dossier(dossier_id) {
-  
-  
-  
-  var file = $('#pieces_du_dossier').prop('files')[0];
-  var piece_type = $('#type_pieces_du_dossier').val();
-  
-  if(file != undefined && piece_type != null && dossier_id != ''){
-    var my_file = new FormData();
-    my_file.append(piece_type, file);
-
-    var ma_route = '/dossiers/dossier/'+dossier_id+'/save_pieces/'+piece_type;
-
-    $.ajax({
-      url: ma_route,
-      type: 'POST',
-      data: my_file,
-      cache:false,
-      processData: false, // tell jQuery not to process the data
-      contentType: false, // tell jQuery not to set contentType 
-    }).done(function( data ) {
-
-
-        location.reload();
-    })
-    .fail(console.log)
-} else{
-  if(piece_type == null){
-           alert('Veuillez renseigner le type de pièce');
-  }else if(file == undefined){
-    alert('Veuillez sélectionner une pièce');
-           }else if(dossier_id == ''){
-                    alert('Aucun numéro de dossier en cours') ;
-                    }
-}
-};
-
-
-function afficher_pieces_du_dossier(dossier_id){
-  
-  var type_piece = $('#type_pieces_visualisation').val();
-  
-  
-    $.ajax({
-    type: 'GET',
-    //data: ,
-    contentType: 'application/json',
-    url: '/dossiers/dossier/'+dossier_id+'/type_piece/'+type_piece+'/get_liste_des_pieces',
-    success: function (data) {
-      console.log(typeof(data))
-      
-      var tableRef = document.getElementById('table_des_pieces').getElementsByTagName('tbody')[0];
-      while(tableRef.hasChildNodes())
-      {
-         tableRef.removeChild(tableRef.firstChild);
-      }
-      
-      data.forEach(function(piece){
-        console.log(piece)
-        
-
-        // Insert a row in the table at the last row
-        var newRow   = tableRef.insertRow(tableRef.rows.length);
-
-        // Insert a cell in the row at index 0
-        var Cell1  = newRow.insertCell(0);
-        var Cell2  = newRow.insertCell(1);
-        var Cell3  = newRow.insertCell(2);
-        var Cell4  = newRow.insertCell(3);
-        
-        if (piece.piece_url && checkURL(piece.piece_url) == false){
-          Cell1.innerHTML = '<td><span class="preview"></span><a href="'+piece.piece_url+'" download="'+piece.originalname+'"  title="'+piece.name+'" data-gallery=""><iframe src="'+piece.piece_url+'" width="80" height="80" scrolling="no"></iframe></a></td>'
-        }else{
-          Cell1.innerHTML = '<td><span class="preview"></span><a href="'+piece.piece_url+'" download="'+piece.originalname+'"  title="'+piece.name+'" data-gallery=""><img src="'+piece.piece_url+'" width="80" height="80" scrolling="no"></a></td>'
-        }
-        
-        if (piece.error){
-          Cell2.innerHTML = '<td><span class="label label-danger"> Error </span> '+piece.error+' </td>';
-        }else{
-          if(piece.piece_url){
-            Cell2.innerHTML = '<td><a href="'+piece.piece_url+'" title="'+piece.originalname+'" download="'+piece.originalname+'">'+piece.originalname+'</a></td>'
-          }else{
-            Cell2.innerHTML = '<td><span class=""> '+piece.originalname+' </span> </td>';
-          }
-        }
-                
-        Cell3.innerHTML = '<td><span class="size"> '+ formatBytes(piece.size,2) +' </span> </td>';
-        
-        Cell4.innerHTML = '<td><span > '+ piece.classeur +' </span> </td>';
-        
-      })
-      
-    }
-  });
-  
-}
-
-
-function uploadfiles(file, user_id) {
-  /*console.log(file)
-  return;*/
-  //document.getElementById('image-preview').src = window.URL.createObjectURL(file);
-  var mon_image = new FormData();
-  mon_image.append('avatar', file);
-  
-  $.ajax({
-    url: '/administrateur/utilisateur/upload_photo/'+user_id,
-    type: 'POST',
-    data: mon_image,
-    cache:false,
-    processData: false, // tell jQuery not to process the data
-    contentType: false, // tell jQuery not to set contentType 
-  }).done(function( data ) {
-      location.reload();
-  })
-  .fail(console.log)
-};
-
-function formatBytes(a,b){
-  if(0==a)return"0 Bytes";
-  var c=1024,d=b||2,e=["Bytes","KB","MB","GB","TB","PB","EB","ZB","YB"],f=Math.floor(Math.log(a)/Math.log(c));
-  return parseFloat((a/Math.pow(c,f)).toFixed(d))+" "+e[f];
-};
-
-function checkURL(url) { return(url.match(/\.(jpeg|jpg|gif|png)$/) != null); };
 
 function type_complete_motif(type){
   var motif = type.value;

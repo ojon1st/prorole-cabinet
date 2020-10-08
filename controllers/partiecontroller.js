@@ -40,32 +40,18 @@ exports.get_parties = function(req, res, next){
 };
 
 exports.pour_update = [
-
   // Process request after validation and sanitization.
   (req, res, next) => {
-
-
-    if('clientP' in req) {
-      req.clientP.updateOne({
-        pp: req.body
+    if('client' in req) {
+      req.client.updateOne({
+        p_nom: req.body.p_nom,
+        p_tel:req.body.p_tel,
+        p_email: req.body.p_email
       }, function(err) {
         if(err) {
           console.log(err)
         }
-        console.log('CLIENTP UPDATED')
-        return res.redirect('/dossiers/dossier/'+req.body.dossier_id);
-      })
-      .catch(console.log);
-    }
-
-    if('clientM' in req) {
-      req.clientM.updateOne({
-        pp: req.body
-      }, function(err) {
-        if(err) {
-          console.log(err)
-        }
-        console.log('CLIENTM UPDATED')
+        console.log('CLIENT UPDATED');
         return res.redirect('/dossiers/dossier/'+req.body.dossier_id);
       })
       .catch(console.log);
@@ -75,32 +61,18 @@ exports.pour_update = [
 ];
 
 exports.contre_update = [
-
   // Process request after validation and sanitization.
   (req, res, next) => {
-
-
-    if('contreP' in req) {
-      req.contreP.updateOne({
-        pp: req.body
+    if('contre' in req) {
+      req.contre.updateOne({
+        c_nom: req.body.c_nom,
+        c_tel:req.body.c_tel,
+        c_email: req.body.c_email
       }, function(err) {
         if(err) {
           console.log(err)
         }
-        console.log('CONTREP UPDATED')
-        return res.redirect('/dossiers/dossier/'+req.body.dossier_id);
-      })
-      .catch(console.log);
-    }
-
-    if('contreM' in req) {
-      req.contreM.updateOne({
-        pm: req.body
-      }, function(err) {
-        if(err) {
-          console.log(err)
-        }
-        console.log('CONTREM UPDATED')
+        console.log('CONTRE UPDATED');
         return res.redirect('/dossiers/dossier/'+req.body.dossier_id);
       })
       .catch(console.log);

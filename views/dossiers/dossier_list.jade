@@ -61,29 +61,28 @@ block content
             .col-md-12  
               .table-responsive
                 table#sample-table-2.table.table-striped.table-hover
-                  thead
+                  thead.hidden-xs
                     tr
                       th Référence dossier numerique
                       th Parties
                       th Référence dossier physique
-                      //- Dossiers correspondants
+                  thead.visible-xs
+                    tr
+                      th Réf
+                      th Parties
+                      th Réf P.
                   tbody
                    each dossier in list_dossiers
                       tr.go_to_dossier
                         td #{dossier.ref_d}
                         td 
-                          a(class='button' href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.p_nom} c/ #{dossier.contre.c_nom}
+                          a.button.hidden-xs(href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.p_nom} c/ #{dossier.contre.c_nom}
+                          .button.visible-xs #{dossier.pour.p_nom} c/ #{dossier.contre.c_nom}
                         td #{dossier.ref_d_p}
 append jscripts
   // start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
   script(src='/assets/plugins/holder/holder.js')
   script(src='/assets/plugins/tableExport/tableExport.js')
-  script(src='/assets/plugins/tableExport/jquery.base64.js')
-  script(src='/assets/plugins/tableExport/html2canvas.js')
-  script(src='/assets/plugins/tableExport/jquery.base64.js')
-  script(src='/assets/plugins/tableExport/jspdf/libs/sprintf.js')
-  script(src='/assets/plugins/tableExport/jspdf/jspdf.js')
-  script(src='/assets/plugins/tableExport/jspdf/libs/base64.js')
   script(src='/assets/js/table-export.js')
   script(src='/javascripts/dossier_list.js')
   script(src='./middles/encryption.js')

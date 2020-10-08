@@ -1,5 +1,4 @@
 var Counter = require('../models/counter');
-var Utilisateur = require('../models/utilisateur');
 var mongoose = require('mongoose');
 var moment = require('moment');
 var async = require('async');
@@ -41,22 +40,6 @@ DossierSchema.pre('save', function(next){
     next();
   }
 });
- 
-function get_initiales(titulaire_comp) {
-  // var str = "";
-  // var reference = "";
-
-  //on découpe le prénom puis le nom
-  var titulaire_comp_tab = titulaire_comp.split("/");
-
-  // on crée la variable des initiales et on y ajoute nos initiales
-  var initiales = '';
-  titulaire_comp_tab.forEach(function(element) {
-    initiales += element.charAt(0);
-  });
-
-  return initiales.replace(/[^a-zA-Z0-9]+/g, "");
-};
 
 // Virtual for this genre instance URL.
 DossierSchema

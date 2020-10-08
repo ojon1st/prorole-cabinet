@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 
 var PourSchema = new Schema({
   p_nom:{type:String},
-  p_tel:{type:Number},
+  p_tel:{type:Number, default:null},
   p_email:{type:String}
 });
 

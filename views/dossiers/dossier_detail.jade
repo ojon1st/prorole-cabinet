@@ -23,15 +23,15 @@ block content
   
   - function formatBytes(a,b){if(0==a)return"0 Bytes";var c=1024,d=b||2,e=["Bytes","KB","MB","GB","TB","PB","EB","ZB","YB"],f=Math.floor(Math.log(a)/Math.log(c));return parseFloat((a/Math.pow(c,f)).toFixed(d))+" "+e[f]};
   - function checkURL(url) { return(url.match(/\.(jpeg|jpg|gif|png)$/) != null); };
-  input.hidden#id_dossier(value=dossier._id disabled)
+  input#id_dossier(type='hidden', value=dossier._id, disabled)
   if (i_instance[0] && !i_appel[0] && !i_cour[0])
-    input.hidden#id_instruction(value=(i_instance[0]._id) disabled)
+    input#id_instruction(type='hidden', value=(i_instance[0]._id), disabled)
   else if (i_appel[0] && !i_cour[0])
-    input.hidden#id_instruction(value=(i_appel[0]._id) disabled)
+    input#id_instruction(type='hidden', value=(i_appel[0]._id), disabled)
   else if (i_cour[0])
-    input.hidden#id_instruction(value=(i_cour[0]._id) disabled)
+    input#id_instruction(type='hidden', value=(i_cour[0]._id), disabled)
   else
-    input.hidden#id_instruction(value='' disabled)
+    input#id_instruction(type='hidden', value='', disabled)
   .row
     .col-md-12
       ol.breadcrumb
@@ -58,21 +58,28 @@ block content
                   .row
                     .col-md-6
                       .form-group
-                        label.col-sm-12.dos-text
-                          | Réf. dossier numerique : #{dossier.ref_d}
-                    .col-md-6
-                      .form-group
-                        label.col-sm-12.dos-text
-                          if(dossier.ref_d)
-                            | Réf. dossier physique : #{dossier.ref_d_p}
+                        label.col-sm-12.dos-text Réf. dossier numerique : #{dossier.ref_d}
+                    if(dossier.ref_d)
+                      .col-md-6
+                        .form-group
+                          label.col-sm-12.dos-text Réf. dossier physique : #{dossier.ref_d_p}
+                          input#ref_d_p(type='hidden', value='#{dossier.ref_d_p}') 
                   .form-group
-                    label.col-sm-12.dos-text
+                    label.col-sm-9.dos-text
                       | Pour : 
                       strong.str #{dossier.pour.p_nom}
+                    .col-sm-3
+                      a.btn.btn-link.show-calendar(href='#infoPour')
+                        span.fa.fa-plus
+                        strong d'infos
                   .form-group
-                    label.col-sm-12.dos-text
+                    label.col-sm-9.dos-text
                       | Contre : 
                       strong.str #{dossier.contre.c_nom}
+                    .col-sm-3
+                      a.btn.btn-link.show-calendar(href='#infoContre')
+                        span.fa.fa-plus
+                        strong d'infos
                   if(dossier.ref_d_p == '' || dossier.ref_d_p == undefined)
                     .form-group
                       label.col-sm-3.dos-text
@@ -84,29 +91,33 @@ block content
                       | Qualité :
                     .col-sm-8
                       select.form-control(name='qualite')
-                        if (dossier.qualite)
-                          option(value=value='#{dossier.qualite}', selected='#{dossier.qualite}') #{dossier.qualite}
-                        option(value='Demandeur') Demandeur (resse)
-                        option(value='Défendeur') Défendeur (resse)
-                        option(value='Prévenu') Prévenu (e)
-                        option(value='Inculpé') Inculpé (e)
-                        option(value='Accusé') Accusé (e)
-                        option(value='Suspect') Suspect (e)
-                        option(value='Plaignant') Plaignant (e)
+                        if (dossier.qualite && dossier.qualite != 'null')
+                          option(value='#{dossier.qualite}', selected='#{dossier.qualite}') #{dossier.qualite}
+                        else
+                          option(value='null', selected='') Choisir la qualité
+                        option(value='Demandeur (resse)') Demandeur (resse)
+                        option(value='Défendeur (resse)') Défendeur (resse)
+                        option(value='Prévenu (e)') Prévenu (e)
+                        option(value='Inculpé (e)') Inculpé (e)
+                        option(value='Accusé (e)') Accusé (e)
+                        option(value='Suspect (e)') Suspect (e)
+                        option(value='Plaignant (e)') Plaignant (e)
                         option(value='Partie civile') Partie civile
-                        option(value='Tiers saisi') Tiers saisi (e)
-                        option(value='Appelé en garantie') Appelé (e) en garantie
-                        option(value='Appelant') Appelant (e)
-                        option(value='Intimé') Intimé (é)
-                        option(value='Demandeur au pourvoi') Demandeur (resse) au pourvoi
-                        option(value='Défendeur au pourvoi') Défendeur (resse) au pourvoi
+                        option(value='Tiers saisi (e)') Tiers saisi (e)
+                        option(value='Appelé (e) en garantie') Appelé (e) en garantie
+                        option(value='Appelant (e)') Appelant (e)
+                        option(value='Intimé (e)') Intimé (é)
+                        option(value='Demandeur (resse) au pourvoi') Demandeur (resse) au pourvoi
+                        option(value='Défendeur (resse) au pourvoi') Défendeur (resse) au pourvoi
                   .form-group
                     label.col-sm-3.dos-text
                       | Nature de litige :
                     .col-sm-8
                       select.form-control(name='nature')
-                        if (dossier.nature)
+                        if (dossier.nature && dossier.nature != 'null')
                           option(value=value='#{dossier.nature}', selected='#{dossier.nature}') #{dossier.nature}
+                        else
+                          option(value='null', selected='') Choisir la nature du litige
                         option(value='Civile') Civile
                         option(value='Commerciale') Commerciale
                         option(value='Référés') Référés
@@ -139,7 +150,7 @@ block content
                   ul.nav.nav-tabs
                     li.active
                       a(href='#jugement', data-toggle='tab')
-                        | Jugement
+                        | Jugement 
                   .tab-content
                     #jugement.tab-pane.fade.in.active
                       mixin tab_contenu(instruction, juridiction, division)
@@ -155,7 +166,7 @@ block content
                                 if (juridiction)
                                   // rajouter dans les options la valeur sélectionnée
                                   if (!instruction)
-                                    option(value=null selected = true) Sélectionner une jurdiction
+                                    option(value='null' selected =true) Sélectionner une jurdiction
                                   each j in juridiction
                                     option(value=j._id, selected=((instruction && j._id == instruction.juridiction._id.toString()))) #{j.nom}
                         if (instruction && (!instruction.decision || instruction.decision == '')) 
@@ -173,16 +184,24 @@ block content
                               br
                               |  ou de mise en état :
                             .col-sm-8(style='margin-top: 20px;')
-                              a.btn.btn-dark-purple Voir / Renseigner
-                        div(id='bloc_renvoi_ins_#{division}' class=(instruction && instruction.renvois.length>0) ? '' : 'hidden' )
+                              a.btn.btn-dark-purple(onclick='choice_juridiction("#{division}")') Voir / Renseigner
+                        div(id='bloc_renvoi_ins_#{division}' class=(instruction && (instruction.renvois.length>0 || instruction.calendrier.length>0)) ? '' : 'hidden' )
                           h3 Renvois
                           hr
                           .form-group(id='liste_renvoi_ins_#{division}')
-                            if (instruction && instruction.renvois.length>0 && instruction.juridiction.division == division)
+                            if (instruction && instruction.juridiction.division == division)
+                              if(instruction.renvois.length > 0)
+                                input(type='hidden', value='true', id='renvoi_#{division}')
                               each renvoi in instruction.renvois
                                 .row
                                   .col-sm-offset-1.col-sm-8
-                                    p Renvoyé au #{moment(renvoi.r_date).format("DD-MM-YYYY")} #{renvoi.r_motif}
+                                    p.text-capitalize Renvoyé au #{moment(renvoi.r_date).format("DD-MM-YYYY")} pour #{renvoi.r_motif}
+                              if(instruction.calendrier.length > 0)
+                                input(type='hidden', value='true', id='mee_#{division}')
+                              each cal in instruction.calendrier
+                                .row
+                                  .col-sm-offset-1.col-sm-8
+                                    p MEE du #{moment(cal.c_debut).format("DD-MM-YYYY")} au #{moment(cal.c_fin).format("DD-MM-YYYY")} : #{cal.c_commentaire}
                           hr
                         if (!(instruction && instruction.decision && instruction.decision != '' && instruction.juridiction.division == division))
                           .form-group
@@ -214,26 +233,27 @@ block content
                                       a.btn.input-group-addon.btn-dark-beige(onclick='get_renvoi_infos("#{dossier._id}", "#{division}")')
                                         span.fa.fa-check
                                     else
-                                      a.btn.input-group-addon.btn-dark-beige
+                                      a.btn.input-group-addon.btn-dark-beige(onclick='choice_juridiction("#{division}")')
                                         span.fa.fa-check
                         if (instruction && instruction.decision && instruction.decision != '' && instruction.juridiction.division == division)
                           .form-group
                             .col-sm-12
-                              textarea.form-control(name='decision', id='decision_#{division}', placeholder='Délibéré', cols='30', rows='7', readonly)
+                              textarea.form-control(name='decision', id='decision_#{division}', cols='30', rows='7', readonly)
                                 | #{instruction.decision}
-                        
+                              input(type='hidden', value='true', id='delibere_#{division}')
                         else
                           .form-group
                             label.col-sm-3.control-label
                               | Délibéré :
                             .col-sm-9
-                              textarea.form-control(name='decision', placeholder='Délibéré', cols='30', rows='7')
+                              textarea.form-control(id='decision_#{division}', placeholder='Délibéré', cols='30', rows='7')
                         .form-group
                           .col-sm-offset-7.col-sm-3.text-center
-                            if (instruction && instruction.decision && instruction.decision != '' && instruction.juridiction.division == division)
+                            if (instruction && !instruction.decision && instruction.juridiction.division == division)
                               input.btn.btn-dark-azure(type='button', onclick='save_decision("#{dossier._id}","#{instruction._id}","#{division}")' , value='Enregistrer')
-                            else
-                              input.btn.btn-dark-azure(type='button',  value='Enregistrer')
+                            else 
+                              if (!instruction)
+                                input.btn.btn-dark-azure(type='button',  value='Enregistrer', onclick='choice_juridiction("#{division}")')
                       .buttons-widget
                         .tabbable.tabs-below
                           .tab-content
@@ -254,6 +274,90 @@ block content
                               a(href='#myTab5_cour', data-toggle='tab')
                                 | Cassation  
   .hidden
+    #infoPour
+      .noteWrap.col-md-10.col-md-offset-1
+        br
+        h3 Informations supplementaires du client
+        br
+        .row
+          br
+        form.form-horizontal(action="/parties/pour/update", method='POST')
+          input(type='hidden', name='pour_id', value="#{dossier.pour._id}")
+          input(type='hidden', name='dossier_id', value="#{dossier._id}")
+          .row
+            .col-md-8
+              .form-group
+                label.col-sm-3.control-label
+                  | Noms ou denomination 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input#form-field-1.form-control(type='text', placeholder='Noms de denomination du client', name='p_nom', value="#{dossier.pour.p_nom}", required)
+                    i.fa.fa-user
+              .form-group
+                label.col-sm-3.control-label
+                  | Téléphone :
+                .col-sm-8
+                  span.input-icon
+                    if(dossier.pour.p_tel == null)
+                      input.form-control.input-mask-phone(name='p_tel', type='text', placeholder='Téléphone du client')
+                    else
+                      input.form-control.input-mask-phone(name='p_tel', type='text', placeholder='Téléphone du client', value="#{dossier.pour.p_tel}")
+                    i.fa.fa-phone
+              .form-group
+                label.col-sm-3.control-label
+                  | e-mail :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control(name='p_email', type='email', placeholder='Adresse electronique du client', value="#{dossier.pour.p_email}")
+                    i.fa.fa-envelope
+          .row
+            .col-md-3.text-center
+              input.btn.btn-dark-orange(type='submit', value='Mise à jour du client')
+  
+    #infoContre
+      .noteWrap.col-md-10.col-md-offset-1
+        br
+        h3 Informations supplementaires du contre
+        br
+        .row
+          br
+        form.form-horizontal(action="/parties/contre/update", method='POST')
+          input(type='hidden', name='contre_id', value="#{dossier.contre._id}")
+          input(type='hidden', name='dossier_id', value="#{dossier._id}")
+          .row
+            .col-md-8
+              .form-group
+                label.col-sm-3.control-label
+                  | Noms ou denomination 
+                  span.symbol.required
+                  |  :
+                .col-sm-8
+                  span.input-icon
+                    input#form-field-1.form-control(type='text', placeholder='Noms de denomination du contre', name='c_nom', value="#{dossier.contre.c_nom}", required)
+                    i.fa.fa-user
+              .form-group
+                label.col-sm-3.control-label
+                  | Téléphone :
+                .col-sm-8
+                  span.input-icon
+                    if(dossier.contre.c_tel == null)
+                      input.form-control.input-mask-phone(name='c_tel', type='text', placeholder='Téléphone du contre')
+                    else
+                      input.form-control.input-mask-phone(name='c_tel', type='text', placeholder='Téléphone du contre', value="#{dossier.contre.c_tel}")
+                    i.fa.fa-phone
+              .form-group
+                label.col-sm-3.control-label
+                  | e-mail :
+                .col-sm-8
+                  span.input-icon
+                    input.form-control(name='c_email', type='email', placeholder='Adresse electronique du contre', value="#{dossier.contre.c_email}")
+                    i.fa.fa-envelope
+          .row
+            .col-md-3.text-center
+              input.btn.btn-dark-orange(type='submit', value='Mise à jour du contre')
+  
     #calendrierMiseEtat
       .noteWrap.col-md-10.col-md-offset-1
         br
@@ -284,124 +388,4 @@ block content
                     | Ajouter
 append jscripts
   script(src='/assets/js/custom-calendrier-mise-etat.js')
-  script(src='/assets/plugins/dropzone/downloads/dropzone.min.js')
-  script(src='/assets/js/form-dropzone.js')
   script(src='/javascripts/dossier_update.js')
-  script.
-    jQuery(document).ready(function() {
-      moment().format();
-      //runDatePicker();
-      //runTimePicker();
-    });
-    
-  // start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
-  // The basic File Upload plugin
-  // The template to display files available for upload
-  script#template-upload(type='text/x-tmpl').
-    {% for (var i=0, file; file=o.files[i]; i++) { %}
-    <tr class="template-upload fade">
-    <td>
-    <span class="preview"></span>
-    </td>
-    <td>
-    <p class="name">{%=file.name%}</p>
-    {% if (file.error) { %}
-    <div><span class="label label-danger">Error</span> {%=file.error%}</div>
-    {% } %}
-    </td>
-    <td>
-    <p class="size">{%=o.formatFileSize(file.size)%}</p>
-    {% if (!o.files.error) { %}
-    <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-bar progress-bar-success" style="width:0%;"></div></div>
-    {% } %}
-    </td>
-    <td>
-    {% if (!o.files.error && !i && !o.options.autoUpload) { %}
-    <button class="btn btn-primary start">
-    <i class="glyphicon glyphicon-upload"></i>
-    <span> Télécharger</span>
-    </button>
-    {% } %}
-    {% if (!i) { %}
-    <button class="btn btn-warning cancel">
-    <i class="glyphicon glyphicon-ban-circle"></i>
-    <span> Annuler</span>
-    </button>
-    {% } %}
-    </td>
-    </tr>
-    {% } %}
-  // The template to display files available for download
-  script#template-download(type='text/x-tmpl').
-    {% for (var i=0, file; file=o.files[i]; i++) { %}
-    <tr class="template-download fade">
-    <td>
-    <span class="preview">
-    {% if (file.thumbnailUrl) { %}
-    <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" data-gallery><img src="{%=file.thumbnailUrl%}" width="80" height="80"></a>
-    {% } %}
-    </span>
-    </td>
-    <td>
-    <p class="name">
-    {% if (file.url) { %}
-    <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
-    {% } else { %}
-    <span>{%=file.name%}</span>
-    {% } %}
-    </p>
-    {% if (file.error) { %}
-    <div><span class="label label-danger">Error</span> {%=file.error%}</div>
-    {% } %}
-    </td>
-    <td>
-    <span class="size">{%=o.formatFileSize(file.size)%}</span>
-    </td>
-    <td>
-    {% if (file.deleteUrl) { %}
-    <button class="btn btn-danger delete" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
-    <i class="glyphicon glyphicon-trash"></i>
-    <span>Supprimer</span>
-    </button>
-    <input type="checkbox" name="delete" value="1" class="toggle">
-    {% } else { %}
-    <button class="btn btn-warning cancel">
-    <i class="glyphicon glyphicon-ban-circle"></i>
-    <span>Cancel</span>
-    </button>
-    {% } %}
-    </td>
-    </tr>
-    {% } %}
-    
-  script(src='/assets/plugins/jQuery-File-Upload/js/vendor/jquery.ui.widget.js')
-  // The Templates plugin is included to render the upload/download listings
-  script(src='http://blueimp.github.io/JavaScript-Templates/js/tmpl.min.js')
-  // The Load Image plugin is included for the preview images and image resizing functionality
-  script(src='/assets/plugins/javascript-Load-Image/js/load-image.all.min.js')
-  // The Canvas to Blob plugin is included for image resizing functionality
-  script(src='http://blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js')
-  // blueimp Gallery script
-  script(src='http://blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js')
-  // The Iframe Transport is required for browsers without support for XHR file uploads
-  script(src='/assets/plugins/jQuery-File-Upload/js/jquery.iframe-transport.js')
-  // The basic File Upload plugin
-  script(src='/assets/plugins/jQuery-File-Upload/js/jquery.fileupload.js')
-  // The File Upload processing plugin
-  script(src='/assets/plugins/jQuery-File-Upload/js/jquery.fileupload-process.js')
-  // The File Upload image preview & resize plugin
-  script(src='/assets/plugins/jQuery-File-Upload/js/jquery.fileupload-image.js')
-  // The File Upload audio preview plugin
-  script(src='/assets/plugins/jQuery-File-Upload/js/jquery.fileupload-audio.js')
-  // The File Upload video preview plugin
-  script(src='/assets/plugins/jQuery-File-Upload/js/jquery.fileupload-video.js')
-  // The File Upload validation plugin
-  script(src='/assets/plugins/jQuery-File-Upload/js/jquery.fileupload-validate.js')
-  // The File Upload user interface plugin
-  script(src='/assets/plugins/jQuery-File-Upload/js/jquery.fileupload-ui.js')
-  // The main application script
-  script(src='/assets/plugins/jQuery-File-Upload/js/main.js')
-  // The XDomainRequest Transport is included for cross-domain file deletio88//////n for IE 8 and IE 9
-  //if (gte IE 8)&(lt IE 10)
-    script(src='js/cors/jquery.xdr-transport.js')
-  // end: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY

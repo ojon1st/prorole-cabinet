@@ -35,6 +35,8 @@ html
             .errorHandler.alert.alert-danger.no-display
               i.fa.fa-remove-sign
               |  Vous avez des erreurs dans le formulaire. S'il vous plaît vérifier ci-dessous.
+            if(message)
+              #{message}
             fieldset
               .form-group
                 span.input-icon
@@ -47,16 +49,18 @@ html
                   a.forgot(href='#')
                     | Mot de passe oublié
               .form-actions
-                label.checkbox-inline(for='remember')
-                  input#remember.grey.remember(type='checkbox', name='remember')
-                  | Se souvenir de moi
-                button.btn.btn-green.pull-right(type='submit')
-                  | Se connecter 
-                  i.fa.fa-arrow-circle-right
-              .new-account
-                | Créer un compte? 
-                a.register(href='#')
-                  | Enregistrez-vous
+                //- .new-account
+                .col-md-8.col-sm-12
+                  | Créer un compte? 
+                  a(href='http://www.prorole-ne.com', target='_blank')
+                    | Enregistrez-vous
+                //- label.checkbox-inline(for='remember')
+                //-   input#remember.grey.remember(type='checkbox', name='remember')
+                //-   | Se souvenir de moi
+                .col-md-4.col-sm-12
+                  button.btn.btn-green.pull-right(type='submit')
+                    | Se connecter 
+                    i.fa.fa-arrow-circle-right
           // start: COPYRIGHT
           .copyright
             script.
@@ -89,73 +93,73 @@ html
            script.
               document.write(`${new Date().getFullYear()} © Prorôle une application LegalTech Priorities.`);
           // end: COPYRIGHT
-        .box-register
-          h3 Enregistrer votre compte
-          p
-            |  Entrez données personnelles:
-          form.form-register
-            .errorHandler.alert.alert-danger.no-display
-              i.fa.fa-remove-sign
-              |   Vous avez des erreurs dans le formulaire. S'il vous plaît vérifier ci-dessous.
-            fieldset
-              .form-group
-                span.input-icon
-                  input.form-control(type='text', name='full_name', placeholder='Nom complet')
-                  i.fa.fa-user
-              .form-group
-                span.input-icon
-                  input.form-control(type='text', name='address', placeholder='Dénomination du cabinet')
-                  i.fa.fa-money
-              .form-group
-                span.input-icon
-                  input.form-control(type='text', name='pays', placeholder='Pays')
-                  i.fa.fa-home
-              .form-group
-                span.input-icon
-                  input.form-control(type='text', name='barreau', placeholder='Barreau')
-                  i.fa.fa-gavel
-              .form-group
-                span.input-icon
-                  input.form-control(type='text', name='inscription', placeholder='Inscription')
-                  i.fa.fa-calendar
-              .form-group
-                span.input-icon
-                  input.form-control(type='email', name='mail', placeholder='Adresse électronique')
-                  i.fa.fa-envelope
-              .form-group
-                span.input-icon
-                  input.form-control(type='whatsapp', name='whatsapp', placeholder='Whatsapp')
-                  i.fa.fa-whatsapp
-              p
-                | Entrer les informatinos de votre compte:
-              .form-group
-                span.input-icon
-                  input.form-control(type='pseudo', name='pseudo', placeholder='Identifiant')
-                  i.fa.fa-user
-              .form-group
-                span.input-icon
-                  input#password.form-control(type='password', name='pswd', placeholder='Mot de passe')
-                  i.fa.fa-lock
-              .form-group
-                span.input-icon
-                  input.form-control(type='password', name='pswd_confirm', placeholder='Confirmation mot de passe')
-                  i.fa.fa-lock
-              .form-group
-                div
-                  label.checkbox-inline(for='agree')
-                    input#agree.grey.agree(type='checkbox', name='agree')
-                    | J'accepte les termes et conditions d'utilisation
-              .form-actions
-                | Avez-vous déjà un compte? 
-                a.go-back(href='#')
-                  | Connectez-vous
-                button.btn.btn-green.pull-right(type='submit')
-                  | Soumettre 
-                  i.fa.fa-arrow-circle-right
-          // start: COPYRIGHT
-          .copyright
-            script.
-              document.write(`${new Date().getFullYear()} © Prorôle une application LegalTech Priorities.`);
+        //- .box-register
+        //-   h3 Enregistrer votre compte
+        //-   p
+        //-     |  Entrez données personnelles:
+        //-   form.form-register
+        //-     .errorHandler.alert.alert-danger.no-display
+        //-       i.fa.fa-remove-sign
+        //-       |   Vous avez des erreurs dans le formulaire. S'il vous plaît vérifier ci-dessous.
+        //-     fieldset
+        //-       .form-group
+        //-         span.input-icon
+        //-           input.form-control(type='text', name='full_name', placeholder='Nom complet')
+        //-           i.fa.fa-user
+        //-       .form-group
+        //-         span.input-icon
+        //-           input.form-control(type='text', name='address', placeholder='Dénomination du cabinet')
+        //-           i.fa.fa-money
+        //-       .form-group
+        //-         span.input-icon
+        //-           input.form-control(type='text', name='pays', placeholder='Pays')
+        //-           i.fa.fa-home
+        //-       .form-group
+        //-         span.input-icon
+        //-           input.form-control(type='text', name='barreau', placeholder='Barreau')
+        //-           i.fa.fa-gavel
+        //-       .form-group
+        //-         span.input-icon
+        //-           input.form-control(type='text', name='inscription', placeholder='Inscription')
+        //-           i.fa.fa-calendar
+        //-       .form-group
+        //-         span.input-icon
+        //-           input.form-control(type='email', name='mail', placeholder='Adresse électronique')
+        //-           i.fa.fa-envelope
+        //-       .form-group
+        //-         span.input-icon
+        //-           input.form-control(type='whatsapp', name='whatsapp', placeholder='Whatsapp')
+        //-           i.fa.fa-whatsapp
+        //-       p
+        //-         | Entrer les informatinos de votre compte:
+        //-       .form-group
+        //-         span.input-icon
+        //-           input.form-control(type='pseudo', name='pseudo', placeholder='Identifiant')
+        //-           i.fa.fa-user
+        //-       .form-group
+        //-         span.input-icon
+        //-           input#password.form-control(type='password', name='pswd', placeholder='Mot de passe')
+        //-           i.fa.fa-lock
+        //-       .form-group
+        //-         span.input-icon
+        //-           input.form-control(type='password', name='pswd_confirm', placeholder='Confirmation mot de passe')
+        //-           i.fa.fa-lock
+        //-       .form-group
+        //-         div
+        //-           label.checkbox-inline(for='agree')
+        //-             input#agree.grey.agree(type='checkbox', name='agree')
+        //-             | J'accepte les termes et conditions d'utilisation
+        //-       .form-actions
+        //-         | Avez-vous déjà un compte? 
+        //-         a.go-back(href='#')
+        //-           | Connectez-vous
+        //-         button.btn.btn-green.pull-right(type='submit')
+        //-           | Soumettre 
+        //-           i.fa.fa-arrow-circle-right
+        //-   // start: COPYRIGHT
+        //-   .copyright
+        //-     script.
+        //-       document.write(`${new Date().getFullYear()} © Prorôle une application LegalTech Priorities.`);
       // start: COPYRIGHT
       // end: COPYRIGHT
       // end: REGISTER BOX

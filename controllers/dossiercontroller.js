@@ -5,7 +5,6 @@ var Pour = require('../models/pour');
 var Contre = require('../models/contre');
 var Juridiction = require('../models/juridiction');
 var Instruction = require('../models/instruction');
-var Utilisateur = require('../models/utilisateur');
 var Nature = require('../models/nature');
 
 var async = require('async');
@@ -39,7 +38,6 @@ exports.dossier_list = function (req, res, next) {
         .select({ "_id": 1, "ref_d": 1, "ref_d_p": 1, "pour":1, "contre":1, "ref_d_p": 1})
         .populate('pour')
         .populate('contre')
-        .populate('utilisateur')
         .sort({ ref_d: 1 })
         .exec(callback);
     }
@@ -64,7 +62,6 @@ exports.found_client_get = function (req, res, next) {
         .select({ "_id": 1, "ref_d": 1, "litige": 1,"nature": 1, "resume": 1, "montant": 1,  "pour":1, "contre":1})
         .populate('pour')
         .populate('contre')
-        .populate('utilisateur')
         .sort({ _id: -1 })
         .exec(callback);
     },
@@ -105,10 +102,6 @@ exports.dossier_detail = function (req, res, next) {
     juridictions: function (callback) {
       Juridiction.find()
         .sort({nom:1})
-        .exec(callback);
-    },
-    utilisateurs:function (callback) {
-      Utilisateur.find()
         .exec(callback);
     },
     instructions: function (callback){
@@ -158,7 +151,7 @@ exports.dossier_detail = function (req, res, next) {
     
     res.render('dossiers/dossier_detail', {
       title: 'Gestionnaire de Dossier',
-      dossier: results.dossier, juridictions: results.juridictions, instructions:results.instructions, utilisateurs:results.utilisateurs, j_instance:j_instance, j_appel:j_appel, j_cour:j_cour, i_instance:i_instance, i_appel:i_appel, i_cour:i_cour
+      dossier: results.dossier, juridictions: results.juridictions, instructions:results.instructions,  j_instance:j_instance, j_appel:j_appel, j_cour:j_cour, i_instance:i_instance, i_appel:i_appel, i_cour:i_cour
     });
   });
 
@@ -166,34 +159,7 @@ exports.dossier_detail = function (req, res, next) {
 
 // Display Dossier create form on GET.
 exports.dossier_create_get = function (req, res, next) {
-  async.parallel({
-    utilisateurs: function (callback) {
-      Utilisateur.find({})
-        .populate('profil')
-        .exec(callback);
-    },
-    pours: function (callback) {
-      Pour.find({})
-        .exec(callback);
-    },
-    contres: function (callback) {
-      Contre.find({})
-        .exec(callback);
-    },
-  }, function (err, results) {
-    if (err) {
-      return next(err);
-    }
-
-    if (results.utilisateurs == null) { // No results.
-      var err = new Error('Utilisateurs not found');
-      err.status = 404;
-      return next(err);
-    }
-    
-    // Successful, so render.
-    res.render('dossiers/dossier_form', { title: 'Creation de dossier', utilisateurs:results.utilisateurs});
-  });
+  res.render('dossiers/dossier_form', { title: 'Creation de dossier'});
 };
 
 // Handle Dossier create on POST.
@@ -324,42 +290,29 @@ exports.dossier_update_get = function (req, res, next) {
 
 // Handle Dossier update on POST.
 exports.dossier_update_post = [
-
     // Process request after validation and sanitization.
   (req, res, next) => {
-   
     // Extract the validation errors from a request .
     const errors = validationResult(req);
-
     // Create a dossier object with escaped and trimmed data (and the old id!)
-    var dossier = new Dossier({
-      _id: req.params.id
+    Dossier.findById(req.params.id)
+      .exec(function(err, the_dossier){
+        if (err) return next(err);
+        the_dossier.updateOne({
+          ref_d_p : req.body.ref_d_p,
+          qualite : req.body.qualite,
+          nature : req.body.nature
+        }, function(err) {
+          if(err) {console.log(err)}
+          res.send({
+            type_of_response: 'success', update: true,
+            al_title: 'Mise à jour du dossier!',
+            al_msg : 'La mise à jour du dossier a été fait avec succès ...'
+          });
+        })
+        .catch(console.log);
     });
-    console.log(req.body.ref_d_p);
-    if (req.body.ref_d_p && req.body.ref_d_p != ""){dossier.ref_d_p = req.body.ref_d_p}
-    if (req.body.attributaire && req.body.attributaire != ""){dossier.attributaire = req.body.attributaire}
-    if (req.body.qualite && req.body.qualite != ""){dossier.qualite = req.body.qualite}
-    if (req.body.nature && req.body.nature != ""){dossier.nature = req.body.nature}
-    if (req.body.gain_perte && req.body.gain_perte != ""){dossier.gain_perte = req.body.gain_perte}
-    if (req.body.resume && req.body.resume != ""){dossier.resume = req.body.resume}
-    if (req.body.montant && req.body.montant != ""){dossier.montant = req.body.montant}
-    
-    if (!errors.isEmpty()) {
-      // There are errors. Render the form again with sanitized values and error messages.
-      res.render('/dossier/dossier_detail', {title: 'Gestionnaire de Dossier', dossier: dossier, errors: errors.array() });
-      return;
-    } else {
-      // Data from form is valid. Update the record.
-      Dossier.findOneAndUpdate({_id:req.params.id}, dossier, {upsert: true}, function (err) {
-        if (err) { next(err); }
-
-        // Successful - redirect to dossier detail page.
-        res.send({type_of_response: 'success'});
-        return;
-        
-      });
-    }
-    }
+  }
 ];
 
 

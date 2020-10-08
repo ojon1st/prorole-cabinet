@@ -24,96 +24,45 @@ cloudinary.config({
 exports.instruction_create_post = [
   // Process request after validation and sanitization.
   (req, res, next) => {
-
-    // Extract the validation errors from a request.
-    const errors = validationResult(req);
-    /*
-    3 cas: 1er cas - on crée une nouvelle 2e cas on modifie la juridiction d'une instruction existante 3e cas on interdit la modification
-    */
-    
-    // Il s'agit dune nouvelle instruction
-    
-    if(!req.body.instruction){ // création de l'instruction || condition : juridiction valide
-      if(req.body.juridiction && req.body.juridiction != 'null'){ // on a une juridiction valide
-        var new_instruction = new Instruction({
-          dossier:req.body.dossier,
-          juridiction : req.body.juridiction
-        })
-        
-        new_instruction.save(function(err){
-          if(err) return next(err)
-          res.send({type_of_response: 'success',creation: true,
-                    al_title: 'Nouvelle Juridiction!',
-                    al_msg : 'L\'instruction a été créée avec succès ...'
-                  })
-        })
-      } else{ // on a pas de juridiction valide
-        res.send({type_of_response: 'success',creation: false,
-                    al_title: 'Changement de Juridiction!',
-                    al_msg : 'Veuillez choisir une juridiction valide!'
-                  })
-      }
-    } 
-    else{ // Il s'agit d'une instruction à modifier : on vérifie si il n'y pas eu de renvois ou de décision
-      // Ou d'un changement de degré
+    if(!req.body.instruction || (req.body.instruction && req.body.decision == true)){
+      var new_instruction = new Instruction({
+        dossier:req.body.dossier,
+        juridiction : req.body.juridiction
+      });
       
+      new_instruction.save(function(err){
+        if(err) return next(err);
+        res.send(
+          {
+            type_of_response: 'success',creation: true,
+            al_title: 'Nouvelle Juridiction!',
+            al_msg : 'L\'instruction a été créée avec succès ...'
+          }
+        );
+      });
+    }
+    else{
       Instruction.findById(req.body.instruction)
                   .select({ "_id": 1, "renvois": 1, "decision": 1})
                   .populate('juridiction')
                   .exec(function(err, the_instruction){
         if (err) return next(err);
-        //console.log(the_instruction);
-        if(the_instruction.juridiction.division != req.body.division){ // il s'agit d'un changement de degré d'instruction
-          // on empêche de revenir à une juridiction inférieure
-          if((the_instruction.juridiction.division == 'instance' && (req.body.division == 'appel' || req.body.division == 'cour')) || (the_instruction.juridiction.division == 'appel' && (req.body.division == 'instance' || req.body.division == 'cour')) || (the_instruction.juridiction.division == 'cour' && (req.body.division == 'instance' || req.body.division == 'appel'))){
-            
-            // on vérifie si l'ancienne instruction est cloturée par une décision rendue
-            if(((!the_instruction.decision) && (the_instruction.renvois && the_instruction.renvois.length == 0)) || the_instruction.decision){
-              // on crée une nouvelle instruction dans la nouvelle juridiction et division
-              the_instruction.updateOne({
-                juridiction : req.body.juridiction
-              }, function(err) {
-                if(err) {
-                  console.log(err)
-                }
-                console.log('Instruction Updated')
-                res.send({type_of_response: 'success',creation: true,
-                          al_title: 'Nouvelle Juridiction!',
-                          al_msg : 'L\'instruction a été créée avec succès ...'})
-                return;
-              })
-              .catch(console.log);
-            }
-            else{ // Pas de décision : message d'erreur nécessite la clôture de l'ancien dossier
-              
-              res.send({type_of_response: 'success',creation: false,
-                      al_title: 'Changement de Juridiction!',
-                      al_msg : 'Veuillez d\'abord saisir la décision rendue en ' + the_instruction.juridiction.division + '!'})
-            }
-            
-            
-          }else{ // message d'erreur car juridiction inférieure
-            
-            res.send({type_of_response: 'success',creation: false,
-                      al_title: 'Changement de Juridiction!',
-                      al_msg : 'Le dossier ne peut plus passer en ' + req.body.division})
+        the_instruction.updateOne({
+          juridiction : req.body.juridiction
+        }, function(err) {
+          if(err) {
+            console.log(err)
           }
-          
-          
-        }else{ // On reste dans le meme degré d'intruction
-          // le front-end empeche de modifier l'instruction lorqu'un renvoi est dréé ou qu'une décision ets rendue
-          
-          // on peut autoriser la modification de l'intruction en cours direcetement
-          
-          the_instruction.juridiction = req.body.juridiction;
-            the_instruction.save(function (err) {
-              if (err) {return next(err);}
-              res.send({type_of_response: 'success',creation: true,
-                      al_title: 'Changement de Juridiction!',
-                      al_msg : 'Vous venez de changer de juridiction pour ce dossier'})
-            })
-        }
-    })
+          res.send(
+            {
+              type_of_response: 'success', update: true,
+              al_title: 'Changement de Juridiction!',
+              al_msg : 'Veuillez choisir une juridiction valide!'
+            }
+          );
+        })
+        .catch(console.log);
+      });
     }
   }
 ];
@@ -390,7 +339,7 @@ exports.get_renvoi_general = function(req, res, next){
       if (err) { return next(err); }
       var renvoi_general = [];
       results.renvois_rgs.forEach(function(renvois_rg){
-        if(renvois_rg.renvois.length > 0 && renvois_rg.renvois[0].r_type == 'nos conclusions' && renvois_rg.calendrier.length > 0 && renvois_rg.calendrier[0].c_conclusion == 'nous' && renvois_rg.decision == null ){
+        if(((renvois_rg.renvois.length > 0 && renvois_rg.renvois[0].r_type == 'nos conclusions') || (renvois_rg.calendrier.length > 0 && renvois_rg.calendrier[0].c_conclusion == 'nous')) && renvois_rg.decision == null ){
           renvoi_general.push(renvois_rg) 
         }
       });
@@ -404,24 +353,22 @@ exports.get_renvoi_general = function(req, res, next){
 exports.get_decision_a_lever = function(req, res, next){
   async.parallel({
     
-    decision_uploads : function(callback){
-      Instruction.find({}, {'decision':1, '_id':1, 'dossier':1, 'juridiction':1, 'deliberer_file':{'$slice':-1}})
+    decision : function(callback){
+      Instruction.find({}, {'decision':1, '_id':1, 'dossier':1, 'juridiction':1})
           .populate({ path: 'dossier', model: 'Dossier', populate: { path: 'pour contre'} })
           .populate('juridiction')
           .exec(callback);
     },
     }, function (err, results) {
       if (err) { return next(err); }
-      var no_upload = [];
-      //console.log( results.decision_uploads)
-      results.decision_uploads.forEach(function(decision_upload){
-        if(decision_upload.decision != null && decision_upload.decision_file == null){
-          no_upload.push(decision_upload)
+      var decision = [];
+      results.decision.forEach(function(dossier){
+        if(dossier.decision != null && dossier.decision != ''){
+          decision.push(dossier)
         }
       });
-      //console.log(no_upload)
       
-      res.render('dossiers/dossier_tri_instruction', { title:'décision à prendre', list_dossiers: no_upload});
+      res.render('dossiers/dossier_tri_instruction', { title:'décision à prendre', list_dossiers: decision});
       
   });
 };

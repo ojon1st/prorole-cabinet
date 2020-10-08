@@ -15,9 +15,8 @@ header.topbar.navbar.navbar-inverse.navbar-fixed-top.inner
         // start: USER DROPDOWN
         li.dropdown.current-user
           a.dropdown-toggle(data-toggle='dropdown', data-hover='dropdown', data-close-others='true', href='#')
-            if (utilisateur)
-              span.username.hidden-xs 
-                |   #{utilisateur.prenom} #{utilisateur.nom}
+            if (cabinet)
+              span.username #{cabinet.denomination}
               i.fa.fa-caret-down
           ul.dropdown-menu.dropdown-dark
             li

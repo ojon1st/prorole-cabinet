@@ -19,24 +19,13 @@ router.get('/partie/', partie_controller.get_parties);
 
 router.post('/pour/update', [
   function(req, res, next) {
-    if (('pour_id' in req.body) && req.body.p_type == 'pp'){
+    if ('pour_id' in req.body){
       Pour.findById(req.body.pour_id).exec(function(err, client) {
         if(err) {
           console.log(err);
           return res.redirect('/dossiers/dossier/'+req.body.dossier_id);
         }
-        req.clientP = client;
-        return next();
-      });
-    }
-
-    if (('pour_id' in req.body) && req.body.p_type == 'pm'){
-      Pour.findById(req.body.pour_id).exec(function(err, client) {
-        if(err) {
-          console.log(err);
-          return res.redirect('/dossiers/dossier/'+req.body.dossier_id);
-        }
-        req.clientM = client;
+        req.client = client;
         return next();
       });
     }
@@ -46,24 +35,13 @@ router.post('/pour/update', [
 
 router.post('/contre/update', [
   function(req, res, next) {
-    if (('contre_id' in req.body) && req.body.c_type == 'pp'){
+    if ('contre_id' in req.body){
       Contre.findById(req.body.contre_id).exec(function(err, contre) {
         if(err) {
           console.log(err);
           return res.redirect('/dossiers/dossier/'+req.body.dossier_id);
         }
-        req.contreP = contre;
-        return next();
-      });
-    }
-
-    if (('contre_id' in req.body) && req.body.c_type == 'pm'){
-      Contre.findById(req.body.contre_id).exec(function(err, contre) {
-        if(err) {
-          console.log(err);
-          return res.redirect('/dossiers/dossier/'+req.body.dossier_id);
-        }
-        req.contreM = contre;
+        req.contre = contre;
         return next();
       });
     }
