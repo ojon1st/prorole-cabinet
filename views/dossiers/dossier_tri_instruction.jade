@@ -81,8 +81,9 @@ block content
                       td 
                         if(dossier.renvois[0])
                           | #{moment(dossier.renvois[0].r_date).format("DD-MM-YYYY")}
-                        if(dossier.calendrier[0])
-                          | #{moment(dossier.calendrier[0].c_fin).format("DD-MM-YYYY")}
+                        else
+                          if(dossier.calendrier && dossier.calendrier[0])
+                            | #{moment(dossier.calendrier[0].c_fin).format("DD-MM-YYYY")}
 append jscripts
   // start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
   script(src='/assets/plugins/holder/holder.js')
