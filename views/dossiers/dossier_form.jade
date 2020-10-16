@@ -43,16 +43,16 @@ block content
               .col-sm-8
                 span.input-icon
                   input#p_nom.form-control.text-capitalize(onchange='checkCell(this)', type='text', placeholder='Nom ou Dénommination sociale du client', list='p_list')
-                  i.fa.fa-home
+                  i.fa.fa-home 
                   datalist#p_list
                 span.form_error
-            .form-group
+            .form-group.hidden
               label.col-sm-3.control-label Téléphone :
               .col-sm-8
                 span.input-icon
                   input#p_tel.form-control(type='number', placeholder='Téléphone du client')
                   i.fa.fa-phone
-            .form-group
+            .form-group.hidden
               label.col-sm-3.control-label e-mail :
               .col-sm-8
                 span.input-icon
@@ -76,13 +76,13 @@ block content
                   i.fa.fa-home
                   datalist#c_list
                 span.form_error
-            .form-group
+            .form-group.hidden
               label.col-sm-3.control-label Téléphone :
               .col-sm-8
                 span.input-icon
                   input#c_tel.form-control(type='number', placeholder='Téléphone  de la partie adverse')
                   i.fa.fa-phone
-            .form-group
+            .form-group.hidden
               label.col-sm-3.control-label e-mail :
               .col-sm-8
                 span.input-icon

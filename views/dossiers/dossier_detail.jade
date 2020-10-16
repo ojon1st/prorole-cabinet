@@ -76,36 +76,36 @@ block content
                             label.col-sm-9.dos-text
                               | Pour : 
                               strong.str #{dossier.pour.p_nom}
-                            .col-sm-3
-                              a.btn.btn-link.show-calendar(href='#infoPour')
-                                span.fa.fa-plus
-                                strong d'infos
-                          .form-group
-                            label.col-sm-12.dos-text 
-                              | Qualité : 
-                              strong.str #{dossier.qualite}
+                          //-   .col-sm-3
+                          //-     a.btn.btn-link.show-calendar(href='#infoPour')
+                          //-       span.fa.fa-plus
+                          //-       strong d'infos
+                          //- .form-group.hidden
+                          //-   label.col-sm-12.dos-text 
+                          //-     | Qualité : 
+                          //-     strong.str #{dossier.qualite}
                           .form-group
                             label.col-sm-9.dos-text
                               | Contre : 
                               strong.str #{dossier.contre.c_nom}
-                            .col-sm-3
-                              a.btn.btn-link.show-calendar(href='#infoContre')
-                                span.fa.fa-plus
-                                strong d'infos
-                          .form-group.hidden
-                            label.col-sm-12.dos-text 
-                              | Avocat Adverse : 
-                              strong.str #{dossier.avocat_adverse}
+                          //-   .col-sm-3
+                          //-     a.btn.btn-link.show-calendar(href='#infoContre')
+                          //-       span.fa.fa-plus
+                          //-       strong d'infos
+                          //- .form-group.hidden
+                          //-   label.col-sm-12.dos-text 
+                          //-     | Avocat Adverse : 
+                          //-     strong.str #{dossier.avocat_adverse}
                           .form-group
                             label.col-sm-12.dos-text 
                               | Matiere du litige : 
                               strong.str #{dossier.nature}
-                          .form-group.hidden
-                            label.col-sm-3.dos-text
-                              | Résumé du dossier :
-                            .col-sm-8
-                              textarea.form-control(name='resume', placeholder='Résumé du litige', cols='30', rows='10', readonly=true)
-                                | #{dossier.resume}
+                          //- .form-group
+                          //-   label.col-sm-3.dos-text
+                          //-     | Résumé du dossier :
+                          //-   .col-sm-8
+                          //-     textarea.form-control(name='resume', placeholder='Résumé du litige', cols='30', rows='10', readonly=true)
+                          //-       | #{dossier.resume}
                       #hidden(class=(visible == 'cacher') ? 'hidden': '')
                         .form-group
                           label.col-sm-3.dos-text
@@ -116,11 +116,11 @@ block content
                           label.col-sm-9.dos-text
                             | Pour : 
                             strong.str #{dossier.pour.p_nom}
-                          .col-sm-3
-                            a.btn.btn-link.show-calendar(href='#infoPour')
-                              span.fa.fa-plus
-                              strong d'infos  
-                        .form-group
+                        //-   .col-sm-3
+                        //-     a.btn.btn-link.show-calendar(href='#infoPour')
+                        //-       span.fa.fa-plus
+                        //-       strong d'infos  
+                        //- .form-group.hidden
                           label.col-sm-3.dos-text
                             | Qualité :
                           .col-sm-8
@@ -141,14 +141,15 @@ block content
                               option(value='Intimé (e)') Intimé (é)
                               option(value='Demandeur (resse) au pourvoi') Demandeur (resse) au pourvoi
                               option(value='Défendeur (resse) au pourvoi') Défendeur (resse) au pourvoi 
+                        select.hidden.form-control(name='qualite')
                         .form-group
                           label.col-sm-9.dos-text
                             | Contre : 
                             strong.str #{dossier.contre.c_nom}
-                          .col-sm-3
-                            a.btn.btn-link.show-calendar(href='#infoContre')
-                              span.fa.fa-plus
-                              strong d'infos
+                          //- .col-sm-3
+                          //-   a.btn.btn-link.show-calendar(href='#infoContre')
+                          //-     span.fa.fa-plus
+                          //-     strong d'infos
                         .form-group.hidden
                           label.col-sm-3.dos-text
                             | Avocat adverse :

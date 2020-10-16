@@ -13,15 +13,15 @@ header.topbar.navbar.navbar-inverse.navbar-fixed-top.inner
       // start: TOP NAVIGATION MENU
       ul.nav.navbar-right
         // start: USER DROPDOWN
-        li.dropdown.current-user
-          a.dropdown-toggle(data-toggle='dropdown', data-hover='dropdown', data-close-others='true', href='#')
+        li.current-user
+          a.dropdown-toggle(href='/logout')
             if (cabinet)
-              span.username #{cabinet.denomination}
-              i.fa.fa-caret-down
-          ul.dropdown-menu.dropdown-dark
-            li
-              a(href='/logout')
-                | Deconnecter
+              span.strong.username #{cabinet.denomination}
+          //-     i.fa.fa-caret-down
+          //- ul.dropdown-menu.dropdown-dark
+          //-   li
+          //-     a(href='/logout')
+          //-       | Deconnecter
         // end: USER DROPDOWN
       // end: TOP NAVIGATION MENU
       // end: TOPBAR CONTAINER

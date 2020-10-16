@@ -28,25 +28,20 @@
             li
               a(href='/dossiers/decision_a_lever')
                 | Décisions à lever
-        li.dropdown
-          a.dropdown-toggle(data-toggle='dropdown', href='#')
-            | Agendas 
-            i.icon-arrow
-          ul.dropdown-menu
-            li
-              a(href='/agenda/audiencier')
-                span.title  Audiencier 
-            li
-              a(href='/agenda/carnet_adresses')
-                span.title  Carnet d'adresses 
+        //- li.dropdown
+        //-   a.dropdown-toggle(data-toggle='dropdown', href='#')
+        //-     | Agendas 
+        //-     i.icon-arrow
+        //-   ul.dropdown-menu
+        //-     li
+        //-       a(href='/agenda/audiencier')
+        //-         span.title  Audiencier 
+        //-     li
+        //-       a(href='/agenda/carnet_adresses')
+        //-         span.title  Carnet d'adresses 
         //-li
           a(href='/ratios/indicateur')
             span.title  Indicateurs 
-        li.dropdown.hidden-xs
-          a.dropdown-toggle(href='#', data-toggle='dropdown')
-            | Compte 
-            i.icon-arrow
-          ul.dropdown-menu
-            li
-              a(href='/administrateur/configuration_du_cabinet')
-                | Modification du mot de passe
+        li.hidden-xs
+          a(href='/administrateur/configuration_du_cabinet')
+            | Compte
