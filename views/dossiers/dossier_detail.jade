@@ -20,9 +20,13 @@ append styles
     }
 
 block content
-  
-  - function formatBytes(a,b){if(0==a)return"0 Bytes";var c=1024,d=b||2,e=["Bytes","KB","MB","GB","TB","PB","EB","ZB","YB"],f=Math.floor(Math.log(a)/Math.log(c));return parseFloat((a/Math.pow(c,f)).toFixed(d))+" "+e[f]};
-  - function checkURL(url) { return(url.match(/\.(jpeg|jpg|gif|png)$/) != null); };
+  -let nature = (dossier.nature && (dossier.nature == 'Civile' || dossier.nature == 'Référé civil'))
+  -let inst_appel = (dossier.qualite && (dossier.qualite == 'Intimé (e)' || dossier.qualite == 'Appelant (e)'))
+  -let inst_cour = (dossier.qualite && (dossier.qualite == 'Demandeur (resse) au pourvoi' || dossier.qualite == 'Défendeur (resse) au pourvoi'))
+  input#inst_nature(type='hidden', value='#{nature}', disabled)
+  input#inst_appel(type='hidden', value='#{inst_appel}', disabled)
+  input#inst_cour(type='hidden', value='#{inst_cour}', disabled)
+  input#id_dossier(type='hidden', value=dossier._id, disabled)                      
   input#id_dossier(type='hidden', value=dossier._id, disabled)
   if (i_instance[0] && !i_appel[0] && !i_cour[0])
     input#id_instruction(type='hidden', value=(i_instance[0]._id), disabled)
@@ -50,93 +54,137 @@ block content
         .panel.panel-white
           .panel-heading
             h4.panel-title
-              span.text-bold Gestion du dossier
+              span.text-bold Info du dossier
           .panel-body.buttons-widget
             .row
               .col-md-12
                 form(method='POST', action='')
                   .row
-                    .col-md-6
+                    - let visible = (dossier.ref_d_p || (dossier.nature && dossier.nature != 'null') || (dossier.qualite && dossier.qualite != 'null') || (dossier.resume && dossier.resume != 'null')) ? 'cacher': 'afficher'
+                    .col-md-12
                       .form-group
-                        label.col-sm-12.dos-text Réf. dossier numerique : #{dossier.ref_d}
-                    if(dossier.ref_d)
-                      .col-md-6
+                        label.col-sm-12.dos-text 
+                          | Réf. dossier numerique : 
+                          strong.str #{dossier.ref_d}
+                      if(visible == 'cacher')
+                        #visible
+                          .form-group
+                            label.col-sm-12.dos-text 
+                              | Réf. dossier physique : 
+                              strong.str #{dossier.ref_d_p}
+                          .form-group
+                            label.col-sm-9.dos-text
+                              | Pour : 
+                              strong.str #{dossier.pour.p_nom}
+                            .col-sm-3
+                              a.btn.btn-link.show-calendar(href='#infoPour')
+                                span.fa.fa-plus
+                                strong d'infos
+                          .form-group
+                            label.col-sm-12.dos-text 
+                              | Qualité : 
+                              strong.str #{dossier.qualite}
+                          .form-group
+                            label.col-sm-9.dos-text
+                              | Contre : 
+                              strong.str #{dossier.contre.c_nom}
+                            .col-sm-3
+                              a.btn.btn-link.show-calendar(href='#infoContre')
+                                span.fa.fa-plus
+                                strong d'infos
+                          .form-group.hidden
+                            label.col-sm-12.dos-text 
+                              | Avocat Adverse : 
+                              strong.str #{dossier.avocat_adverse}
+                          .form-group
+                            label.col-sm-12.dos-text 
+                              | Matiere du litige : 
+                              strong.str #{dossier.nature}
+                          .form-group.hidden
+                            label.col-sm-3.dos-text
+                              | Résumé du dossier :
+                            .col-sm-8
+                              textarea.form-control(name='resume', placeholder='Résumé du litige', cols='30', rows='10', readonly=true)
+                                | #{dossier.resume}
+                      #hidden(class=(visible == 'cacher') ? 'hidden': '')
                         .form-group
-                          label.col-sm-12.dos-text Réf. dossier physique : #{dossier.ref_d_p}
-                          input#ref_d_p(type='hidden', value='#{dossier.ref_d_p}') 
-                  .form-group
-                    label.col-sm-9.dos-text
-                      | Pour : 
-                      strong.str #{dossier.pour.p_nom}
-                    .col-sm-3
-                      a.btn.btn-link.show-calendar(href='#infoPour')
-                        span.fa.fa-plus
-                        strong d'infos
-                  .form-group
-                    label.col-sm-9.dos-text
-                      | Contre : 
-                      strong.str #{dossier.contre.c_nom}
-                    .col-sm-3
-                      a.btn.btn-link.show-calendar(href='#infoContre')
-                        span.fa.fa-plus
-                        strong d'infos
-                  if(dossier.ref_d_p == '' || dossier.ref_d_p == undefined)
-                    .form-group
-                      label.col-sm-3.dos-text
-                        | Dossier physique :
-                      .col-sm-8
-                        input.form-control(name='ref_d_p', placeholder='Saisir la réference du dossier physique')
-                  .form-group
-                    label.col-sm-3.dos-text
-                      | Qualité :
-                    .col-sm-8
-                      select.form-control(name='qualite')
-                        if (dossier.qualite && dossier.qualite != 'null')
-                          option(value='#{dossier.qualite}', selected='#{dossier.qualite}') #{dossier.qualite}
-                        else
-                          option(value='null', selected='') Choisir la qualité
-                        option(value='Demandeur (resse)') Demandeur (resse)
-                        option(value='Défendeur (resse)') Défendeur (resse)
-                        option(value='Prévenu (e)') Prévenu (e)
-                        option(value='Inculpé (e)') Inculpé (e)
-                        option(value='Accusé (e)') Accusé (e)
-                        option(value='Suspect (e)') Suspect (e)
-                        option(value='Plaignant (e)') Plaignant (e)
-                        option(value='Partie civile') Partie civile
-                        option(value='Tiers saisi (e)') Tiers saisi (e)
-                        option(value='Appelé (e) en garantie') Appelé (e) en garantie
-                        option(value='Appelant (e)') Appelant (e)
-                        option(value='Intimé (e)') Intimé (é)
-                        option(value='Demandeur (resse) au pourvoi') Demandeur (resse) au pourvoi
-                        option(value='Défendeur (resse) au pourvoi') Défendeur (resse) au pourvoi
-                  .form-group
-                    label.col-sm-3.dos-text
-                      | Nature de litige :
-                    .col-sm-8
-                      select.form-control(name='nature')
-                        if (dossier.nature && dossier.nature != 'null')
-                          option(value=value='#{dossier.nature}', selected='#{dossier.nature}') #{dossier.nature}
-                        else
-                          option(value='null', selected='') Choisir la nature du litige
-                        option(value='Civile') Civile
-                        option(value='Commerciale') Commerciale
-                        option(value='Référés') Référés
-                        option(value='Difficultés d\'execution') Difficultés d'execution
-                        option(value='Sociale') Sociale
-                        option(value='Pénale') Pénale
-                        option(value='Administratif') Administratif
-                        option(value='Electorale') Electorale
-                  .form-group
-                    .col-sm-offset-8.col-sm-3.text-center
-                      a.btn.btn-dark-azure(onclick='update_dossier("#{dossier._id}")') Sauvegarder
-                      //- if (!dossier.nature && !dossier.qualite)
-                      //-   a.btn.btn-dark-azure(onclick='update_dossier("#{dossier._id}")') Sauvegarder
-                      //- else
-                      //-   .modifier_ou_sauvegarder
-                      //-     a.btn.btn-dark-yellow(onclick='autoriser_modif()') Modifier
-                      //-   .modifier_ou_sauvegarder.hidden
-                      //-     a.btn.btn-dark-azure(onclick='update_dossier("#{dossier._id}")') Sauvegarder
-                      //- a.button#search.btn.btn-dark-azure Sauvegarder
+                          label.col-sm-3.dos-text
+                            | Ref. dossier physique :
+                          .col-sm-8
+                            input.form-control(name='ref_d_p', placeholder='Saisir la réference du dossier physique', onchange='check_ref(this)', value='#{dossier.ref_d_p}')
+                        .form-group
+                          label.col-sm-9.dos-text
+                            | Pour : 
+                            strong.str #{dossier.pour.p_nom}
+                          .col-sm-3
+                            a.btn.btn-link.show-calendar(href='#infoPour')
+                              span.fa.fa-plus
+                              strong d'infos  
+                        .form-group
+                          label.col-sm-3.dos-text
+                            | Qualité :
+                          .col-sm-8
+                            select.form-control(name='qualite')
+                              if (dossier.qualite && dossier.qualite != 'null')
+                                option(value='#{dossier.qualite}', selected='#{dossier.qualite}') #{dossier.qualite}
+                              else
+                                option(value='null', selected='') Choisir la qualité
+                              option(value='Demandeur (resse)') Demandeur (resse)
+                              option(value='Défendeur (resse)') Défendeur (resse)
+                              option(value='Prévenu (e)') Prévenu (e)
+                              option(value='Inculpé (e)') Inculpé (e)
+                              option(value='Accusé (e)') Accusé (e)
+                              option(value='Partie civile') Partie civile
+                              option(value='Tiers saisi (e)') Tiers saisi (e)
+                              option(value='Appelé (e) en garantie') Appelé (e) en garantie
+                              option(value='Appelant (e)') Appelant (e)
+                              option(value='Intimé (e)') Intimé (é)
+                              option(value='Demandeur (resse) au pourvoi') Demandeur (resse) au pourvoi
+                              option(value='Défendeur (resse) au pourvoi') Défendeur (resse) au pourvoi 
+                        .form-group
+                          label.col-sm-9.dos-text
+                            | Contre : 
+                            strong.str #{dossier.contre.c_nom}
+                          .col-sm-3
+                            a.btn.btn-link.show-calendar(href='#infoContre')
+                              span.fa.fa-plus
+                              strong d'infos
+                        .form-group.hidden
+                          label.col-sm-3.dos-text
+                            | Avocat adverse :
+                          .col-sm-8
+                            input.form-control(name='avocat', placeholder='Saisir l\'avocat adverse', value='#{dossier.avocat_adverse}') 
+                        .form-group
+                          label.col-sm-3.dos-text
+                            | Matière de litige :
+                          .col-sm-8
+                            select.form-control(name='nature')
+                              if (dossier.nature && dossier.nature != 'null')
+                                option(value=value='#{dossier.nature}', selected='#{dossier.nature}') #{dossier.nature}
+                              else
+                                option(value='null', selected='') Choisir la nature du litige
+                              option(value='Civile') Civile
+                              option(value='Commerciale') Commerciale
+                              option(value='Référé civil') Référé civil
+                              option(value='Référé commercial') Référé commercial
+                              option(value='Difficultés d\'execution') Difficultés d'execution
+                              option(value='Sociale') Sociale
+                              option(value='Pénale') Pénale
+                              option(value='Administratif') Administratif
+                              option(value='Electorale') Electorale
+                        .form-group.hidden
+                          label.col-sm-3.ods-text
+                            | Résumé de l'afffaire :
+                          .col-sm-8
+                            textarea.form-control(name='resume', placeholder='Résumé du litige', cols='30', rows='10')
+                              | #{dossier.resume}
+                      .form-group
+                        .col-sm-offset-8.col-sm-3.text-center
+                          -let id = dossier._id
+                          -let btn = (visible == 'cacher') ? 'Modifier': 'Sauvegader'
+                          - let btn_func = (btn == 'Sauvegader') ? `update_dossier("${id}")` : 'update()'
+                          a#btn-func.btn.btn-dark-azure(onclick=btn_func) !{btn}
+
     .col-sm-12.col-md-6
       .row.padding-horizontal-10
         .panel.panel-white
@@ -145,134 +193,134 @@ block content
               span.text-bold Instruction du dossier
           .panel-body.buttons-widget
             .tabbable
-              if (dossier.nature)
-                if(dossier.nature == 'Civile' || dossier.nature == 'Commerciale' || dossier.nature == 'Référés' || dossier.nature == 'Difficultés d\'execution' || dossier.nature == 'Sociale' || dossier.nature == 'Pénale' || dossier.nature == 'Electorale')
-                  ul.nav.nav-tabs
-                    li.active
-                      a(href='#jugement', data-toggle='tab')
-                        | Jugement 
-                  .tab-content
-                    #jugement.tab-pane.fade.in.active
-                      mixin tab_contenu(instruction, juridiction, division)
+              if (dossier.nature && dossier.nature != 'null')
+                ul.nav.nav-tabs
+                  li.active
+                    a(href='#jugement', data-toggle='tab')
+                      | Jugement 
+                .tab-content
+                  #jugement.tab-pane.fade.in.active
+                    mixin tab_contenu(instruction, juridiction, division)
+                      .form-group
+                        label.col-sm-3.control-label
+                          | Juriduction :
+                        .col-sm-8
+                          if(instruction && instruction.renvois && instruction.renvois.length>0)
+                            select.form-control(name='juridiction', id='juridiction_#{division}', readonly)
+                              option(value=instruction.juridiction._id) #{instruction.juridiction.nom}
+                          else
+                            select.form-control.search-select(name='juridiction', id='juridiction_#{division}', onchange='confirm_new_juridiction(this,"#{dossier.id.toString()}", "#{division}")')
+                              if (juridiction)
+                                // rajouter dans les options la valeur sélectionnée
+                                if (!instruction)
+                                  option(value='null' selected =true) Sélectionner une jurdiction
+                                each j in juridiction
+                                  option(value=j._id, selected=((instruction && j._id == instruction.juridiction._id.toString()))) #{j.nom}
+                      if (instruction && (!instruction.decision || instruction.decision == '')) 
                         .form-group
                           label.col-sm-3.control-label
-                            | Juriduction :
-                          .col-sm-8
-                            if(instruction && instruction.renvois && instruction.renvois.length>0)
-                              select.form-control(name='juridiction', id='juridiction_#{division}', readonly)
-                                option(value=instruction.juridiction._id) #{instruction.juridiction.nom}
-                            else
-                              select.form-control.search-select(name='juridiction', id='juridiction_#{division}', onchange='confirm_new_juridiction(this,"#{dossier.id.toString()}", "#{division}")')
-                                if (juridiction)
-                                  // rajouter dans les options la valeur sélectionnée
-                                  if (!instruction)
-                                    option(value='null' selected =true) Sélectionner une jurdiction
-                                  each j in juridiction
-                                    option(value=j._id, selected=((instruction && j._id == instruction.juridiction._id.toString()))) #{j.nom}
-                        if (instruction && (!instruction.decision || instruction.decision == '')) 
-                          .form-group
-                            label.col-sm-3.control-label
-                              | Calendrier d'instruction
-                              br
-                              |  ou de mise en état :
-                            .col-sm-8(style='margin-top: 20px;')
-                              a#renseigner_mise_en_etat.btn.btn-dark-purple.show-calendar(href='#calendrierMiseEtat') Voir / Renseigner
-                        else
-                          .form-group
-                            label.col-sm-3.control-label
-                              | Calendrier d'instruction
-                              br
-                              |  ou de mise en état :
-                            .col-sm-8(style='margin-top: 20px;')
-                              a.btn.btn-dark-purple(onclick='choice_juridiction("#{division}")') Voir / Renseigner
-                        div(id='bloc_renvoi_ins_#{division}' class=(instruction && (instruction.renvois.length>0 || instruction.calendrier.length>0)) ? '' : 'hidden' )
-                          h3 Renvois
-                          hr
-                          .form-group(id='liste_renvoi_ins_#{division}')
-                            if (instruction && instruction.juridiction.division == division)
-                              if(instruction.renvois.length > 0)
-                                input(type='hidden', value='true', id='renvoi_#{division}')
-                              each renvoi in instruction.renvois
-                                .row
-                                  .col-sm-offset-1.col-sm-8
-                                    p.text-capitalize Renvoyé au #{moment(renvoi.r_date).format("DD-MM-YYYY")} pour #{renvoi.r_motif}
-                              if(instruction.calendrier.length > 0)
-                                input(type='hidden', value='true', id='mee_#{division}')
-                              each cal in instruction.calendrier
-                                .row
-                                  .col-sm-offset-1.col-sm-8
-                                    p MEE du #{moment(cal.c_debut).format("DD-MM-YYYY")} au #{moment(cal.c_fin).format("DD-MM-YYYY")} : #{cal.c_commentaire}
-                          hr
-                        if (!(instruction && instruction.decision && instruction.decision != '' && instruction.juridiction.division == division))
-                          .form-group
-                            label.col-sm-2.control-label
-                              | Renvoi :
-                            .col-sm-10
-                              .row
-                                .col-sm-4(style='padding-right: 10px')
-                                  span.input-icon
-                                    input.form-control.date-picker(id='date_ins_#{division}' placeholder='Date', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years')
-                                    br.hidden-lg.hidden-md.hidden-sm
-                                    i.fa.fa-calendar
-                                .col-sm-2(style='padding:0')
-                                  select.form-control(id='type_ins_#{division}', onchange='type_complete_motif(this)')
-                                    option(disabled='', selected='', value='') Types
-                                    option(value='renvoi simple' title='Renvoi simple') R.
-                                    option(value='renvoi ferme' title='Renvoi ferme') RF.
-                                    option(value='renvoi au role general' title='Renvoi au rôle général') RRG.
-                                    option(value='renvoi d\'office' title='Renvoi d\'office') RO
-                                    option(value='non appele' title='Non appelé') NA
-                                    option(value='mise en delibere' title='Mise en délibéré') D.
-                                    option(value='rabat de delibere puis renvoi' title='Rabat de délibéré puis renvoi') DRR.
-                                    option(value='delibere vide' title='Délibéré vide') D. OK
-                                    option(value='nos conclusions' title='Nos conclusions') N. C.
-                                .col-sm-6(style='padding:0')
-                                  .input-group
-                                    input.form-control.motif(id='motif_ins_#{division}', type='text', placeholder='Motif')
-                                    if(instruction && (!instruction.decision || instruction.decision == ''))
-                                      a.btn.input-group-addon.btn-dark-beige(onclick='get_renvoi_infos("#{dossier._id}", "#{division}")')
-                                        span.fa.fa-check
-                                    else
-                                      a.btn.input-group-addon.btn-dark-beige(onclick='choice_juridiction("#{division}")')
-                                        span.fa.fa-check
-                        if (instruction && instruction.decision && instruction.decision != '' && instruction.juridiction.division == division)
-                          .form-group
-                            .col-sm-12
-                              textarea.form-control(name='decision', id='decision_#{division}', cols='30', rows='7', readonly)
-                                | #{instruction.decision}
-                              input(type='hidden', value='true', id='delibere_#{division}')
-                        else
-                          .form-group
-                            label.col-sm-3.control-label
-                              | Délibéré :
-                            .col-sm-9
-                              textarea.form-control(id='decision_#{division}', placeholder='Délibéré', cols='30', rows='7')
+                            | Calendrier d'instruction
+                            br
+                            |  ou de mise en état :
+                          .col-sm-8(style='margin-top: 20px;')
+                            a#renseigner_mise_en_etat.btn.btn-dark-purple.show-calendar(href='#calendrierMiseEtat') Voir / Renseigner
+                      else
                         .form-group
-                          .col-sm-offset-7.col-sm-3.text-center
-                            if (instruction && !instruction.decision && instruction.juridiction.division == division)
-                              input.btn.btn-dark-azure(type='button', onclick='save_decision("#{dossier._id}","#{instruction._id}","#{division}")' , value='Enregistrer')
-                            else 
-                              if (!instruction)
-                                input.btn.btn-dark-azure(type='button',  value='Enregistrer', onclick='choice_juridiction("#{division}")')
-                      .buttons-widget
-                        .tabbable.tabs-below
-                          .tab-content
-                            #myTab5_instance.tab-pane.fade(class = ((i_appel.length > 0 || i_cour.length >0) ? '' : 'in active'))
-                              +tab_contenu(i_instance[0], j_instance, 'instance')
-                            #myTab5_appel.tab-pane.fade(class = ((i_appel.length > 0 && i_cour.length == 0) ? 'in active' : ''))
-                              +tab_contenu(i_appel[0], j_appel, 'appel')
-                            #myTab5_cour.tab-pane.fade(class = (i_cour.length > 0 ? 'in active' : ''))
-                              +tab_contenu(i_cour[0], j_cour, 'cour')
-                          ul#myTab5.nav.nav-tabs
-                            li(class = ((i_appel.length > 0 || i_cour.length >0) ? '' : 'active'))
-                              a(href='#myTab5_instance', data-toggle='tab')
-                                | Instance
-                            li(class = ((i_appel.length > 0 && i_cour.length == 0) ? 'active' : ''))
-                              a(href='#myTab5_appel', data-toggle='tab')
-                                | Appel
-                            li(class = (i_cour.length > 0 ? 'active' : ''))
-                              a(href='#myTab5_cour', data-toggle='tab')
-                                | Cassation  
+                          label.col-sm-3.control-label
+                            | Calendrier d'instruction
+                            br
+                            |  ou de mise en état :
+                          .col-sm-8(style='margin-top: 20px;')
+                            a.btn.btn-dark-purple(onclick='choice_juridiction("#{division}")') Voir / Renseigner
+                      div(id='bloc_renvoi_ins_#{division}' class=(instruction && (instruction.renvois.length>0 || instruction.calendrier.length>0)) ? '' : 'hidden' )
+                        h3 Renvois
+                        hr
+                        .form-group(id='liste_renvoi_ins_#{division}')
+                          if (instruction && instruction.juridiction.division == division)
+                            -let check_renvoi  = (instruction.renvois) ? (instruction.renvois.length > 0) ? true : false : false
+                            input(type='hidden', value='#{check_renvoi}', id='renvoi_#{division}')
+                            each renvoi in instruction.renvois
+                              .row
+                                .col-sm-offset-1.col-sm-8
+                                  p.text-capitalize Renvoyé au #{moment(renvoi.r_date).format("DD-MM-YYYY")} pour #{renvoi.r_motif}
+                            -let check_calendar  = (instruction.calendrier) ? (instruction.calendrier.length > 0) ? true : false : false
+                            input(type='hidden', value='#{check_calendar}', id='mee_#{division}')
+                            each cal in instruction.calendrier
+                              .row
+                                .col-sm-offset-1.col-sm-8
+                                  p MEE du #{moment(cal.c_debut).format("DD-MM-YYYY")} au #{moment(cal.c_fin).format("DD-MM-YYYY")} : #{cal.c_commentaire}
+                        hr
+                      if (!(instruction && instruction.decision && instruction.decision != '' && instruction.juridiction.division == division))
+                        .form-group
+                          label.col-sm-2.control-label
+                            | Renvoi :
+                          .col-sm-10
+                            .row
+                              .col-sm-4(style='padding-right: 10px')
+                                span.input-icon
+                                  input.form-control.date-picker(id='date_ins_#{division}' placeholder='Date', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years')
+                                  br.hidden-lg.hidden-md.hidden-sm
+                                  i.fa.fa-calendar
+                              .col-sm-2(style='padding:0')
+                                select.form-control(id='type_ins_#{division}', onchange='type_complete_motif(this)')
+                                  option(disabled='', selected='', value='') Types
+                                  option(value='renvoi simple' title='Renvoi simple') R.
+                                  option(value='renvoi ferme' title='Renvoi ferme') RF.
+                                  option(value='renvoi au role general' title='Renvoi au rôle général') RRG.
+                                  option(value='renvoi d\'office' title='Renvoi d\'office') RO
+                                  option(value='non appele' title='Non appelé') NA
+                                  option(value='mise en delibere' title='Mise en délibéré') D.
+                                  option(value='rabat de delibere puis renvoi' title='Rabat de délibéré puis renvoi') DRR.
+                                  option(value='delibere vide' title='Délibéré vide') D. OK
+                                  option(value='nos conclusions' title='Nos conclusions') N. C.
+                              .col-sm-6(style='padding:0')
+                                .input-group
+                                  input.form-control.motif(id='motif_ins_#{division}', type='text', placeholder='Motif')
+                                  if(instruction && (!instruction.decision || instruction.decision == ''))
+                                    a.btn.input-group-addon.btn-dark-beige(onclick='get_renvoi_infos("#{dossier._id}", "#{division}")')
+                                      span.fa.fa-check
+                                  else
+                                    a.btn.input-group-addon.btn-dark-beige(onclick='choice_juridiction("#{division}")')
+                                      span.fa.fa-check
+                      if (instruction && instruction.decision && instruction.decision != '' && instruction.juridiction.division == division)
+                        .form-group
+                          .col-sm-12
+                            textarea.form-control(name='decision', id='decision_#{division}', cols='30', rows='7', readonly)
+                              | #{instruction.decision}
+                            input(type='hidden', value='true', id='delibere_#{division}')
+                      else
+                        .form-group
+                          label.col-sm-3.control-label
+                            | Délibéré :
+                          .col-sm-9
+                            input(type='hidden', value='false', id='delibere_#{division}')
+                            textarea.form-control(id='decision_#{division}', placeholder='Délibéré', cols='30', rows='7')
+                      .form-group
+                        .col-sm-offset-7.col-sm-3.text-center
+                          if (instruction && !instruction.decision && instruction.juridiction.division == division)
+                            input.btn.btn-dark-azure(type='button', onclick='save_decision("#{dossier._id}","#{instruction._id}","#{division}")' , value='Enregistrer')
+                          else 
+                            if (!instruction)
+                              input.btn.btn-dark-azure(type='button',  value='Enregistrer', onclick='choice_juridiction("#{division}")')
+                    .buttons-widget
+                      .tabbable.tabs-below
+                        .tab-content
+                          #myTab5_instance.tab-pane.fade(class = ((i_appel.length > 0 || i_cour.length > 0 || inst_appel == true || inst_cour == true ? '' : 'in active')))
+                            +tab_contenu(i_instance[0], j_instance, 'instance')
+                          #myTab5_appel.tab-pane.fade(class = ((i_appel.length > 0 && i_cour.length == 0) || inst_appel == true ? 'in active' : ''))
+                            +tab_contenu(i_appel[0], j_appel, 'appel')
+                          #myTab5_cour.tab-pane.fade(class = (i_cour.length > 0 || inst_cour == true ? 'in active' : ''))
+                            +tab_contenu(i_cour[0], j_cour, 'cour')
+                        ul#myTab5.nav.nav-tabs
+                          li(class = ((i_appel.length > 0 || i_cour.length > 0 || inst_appel == true || inst_cour == true ) ? '' : 'active'))
+                            a(href='#myTab5_instance', data-toggle='tab')
+                              | Instance
+                          li(class = ((i_appel.length > 0 && i_cour.length == 0) || inst_appel == true ? 'active' : ''))
+                            a(href='#myTab5_appel', data-toggle='tab')
+                              | Appel
+                          li(class = (i_cour.length > 0 || inst_cour == true  ? 'active' : ''))
+                            a(href='#myTab5_cour', data-toggle='tab')
+                              | Cassation  
   .hidden
     #infoPour
       .noteWrap.col-md-10.col-md-offset-1
@@ -389,3 +437,4 @@ block content
 append jscripts
   script(src='/assets/js/custom-calendrier-mise-etat.js')
   script(src='/javascripts/dossier_update.js')
+  script(src='/javascripts/check_ref.js')

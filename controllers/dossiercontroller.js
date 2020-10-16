@@ -57,37 +57,24 @@ exports.found_client_get = function (req, res, next) {
 
   // Get all dossier for form
   async.parallel({
-    dossiers: function (callback) {
-      Dossier.find({pour: req.params.id})
-        .select({ "_id": 1, "ref_d": 1, "litige": 1,"nature": 1, "resume": 1, "montant": 1,  "pour":1, "contre":1})
-        .populate('pour')
-        .populate('contre')
-        .sort({ _id: -1 })
-        .exec(callback);
+    dossier_physique: function (callback) {
+      Dossier.findOne({ref_d_p: req.params.ref}).exec(callback);
     },
     
   }, function (err, results) {
     if (err) { return next(err); }
-
-    res.render('dossiers/dossier_found', {
-      title: 'Liste de dossiers',
-      list_dossiers: results.dossiers
-    });
+    if(results.dossier_physique && results.dossier_physique.ref_d_p != null){
+      res.send({
+        type_of_response: 'warning',
+        al_title: 'Reference physique',
+        al_msg : `Attention la reference ${req.params.ref} exite deja, veuillez verifier la reference`
+      });
+    }
+    else{
+      res.send({type_of_response: 'success'});
+    }
   });
 };
-
-function cleanArray(array) {
-  var i, j, len = array.length,
-    out = [],
-    obj = {};
-  for (i = 0; i < len; i++) {
-    obj[array[i]] = 0;
-  }
-  for (j in obj) {
-    out.push(j);
-  }
-  return out;
-}
 
 // Display detail page for a specific Dossier.
 exports.dossier_detail = function (req, res, next) {
@@ -217,50 +204,6 @@ exports.dossier_create_post = [
   }
 ];
 
-
-// Display Dossier delete form on GET.
-/*exports.dossier_delete_get = function(req, res, next) {
-
-    async.parallel({
-        dossier: function(callback) {
-            Dossier.findById(req.params.id).exec(callback);
-        },
-        dossier_sousdossier: function(callback) {
-            Book.find({ 'dossier': req.params.id }).exec(callback);
-        },
-    }, function(err, results) {
-        if (err) { return next(err); }
-        if (results.dossier==null) { // No results.
-            res.redirect('/admin/dossiers');
-        }
-        // Successful, so render.
-        res.render('admin/dossier/supprimer_dossier', { title: 'Delete Dossier', dossier: results.dossier } );
-    });
-
-};*/
-
-// Handle Dossier delete on POST.
-/*exports.dossier_delete_post = function(req, res, next) {
-
-    async.parallel({
-        dossier: function(callback) {
-            Dossier.findById(req.params.id).exec(callback);
-        },
-        
-    }, function(err, results) {
-        if (err) { return next(err); }
-        
-            // Dossier has no books. Delete object and redirect to the list of dossiers.
-            Dossier.findByIdAndRemove(req.body.id, function deleteDossier(err) {
-                if (err) { return next(err); }
-                // Success - go to dossiers list.
-                res.redirect('/admin/dossiers');
-            }
-                                   );
-    });
-
-};*/
-
 // Display Dossier update form on GET.
 exports.dossier_update_get = function (req, res, next) {
 
@@ -301,7 +244,9 @@ exports.dossier_update_post = [
         the_dossier.updateOne({
           ref_d_p : req.body.ref_d_p,
           qualite : req.body.qualite,
-          nature : req.body.nature
+          nature : req.body.nature,
+          avocat_adverse : req.body.avocat,
+          resume : req.body.resume
         }, function(err) {
           if(err) {console.log(err)}
           res.send({
@@ -314,263 +259,3 @@ exports.dossier_update_post = [
     });
   }
 ];
-
-
-exports.dossiers_en_cours = function (req, res, next) {
-    async.parallel({
-      dossier: function (callback) {
-        Dossier.findById(req.params.id)
-          .populate('pour')
-          .populate('contre')
-          .exec(callback);
-      },
-    }, function (err, results) {
-      if (err) {
-        return next(err);
-      }
-      if (results.dossier == null) { // No results.
-        var err = new Error('Dossier not found');
-        err.status = 404;
-        return next(err);
-      }
-
-      // Successful, so render.
-      res.render('dossiers/dossier_detail', {
-        title: 'Gestionnaire de Dossier',
-        dossier: results.dossier
-      });
-    });
-};
-
-exports.repartition = function (req, res, next) { 
-  async.parallel({
-    dossier: function (callback) {
-      Dossier.findById(req.params.id)
-        .populate('pour')
-        .populate('contre')
-        .exec(callback);
-    },
-  }, function (err, results) {
-    if (err) {
-      return next(err);
-    }
-    if (results.dossier == null) { // No results.
-      var err = new Error('Dossier not found');
-      err.status = 404;
-      return next(err);
-    }
-
-    // Successful, so render.
-    res.render('dossiers/dossier_detail', {
-      title: 'Gestionnaire de Dossier',
-      dossier: results.dossier
-    });
-  });
-};
-
-exports.get_list_pieces = function (req, res, next){
-  
-  async.parallel({
-      dossier: function (callback) {
-          Dossier.findById(req.params.id, 'pieces')
-            .exec(callback);
-        },
-      }, function (err, results) {
-        if (err) {
-          return next(err);
-        }
-        if (results.dossier == null) { // No results.
-          var err = new Error('Dossier not found');
-          err.status = 404;
-          return next(err);
-        }
-        
-        
-        //console.log(results.dossier.pieces[req.params.type_piece])
-        res.send(results.dossier.pieces[req.params.type_piece])
-    
-        // Successful, so render.
-        /*res.render('dossiers/dossier_detail', {
-          title: 'Gestionnaire de Dossier',
-          dossier: results.dossier
-        });*/
-      });
-  
-};
-
-exports.save_pieces = [
-    async (req, res, next) => {
-      
-              
-        var dossier_piece = '';
-        var tableau_piece = '';
-        
-        switch (req.params.type_piece) {
-          case 'pieces_formes':
-            dossier_piece = 'documents/pieces_formes';
-            tableau_piece = 'pieces_formes';
-            break;
-          case 'pieces_fonds':
-            dossier_piece = 'documents/pieces_fonds';
-            tableau_piece = 'pieces_fonds';
-            break;
-          case 'ecritures_recues':
-            dossier_piece = 'documents/ecritures_recues';
-            tableau_piece = 'ecritures_recues';
-            break;
-          case 'ecritures_envoyees':
-            dossier_piece = 'documents/ecritures_envoyees';
-            tableau_piece = 'ecritures_envoyees';
-            break;
-          case 'courriers_divers':
-            dossier_piece = 'documents/courriers_divers';
-            tableau_piece = 'courriers_divers';
-            break;
-          
-          default:
-            // code block
-        };
-        //console.log(req.files[0].path)
-        
-        // Upload to Cloudinary
-      try {
-        var result = await cloudinary.v2.uploader.upload(req.files[0].path, {folder:dossier_piece}); // rajouter la var nom du cabinet
-        //console.log(result)
-        
-        Dossier.findById(req.params.id, function (err, thedossier) {
-            if(err) return next(err);
-            
-            var piece = {doa:moment(), originalname:req.files[0].originalname, classeur:dossier_piece, piece_url:result.secure_url, size:req.files[0].size, public_id:result.public_id};
-            var new_piece;
-            if(tableau_piece == 'pieces_formes'){
-              
-              new_piece = thedossier.pieces.pieces_formes.create(piece);
-              var url_delete = '/dossiers/dossier/'+req.params.id+'/type_piece/'+req.params.type_piece+'/delete_pieces/'+new_piece._id.toString();
-              new_piece.deleteUrl = url_delete;
-              thedossier.pieces.pieces_formes.push(new_piece);
-            }else if(tableau_piece == 'pieces_fonds'){
-              new_piece = thedossier.pieces.pieces_fonds.create(piece);
-              var url_delete = '/dossiers/dossier/'+req.params.id+'/type_piece/'+req.params.type_piece+'/delete_pieces/'+new_piece._id.toString();
-              new_piece.deleteUrl = url_delete;
-              thedossier.pieces.pieces_fonds.push(new_piece);
-            }else if(tableau_piece == 'ecritures_recues'){
-              new_piece = thedossier.pieces.ecritures_recues.create(piece);
-              var url_delete = '/dossiers/dossier/'+req.params.id+'/type_piece/'+req.params.type_piece+'/delete_pieces/'+new_piece._id.toString();
-              new_piece.deleteUrl = url_delete;
-              thedossier.pieces.ecritures_recues.push(new_piece);
-            
-            }else if(tableau_piece == 'ecritures_envoyees'){
-              new_piece = thedossier.pieces.ecritures_envoyees.create(piece);
-              var url_delete = '/dossiers/dossier/'+req.params.id+'/type_piece/'+req.params.type_piece+'/delete_pieces/'+new_piece._id.toString();
-              new_piece.deleteUrl = url_delete;
-              thedossier.pieces.ecritures_envoyees.push(new_piece);
-            
-            }else if(tableau_piece == 'courriers_divers'){
-              new_piece = thedossier.pieces.courriers_divers.create(piece);
-              var url_delete = '/dossiers/dossier/'+req.params.id+'/type_piece/'+req.params.type_piece+'/delete_pieces/'+new_piece._id.toString();
-              new_piece.deleteUrl = url_delete;
-              thedossier.pieces.courriers_divers.push(new_piece);
-            }else{
-              return next();
-            };
-            
-            thedossier.save();
-            var tab_images_renvoi = [];
-            
-            var image_renvoi = {name:req.files[0].originalname,url:result.secure_url, size:req.files[0].size,thumbnailUrl:result.secure_url, deleteUrl:url_delete, deleteType:'POST'};
-            tab_images_renvoi.push(image_renvoi);
-            var renvoi = {files:tab_images_renvoi};
-            
-            res.send(renvoi);
-        });
-      } catch(error) {
-        //console.log(error)
-        return next(new Error('Failed to upload file'));
-      }
-    }
-];
-
-exports.delete_pieces = [
-  (req, res, next) => {
-      var tableau_piece = '';
-
-      switch (req.params.type_piece) {
-        case 'pieces-formes':
-          tableau_piece = 'pieces_formes';
-          break;
-        case 'pieces-fonds':
-          tableau_piece = 'pieces_fonds';
-          break;
-        case 'ecritures-recues':
-          tableau_piece = 'ecritures_recues';
-          break;
-        case 'ecritures-envoyees':
-          tableau_piece = 'ecritures_envoyees';
-          break;
-        case 'courriers-divers':
-          tableau_piece = 'courriers_divers';
-          break;
-
-        default:
-          // code block
-      } 
-    
-    Dossier.findOne({_id: req.params.id})
-      .exec(function (err, dossier) {
-        if (err) { return next(err); }
-        if (dossier == null) { // No results.
-          var err = new Error('Dossier not found');
-          err.status = 404;
-          return next(err);
-        }
-        dossier.pieces[tableau_piece].forEach(function(lapiece){
-          if(lapiece._id.toString() == req.params.id_piece.toString()){
-            cloudinary.uploader.destroy(lapiece.public_id, function(result) { 
-              if (result.result == 'ok'){
-                if(tableau_piece == 'pieces_formes'){
-                  dossier.pieces.pieces_formes.id(lapiece._id).remove();
-                };
-                if(tableau_piece == 'pieces_fonds'){
-                  dossier.pieces.pieces_fonds.id(lapiece._id).remove();
-                };
-                if(tableau_piece == 'ecritures_recues'){
-                  dossier.pieces.ecritures_recues.id(lapiece._id).remove();
-                };
-                if(tableau_piece == 'ecritures_envoyees'){
-                  dossier.pieces.ecritures_envoyees.id(lapiece._id).remove();
-                };
-                if(tableau_piece == 'courriers_divers'){
-                  dossier.pieces.courriers_divers.id(lapiece._id).remove();
-                };
-                
-                dossier.save(function (err) {
-                  if (err) return handleError(err);
-                  //console.log('the sub-doc was removed')
-                });
-              }
-              return;
-            });
-            
-          }
-        })
-        
-        next();
-      });
-  }
-];
-
-function get_initiales(titulaire_comp) {
-  // var str = "";
-  // var reference = "";
-
-  //on découpe le prénom puis le nom
-  var titulaire_comp_tab = titulaire_comp.split("/");
-
-  // on crée la variable des initiales et on y ajoute nos initiales
-  var initiales = '';
-  titulaire_comp_tab.forEach(function(element) {
-    initiales += element.charAt(0);
-  });
-
-  return initiales.replace(/[^a-zA-Z0-9]+/g, "");
-};

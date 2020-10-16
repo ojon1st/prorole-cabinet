@@ -44,9 +44,9 @@ block content
         .panel-body
           .table-responsive
             table#sample-table-2.table.table-striped.table-hover
-              thead.hidden-xs
+              thead
                 tr
-                  th Référence
+                  th Ref
                   th Parties
                   th Juridiction
                   if(title != 'décision à prendre')
@@ -55,40 +55,31 @@ block content
                         | Delais
                       else
                         | Dernière date de renvoi
-              thead.visible-xs  
-                tr.visible-xs
-                  th Réf
-                  th Parties
-                  th Juridiction
-                  if(title != 'décision à prendre')
-                    th
-                      if(title == 'renvois au rôle général')
-                        | Delais
-                      else
-                        | Renvoi
               tbody
                 - var i = 1
                 each dossier in list_dossiers
-                  tr.go_to_dossier
+                  tr
                     td 
                       | #{dossier.dossier.ref_d}
                     td 
-                      a.button.hidden-xs(href="/dossiers/dossier/#{dossier.dossier._id}") #{dossier.dossier.pour.p_nom} c/ #{dossier.dossier.contre.c_nom}
-                      .button.visible-xs #{dossier.dossier.pour.p_nom} c/ #{dossier.dossier.contre.c_nom}
+                      a.button(href="/dossiers/dossier/#{dossier.dossier._id}") #{dossier.dossier.pour.p_nom} c/ #{dossier.dossier.contre.c_nom}
                     td.text-capitalize
                       | #{dossier.juridiction.nom}
                     if(title != 'décision à prendre')
-                      td 
-                        if(dossier.renvois)
+                      td
+                        if(title != 'conclusions à prendre')
                           | #{moment(dossier.renvois[0].r_date).format("DD-MM-YYYY")}
                         else
                           if(dossier.calendrier)
                             | #{moment(dossier.calendrier[0].c_fin).format("DD-MM-YYYY")}
+                          else
+                            if(dossier.renvois)
+                              | #{moment(dossier.renvois[0].r_date).format("DD-MM-YYYY")}
 append jscripts
   // start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
   script(src='/assets/plugins/holder/holder.js')
   script(src='/assets/js/table-export.js')
-  script(src='/javascripts/dossier_list.js')
+  script(src='/javascripts/desk_mobi.js')
   script.
     jQuery(document).ready(function() {
     TableExport.init();

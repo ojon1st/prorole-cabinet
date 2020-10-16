@@ -27,7 +27,7 @@ block content
                   label.col-sm-3.control-label
                     | Réf. dossier physique :
                   .col-sm-4
-                    input#ref_d_p.form-control(placeholder='Réference physique')
+                    input#ref_d_p.form-control(placeholder='Réference physique', onchange='check_ref(this)')
     .row
       .col-md-6
         .panel.panel-white
@@ -105,5 +105,6 @@ block content
 append jscripts
   script(src='/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js')
   script(src='/assets/js/custom-new-dossier.js')
+  script(src='/javascripts/check_ref.js')
   //script.
     function aff() {alert($('#c_dob').val())}

@@ -5,7 +5,6 @@ var Schema = mongoose.Schema;
 
 var InstructionSchema = new Schema({
   dossier:{type: Schema.ObjectId, ref: 'Dossier', required:true},
-  phase:{type: Schema.ObjectId, ref: 'Phase'},
   degre_instruction:{type:String},
   juridiction:{type: Schema.ObjectId, ref: 'Juridiction'},
   calendrier:[{c_conclusion:String,c_debut:Date,c_fin:Date,c_heure:String,c_commentaire:String}],
@@ -13,7 +12,6 @@ var InstructionSchema = new Schema({
   decision:{type:String},
   decision_file:{type: String },
   i_update:{type:Date}
-  //type: Date, default:moment() 
 });
 
 // Export model.

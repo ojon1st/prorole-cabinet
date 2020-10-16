@@ -61,31 +61,23 @@ block content
             .col-md-12  
               .table-responsive
                 table#sample-table-2.table.table-striped.table-hover
-                  thead.hidden-xs
+                  thead
                     tr
                       th Référence dossier numerique
                       th Parties
                       th Référence dossier physique
-                  thead.visible-xs
-                    tr
-                      th Réf
-                      th Parties
-                      th Réf P.
                   tbody
                    each dossier in list_dossiers
                       tr.go_to_dossier
                         td #{dossier.ref_d}
                         td 
-                          a.button.hidden-xs(href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.p_nom} c/ #{dossier.contre.c_nom}
-                          .button.visible-xs #{dossier.pour.p_nom} c/ #{dossier.contre.c_nom}
+                          a.button(href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.p_nom} c/ #{dossier.contre.c_nom}
                         td #{dossier.ref_d_p}
 append jscripts
   // start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
   script(src='/assets/plugins/holder/holder.js')
   script(src='/assets/plugins/tableExport/tableExport.js')
   script(src='/assets/js/table-export.js')
-  script(src='/javascripts/dossier_list.js')
-  script(src='./middles/encryption.js')
   script.
     jQuery(document).ready(function() {
       TableExport.init();

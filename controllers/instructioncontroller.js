@@ -343,8 +343,6 @@ exports.get_renvoi_general = function(req, res, next){
           renvoi_general.push(renvois_rg) 
         }
       });
-     // console.log(renvoi_general)
-      
       res.render('dossiers/dossier_tri_instruction', { title:'conclusions à prendre', list_dossiers: renvoi_general});
       
   });

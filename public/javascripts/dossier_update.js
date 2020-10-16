@@ -1,5 +1,4 @@
 // INITIALIZE FUNCTIONS
-
 jQuery(document).on('ready', function () {
   $('#renseigner_mise_en_etat').on('click', function() {
     if ( $('#id_instruction').val() != "" || $('#id_instruction').val() != 'undefined'){
@@ -10,6 +9,13 @@ jQuery(document).on('ready', function () {
 
 
 /*****************   page functions    **********************/
+function update(){
+  $("#hidden").removeClass("hidden");
+  $("#visible").addClass("hidden");
+  let dossier = $("#id_dossier").val();
+  $("#btn-func").attr('onclick', `update_dossier("${dossier}")`).html("Sauvegader");
+}
+
 function show_notification(shortCutFunction, title, msg) {
   var $timeOut = 5000;
   var $showEasing = "swing";
@@ -18,20 +24,26 @@ function show_notification(shortCutFunction, title, msg) {
   var $hideMethod = "fadeOut";
 
   toastr.options = {
-    closeButton: false,
+    closeButton: true,
     positionClass: 'toast-top-right',
     onclick: null
   };
   var $toast = toastr[shortCutFunction](msg, title);
 }
 
-function update_dossier(id_dossier) {
+window.update_dossier = function (id_dossier) {
+
   var route_update_infos_dossier = '/dossiers/dossier/' + id_dossier + '/update';
   var data = {};
   data.ref_d_p = $('input[name=ref_d_p]').val();
-  data.qualite = $('select[name=qualite]').val();
-  data.nature = $('select[name=nature]').val();
-  
+  data.avocat = $('input[name=avocat]').val();
+  data.qualite = ($('select[name=qualite]').val() != 'null' ? $('select[name=qualite]').val() : '');
+  data.nature = ($('select[name=nature]').val() != 'null' ? $('select[name=nature]').val() : '');
+  data.resume = $('textarea[name=resume]').val();
+  if(data.ref_d_p == '' && data.avocat == '' && data.qualite == '' && data.nature == '' && data.resume == ''){
+    show_notification('info', 'Mise a jour du dossier', 'Veuillez renseigner au moins un des champs pour effectuer la mise a jour');
+    return
+  }
   $.ajax({
     type: 'POST',
     data: JSON.stringify(data),
@@ -42,7 +54,6 @@ function update_dossier(id_dossier) {
         show_notification(data.type_of_response, data.al_title, data.al_msg);
         setTimeout(window.location.href="/dossiers/dossier/"+id_dossier, 5000);
       }
-      
     }
   });
 }
@@ -77,7 +88,7 @@ function confirm_new_juridiction(selectObject, id_dossier, new_division) {
       }
     }
     if(division == false && control[0] == false && control[1] == false){
-      if((new_division == 'instance' && ($('#delibere_appel').val() != 'true' && $('#delibere_cour').val() != 'true')) || (new_division == 'appel' && $('#delibere_cour').val() != 'true') || new_division == 'cour'){
+      if((new_division == 'instance' && $('#delibere_appel').val() != 'true' && $('#delibere_cour').val() != 'true') || (new_division == 'appel' &&  $('#delibere_cour').val() != 'true') || (new_division == 'cour')){
         create_instance(selectObject.value, id_dossier, new_division);
       }
       else{
@@ -187,16 +198,10 @@ function create_renvoi(date_renvoi, type_renvoi, motif_renvoi, id_dossier,juridi
       if($("#bloc_renvoi_ins_"+division).is(":hidden")) {
         $("#bloc_renvoi_ins_"+division).toggleClass('hidden');
       }
-      
-      $("#liste_renvoi_ins_"+division).html('');
-      setTimeout(data.renvois_list.forEach(function(renvoi){
-        $("#liste_renvoi_ins_"+division).append('<div class="row"><div class="col-sm-offset-1 col-sm-9"><p>Renvoyé au ' + moment(renvoi.r_date).format("DD-MM-YYYY") + ' ('+ renvoi.r_type + ') pour ' + renvoi.r_motif + '</p></div></div>');
-      }), 1000);
-      
       var msg = "Le dossier vient d'être renvoyé au "+data.date_last_renvoi+" .";
       var title = "Renvoi du dossier";
       show_notification(data.type_of_response, title, msg)
-      setTimeout(location.reload(), 5000)
+      setTimeout(window.location.href="/dossiers/dossier/"+id_dossier, 5000);
     }
   });
 };
