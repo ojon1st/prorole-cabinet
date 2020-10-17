@@ -1,5 +1,5 @@
 function isMobile() {
-const ua = navigator.userAgent;
+  const ua = navigator.userAgent;
   if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
     return "tablet";
   }

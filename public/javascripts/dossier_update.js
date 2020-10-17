@@ -1,13 +1,10 @@
 // INITIALIZE FUNCTIONS
-jQuery(document).ready(function () {
+$(document).ready(function () {
   $('#renseigner_mise_en_etat').on('click', function() {
     if ( $('#id_instruction').val() != "" || $('#id_instruction').val() != 'undefined'){
       mise_etat_get($('#id_dossier').val(),$('#id_instruction').val());
     }
   });
-  $('#close').hover(function(){
-    alert('ok')
-  })
 });
 
 

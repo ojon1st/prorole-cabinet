@@ -1,5 +1,4 @@
 extends ../layout
-
 append styles
   link(href='/stylesheets/fullcalendar/fullcalendar.min.css', rel='stylesheet')
   link(href='/stylesheets/fullcalendar/fullcalendar.print.min.css', rel='stylesheet', media='print')
@@ -16,9 +15,8 @@ block content
           | Agenda
         li.active
           | #{title}
-  #calendar.padding-10.hidden-xs
-  #calendar-xs.padding-10.visible-xs
-
+  #calendar.hid-mobile.padding-10
+  #calendar-xs.padding-10
 append jscripts
   script(src='/assets/js/custom-calendrier-mise-etat.js')
   script(src='/assets/js/custom-new-dossier.js')

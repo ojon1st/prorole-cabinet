@@ -27,10 +27,6 @@ exports.renvois_events_get = function(req, res, next){
     last_renvois: function(callback){
       Instruction.find({}, {'renvois':{'$slice':-1},'_id':1,decision:1})
         .exec(callback);
-    },
-    last_calendrier: function(callback){
-      Instruction.find({}, {'calendrier':{'$slice':-1},'_id':1,decision:1})
-        .exec(callback);
     }
     }, async function (err, results) {
       if (err) { return next(err); }
@@ -45,13 +41,6 @@ exports.renvois_events_get = function(req, res, next){
         if(last_renvoi.renvois.length > 0 && moment().diff(moment(last_renvoi.renvois[0].r_date), 'days') > 0){
           if( !last_renvoi.decision || last_renvoi.decision == ""){
             events_retards.push(last_renvoi.renvois[0]._id.toString())
-          }
-        }
-      });
-      results.last_calendrier.forEach(function(last){
-        if(last.calendrier.length > 0 && moment().diff(moment(last.calendrier[0].c_fin), 'days') > 0){
-          if( !last.decision || last.decision == ""){
-            events_retards.push(last.calendrier[0]._id.toString())
           }
         }
       });
@@ -99,13 +88,8 @@ exports.renvois_events_get = function(req, res, next){
         }
         if (instruction.calendrier.length > 0){ // Si calendrier il y a
           instruction.calendrier.forEach(function(calendrier){ // pour chaque calendrier
-            if(events_retards.includes(calendrier._id.toString())){
-              nom_de_classe_tribunal = 'text-upper-retard';
-              nom_de_classe_calendrier = 'event-bg-calendrier-retard';
-            } else{
-              nom_de_classe_tribunal = 'text-upper';
-              nom_de_classe_calendrier = 'event-bg-calendrier';
-            }
+            nom_de_classe_tribunal = 'text-upper';
+            nom_de_classe_calendrier = 'event-bg-calendrier';
             if (!juridictions_date_array.includes(instruction.dossier.nature+'_'+instruction.juridiction._id.toString()+ '_' +moment(calendrier.c_fin).format('YYYY-MM-DD'))){ //on vérifie si la juridiction fait partie tu tableau des juridictions avant de l'ajouter comme nex event
               var new_tribunal = { // On crée l'event Tribunal
                 title: instruction.juridiction.nom + " - " + instruction.dossier.nature,
