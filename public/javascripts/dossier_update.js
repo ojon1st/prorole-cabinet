@@ -1,10 +1,13 @@
 // INITIALIZE FUNCTIONS
-jQuery(document).on('ready', function () {
+jQuery(document).ready(function () {
   $('#renseigner_mise_en_etat').on('click', function() {
     if ( $('#id_instruction').val() != "" || $('#id_instruction').val() != 'undefined'){
       mise_etat_get($('#id_dossier').val(),$('#id_instruction').val());
     }
   });
+  $('#close').hover(function(){
+    alert('ok')
+  })
 });
 
 
@@ -73,7 +76,7 @@ function choice_juridiction (division){
   show_notification('info', 'Opération non autorisée', 'Veuillez choisir une juridiction du niveau <strong class="text-uppercase">' + division + '</strong> pour pouvoir effectuer une operation d\'instruction');
 }
 
-      /***************Juridiction************/
+/***************Juridiction************/
 function confirm_new_juridiction(selectObject, id_dossier, new_division) {
   if(selectObject.value != 'null'){
     let division;

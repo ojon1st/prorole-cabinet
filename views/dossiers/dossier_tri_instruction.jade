@@ -70,10 +70,10 @@ block content
                         if(title != 'conclusions à prendre')
                           | #{moment(dossier.renvois[0].r_date).format("DD-MM-YYYY")}
                         else
-                          if(dossier.calendrier)
+                          if(dossier.calendrier && dossier.calendrier.length>0)
                             | #{moment(dossier.calendrier[0].c_fin).format("DD-MM-YYYY")}
                           else
-                            if(dossier.renvois)
+                            if(dossier.renvois dossier.renvois.r.length>0)
                               | #{moment(dossier.renvois[0].r_date).format("DD-MM-YYYY")}
 append jscripts
   // start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
