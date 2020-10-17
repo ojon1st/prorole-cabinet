@@ -73,7 +73,7 @@ block content
                           if(dossier.calendrier && dossier.calendrier.length>0)
                             | #{moment(dossier.calendrier[0].c_fin).format("DD-MM-YYYY")}
                           else
-                            if(dossier.renvois dossier.renvois.r.length>0)
+                            if(dossier.renvois && dossier.renvois.length>0)
                               | #{moment(dossier.renvois[0].r_date).format("DD-MM-YYYY")}
 append jscripts
   // start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
