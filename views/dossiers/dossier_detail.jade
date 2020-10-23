@@ -97,14 +97,9 @@ block content
                           label.col-sm-9.dos-text
                             | Contre : 
                             strong.str #{dossier.contre.c_nom}
-                        .form-group.hidden
-                          label.col-sm-3.dos-text
-                            | Avocat adverse :
-                          .col-sm-8
-                            input.form-control(name='avocat', placeholder='Saisir l\'avocat adverse', value='#{dossier.avocat_adverse}') 
                         .form-group
                           - let instruction = (i_instance[0]) ? i_instance[0] : (i_appel[0])? i_appel[0] : (i_cour[0])? i_cour[0] : ''
-                          if(instruction == '' || (instruction != '' && ((instruction.renvois && instruction.renvois.length==0) || (instruction.calendrier && instruction.calendrier.length==0))))
+                          if(instruction == '' || ((instruction.renvois && instruction.renvois.length==0) && (instruction.calendrier && instruction.calendrier.length==0)))
                             label.col-sm-3.dos-text
                               | Matière de litige :
                             .col-sm-8
