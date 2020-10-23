@@ -2,14 +2,14 @@
   .container
     .navbar-collapse
       ul.nav.navbar-nav
+        li.hid-mobile
+          a(href='/dossiers/dossier/create')
+            span.title Nouveau dossier
         li.dropdown
           a.dropdown-toggle(data-toggle='dropdown', href='#')
             | Dossiers 
             i.icon-arrow
           ul.dropdown-menu
-            li.hid-mobile
-              a(href='/dossiers/dossier/create')
-                span.title Créer un nouveau dossier 
             li.hid-mobile
               a(href='/dossiers')
                 | Repertoire de dossiers

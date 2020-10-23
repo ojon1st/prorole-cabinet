@@ -15,7 +15,6 @@ var dotenv = require('dotenv');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var dossiersRouter = require('./routes/dossiers');
-var partiesRouter = require('./routes/parties');
 var agendasRouter = require('./routes/agendas');
 var adminsRouter = require('./routes/administrateurs');
 
@@ -102,7 +101,6 @@ app.use(function(req, res, next){
 });
 app.use('/users',ensureAuthenticated, usersRouter);
 app.use('/dossiers',ensureAuthenticated, dossiersRouter);
-app.use('/parties',ensureAuthenticated, partiesRouter);
 app.use('/agenda',ensureAuthenticated, agendasRouter);
 app.use('/administrateur',ensureAuthenticated, adminsRouter);
 
@@ -126,7 +124,7 @@ app.use(function(err, req, res, next) {
 
 function ensureAuthenticated(req, res, next){
   if (req.isAuthenticated()){
-      return next();
+    return next();
   }
   res.redirect('/login');
 };

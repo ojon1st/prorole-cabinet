@@ -25,7 +25,7 @@ exports.renvois_events_get = function(req, res, next){
         .exec(callback);
     },
     last_renvois: function(callback){
-      Instruction.find({}, {'renvois':{'$slice':-1},'_id':1,decision:1})
+      Instruction.find({}, {'renvois':{'$slice':-1},'_id':1})
         .exec(callback);
     }
     }, async function (err, results) {
@@ -39,7 +39,7 @@ exports.renvois_events_get = function(req, res, next){
       var events_retards = [];
       results.last_renvois.forEach(function(last_renvoi){
         if(last_renvoi.renvois.length > 0 && moment().diff(moment(last_renvoi.renvois[0].r_date), 'days') > 0){
-          if( !last_renvoi.decision || last_renvoi.decision == ""){
+          if(last_renvoi.renvois[0].r_type != "delibere vide"){
             events_retards.push(last_renvoi.renvois[0]._id.toString())
           }
         }
@@ -60,8 +60,10 @@ exports.renvois_events_get = function(req, res, next){
               nom_de_classe_renvoi = 'event-bg-renvoi';
             }
             if (!juridictions_date_array.includes(instruction.dossier.nature+'_'+instruction.juridiction._id.toString()+ '_' +moment(renvoi.r_date).format('YYYY-MM-DD'))){ //on vérifie si la juridiction fait partie tu tableau des juridictions avant de l'ajouter comme nex event
+            (instruction.dossier.nature == 'Difficultés d\'exécution' ? instruction.dossier.nature = 'Référé': '');
+            let appel = (instruction.juridiction.division == 'appel'? 'Cour d\'appel de ': '');
               var new_tribunal = { // On crée l'event Tribunal
-                title: instruction.juridiction.nom + " - " + instruction.dossier.nature,
+                title: appel  + "" +  instruction.juridiction.nom + " - " + instruction.dossier.nature,
                 start: moment(renvoi.r_date).format('YYYY-MM-DD'),
                 viewableIn: ["basicWeek", "basicDay", "month"],
                 tribunalId: instruction.juridiction._id.toString(),
@@ -91,8 +93,9 @@ exports.renvois_events_get = function(req, res, next){
             nom_de_classe_tribunal = 'text-upper';
             nom_de_classe_calendrier = 'event-bg-calendrier';
             if (!juridictions_date_array.includes(instruction.dossier.nature+'_'+instruction.juridiction._id.toString()+ '_' +moment(calendrier.c_fin).format('YYYY-MM-DD'))){ //on vérifie si la juridiction fait partie tu tableau des juridictions avant de l'ajouter comme nex event
+              let appel = (instruction.juridiction.division == 'appel'? 'Cour d\'appel de ': '');
               var new_tribunal = { // On crée l'event Tribunal
-                title: instruction.juridiction.nom + " - " + instruction.dossier.nature,
+                title: appel  + "" +  instruction.juridiction.nom + " - " + instruction.dossier.nature,
                 start: moment(calendrier.c_fin).format('YYYY-MM-DD'),
                 viewableIn: ["basicWeek", "basicDay", "month"],
                 tribunalId: instruction.juridiction._id.toString(),
@@ -120,37 +123,4 @@ exports.renvois_events_get = function(req, res, next){
       });
       res.send({events_doc:events_doc});
   });
-};
-
-exports.annuaire_get = function(req, res, next){
-  
-  async.parallel({
-    pours: function (callback) {
-        Pour.find({})
-          .exec(callback);
-      },
-    contres: function(callback){
-      Contre.find({})
-          .exec(callback);
-    }
-    
-    }, async function (err, results) {
-      if (err) { return next(err); }
-    
-    var carnet = [];
-    
-    results.pours.forEach(function(p){
-      if(p.p_tel != '' || p.p_email != ''){
-        carnet.push({"prenom_nom":p.p_nom, "email":p.p_email, "tel":p.p_tel});
-      }
-    });
-    
-    results.contres.forEach(function(c){
-      if(c.c_tel != '' || c.c_email != ''){
-        carnet.push({"prenom_nom":c.c_nom, "email":c.c_email, "tel":c.c_tel});
-      }
-    });
-    
-    res.render('agenda/annuaire',{title:'Carnet d\'adresses', carnet:carnet})
-  })
 };

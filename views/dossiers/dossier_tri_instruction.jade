@@ -1,5 +1,10 @@
 extends ../layout
-
+append styles
+  style.
+    .manque{
+      color: red!important
+    }
+    
 block content
   .row
     .col-md-12
@@ -57,12 +62,13 @@ block content
                         | Dernière date de renvoi
               tbody
                 - var i = 1
+                - classDefaut = (title == 'defaut de renvoi') ? 'manque': ''
                 each dossier in list_dossiers
-                  tr
+                  tr(class='#{classDefaut}')
                     td 
                       | #{dossier.dossier.ref_d}
                     td 
-                      a.button(href="/dossiers/dossier/#{dossier.dossier._id}") #{dossier.dossier.pour.p_nom} c/ #{dossier.dossier.contre.c_nom}
+                      a.button(href="/dossiers/dossier/#{dossier.dossier._id}", class='#{classDefaut}') #{dossier.dossier.pour.p_nom} c/ #{dossier.dossier.contre.c_nom}
                     td.text-capitalize
                       | #{dossier.juridiction.nom}
                     if(title != 'décision à prendre')

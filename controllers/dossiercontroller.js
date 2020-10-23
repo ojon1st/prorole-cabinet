@@ -53,29 +53,6 @@ exports.dossier_list = function (req, res, next) {
 
 };
 
-exports.found_client_get = function (req, res, next) {
-
-  // Get all dossier for form
-  async.parallel({
-    dossier_physique: function (callback) {
-      Dossier.findOne({ref_d_p: req.params.ref}).exec(callback);
-    },
-    
-  }, function (err, results) {
-    if (err) { return next(err); }
-    if(results.dossier_physique && results.dossier_physique.ref_d_p != null){
-      res.send({
-        type_of_response: 'warning',
-        al_title: 'Reference physique',
-        al_msg : `Attention la reference ${req.params.ref} exite deja, veuillez verifier la reference`
-      });
-    }
-    else{
-      res.send({type_of_response: 'success'});
-    }
-  });
-};
-
 // Display detail page for a specific Dossier.
 exports.dossier_detail = function (req, res, next) {
 
@@ -158,15 +135,11 @@ exports.dossier_create_post = [
     const errors = validationResult(req);
     
     let pour = new Pour({
-      p_nom: req.body[0]['p_nom'],
-      p_tel: req.body[0]['p_tel'],
-      p_email: req.body[0]['p_email']
+      p_nom: req.body[0]['p_nom']
     });
 
     let contre = new Contre({
-      c_nom: req.body[0]['c_nom'],
-      c_tel: req.body[0]['c_tel'],
-      c_email: req.body[0]['c_email']
+      c_nom: req.body[0]['c_nom']
     });
 
     let dossier = new Dossier({
@@ -204,33 +177,6 @@ exports.dossier_create_post = [
   }
 ];
 
-// Display Dossier update form on GET.
-exports.dossier_update_get = function (req, res, next) {
-
-  Dossier.
-  findOne({
-    _id: req.params.id
-  }).
-  populate('pour').
-  populate('contre').
-  exec(function (err, dossier) {
-    if (err) {
-      return next(err);
-    }
-    if (dossier == null) { // No results.
-      var err = new Error('Dossier not found');
-      err.status = 404;
-      return next(err);
-    }
-    // Success.
-    res.render('dossier/dossier_form', {
-      title: 'Update Dossier',
-      dossier: dossier
-    });
-  });
-
-};
-
 // Handle Dossier update on POST.
 exports.dossier_update_post = [
     // Process request after validation and sanitization.
@@ -243,10 +189,7 @@ exports.dossier_update_post = [
         if (err) return next(err);
         the_dossier.updateOne({
           ref_d_p : req.body.ref_d_p,
-          qualite : req.body.qualite,
-          nature : req.body.nature,
-          avocat_adverse : req.body.avocat,
-          resume : req.body.resume
+          nature : req.body.nature
         }, function(err) {
           if(err) {console.log(err)}
           res.send({

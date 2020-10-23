@@ -20,6 +20,7 @@ $(document).ready(function () {
           type: 'GET',
           dataType: 'json',
           success: function(doc) {
+            console.log(doc)
             for(var event of doc.events_doc){
               (event.url ? event.url = '': '');
               let title = (event.title.includes('pour') == true ? event.title.split('pour'): '');
@@ -27,6 +28,9 @@ $(document).ready(function () {
             }
             callback(doc.events_doc);
             return;
+          },
+          error: function(data){
+            console.log(data)
           }
         });
       },
@@ -58,6 +62,12 @@ $(document).ready(function () {
         success: function(doc) {
           callback(doc.events_doc);
           return;
+        },
+        error: function(data){
+          if(data.abort.length == 1){
+            // window.reload();
+            console.log(data.abort);
+          }
         }
       });
     },

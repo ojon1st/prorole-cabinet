@@ -75,9 +75,9 @@ passport.use(new LocalStrategy({
           return done(null, compte);
         } else {
           console.log(compte._id)
-            return done(null, false, {
-              message: 'Le mot de passe est invalide'
-            });
+          return done(null, false, {
+            message: 'Le mot de passe est invalide'
+          });
         }
       });
     })

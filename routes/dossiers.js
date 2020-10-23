@@ -23,9 +23,6 @@ router.post('/dossier/:id/update', dossier_controller.dossier_update_post);
 // GET request for one dossier (DOSSIER DETAILS).
 router.get('/dossier/:id', dossier_controller.dossier_detail);
 
-// Rechercher la reference physique du dossier
-router.get('/dossier/is_ref_d_p/:ref', dossier_controller.found_client_get);
-
 /// Instructions ROUTES ///
 
 // Créer une nouvelle instruction
@@ -51,11 +48,5 @@ router.get('/conclusion_a_prendre', instruction_controller.get_renvoi_general)
 
 // Recuperation de dossiers dont la decision n'est pas telechargee
 router.get('/decision_a_lever', instruction_controller.get_decision_a_lever)
-
-// Vérifier la décision
-router.post('/dossier/:id/instruction/:id_instruction/is_decision', instruction_controller.is_decision)
-
-// Sauvegarger la décision
-router.post('/dossier/:id/instruction/:id_ins/decision/save', instruction_controller.decision_save)
 
 module.exports = router;
