@@ -286,7 +286,7 @@ exports.get_manques = function(req, res, next){
       var dossiers_retards = [];
       results.last_renvois.forEach(function(last_renvoi){
         if(last_renvoi.renvois.length > 0 && moment().diff(moment(last_renvoi.renvois[0].r_date), 'days') > 0){
-          if(!last_renvoi.decision || last_renvoi.decision == ""){
+          if(!last_renvoi.decision || last_renvoi.decision == "" || last_renvoi.renvois[0].r_type !="delibere vide"){
             //console.log(last_renvoi);
             dossiers_retards.push(last_renvoi)
           }
@@ -294,7 +294,7 @@ exports.get_manques = function(req, res, next){
       });
       //console.log(dossiers_retards)
       
-      res.render('dossiers/dossier_tri_instruction', { title:'dossiers sans date de renvoi', list_dossiers: dossiers_retards});
+      res.render('dossiers/dossier_tri_instruction', { title:'defaut de renvoi', list_dossiers: dossiers_retards});
       
   });
 };
@@ -352,7 +352,7 @@ exports.get_decision_a_lever = function(req, res, next){
   async.parallel({
     
     decision : function(callback){
-      Instruction.find({}, {'decision':1, '_id':1, 'dossier':1, 'juridiction':1})
+      Instruction.find({}, {'decision':1, 'renvois':{'$slice':-1}, '_id':1, 'dossier':1, 'juridiction':1})
           .populate({ path: 'dossier', model: 'Dossier', populate: { path: 'pour contre'} })
           .populate('juridiction')
           .exec(callback);
@@ -361,7 +361,7 @@ exports.get_decision_a_lever = function(req, res, next){
       if (err) { return next(err); }
       var decision = [];
       results.decision.forEach(function(dossier){
-        if(dossier.decision != null && dossier.decision != ''){
+        if((dossier.decision != null && dossier.decision != '') || (dossier.renvois.length > 0 && dossier.renvois[0].r_type == "delibere vide")){
           decision.push(dossier)
         }
       });

@@ -73,6 +73,10 @@ function choice_juridiction (division){
   show_notification('info', 'Opération non autorisée', 'Veuillez choisir une juridiction du niveau <strong class="text-uppercase">' + division + '</strong> pour pouvoir effectuer une operation d\'instruction');
 }
 
+function delibere_instruction (division){
+  show_notification('warning', 'Opération non autorisée', 'L\'intruction en <strong class="text-uppercase">' + division + '</strong> a été cloturée');
+}
+
 /***************Juridiction************/
 function confirm_new_juridiction(selectObject, id_dossier, new_division) {
   if(selectObject.value != 'null'){
@@ -88,14 +92,19 @@ function confirm_new_juridiction(selectObject, id_dossier, new_division) {
       }
     }
     if(division == false && control[0] == false && control[1] == false){
-      if((new_division == 'instance' && $('#delibere_appel').val() != 'true' && $('#delibere_cour').val() != 'true') || (new_division == 'appel' &&  $('#delibere_cour').val() != 'true') || (new_division == 'cour')){
+      if(
+        (new_division == 'instance' && $('#delibere_appel').val() != 'true' && $('#delibere_cour').val() != 'true' && $('#inst_nature').val() == 'true' && selectObject.options[ selectObject.selectedIndex ].text == 'TC Niamey' && $('#inst_appel').val() == 'false' && $('#inst_cour').val() == 'false') || 
+        (new_division == 'appel' &&  $('#delibere_cour').val() != 'true' && $('#inst_cour').val() == 'false') || 
+        (new_division == 'cour')){
         create_instance(selectObject.value, id_dossier, new_division);
       }
       else{
+        $(selectObject).val('null');
         show_notification('error', 'Changement de juriduction', 'Non respect de la procedure judicaire, la juridiction ne peut pas être changer');
       }
     }
     else{
+      $(selectObject).val('null');
       show_notification('error', 'Changement de juriduction', 'Il y\'a déjà une instruction en cours, la juridiction ne peut pas être changer');
     }
   }
@@ -118,12 +127,12 @@ function check_delibere(division){
   let instance = ($('#delibere_instance').val() != undefined ? $('#delibere_instance').val(): '');
   let appel = ($('#delibere_appel').val() != undefined ? $('#delibere_appel').val(): '');
   if(division == degre[1]){
-    delibere_instance = (instance.trim() != ''  ? true: false);
+    delibere_instance = (instance.trim() == 'true'  ? true : false);
     (delibere_instance == true  ? delibere = true : '');
   }
   if(division == degre[2]){
-    delibere_instance = (instance.trim() != ''  ? true: false);
-    delibere_appel = (appel.trim() != ''  ? true: false);
+    delibere_instance = (instance.trim() == 'true'  ? true : false);
+    delibere_appel = (appel.trim() == 'true'  ? true : false);
     if(delibere_instance == true || delibere_appel == true){
       delibere = true;
     }
@@ -142,6 +151,7 @@ function create_instance(id_juridiction, id_dossier, division) {
     data.instruction = $('#id_instruction').val();
     data.decision = check_delibere(division);
   }
+  // return console.log(data);
   $.ajax({
     type: 'POST',
     data: JSON.stringify(data),
@@ -376,15 +386,17 @@ function addDatePicker(){
 };
 
 
-function type_complete_motif(type){
+function type_complete_motif(type, division){
   var motif = type.value;
   var role_general = 'Renvoyé au rôle général';
   var deliberer = 'Mise en délibéré';
   if(motif == 'renvoi au role general' || motif == 'mise en delibere'){
-    if(motif == 'renvoi au role general'){ $('.motif').val(role_general).attr('disabled', true);}
-    else { $('.motif').val(deliberer).attr('disabled', true);}
+    if(motif == 'renvoi au role general'){ $('#motif_ins_'+division).val(role_general).attr('disabled', true);}
+    else { $('#motif_ins_'+division).val(deliberer).attr('disabled', true);}
   }
-  else{$('.motif').val('').attr('disabled', false);}
+  else{
+    (motif == 'delibere vide' ? $('#motif_ins_'+division).val('Délibéré OK').attr('disabled', true) : $('#motif_ins_'+division).val('').attr('disabled', false))
+  }
 }
 
 function nature2instruction(nature){

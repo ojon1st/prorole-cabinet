@@ -39,7 +39,7 @@ exports.renvois_events_get = function(req, res, next){
       var events_retards = [];
       results.last_renvois.forEach(function(last_renvoi){
         if(last_renvoi.renvois.length > 0 && moment().diff(moment(last_renvoi.renvois[0].r_date), 'days') > 0){
-          if( !last_renvoi.decision || last_renvoi.decision == ""){
+          if(!last_renvoi.decision || last_renvoi.decision == ""  || last_renvoi.renvois[0].r_type !="delibere vide"){
             events_retards.push(last_renvoi.renvois[0]._id.toString())
           }
         }
@@ -49,7 +49,10 @@ exports.renvois_events_get = function(req, res, next){
       var juridictions_date_array = [];
       results.instructions.forEach(function(instruction){ // Pour chaque instruction
         var nom_de_classe_tribunal = nom_de_classe_renvoi = nom_de_classe_calendrier = '';
-        
+        if(instruction.dossier.nature && instruction.dossier.nature == 'Difficultés d\'exécution'){
+          instruction.dossier.nature = 'Référé';
+          console.log(instruction.dossier.nature);
+        }
         if (instruction.renvois.length > 0){ // Si renvoi il y a
           instruction.renvois.forEach(function(renvoi){ // pour chaque renvoi
             if(events_retards.includes(renvoi._id.toString())){
@@ -60,7 +63,7 @@ exports.renvois_events_get = function(req, res, next){
               nom_de_classe_renvoi = 'event-bg-renvoi';
             }
             if (!juridictions_date_array.includes(instruction.dossier.nature+'_'+instruction.juridiction._id.toString()+ '_' +moment(renvoi.r_date).format('YYYY-MM-DD'))){ //on vérifie si la juridiction fait partie tu tableau des juridictions avant de l'ajouter comme nex event
-              var new_tribunal = { // On crée l'event Tribunal
+            var new_tribunal = { // On crée l'event Tribunal
                 title: instruction.juridiction.nom + " - " + instruction.dossier.nature,
                 start: moment(renvoi.r_date).format('YYYY-MM-DD'),
                 viewableIn: ["basicWeek", "basicDay", "month"],
@@ -117,6 +120,7 @@ exports.renvois_events_get = function(req, res, next){
             events_doc.push(new_calendrier);
           });
         }
+         
       });
       res.send({events_doc:events_doc});
   });
