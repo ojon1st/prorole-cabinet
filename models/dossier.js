@@ -7,11 +7,7 @@ var Schema = mongoose.Schema;
 var DossierSchema = new Schema({ 
   ref_d: {type: String},
   ref_d_p: {type: String},
-  qualite: {type: String},
   nature: {type: String},
-  avocat_adverse: {type: String},
-  resume: {type: String},
-  montant: {type: Number},
   doc:{type: Date, default:moment()}, //doc: date of creation -- now
   pour:{type: Schema.ObjectId, ref: 'Pour'},
   correspondance:[{dossier_id:String, ref:String}],

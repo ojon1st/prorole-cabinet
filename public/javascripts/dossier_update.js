@@ -1,7 +1,7 @@
 // INITIALIZE FUNCTIONS
 $(document).ready(function () {
   $('#renseigner_mise_en_etat').on('click', function() {
-    if ( $('#id_instruction').val() != "" || $('#id_instruction').val() != 'undefined'){
+    if ($('#id_instruction').val() != "" || $('#id_instruction').val() != 'undefined'){
       mise_etat_get($('#id_dossier').val(),$('#id_instruction').val());
     }
   });
@@ -13,7 +13,7 @@ function update(){
   $("#hidden").removeClass("hidden");
   $("#visible").addClass("hidden");
   let dossier = $("#id_dossier").val();
-  $("#btn-func").attr('onclick', `update_dossier("${dossier}")`).html("Sauvegader");
+  $("#btn-func").attr('onclick', `update_dossier("${dossier}")`).html("Sauvegarder");
 }
 
 function show_notification(shortCutFunction, title, msg) {
@@ -36,11 +36,8 @@ window.update_dossier = function (id_dossier) {
   var route_update_infos_dossier = '/dossiers/dossier/' + id_dossier + '/update';
   var data = {};
   data.ref_d_p = $('input[name=ref_d_p]').val();
-  data.avocat = $('input[name=avocat]').val();
-  data.qualite = ($('select[name=qualite]').val() != 'null' ? $('select[name=qualite]').val() : '');
   data.nature = ($('select[name=nature]').val() != 'null' ? $('select[name=nature]').val() : '');
-  data.resume = $('textarea[name=resume]').val();
-  if(data.ref_d_p == '' && data.avocat == '' && data.qualite == '' && data.nature == '' && data.resume == ''){
+  if(data.ref_d_p == '' && data.nature == ''){
     show_notification('info', 'Mise a jour du dossier', 'Veuillez renseigner au moins un des champs pour effectuer la mise a jour');
     return
   }
@@ -121,7 +118,7 @@ function check_division (division){
   return test;
 }
 
-function check_delibere(division){
+function check_delibere(division, old_division){
   let degre = ['', 'appel', 'cour'];
   let delibere_instance = delibere_appel = delibere = false;
   let instance = ($('#delibere_instance').val() != undefined ? $('#delibere_instance').val(): '');
@@ -149,7 +146,7 @@ function create_instance(id_juridiction, id_dossier, division) {
   data.division = division
   if($('#id_instruction').val() != ''){
     data.instruction = $('#id_instruction').val();
-    data.decision = check_delibere(division);
+    data.decision = check_delibere(division, $('#old_division').val());
   }
   // return console.log(data);
   $.ajax({
@@ -256,22 +253,40 @@ function verifDate(champ) {
 //Mise à l'état
   
 var mee = 0;//counter mise à l'état form
-var dil = 0; //counter diligences form
 function mise_en_etat(le_form){ // x = le nbre de dfois qu'on appelle le form et le form = le formulaire incrémenté
   var i = 0;
-  if (le_form == 'mee'){
-    i = mee;
-    $("#"+le_form).append('<div class="row"><div class="col-md-2"><label class="control-label text-bold">Conclusions</label><select name="conclusion_'+le_form+'_'+i+'"class="form-control"><option disabled="" selected="">Selectionner</option><option value="nous"> Nous </option><option value="parties adverses"> Parties adverses </option></select></div><div class="col-md-2"><label class="control-label text-bold">Du</label><input name="du_'+le_form+'_'+i+'" class="form-control date-picker" type="text" data-date-format="dd-mm-yyyy" data-date-viewmode="years" placeholder="Saisir une date" onchange="" /></div><div class="col-md-2"><label class="control-label">Au</label><input name="au_'+le_form+'_'+i+'" class="form-control date-picker" type="text" data-date-format="dd-mm-yyyy" data-date-viewmode="years" placeholder="Saisir une date" onchange=""/></div><div class="col-md-2 text-bold"><label class="control-label" for="">À</label><input name="h_'+le_form+'_'+i+'" class="form-control time-picker popovers" type="time" data-original-title="" data-content="Chiffre" data-placement="top" data-trigger="hover" onkeyup="this.value=this.value.replace(/\D/g,\'\')" value="15:00"/></div><div class="col-md-4"><label class="control-label"></label><textarea name="com_'+le_form+'_'+i+'" class="form-control" placeholder="Texte"></textarea></div></div><br/>');
-  }
-
+  (le_form == 'mee'? i = mee:'');
+  $("#"+le_form).append('\
+    <div class="row">\
+      <div class="col-md-2">\
+        <label class="control-label text-bold">Conclusions</label>\
+        <select name="conclusion_'+le_form+'_'+i+'"class="form-control">\
+          <option disabled="" selected="">Selectionner</option>\
+          <option value="nous"> Nous </option>\
+          <option value="parties adverses"> Parties adverses </option>\
+        </select>\
+      </div>\
+      <div class="col-md-2">\
+        <label class="control-label text-bold">Du</label>\
+        <input name="du_'+le_form+'_'+i+'" class="form-control date-picker" type="text" data-date-format="dd-mm-yyyy" data-date-viewmode="years" placeholder="Saisir une date" onchange="" />\
+      </div>\
+      <div class="col-md-2">\
+        <label class="control-label">Au</label>\
+        <input name="au_'+le_form+'_'+i+'" class="form-control date-picker" type="text" data-date-format="dd-mm-yyyy" data-date-viewmode="years" placeholder="Saisir une date" onchange=""/>\
+      </div>\
+      <div class="col-md-2 text-bold">\
+        <label class="control-label" for="">À</label>\
+        <input name="h_'+le_form+'_'+i+'" class="form-control time-picker popovers" type="time" data-original-title="" data-content="Chiffre" data-placement="top" data-trigger="hover" onkeyup="this.value=this.value.replace(/\D/g,\'\')" value="15:00"/>\
+      </div>\
+      <div class="col-md-4">\
+        <label class="control-label"></label>\
+        <textarea name="com_'+le_form+'_'+i+'" class="form-control" placeholder="Texte"></textarea>\
+      </div>\
+    </div>\
+    <br/>'
+  );
   addDatePicker();
-
-  if (le_form == 'mee'){
-    mee++;
-  } else if (le_form == 'dil'){
-    dil++;
-  }
-
+  mee++;
 }
   
 function mise_en_etat_create_post (id_dossier,id_instruction, juridiction){
@@ -342,36 +357,6 @@ function mise_etat_get(id_dossier, id_instruction){
       return;
     }
   });
-}
-
-/**************** Diligences *****************/
-
-
-/**************** Décision ***************/
-
-function save_decision(id_dossier, id_instruction, division){
-  
-  var la_route = '/dossiers/dossier/'+id_dossier+'/instruction/'+id_instruction+'/decision/save'; 
-  var data = {};
-  let decision = $('#decision_'+division).val();
-  if(decision.trim != ''){
-    data.decision = $('#decision_'+division).val();
-    data.juridiction = $('#juridiction_'+division).val();
-    data.division = division;
-    $.ajax({
-      type: 'POST',
-      data: JSON.stringify(data),
-      contentType: 'application/json',
-      url: la_route,
-      success: function (data) {
-        window.location.href="/dossiers/dossier/"+id_dossier;
-      }
-    });
-  }
-  else{
-    $('#decision_'+division).css('backgroundColor', '#ccc');
-  }
-    
 }
 
 

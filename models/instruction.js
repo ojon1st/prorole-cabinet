@@ -9,8 +9,6 @@ var InstructionSchema = new Schema({
   juridiction:{type: Schema.ObjectId, ref: 'Juridiction'},
   calendrier:[{c_conclusion:String,c_debut:Date,c_fin:Date,c_heure:String,c_commentaire:String}],
   renvois:[{r_date:Date, r_motif:String,r_type:String}],
-  decision:{type:String},
-  decision_file:{type: String },
   i_update:{type:Date}
 });
 

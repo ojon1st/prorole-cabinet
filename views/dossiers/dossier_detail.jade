@@ -24,16 +24,17 @@ block content
   -let inst_appel = (dossier.qualite && (dossier.qualite == 'Intimé (e)' || dossier.qualite == 'Appelant (e)')) ? true : false
   -let inst_cour = (dossier.qualite && (dossier.qualite == 'Demandeur (resse) au pourvoi' || dossier.qualite == 'Défendeur (resse) au pourvoi')) ? true : false
   input#inst_nature(type='hidden', value='#{nature}', disabled)
-  input#inst_appel(type='hidden', value='#{inst_appel}', disabled)
-  input#inst_cour(type='hidden', value='#{inst_cour}', disabled)
   input#id_dossier(type='hidden', value=dossier._id, disabled)                      
   input#id_dossier(type='hidden', value=dossier._id, disabled)
   if (i_instance[0] && !i_appel[0] && !i_cour[0])
     input#id_instruction(type='hidden', value=(i_instance[0]._id), disabled)
+    input#old_division(type='hidden', value='instance', disabled)
   else if (i_appel[0] && !i_cour[0])
     input#id_instruction(type='hidden', value=(i_appel[0]._id), disabled)
+    input#old_division(type='hidden', value='appel', disabled)
   else if (i_cour[0])
     input#id_instruction(type='hidden', value=(i_cour[0]._id), disabled)
+    input#old_division(type='hidden', value='cour', disabled)
   else
     input#id_instruction(type='hidden', value='', disabled)
   .row
@@ -264,7 +265,7 @@ block content
                                 .col-sm-offset-1.col-sm-8
                                   p MEE du #{moment(cal.c_debut).format("DD-MM-YYYY")} au #{moment(cal.c_fin).format("DD-MM-YYYY")} : #{cal.c_commentaire}
                         hr
-                      if (!(instruction && instruction.decision && instruction.decision != '' && instruction.juridiction.division == division))
+                      if (!(instruction && instruction.renvois.length>0 && instruction.renvois[last].r_type == "delibere vide" && instruction.juridiction.division == division))
                         .form-group
                           label.col-sm-2.control-label
                             | Renvoi :
@@ -333,7 +334,7 @@ block content
                             +tab_contenu(i_instance[0], j_instance, 'instance')
                           #myTab5_appel.tab-pane.fade(class = ((i_appel.length > 0 && i_cour.length == 0) ? 'in active' : (inst_appel == true && inst_cour == false && i_cour.length == 0) ? 'in active' : ''))
                             +tab_contenu(i_appel[0], j_appel, 'appel')
-                          #myTab5_cour.tab-pane.fade(class = (i_cour.length > 0 || inst_cour == true ? 'in active' : ''))
+                          #myTab5_cour.tab-pane.fade(class = (i_cour.length > 0 ? 'in active' : ''))
                             +tab_contenu(i_cour[0], j_cour, 'cour')
                         ul#myTab5.nav.nav-tabs
                           li(class = (i_appel.length == 0 && i_cour.length == 0 && inst_appel == false && inst_cour == false) ? 'active' : '')
@@ -342,7 +343,7 @@ block content
                           li(class = ((i_appel.length > 0 && i_cour.length == 0) ? 'active' : (inst_appel == true && inst_cour == false && i_cour.length == 0) ? 'active' : ''))
                             a(href='#myTab5_appel', data-toggle='tab')
                               | Appel
-                          li(class = (i_cour.length > 0 || inst_cour == true  ? 'active' : ''))
+                          li(class = (i_cour.length > 0 ? 'active' : ''))
                             a(href='#myTab5_cour', data-toggle='tab')
                               | Cassation  
   .hidden
