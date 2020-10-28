@@ -126,3 +126,33 @@ exports.renvois_events_get = function(req, res, next){
       res.send({events_doc:events_doc});
   });
 };
+
+exports.annuaire_get = function(req, res, next){
+  
+  async.parallel({
+    pours: function (callback) {
+        Pour.find({})
+          .exec(callback);
+      },
+    contres: function(callback){
+      Contre.find({})
+          .exec(callback);
+    }
+    
+    }, async function (err, results) {
+      if (err) { return next(err); }
+    var carnet = [];
+    results.pours.forEach(function(pour){
+      if((pour.p_email && pour.p_email.trim() != '') || (pour.p_tel && pour.p_tel.trim() != '')){
+        carnet.push({"prenom_nom":pour.p_nom, "email":pour.p_email, "tel":pour.p_tel});
+      }
+    });
+    
+    results.contres.forEach(function(contre){
+      if((contre.c_email && contre.c_email.trim() != '') || (contre.c_tel && contre.c_tel.trim() != '')){
+        carnet.push({"prenom_nom":contre.c_nom, "email":contre.c_email, "tel":contre.c_tel});
+      }
+    });
+    res.render('agenda/annuaire',{carnet:carnet, title: 'Carnet d\'adresses'})
+  })
+};

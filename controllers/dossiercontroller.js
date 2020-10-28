@@ -135,11 +135,15 @@ exports.dossier_create_post = [
     const errors = validationResult(req);
     
     let pour = new Pour({
-      p_nom: req.body[0]['p_nom']
+      p_nom: req.body[0]['p_nom'],
+      p_tel: req.body[0]['p_tel'],
+      p_email: req.body[0]['p_email']
     });
 
     let contre = new Contre({
-      c_nom: req.body[0]['c_nom']
+      c_nom: req.body[0]['c_nom'],
+      c_tel: req.body[0]['c_tel'],
+      c_email: req.body[0]['c_email']
     });
 
     let dossier = new Dossier({
@@ -189,13 +193,16 @@ exports.dossier_update_post = [
         if (err) return next(err);
         the_dossier.updateOne({
           ref_d_p : req.body.ref_d_p,
-          nature : req.body.nature
+          nature : req.body.nature,
+          qualite : req.body.qualite,
+          resume : req.body.resume,
+          c_avocat : req.body.avocat
         }, function(err) {
           if(err) {console.log(err)}
           res.send({
             type_of_response: 'success', update: true,
             al_title: 'Mise à jour du dossier!',
-            al_msg : 'La mise à jour du dossier a été fait avec succès ...'
+            al_msg : 'La mise à jour du dossier a été fait avec succès!'
           });
         })
         .catch(console.log);

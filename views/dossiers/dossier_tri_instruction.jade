@@ -4,6 +4,15 @@ append styles
     .manque{
       color: red!important
     }
+    .r-3{
+      color: red!important
+    }
+    .r-7{
+      color: yellow!important
+    }
+    .r-x{
+      color: green!important
+    }
     
 block content
   .row
@@ -51,36 +60,45 @@ block content
             table#sample-table-2.table.table-striped.table-hover
               thead
                 tr
-                  th Ref
+                  th#sort Ref
                   th Parties
                   th Juridiction
                   if(title != 'décision à prendre')
-                    th
+                    th#sort_desck
                       if(title == 'renvois au rôle général')
                         | Delais
                       else
                         | Dernière date de renvoi
               tbody
-                - var i = 1
-                - classDefaut = (title == 'defaut de renvoi') ? 'manque': ''
-                each dossier in list_dossiers
-                  tr(class='#{classDefaut}')
-                    td 
-                      | #{dossier.dossier.ref_d}
-                    td 
-                      a.button(href="/dossiers/dossier/#{dossier.dossier._id}", class='#{classDefaut}') #{dossier.dossier.pour.p_nom} c/ #{dossier.dossier.contre.c_nom}
-                    td.text-capitalize
-                      | #{dossier.juridiction.nom}
-                    if(title != 'décision à prendre')
-                      td
-                        if(title != 'conclusions à prendre')
-                          | #{moment(dossier.renvois[0].r_date).format("DD-MM-YYYY")}
-                        else
-                          if(dossier.calendrier && dossier.calendrier.length>0)
-                            | #{moment(dossier.calendrier[0].c_fin).format("DD-MM-YYYY")}
+                if(title != 'conclusions à prendre')
+                  - classDefaut = (title == 'defaut de renvoi') ? 'manque': ''
+                  each dossier in list_dossiers
+                    tr(class='#{classDefaut}')
+                      td 
+                        | #{dossier.dossier.ref_d}
+                      td 
+                        a.button(href="/dossiers/dossier/#{dossier.dossier._id}", class='#{classDefaut}') #{dossier.dossier.pour.p_nom} c/ #{dossier.dossier.contre.c_nom}
+                      td.text-capitalize
+                        | #{dossier.juridiction.nom}
+                      if(title != 'décision à prendre')
+                        td
+                          if(title != 'conclusions à prendre')
+                            | #{moment(dossier.renvois[0].r_date).format("DD-MM-YYYY")}
+                else
+                  each conclusion in list_dossiers
+                    tr(class='#{conclusion.etat.clsDif}')
+                      td 
+                        | #{conclusion.conclusion.dossier.ref_d}
+                      td 
+                        a.button(href="/dossiers/dossier/#{conclusion.conclusion.dossier._id}", class='#{conclusion.etat.clsDif}') #{conclusion.conclusion.dossier.pour.p_nom} c/ #{conclusion.conclusion.dossier.contre.c_nom}
+                      td.text-capitalize
+                        | #{conclusion.conclusion.juridiction.nom}
+                      td  
+                        if(conclusion.conclusion.calendrier && conclusion.conclusion.calendrier.length>0)
+                            | #{moment(conclusion.conclusion.calendrier[0].c_fin).format("DD-MM-YYYY")}
                           else
-                            if(dossier.renvois && dossier.renvois.length>0)
-                              | #{moment(dossier.renvois[0].r_date).format("DD-MM-YYYY")}
+                            if(conclusion.conclusion.renvois && conclusion.conclusion.renvois.length>0)
+                              | #{moment(conclusion.conclusion.renvois[0].r_date).format("DD-MM-YYYY")}
 append jscripts
   // start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
   script(src='/assets/plugins/holder/holder.js')
@@ -89,4 +107,7 @@ append jscripts
   script.
     jQuery(document).ready(function() {
     TableExport.init();
+    $('#sort').removeClass('sorting_asc').addClass('sorting');
+    $('#sort_desck').removeClass('sorting').addClass('sorting_desc').attr('aria-sort', 'descending');
+
     });

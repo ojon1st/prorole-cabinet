@@ -4,7 +4,9 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var PourSchema = new Schema({
-  p_nom:{type:String}
+  p_nom:{type:String},
+  p_tel:{type:String},
+  p_email:{type:String}
 });
 
 // Virtual for this genre instance URL.

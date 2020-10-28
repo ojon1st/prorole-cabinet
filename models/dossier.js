@@ -8,6 +8,9 @@ var DossierSchema = new Schema({
   ref_d: {type: String},
   ref_d_p: {type: String},
   nature: {type: String},
+  qualite: {type: String},
+  resume: {type: String},
+  c_avocat: {type: String},
   doc:{type: Date, default:moment()}, //doc: date of creation -- now
   pour:{type: Schema.ObjectId, ref: 'Pour'},
   correspondance:[{dossier_id:String, ref:String}],

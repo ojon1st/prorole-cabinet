@@ -4,7 +4,9 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var ContreSchema = new Schema({ 
-  c_nom:{type:String}
+  c_nom:{type:String},
+  c_tel:{type:String},
+  c_email:{type:String}
 });
 
 // Virtual for this genre instance URL.

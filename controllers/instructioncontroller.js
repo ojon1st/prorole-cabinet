@@ -27,7 +27,8 @@ exports.instruction_create_post = [
     if(!req.body.instruction || (req.body.instruction && req.body.decision == true)){
       var new_instruction = new Instruction({
         dossier:req.body.dossier,
-        juridiction : req.body.juridiction
+        juridiction : req.body.juridiction,
+        division : req.body.juridiction,
       });
       
       new_instruction.save(function(err){
@@ -48,7 +49,8 @@ exports.instruction_create_post = [
                   .exec(function(err, the_instruction){
         if (err) return next(err);
         the_instruction.updateOne({
-          juridiction : req.body.juridiction
+          juridiction : req.body.juridiction,
+          division : req.body.juridiction,
         }, function(err) {
           if(err) {
             console.log(err)
@@ -82,9 +84,9 @@ exports.renvoi_create_post = [
       if (err) {
         return next(err);
       }
-      
+      req.body.date_renvoi = (req.body.date_renvoi != '' ? moment(req.body.date_renvoi, "DD-MM-YYYY") : '');
       results.theinstruction.renvois.push({
-        r_date: moment(req.body.date_renvoi, "DD-MM-YYYY"),
+        r_date: req.body.date_renvoi,
         r_type: req.body.type_renvoi,
         r_motif: req.body.motif_renvoi
       });
@@ -243,8 +245,20 @@ exports.get_renvoi_general = function(req, res, next){
       if (err) { return next(err); }
       var renvoi_general = [];
       results.renvois_rgs.forEach(function(renvois_rg){
-        if(((renvois_rg.renvois.length > 0 && renvois_rg.renvois[0].r_type == 'nos conclusions') || (renvois_rg.calendrier.length > 0 && renvois_rg.calendrier[0].c_conclusion == 'nous')) && renvois_rg.renvois[0].r_type != "delibere vide"){
-          renvoi_general.push(renvois_rg) 
+        var tab_class = {};
+        if((renvois_rg.renvois && renvois_rg.renvois.length > 0 && renvois_rg.renvois[0].r_type == 'nos conclusions') || (renvois_rg.calendrier && renvois_rg.calendrier.length > 0 && renvois_rg.calendrier[0].c_conclusion == 'nous') && renvois_rg.decision == null){
+          if(renvois_rg.renvois && renvois_rg.renvois.length > 0 && renvois_rg.renvois[0].r_type == "delibere vide"){return}
+          var date_check = (renvois_rg.renvois[0] ? renvois_rg.renvois[0].r_date : renvois_rg.calendrier[0].c_fin);
+          var diff = moment().diff(moment(date_check), 'days')
+          if(diff <= 0){
+            (diff >= -3 ? tab_class.clsDif = 'r-3' : (diff >= -7 ? tab_class.clsDif = 'r-7' : tab_class.clsDif = 'r-x'));
+          }
+          else{tab_class.clsDif = 'r-3';}
+
+          renvoi_general.push({
+            conclusion : renvois_rg,
+            etat : tab_class
+          });
         }
       });
       res.render('dossiers/dossier_tri_instruction', { title:'conclusions à prendre', list_dossiers: renvoi_general});

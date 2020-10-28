@@ -29,11 +29,10 @@ block content
                   th Téléphone
               tbody
                 each p in carnet
-                  if(p.email != '' || p.tel != null)
-                    tr
-                      th #{p.prenom_nom}
-                      th #{p.email}
-                      th #{p.tel}
+                  tr
+                    th #{p.prenom_nom}
+                    th #{p.email}
+                    th #{p.tel}
 append jscripts
   // start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
   script(src='/assets/plugins/holder/holder.js')

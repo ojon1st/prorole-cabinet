@@ -24,6 +24,8 @@ block content
   -let inst_appel = (dossier.qualite && (dossier.qualite == 'Intimé (e)' || dossier.qualite == 'Appelant (e)')) ? true : false
   -let inst_cour = (dossier.qualite && (dossier.qualite == 'Demandeur (resse) au pourvoi' || dossier.qualite == 'Défendeur (resse) au pourvoi')) ? true : false
   input#inst_nature(type='hidden', value='#{nature}', disabled)
+  input#inst_appel(type='hidden', value='#{inst_appel}', disabled)
+  input#inst_cour(type='hidden', value='#{inst_cour}', disabled)
   input#id_dossier(type='hidden', value=dossier._id, disabled)                      
   input#id_dossier(type='hidden', value=dossier._id, disabled)
   if (i_instance[0] && !i_appel[0] && !i_cour[0])
@@ -96,7 +98,7 @@ block content
                           .form-group
                             label.col-sm-12.dos-text 
                               | Avocat Adverse : 
-                              strong.str #{dossier.avocat_adverse}
+                              strong.str #{dossier.c_avocat}
                           .form-group
                             label.col-sm-12.dos-text 
                               | Matiere du litige : 
@@ -162,7 +164,7 @@ block content
                           label.col-sm-3.dos-text
                             | Avocat adverse :
                           .col-sm-8
-                            input.form-control(name='avocat', placeholder='Saisir l\'avocat adverse', value='#{dossier.avocat_adverse}') 
+                            input.form-control(name='avocat', placeholder='Saisir l\'avocat adverse', value='#{dossier.c_avocat}') 
                         .form-group
                           if(instruction == '' || ((instruction.renvois && instruction.renvois.length==0) && (instruction.calendrier && instruction.calendrier.length==0)))
                             label.col-sm-3.dos-text
@@ -235,20 +237,16 @@ block content
                                 each j in juridiction
                                   option(value=j._id, selected=((instruction && j._id == instruction.juridiction._id.toString()))) #{j.nom}
                       .form-group
-                        label.col-sm-3.control-label
-                          | Calendrier d'instruction
-                          br
-                          |  ou de mise en état :
-                        .col-sm-8(style='margin-top: 20px;')
+                        .col-sm-offset-1.col-sm-8(style='margin-top: 20px;')
                           if(!(instruction && ((instruction.decision && instruction.decision != '') || (instruction.renvois && instruction.renvois.length>0 && instruction.renvois[last].r_type == "delibere vide")) && instruction.juridiction.division == division))
                             if(instruction)
-                              a#renseigner_mise_en_etat.btn.btn-dark-purple.show-calendar(href='#calendrierMiseEtat') Voir / Renseigner
+                              a#renseigner_mise_en_etat.btn.btn-dark-purple.show-calendar(href='#calendrierMiseEtat') Créer un calendrier de mise en état
                             else
-                              a.btn.btn-dark-purple(onclick='choice_juridiction("#{division}")') Voir / Renseigner
+                              a.btn.btn-dark-purple(onclick='choice_juridiction("#{division}")') Créer un calendrier de mise en état
                           else
-                            a.btn.btn-dark-purple(onclick='delibere_instruction("#{division}")') Voir / Renseigner
+                            a.btn.btn-dark-purple(onclick='delibere_instruction("#{division}")') Créer un calendrier de mise en état
                       div(id='bloc_renvoi_ins_#{division}' class=(instruction && (instruction.renvois.length>0 || instruction.calendrier.length>0)) ? '' : 'hidden' )
-                        h3 Renvois & Mise à l'état
+                        h3 Renvois & Mise en état
                         hr
                         .form-group(id='liste_renvoi_ins_#{division}')
                           if (instruction && instruction.juridiction.division == division)
@@ -304,16 +302,13 @@ block content
                                   else
                                       a.btn.input-group-addon.btn-dark-beige(onclick='delibere_instruction("#{division}")')
                                         span.fa.fa-check
-                      if (instruction && ((instruction.decision && instruction.decision != '') || (instruction.renvois && instruction.renvois.length>0 && instruction.renvois[last].r_type == "delibere vide")) && instruction.juridiction.division == division)
+                      if (instruction && instruction.decision && instruction.decision != '' && instruction.juridiction.division == division)
                         .form-group
                           label.col-sm-3.control-label
                             | Délibéré :
                           .col-sm-9
                             textarea.form-control(name='decision', id='decision_#{division}', cols='30', rows='7', readonly)
-                              if(instruction.decision)
-                                | #{instruction.decision}
-                              else
-                                | R. OK : #{instruction.renvois[last].r_motif}
+                              | #{instruction.decision}
                             input(type='hidden', value='true', id='delibere_#{division}')
                       else
                         .form-group
@@ -324,7 +319,7 @@ block content
                             textarea.form-control(id='decision_#{division}', placeholder='Délibéré', cols='30', rows='7')
                       .form-group
                         .col-sm-offset-7.col-sm-3.text-center
-                          if(!(instruction && ((instruction.decision && instruction.decision != '') || (instruction.renvois && instruction.renvois.length>0 && instruction.renvois[last].r_type == "delibere vide")) && instruction.juridiction.division == division))
+                          if(!(instruction && instruction.decision && instruction.decision != '' && instruction.juridiction.division == division))
                             if(instruction)
                               input.btn.btn-dark-azure(type='button', onclick='save_decision("#{dossier._id}","#{instruction._id}","#{division}")', value='Enregistrer')
                     .buttons-widget
@@ -355,7 +350,7 @@ block content
         .row
           br
         form.form-horizontal(action="/parties/pour/update", method='POST')
-          input(type='hidden', name='pour_id', value="#{dossier.pour._id}")
+          input(type='hidden', name='_id', value="#{dossier.pour._id}")
           input(type='hidden', name='dossier_id', value="#{dossier._id}")
           .row
             .col-md-8
@@ -397,7 +392,7 @@ block content
         .row
           br
         form.form-horizontal(action="/parties/contre/update", method='POST')
-          input(type='hidden', name='contre_id', value="#{dossier.contre._id}")
+          input(type='hidden', name='_id', value="#{dossier.contre._id}")
           input(type='hidden', name='dossier_id', value="#{dossier._id}")
           .row
             .col-md-8
@@ -460,6 +455,6 @@ block content
                     span.fa.fa-plus
                     | Ajouter
 append jscripts
-  script(src='/assets/js/custom-calendrier-mise-etat.js')
+  //- script(src='/javascripts/calendrier_mise_etat.js')
   script(src='/javascripts/dossier_update.js')
   script(src='/javascripts/check_ref.js')

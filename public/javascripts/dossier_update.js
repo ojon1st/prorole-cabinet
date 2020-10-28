@@ -37,9 +37,12 @@ window.update_dossier = function (id_dossier) {
   var data = {};
   data.ref_d_p = $('input[name=ref_d_p]').val();
   data.nature = ($('select[name=nature]').val() != 'null' ? $('select[name=nature]').val() : '');
-  if(data.ref_d_p == '' && data.nature == ''){
-    show_notification('info', 'Mise a jour du dossier', 'Veuillez renseigner au moins un des champs pour effectuer la mise a jour');
-    return
+  data.qualite = ($('select[name=qualite]').val() != 'null' ? $('select[name=qualite]').val() : '');
+  data.resume = $('textarea[name=resume]').val();
+  data.avocat = $('input[name=avocat]').val();
+  console.log(data)
+  if(data.nature == ''){
+    return show_notification('info', 'Mise a jour du dossier', 'Veuillez renseigner au moins un des champs pour effectuer la mise a jour');
   }
   $.ajax({
     type: 'POST',
@@ -49,7 +52,7 @@ window.update_dossier = function (id_dossier) {
     success: function (data) {
       if(data.update == true){
         show_notification(data.type_of_response, data.al_title, data.al_msg);
-        setTimeout(window.location.href="/dossiers/dossier/"+id_dossier, 5000);
+        setTimeout(reload_dossier(id_dossier), 5000);
       }
     }
   });
@@ -90,14 +93,18 @@ function confirm_new_juridiction(selectObject, id_dossier, new_division) {
     }
     if(division == false && control[0] == false && control[1] == false){
       if(
-        (new_division == 'instance' && $('#delibere_appel').val() != 'true' && $('#delibere_cour').val() != 'true' && $('#inst_nature').val() == 'true' && selectObject.options[ selectObject.selectedIndex ].text == 'TC Niamey' && $('#inst_appel').val() == 'false' && $('#inst_cour').val() == 'false') || 
+        (new_division == 'instance' && $('#delibere_appel').val() == 'false' && $('#delibere_cour').val() == 'false' && $('#inst_appel').val() == 'false' && $('#inst_cour').val() == 'false') || 
         (new_division == 'appel' &&  $('#delibere_cour').val() != 'true' && $('#inst_cour').val() == 'false') || 
         (new_division == 'cour')){
-        create_instance(selectObject.value, id_dossier, new_division);
+        if(($('#inst_nature').val() == 'true' && selectObject.options[ selectObject.selectedIndex ].text == 'TC Niamey') || ($('select[name=nature]').val() == 'Commerciale' && selectObject.options[ selectObject.selectedIndex ].text == 'TGIHC Niamey')){
+          $(selectObject).val('null').text('Selectionner une juridiction');
+          return show_notification('error', 'Changement de juriduction', 'Non respect de la procedure judicaire, la juridiction ne peut pas être changer');
+        }
+          create_instance(selectObject.value, id_dossier, new_division);
       }
       else{
         $(selectObject).val('null');
-        show_notification('error', 'Changement de juriduction', 'Non respect de la procedure judicaire, la juridiction ne peut pas être changer');
+        return show_notification('error', 'Changement de juriduction', 'Non respect de la procedure judicaire, la juridiction ne peut pas être changer');
       }
     }
     else{
@@ -157,7 +164,7 @@ function create_instance(id_juridiction, id_dossier, division) {
     success: function (data) {
       if(data.type_of_response == 'success'){
         show_notification(data.type_of_response, data.al_title, data.al_msg)
-        setTimeout(window.location.href="/dossiers/dossier/"+id_dossier, 5000);
+        setTimeout(reload_dossier(id_dossier), 5000);
       }
     }
   });
@@ -171,7 +178,7 @@ function get_renvoi_infos(id_dossier, division) {
   var type = $("#type_ins_"+division).val();
   var juridiction_value = $("#juridiction_"+division).val();
   
-  if (motif == "" || date == "" || type == "") {
+  if (motif == "" || type == "") {
     show_notification('info', 'Renvoi non pris en charge', 'Veuillez remplir les champs <strong>date</strong>, <strong>type</strong> et <strong>motif</strong> afin que le systeme le prend en charge')
   } else if (juridiction_value == null || juridiction_value == "undefined" || juridiction_value == "") {
     show_notification('info', 'Opération non autorisée', 'Veuillez choisir une juridiction pour pouvoir effectuer une operation d\'instruction');
@@ -208,7 +215,7 @@ function create_renvoi(date_renvoi, type_renvoi, motif_renvoi, id_dossier,juridi
       var msg = "Le dossier vient d'être renvoyé au "+data.date_last_renvoi+" .";
       var title = "Renvoi du dossier";
       show_notification(data.type_of_response, title, msg)
-      setTimeout(window.location.href="/dossiers/dossier/"+id_dossier, 5000);
+      setTimeout(reload_dossier(id_dossier), 5000);
     }
   });
 };
@@ -331,8 +338,8 @@ function mise_en_etat_create_post (id_dossier,id_instruction, juridiction){
       $('#mee').html('');
       data.mee_list.forEach(function (doc) {
         $('#mee').append('<h3> DU    '+ moment(doc.c_debut).format("DD-MM-YYYY") + '    AU    <b>'+ moment(doc.c_fin).format("DD-MM-YYYY")+'</b>    A   <b>'+ doc.c_heure +'</b>    Objet:    ' + doc.c_commentaire+ '</h3>')
-      })
-      
+      });
+      $("#close").attr('onclick', `reload_dossier('${id_dossier}')`)
       return;
     }
   });
@@ -384,11 +391,6 @@ function type_complete_motif(type, division){
   }
 }
 
-function nature2instruction(nature){
-  var nature = nature.value;
-  if(nature == 'Consultation' || nature == 'Simple police' || nature == 'Information judiciaire' || nature == 'Correctionnelle Citation Directe' || nature == 'Correctionnelle flagrant délit' || nature == 'Criminelle' || nature == 'Assises' || nature == 'Infractions à caractère économique' || nature == 'Terrorisme'){
-    if(nature == 'Consultation') { $('.actions').append('<li><a href="#consultation" data-toggle="tab" class="active">Consutation</a></li>');}
-    else { $('.actions').append('<li><a href="#enquete" data-toggle="tab" class="active">Enquête préliminaire</a></li> <li><a href="#chambre" data-toggle="tab">Chambre d\'instruction</a></li> <li><a href="#jugement" data-toggle="tab">Jugement</a></li>');}
-  }
-  else { $('.actions').append('<li><a href="#jugement" data-toggle="tab" class="active">Jugement</a></li>');}
+window.reload_dossier = function (dossier){
+  window.location.href="/dossiers/dossier/"+dossier;
 }
