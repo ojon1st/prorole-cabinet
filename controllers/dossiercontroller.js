@@ -126,6 +126,30 @@ exports.dossier_create_get = function (req, res, next) {
   res.render('dossiers/dossier_form', { title: 'Creation de dossier'});
 };
 
+// Check and remove duplicate ref physique
+exports.remove_duplicate_ref = function (req, res, next) {
+
+  // Get all dossier for form
+  async.parallel({
+    dossier_physique: function (callback) {
+      Dossier.findOne({ref_d_p: req.params.ref}).exec(callback);
+    },
+    
+  }, function (err, results) {
+    if (err) { return next(err); }
+    if(results.dossier_physique && results.dossier_physique.ref_d_p != null){
+      res.send({
+        type_of_response: 'warning',
+        al_title: 'Reference physique',
+        al_msg : `Attention la reference ${req.params.ref} exite deja, veuillez verifier la reference`
+      });
+    }
+    else{
+      res.send({type_of_response: 'success'});
+    }
+  });
+};
+
 // Handle Dossier create on POST.
 exports.dossier_create_post = [
 
@@ -174,7 +198,11 @@ exports.dossier_create_post = [
       dossier.hookEnabled = true;
       dossier.save(function (err) {
         if (err) { return next(err); }
-        res.send({type_of_response: 'success'});
+        res.send({
+          type_of_response: 'success',
+          al_title: 'Création du dossier!',
+          al_msg : 'Le dossier a été crée avec succès!'
+        });
         return;
       });
     }

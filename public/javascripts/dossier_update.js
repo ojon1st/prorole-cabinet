@@ -16,21 +16,6 @@ function update(){
   $("#btn-func").attr('onclick', `update_dossier("${dossier}")`).html("Sauvegarder");
 }
 
-function show_notification(shortCutFunction, title, msg) {
-  var $timeOut = 5000;
-  var $showEasing = "swing";
-  var $hideEasing = "linear";
-  var $showMethod = "fadeIn";
-  var $hideMethod = "fadeOut";
-
-  toastr.options = {
-    closeButton: true,
-    positionClass: 'toast-top-right',
-    onclick: null
-  };
-  var $toast = toastr[shortCutFunction](msg, title);
-}
-
 window.update_dossier = function (id_dossier) {
 
   var route_update_infos_dossier = '/dossiers/dossier/' + id_dossier + '/update';
@@ -176,9 +161,10 @@ function get_renvoi_infos(id_dossier, division) {
   var motif = $("#motif_ins_"+division).val();
   var date = $("#date_ins_"+division).val();
   var type = $("#type_ins_"+division).val();
+  var control = (type == 'renvoi au role general' || type == 'delibere vide' || type == 'non appele');
   var juridiction_value = $("#juridiction_"+division).val();
   
-  if (motif == "" || type == "") {
+  if (motif == "" || type == '' || ((date == "" && control == false) || date != "" && control == true)) {
     show_notification('info', 'Renvoi non pris en charge', 'Veuillez remplir les champs <strong>date</strong>, <strong>type</strong> et <strong>motif</strong> afin que le systeme le prend en charge')
   } else if (juridiction_value == null || juridiction_value == "undefined" || juridiction_value == "") {
     show_notification('info', 'Opération non autorisée', 'Veuillez choisir une juridiction pour pouvoir effectuer une operation d\'instruction');
@@ -205,17 +191,26 @@ function create_renvoi(date_renvoi, type_renvoi, motif_renvoi, id_dossier,juridi
     contentType: 'application/json',
     url: route_create_renvoi_instance_dossier,
     success: function (data) {
-      $("#motif_ins_"+division).val('');
-      $("#date_ins_"+division).val('');
-      $("#type_ins_"+division).val('');
-      
-      if($("#bloc_renvoi_ins_"+division).is(":hidden")) {
-        $("#bloc_renvoi_ins_"+division).toggleClass('hidden');
+      if(data.type_of_response){
+        if(data.type_of_response == 'success'){
+          $("#motif_ins_"+division).val('');
+          $("#date_ins_"+division).val('');
+          $("#type_ins_"+division).val('');
+          
+          if($("#bloc_renvoi_ins_"+division).is(":hidden")) {
+            $("#bloc_renvoi_ins_"+division).toggleClass('hidden');
+          }
+          var msg = "Le dossier vient d'être renvoyé au "+data.date_last_renvoi+".";
+          var title = "Renvoi du dossier";
+          show_notification(data.type_of_response, title, msg)
+          return setTimeout(reload_dossier(id_dossier), 5000);
+        }
+        if(data.type_of_response == 'warning'){
+          var msg = "La procedure judiciaire est non respectée.";
+          var title = "Renvoi du dossier";
+          show_notification(data.type_of_response, title, msg);
+        }
       }
-      var msg = "Le dossier vient d'être renvoyé au "+data.date_last_renvoi+" .";
-      var title = "Renvoi du dossier";
-      show_notification(data.type_of_response, title, msg)
-      setTimeout(reload_dossier(id_dossier), 5000);
     }
   });
 };
@@ -236,19 +231,15 @@ function verifDate(champ) {
   else {
     surligne(champ, false);
   }
-  }
+}
 
-  function surligne(champ, erreur)
-  {
-  if(erreur)
-  {
+function surligne(champ, erreur){
+  if(erreur){
     champ.style.backgroundColor = "#fba";
     champ.value = "";
     document.getElementById("error").innerHTML = "<div class='alert alert-warning text-center col-sm-offset-2 col-sm-8 col-md-offset-2 col-md-8'><a href='' class='close' data-dismiss='alert'>&times;</a><strong>Attention :</strong> Veuillez une date superieure a aujourd'hui.</div>";
   }
-
-  else
-  {
+  else{
     champ.style.backgroundColor = "";
     document.getElementById("error").innerHTML = "";
   }
@@ -377,18 +368,54 @@ function addDatePicker(){
   });
 };
 
-
-function type_complete_motif(type, division){
-  var motif = type.value;
-  var role_general = 'Renvoyé au rôle général';
-  var deliberer = 'Mise en délibéré';
-  if(motif == 'renvoi au role general' || motif == 'mise en delibere'){
-    if(motif == 'renvoi au role general'){ $('#motif_ins_'+division).val(role_general).attr('disabled', true);}
-    else { $('#motif_ins_'+division).val(deliberer).attr('disabled', true);}
+function type_complete_motif(check, division){
+  var type = $(check).val();
+  if(type == 'renvoi au role general' || type == 'delibere vide' || type == 'non appele'){
+    $(`#date_ins_${division}`).val('').attr('disabled', true);
+    if(type == 'renvoi au role general'){
+      $(`#motif_ins_${division}`).val('Renvoyé au rôle général').attr('disabled', true);
+    }
+    else{
+      if(type == 'delibere vide'){
+        $(`#motif_ins_${division}`).val('Délibéré OK').attr('disabled', true);
+      }
+      else{
+        $(`#motif_ins_${division}`).val('Non appelé').attr('disabled', true);
+      }
+    }
   }
   else{
-    (motif == 'delibere vide' ? $('#motif_ins_'+division).val('Délibéré OK').attr('disabled', true) : $('#motif_ins_'+division).val('').attr('disabled', false))
+    if(type == 'nos conclusions'){$(`#motif_ins_${division}`).val('Nos conclusions').attr('disabled', true);}
+    $(`#date_ins_${division}, #motif_ins_${division}`).attr('disabled', false);
+    $(`#motif_ins_${division}`).val('');
   }
+}
+
+/**************** Décision ***************/
+
+function save_decision(id_dossier, id_instruction, division){
+  var la_route = '/dossiers/dossier/'+id_dossier+'/instruction/'+id_instruction+'/decision/save'; 
+  var data = {};
+  data.decision = $('#decision_'+division).val();
+  data.juridiction = $('#juridiction'+division).val();
+  data.division = division;
+  $.ajax({
+    type: 'POST',
+    data: JSON.stringify(data),
+    contentType: 'application/json',
+    url: la_route,
+    success: function (data) {
+      if(data.type_of_response == 'success'){
+        show_notification(data.type_of_response, data.al_title, data.al_msg)
+        return setTimeout(reload_dossier(id_dossier), 5000);
+      }
+      if(data.type_of_response == 'warning'){
+        show_notification(data.type_of_response, data.al_title, data.al_msg)
+        $('#decision_'+division).val('');
+      }
+    }
+  });
+  
 }
 
 window.reload_dossier = function (dossier){

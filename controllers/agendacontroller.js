@@ -38,8 +38,8 @@ exports.renvois_events_get = function(req, res, next){
       }
       var events_retards = [];
       results.last_renvois.forEach(function(last_renvoi){
-        if(last_renvoi.renvois.length > 0 && moment().diff(moment(last_renvoi.renvois[0].r_date), 'days') > 0){
-          if(!last_renvoi.decision || last_renvoi.decision == ""  || last_renvoi.renvois[0].r_type !="delibere vide"){
+        if(last_renvoi.renvois.length > 0 && moment().diff(moment(last_renvoi.renvois[0].r_date), 'days') > 0 && last_renvoi.renvois[0].r_type !="delibere vide"){
+          if(last_renvoi.decision == null || last_renvoi.decision == ''){
             events_retards.push(last_renvoi.renvois[0]._id.toString())
           }
         }
@@ -51,7 +51,6 @@ exports.renvois_events_get = function(req, res, next){
         var nom_de_classe_tribunal = nom_de_classe_renvoi = nom_de_classe_calendrier = '';
         if(instruction.dossier.nature && instruction.dossier.nature == 'Difficultés d\'exécution'){
           instruction.dossier.nature = 'Référé';
-          console.log(instruction.dossier.nature);
         }
         if (instruction.renvois.length > 0){ // Si renvoi il y a
           instruction.renvois.forEach(function(renvoi){ // pour chaque renvoi
