@@ -160,20 +160,31 @@ function get_renvoi_infos(id_dossier, division) {
   
   var motif = $("#motif_ins_"+division).val();
   var date = $("#date_ins_"+division).val();
+  var last = $("#last_renvoi_ins_"+division).val();
   var type = $("#type_ins_"+division).val();
   var control = (type == 'renvoi au role general' || type == 'delibere vide' || type == 'non appele');
   var juridiction_value = $("#juridiction_"+division).val();
   
   if (motif == "" || type == '' || ((date == "" && control == false) || date != "" && control == true)) {
     show_notification('info', 'Renvoi non pris en charge', 'Veuillez remplir les champs <strong>date</strong>, <strong>type</strong> et <strong>motif</strong> afin que le systeme le prend en charge')
-  } else if (juridiction_value == null || juridiction_value == "undefined" || juridiction_value == "") {
-    show_notification('info', 'Opération non autorisée', 'Veuillez choisir une juridiction pour pouvoir effectuer une operation d\'instruction');
-  } else {
-    // save infos renvoi
-    create_renvoi(date, type, motif, id_dossier, juridiction_value, division);
-   
   }
-
+  else{
+    if (juridiction_value == null || juridiction_value == "undefined" || juridiction_value == "") {
+      show_notification('info', 'Opération non autorisée', 'Veuillez choisir une juridiction pour pouvoir effectuer une operation d\'instruction');
+    }
+    else {
+      if(last != undefined && date != ''){
+        var control_renvoi =  control_date(last, date);
+        if(control_renvoi == false){
+          $("#date_ins_"+division).select();
+          return show_notification('info', 'Renvoi non pris en charge', 'La date du prochain renvoi doit etre a la date du <strong>' + last + '</strong> supperieure a cette date')
+        }
+      }
+      // save infos renvoi
+      create_renvoi(date, type, motif, id_dossier, juridiction_value, division);
+     
+    }
+  } 
 };
 
 function create_renvoi(date_renvoi, type_renvoi, motif_renvoi, id_dossier,juridiction, division) {
@@ -231,6 +242,15 @@ function verifDate(champ) {
   else {
     surligne(champ, false);
   }
+}
+
+function control_date(last, add){
+  last = last.replace(/-/g,"");
+  add = add.replace(/-/g,"");
+  last = new Date(last.substr(4,4), last.substr(2,2)-1, last.substr(0,2));
+  add = new Date(add.substr(4,4), add.substr(2,2)-1, add.substr(0,2));
+  // console.log(last < add)
+  return (last < add);
 }
 
 function surligne(champ, erreur){
@@ -396,7 +416,11 @@ function type_complete_motif(check, division){
 function save_decision(id_dossier, id_instruction, division){
   var la_route = '/dossiers/dossier/'+id_dossier+'/instruction/'+id_instruction+'/decision/save'; 
   var data = {};
-  data.decision = $('#decision_'+division).val();
+  var decision = $('#decision_'+division).val();
+  if(decision.trim() == ''){
+    return show_notification('warning', 'Sauvegarde de la decison', 'La sauvegarde de la decison a echoué')
+  }
+  data.decision = decision;
   data.juridiction = $('#juridiction'+division).val();
   data.division = division;
   $.ajax({

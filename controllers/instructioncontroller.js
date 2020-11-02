@@ -131,8 +131,6 @@ exports.mise_en_etat_create_post = [
         res.send({type_of_response:'echec', al_title:'', al_msg:''})
       }else {
         req.body.forEach(function (doc) {
-          /*console.log(doc)
-          return;*/
           results.theinstruction.calendrier.push({
             c_conclusion: doc.con,
             c_debut: moment(doc.du, "DD-MM-YYYY"),
@@ -180,7 +178,7 @@ exports.decision_save = [
       if (err) {
         return next(err);
       }
-      if (results.theinstruction) {
+      if (results.theinstruction && req.body.decision.trim() != '') {
 
         results.theinstruction.decision = req.body.decision;
         results.theinstruction.save(function (err) {
@@ -237,7 +235,7 @@ exports.mise_en_etat_get = function (req, res, next) {
 exports.del_conclusion = function (req, res, next) {
   async.parallel({
     instruction: function (callback) {
-      Instruction.findById(req.params.id, {'renvois':{'$slice':-1},'calendrier':{'$slice':-1}})
+      Instruction.findById(req.params.id, {'renvois':1,'calendrier':1})
         .exec(callback);
     },
 
@@ -245,15 +243,64 @@ exports.del_conclusion = function (req, res, next) {
     if (err) {
       return next(err);
     }
-    if((results.instruction.calendrier && results.instruction.calendrier.length > 0 && results.instruction.calendrier[0]._id == req.params.id_conclusion) || (results.instruction.renvois && results.instruction.renvois.length > 0 && results.instruction.renvois[0]._id == req.params.id_conclusion)){
-      (results.instruction.calendrier && results.instruction.calendrier.length > 0 ? results.instruction.calendrier[0].c_operate.push({origine: 'Calendrier', operate: 1}) : results.instruction.renvois[0].r_operate.push({origine: 'Calendrier', operate: 1}))
-      results.instruction.save(function (err) {
-        if (err) { next(err);}
-        res.send({
-          type_of_response : 'success',
-          al_title: 'Suppression du dossier au repertoire',
-          al_msg : 'Le dossier a été supprimé avec succès!'
-        });
+    if(results.instruction.renvois && results.instruction.renvois.length > 0){
+      results.instruction.renvois.forEach(function(renvoi){
+        if(renvoi._id == req.params.conclusion){
+          renvoi.r_operate.push({origine: 'Calendrier', operate: 1});
+          results.instruction.save(function (err) {
+            if (err) { next(err);}
+            res.send({
+              type_of_response : 'success',
+              al_title: 'Suppression du dossier au repertoire',
+              al_msg : 'Le dossier a été supprimé avec succès!'
+            });
+          });
+        }
+      });
+    }
+    if(results.instruction.calendrier && results.instruction.calendrier.length > 0){
+      results.instruction.calendrier.forEach(function(calendrier){
+        if(calendrier._id == req.params.conclusion){
+          calendrier.c_operate.push({origine: 'Calendrier', operate: 1});
+          results.instruction.save(function (err) {
+            if (err) { next(err);}
+            res.send({
+              type_of_response : 'success',
+              al_title: 'Suppression du dossier au repertoire',
+              al_msg : 'Le dossier a été supprimé avec succès!'
+            });
+          });
+        }
+      });
+    }
+  });
+
+};
+
+exports.del_role = function (req, res, next) {
+  async.parallel({
+    instruction: function (callback) {
+      Instruction.findById(req.params.id, {'renvois':1})
+        .exec(callback);
+    },
+
+  }, function (err, results) {
+    if (err) {
+      return next(err);
+    }
+    if(results.instruction.renvois && results.instruction.renvois.length > 0){
+      results.instruction.renvois.forEach(function(renvoi){
+        if(renvoi._id == req.params.generale){
+          renvoi.r_operate.push({origine: 'Role general', operate: 1});
+          results.instruction.save(function (err) {
+            if (err) { next(err);}
+            res.send({
+              type_of_response : 'success',
+              al_title: 'Suppression du dossier au repertoire',
+              al_msg : 'Le dossier a été supprimé avec succès!'
+            });
+          });
+        }
       });
     }
   });
@@ -275,10 +322,8 @@ exports.get_manques = function(req, res, next){
      
       var dossiers_retards = [];
       results.last_renvois.forEach(function(last_renvoi){
-        if(last_renvoi.renvois.length > 0 && moment().diff(moment(last_renvoi.renvois[0].r_date), 'days') > 0 && last_renvoi.renvois[0].r_type !="delibere vide"){
-          if(last_renvoi.decision == null || last_renvoi.decision == ''){
-            dossiers_retards.push(last_renvoi);
-          }
+        if(last_renvoi.renvois.length > 0 && moment().diff(moment(last_renvoi.renvois[0].r_date), 'days') > 0 && last_renvoi.renvois[0].r_type !="delibere vide" && last_renvoi.decision == null){
+          dossiers_retards.push(last_renvoi);
         }
       });
       
@@ -300,9 +345,19 @@ exports.get_renvoi_role_general = function(req, res, next){
       if (err) { return next(err); }
      
       var renvoi_role_general = [];
+      var role = false;
       results.renvois_rgs.forEach(function(renvois_rg){
-        if(renvois_rg.renvois.length > 0 && renvois_rg.renvois[0].r_type == 'renvoi au role general' && renvois_rg.renvois[0].r_type != "delibere vide"){
-          renvoi_role_general.push(renvois_rg)
+        if(renvois_rg.renvois.length > 0 && renvois_rg.renvois[0].r_type == 'renvoi au role general' && renvois_rg.renvois[0].r_type != "delibere vide" && renvois_rg.decision == null){
+          if(renvois_rg.renvois[0].r_operate && renvois_rg.renvois[0].r_operate.length > 0){
+            renvois_rg.renvois[0].r_operate.forEach(function (renvoi){
+              if(renvoi.origine == 'Role general'){
+                role = true;
+              }
+            });
+          }
+          if(role == false){
+            renvoi_role_general.push(renvois_rg)
+          }
         }
       });res.render('dossiers/dossier_tri_instruction', { title:'renvois au rôle général', list_dossiers: renvoi_role_general});
       
@@ -335,7 +390,7 @@ exports.conclusion_prendre = function(req, res, next){
 
         if(conclusion.renvois && conclusion.renvois.length > 0 && conclusion.renvois[parseInt(conclusion.renvois.length - 1, 10)].r_operate && conclusion.renvois[parseInt(conclusion.renvois.length - 1, 10)].r_operate.length > 0){
           conclusion.renvois[parseInt(conclusion.renvois.length - 1, 10)].r_operate.forEach(function (renvoi){
-            if(renvois.origine == 'Calendrier'){
+            if(renvoi.origine == 'Calendrier'){
               return del_conclsion_renvoi = true;
             }
           });

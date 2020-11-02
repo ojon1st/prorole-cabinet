@@ -38,10 +38,8 @@ exports.renvois_events_get = function(req, res, next){
       }
       var events_retards = [];
       results.last_renvois.forEach(function(last_renvoi){
-        if(last_renvoi.renvois.length > 0 && moment().diff(moment(last_renvoi.renvois[0].r_date), 'days') > 0 && last_renvoi.renvois[0].r_type !="delibere vide"){
-          if(last_renvoi.decision == null || last_renvoi.decision == ''){
-            events_retards.push(last_renvoi.renvois[0]._id.toString())
-          }
+        if(last_renvoi.renvois.length > 0 && moment().diff(moment(last_renvoi.renvois[0].r_date), 'days') > 0 && last_renvoi.renvois[0].r_type !="delibere vide" && last_renvoi.decision == null){
+          events_retards.push(last_renvoi.renvois[0]._id.toString());
         }
       });
       

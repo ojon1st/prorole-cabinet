@@ -225,6 +225,8 @@ block content
                         label.col-sm-12.dos-text 
                           | Juriduction : 
                           strong.str #{instruction.juridiction.nom}
+                        select.hidden.form-control.search-select(name='juridiction_#{division}', id='juridiction_#{division}')
+                          option(value='#{instruction.juridiction._id}')
                       else
                         label.col-sm-3.control-label
                           | Juriduction :
@@ -239,7 +241,7 @@ block content
                                   option(value=j._id, selected=((instruction && j._id == instruction.juridiction._id.toString()))) #{j.nom}
                           else
                             select.form-control.search-select(name='juridiction_#{division}', id='juridiction_#{division}')
-                            option(value='null' selected =true) Sélectionner une jurdiction
+                              option(value='null' selected =true) Sélectionner une jurdiction
                     .form-group
                       .col-sm-offset-1.col-sm-8(style='margin-top: 20px;')
                         if(!(instruction && ((instruction.decision && instruction.decision != '') || (instruction.renvois && instruction.renvois.length>0 && instruction.renvois[last].r_type == "delibere vide")) && instruction.juridiction.division == division))
@@ -275,7 +277,9 @@ block content
                           .row
                             .col-sm-4(style='padding-right: 10px')
                               span.input-icon
-                                input.form-control.date-picker(id='date_ins_#{division}' placeholder='Date', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years')
+                                input.form-control.date-picker(id='date_ins_#{division}', placeholder='Date', type='text', data-date-format='dd-mm-yyyy', data-date-viewmode='years')
+                                if(instruction && instruction.renvois.length >0 && instruction.juridiction.division == division)
+                                  input(type='hidden', id='last_renvoi_ins_#{division}', value='#{moment(instruction.renvois[last].r_date).format("DD-MM-YYYY")}')
                                 br.hidden-lg.hidden-md.hidden-sm
                                 i.fa.fa-calendar
                             .col-sm-2(style='padding:0')

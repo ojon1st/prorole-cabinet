@@ -49,16 +49,19 @@ router.get('/manques', instruction_controller.get_manques);
 // Recuperation de dossiers renvoyes au role general
 router.get('/role_general', instruction_controller.get_renvoi_role_general);
 
+// supprimer une operation de role general
+router.get('/instruction/:id/role/:generale', instruction_controller.del_role);
+
 // Recuperation de dossiers dont le type renvoi est nos conclusion ou la conclusion dans le calendrier est nous
 router.get('/conclusion_a_prendre', instruction_controller.conclusion_prendre);
 
-// supprimer un operation de conclusion a prendre
-router.get('/instruction/:id/conclusion/:id_conclusion', instruction_controller.del_conclusion);
+// supprimer une operation de conclusion a prendre
+router.get('/instruction/:id/conclusion/:conclusion', instruction_controller.del_conclusion);
 
 // Recuperation de dossiers dont la decision n'est pas telechargee
 router.get('/decision_a_lever', instruction_controller.get_decision_a_lever);
 
-// supprimer un operation de decision a lever
+// supprimer une operation de decision a lever
 router.post('/instruction/:id/decision', instruction_controller.del_decision);
 
 module.exports = router;

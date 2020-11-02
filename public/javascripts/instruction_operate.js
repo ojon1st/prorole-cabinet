@@ -1,5 +1,16 @@
-function oui_operate(instruction, renvois){
-  show_notification('info', 'Oui operation', 'Operation a titre d\'information')
+function del_role(instruction, general){
+  let del_url = `/dossiers/instruction/${instruction}/role/${general}`;
+  $.ajax({
+    type: 'GET',
+    contentType: 'application/json',
+    url: del_url,
+    success: function (data) {
+      if(data.type_of_response == 'success'){
+        show_notification(data.type_of_response, data.al_title + 'rôle général', data.al_msg);
+        setTimeout(location.reload(), 5000);
+      }
+    }
+  });
 }
 
 function del_conclusion(instruction, conclusion){

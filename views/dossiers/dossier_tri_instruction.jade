@@ -95,7 +95,7 @@ block content
                           | #{moment(dossier.renvois[0].r_date).format("DD-MM-YYYY")}
                         if(title == 'renvois au rôle général')
                           td
-                            button.btn.btn-dark-yellow(onclick='oui_operate("#{dossier.dossier._id}")') Oui
+                            button.btn.btn-dark-red(onclick='del_role("#{dossier._id}", "#{dossier.renvois[0]._id}")') Oui
                       else
                         td
                           if(dossier.renvois && dossier.renvois.length >0)
@@ -105,8 +105,7 @@ block content
                             | #{moment(dossier.d_update).format("DD-MM-YYYY")}
                         td
                         td
-                          button.btn-supp.btn.btn-dark-red(onclick='del_decision("#{dossier._id}")')
-                            i.fa.fa-trash
+                          button.btn-supp.btn.btn-dark-red(onclick='del_decision("#{dossier._id}")') Oui
                 else
                   each conclusion in list_dossiers
                     -let renvoi
@@ -127,9 +126,7 @@ block content
                             | #{moment(conclusion.conclusion.renvois[0].r_date).format("DD-MM-YYYY")}
                       td
                       td
-                        button.btn.btn-dark-yellow(onclick='oui_operate("#{conclusion.conclusion._id}", "#{renvoi}")') Oui
-                        button.btn-supp.btn.btn-dark-red(onclick='del_conclusion("#{conclusion.conclusion._id}", "#{renvoi}")')
-                          i.fa.fa-trash
+                        button.btn.btn-dark-red(onclick='del_conclusion("#{conclusion.conclusion._id}", "#{renvoi}")') Oui
 append jscripts
   // start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
   script(src='/assets/plugins/holder/holder.js')
