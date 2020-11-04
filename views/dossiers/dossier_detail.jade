@@ -240,7 +240,7 @@ block content
                                 each j in juridiction
                                   option(value=j._id, selected=((instruction && j._id == instruction.juridiction._id.toString()))) #{j.nom}
                           else
-                            select.form-control.search-select(name='juridiction_#{division}', id='juridiction_#{division}')
+                            select.form-control.search-select(name='juridiction_#{division}', id='juridiction_#{division}', readonly)
                               option(value='null' selected =true) Sélectionner une jurdiction
                     .form-group
                       .col-sm-offset-1.col-sm-8(style='margin-top: 20px;')
@@ -261,7 +261,7 @@ block content
                           each renvoi in instruction.renvois
                             .row
                               .col-sm-offset-1.col-sm-8
-                                p.text-capitalize Renvoyé au #{moment(renvoi.r_date).format("DD-MM-YYYY")} pour #{renvoi.r_motif}
+                                p Renvoyé au #{moment(renvoi.r_date).format("DD-MM-YYYY")} : #{renvoi.r_motif}
                           -let check_calendar  = (instruction.calendrier) ? (instruction.calendrier.length > 0) ? true : false : false
                           input(type='hidden', value='#{check_calendar}', id='mee_#{division}')
                           each cal in instruction.calendrier

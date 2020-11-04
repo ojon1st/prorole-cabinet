@@ -69,16 +69,13 @@ block content
                   if(title != 'décision à lever')
                     if(title == 'renvois au rôle général')
                       th Dilligence effectuée
-                      th Operation
                     else
                       th Date de l'audience
                       if(title == 'conclusions à prendre')
                         th Conclusions communiquées
-                        th Operations
                   else
                     th Date du délibréré
                     th Dilligence effectuée
-                    th Operation
               tbody
                 if(title != 'conclusions à prendre')
                   - classDefaut = (title == 'defaut de renvoi') ? 'manque': ''
@@ -91,9 +88,10 @@ block content
                       td.text-capitalize
                         | #{dossier.juridiction.nom}
                       if(title != 'décision à lever')
-                        td
-                          | #{moment(dossier.renvois[0].r_date).format("DD-MM-YYYY")}
-                        if(title == 'renvois au rôle général')
+                        if(title != 'renvois au rôle général')
+                          td
+                            | #{moment(dossier.renvois[0].r_date).format("DD-MM-YYYY")}
+                        else
                           td
                             button.btn.btn-dark-red(onclick='del_role("#{dossier._id}", "#{dossier.renvois[0]._id}")') Oui
                       else
@@ -103,7 +101,6 @@ block content
                             | #{moment(dossier.renvois[0].r_date).format("DD-MM-YYYY")}
                           else
                             | #{moment(dossier.d_update).format("DD-MM-YYYY")}
-                        td
                         td
                           button.btn-supp.btn.btn-dark-red(onclick='del_decision("#{dossier._id}")') Oui
                 else
@@ -124,7 +121,6 @@ block content
                           if(conclusion.conclusion.renvois && conclusion.conclusion.renvois.length>0)
                             -renvoi = conclusion.conclusion.renvois[0]._id
                             | #{moment(conclusion.conclusion.renvois[0].r_date).format("DD-MM-YYYY")}
-                      td
                       td
                         button.btn.btn-dark-red(onclick='del_conclusion("#{conclusion.conclusion._id}", "#{renvoi}")') Oui
 append jscripts
