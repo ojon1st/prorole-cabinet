@@ -18,6 +18,7 @@ html
     link(rel='stylesheet', href='/assets/plugins/iCheck/skins/all.css')
     link(rel='stylesheet', href='/assets/css/styles.css')
     link(rel='stylesheet', href='/assets/css/styles-responsive.css')
+    link(rel='stylesheet', href='/assets/plugins/toastr/toastr.min.css')
     link(rel='stylesheet', href='/assets/plugins/iCheck/skins/all.css')
     // end: HEAD
     // start: BODY
@@ -180,11 +181,17 @@ html
     // end: MAIN JAVASCRIPTS
     // start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
     script(src='/assets/plugins/jquery-validation/dist/jquery.validate.min.js')
+    script(src='/assets/plugins/toastr/toastr.js')
+    script(src='/assets/js/ui-notifications.js')
+    script(src='/assets/plugins/sweetalert/lib/sweet-alert.min.js')
+    script(src='/javascripts/login.js')
     script(src='/assets/js/login.js')
     // end: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
     script.
       jQuery(document).ready(function() {
       Main.init();
       Login.init();
+      UINotifications.init();
+      login_error ();
       });
     // end: BODY

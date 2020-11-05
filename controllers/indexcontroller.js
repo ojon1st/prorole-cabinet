@@ -30,8 +30,8 @@ exports.login_post = [
   
   body('password', 'Veuillez renseigner votre pseudo').isLength({ min: 1 }).trim(),
   passport.authenticate('local', {
-      failureMessage: 'Votre Pseudo ou mot de passe est incorrect.',
-      failureRedirect: '/login'
+      //failureMessage: 'Votre Pseudo ou mot de passe est incorrect.',
+      failureRedirect: '/login?error'
   }),
   (req, res, next) => {
       console.log('Vous êtes maintenant connecté');
