@@ -33,10 +33,13 @@ window.creation = function creation(){
       url: '/dossiers/dossier/create',
       success: function(doc) {
         if(doc.type_of_response == 'success'){
-          show_notification(doc.type_of_response, doc.al_title, doc.al_msg)
+          show_notification(doc.type_of_response, doc.al_title, doc.al_msg);
           setTimeout(window.location.href = "/dossiers", 5000);
         }
       }
     });
+  }
+  else{
+    show_notification('info', 'Création du dossier', 'Veuillez remplir le ou les champs colorés au gris');
   }
 }
