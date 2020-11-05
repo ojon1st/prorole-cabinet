@@ -72,10 +72,10 @@ block content
                     else
                       th Date de l'audience
                       if(title == 'conclusions à prendre')
-                        th Conclusions communiquées
+                        th.hidden-xs.hid-mobile Conclusions communiquées
                   else
                     th Date du délibréré
-                    th Dilligence effectuée
+                    th.hidden-xs.hid-mobile Dilligence effectuée
               tbody
                 if(title != 'conclusions à prendre')
                   - classDefaut = (title == 'defaut de renvoi') ? 'manque': ''
@@ -92,7 +92,7 @@ block content
                           td
                             | #{moment(dossier.renvois[0].r_date).format("DD-MM-YYYY")}
                         else
-                          td
+                          td.hidden-xs.hid-mobile
                             button.btn.btn-dark-red(onclick='del_role("#{dossier._id}", "#{dossier.renvois[0]._id}")') Oui
                       else
                         td
@@ -101,7 +101,7 @@ block content
                             | #{moment(dossier.renvois[0].r_date).format("DD-MM-YYYY")}
                           else
                             | #{moment(dossier.d_update).format("DD-MM-YYYY")}
-                        td
+                        td.hidden-xs.hid-mobile
                           button.btn-supp.btn.btn-dark-red(onclick='del_decision("#{dossier._id}")') Oui
                 else
                   each conclusion in list_dossiers
@@ -121,7 +121,7 @@ block content
                           if(conclusion.conclusion.renvois && conclusion.conclusion.renvois.length>0)
                             -renvoi = conclusion.conclusion.renvois[0]._id
                             | #{moment(conclusion.conclusion.renvois[0].r_date).format("DD-MM-YYYY")}
-                      td
+                      td.hidden-xs.hid-mobile
                         button.btn.btn-dark-red(onclick='del_conclusion("#{conclusion.conclusion._id}", "#{renvoi}")') Oui
 append jscripts
   // start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
