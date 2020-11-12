@@ -13,15 +13,14 @@ exports.index = function(req, res, next) {
   res.redirect('/administrateur/configuration_du_cabinet');
 };
 
-
+// Mise a jour du mot de passe, vue
 exports.configuration_du_cabinet = function (req, res, next){
   // Get all dossier for form
   res.render('administrateur/configuration', {title:' Configuration du compte du Cabinet'});
   
 };
 
-
-
+// Mise a jour du mot de passe, method
 exports.configuration_du_cabinet_update = [
    (req, res, next) => {
     

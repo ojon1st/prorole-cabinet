@@ -63,7 +63,7 @@ block content
             table#sample-table-2.table.table-striped.table-hover
               thead
                 tr
-                  th#sort Ref
+                  th Ref
                   th Parties
                   th Juridiction
                   if(title != 'décision à lever')
@@ -113,14 +113,25 @@ block content
                         a.button(href="/dossiers/dossier/#{conclusion.conclusion.dossier._id}", class='#{conclusion.etat.clsDif}') #{conclusion.conclusion.dossier.pour.p_nom} c/ #{conclusion.conclusion.dossier.contre.c_nom}
                       td.text-capitalize
                         | #{conclusion.conclusion.juridiction.nom}
-                      td  
-                        if(conclusion.conclusion.calendrier && conclusion.conclusion.calendrier.length>0)
-                          -renvoi = conclusion.conclusion.calendrier[0]._id
+                      td
+                        -var r_renvoi
+                        -var r_calendrier
+                        if(conclusion.conclusion.renvois && conclusion.conclusion.renvois.length>0 && conclusion.conclusion.calendrier && conclusion.conclusion.calendrier.length>0)
+                          - r_renvoi = moment().diff(moment(conclusion.conclusion.renvois[0].r_date), 'days')
+                          - r_calendrier = moment().diff(moment(conclusion.conclusion.calendrier[0].c_fin), 'days')
+                          if(r_renvoi > r_calendrier)
+                            - renvoi = conclusion.conclusion.calendrier[0]._id
                             | #{moment(conclusion.conclusion.calendrier[0].c_fin).format("DD-MM-YYYY")}
+                          else
+                            - renvoi = conclusion.conclusion.renvois[0]._id
+                            | #{moment(conclusion.conclusion.renvois[0].r_date).format("DD-MM-YYYY")}
                         else
                           if(conclusion.conclusion.renvois && conclusion.conclusion.renvois.length>0)
-                            -renvoi = conclusion.conclusion.renvois[0]._id
+                            - renvoi = conclusion.conclusion.renvois[0]._id
                             | #{moment(conclusion.conclusion.renvois[0].r_date).format("DD-MM-YYYY")}
+                          else 
+                            - renvoi = conclusion.conclusion.calendrier[0]._id
+                            | #{moment(conclusion.conclusion.calendrier[0].c_fin).format("DD-MM-YYYY")}
                       td.hidden-xs.hid-mobile
                         button.btn.btn-dark-red(onclick='del_conclusion("#{conclusion.conclusion._id}", "#{renvoi}")') Oui
 append jscripts
@@ -129,7 +140,10 @@ append jscripts
   script(src='/javascripts/instruction_operate.js')
   script(src='/assets/js/table-export.js')
   script(src='/javascripts/desk_mobi.js')
-  script.
-    jQuery(document).ready(function() {
-    TableExport.init();
-    });
+  if(title != 'conclusions à prendre')
+    script.
+      jQuery(document).ready(function() {
+      TableExport.init();
+      });
+  else
+    script(src='/javascripts/conclusion.js')

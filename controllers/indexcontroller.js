@@ -1,9 +1,6 @@
 var Configuration = require('../models/configuration');
-var bcrypt = require('bcryptjs');
-//var flash = require('connect-flash');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-
 
 const {
   body,
@@ -13,6 +10,7 @@ const {
   sanitizeBody
 } = require('express-validator/filter');
 
+// Rendu de l'accueil
 exports.home_get = function(req, res, next){
   if(req.user){
     res.redirect('/agenda/audiencier');
@@ -21,11 +19,12 @@ exports.home_get = function(req, res, next){
   }
 }
 
-// L'index de la page des dossiers nous redirige vers la liste des dossiers
+// Vue, page de connexion
 exports.login_get = function(req, res, next) {
   res.render('login', {title:'Page de connexion'});
 };
 
+// Verication des identifiants
 exports.login_post = [
   
   body('password', 'Veuillez renseigner votre pseudo').isLength({ min: 1 }).trim(),
@@ -39,6 +38,7 @@ exports.login_post = [
   }
 ];
 
+// Deconnexion
 exports.user_logout_get = function (req, res, next) {
     req.logout();
     res.redirect('/login');

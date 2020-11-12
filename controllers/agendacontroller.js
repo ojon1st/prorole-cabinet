@@ -11,11 +11,12 @@ var moment = require('moment');
 const { body,validationResult } = require('express-validator/check');
 const { sanitizeBody } = require('express-validator/filter');
 
-
+// Vue Agenga
 exports.audiencier_get = function(req, res, next) {
   res.render('agenda/audiencier', { title: 'Audiencier'});
 };
 
+// Recuperation de donnees de l'agenda
 exports.renvois_events_get = function(req, res, next){
   async.parallel({
     instructions: function (callback) {
@@ -75,7 +76,7 @@ exports.renvois_events_get = function(req, res, next){
             var label_pour = instruction.dossier.pour.p_nom;
             var label_contre = instruction.dossier.contre.c_nom;
             var new_renvoi = { // On ajoute l'event renvoi
-              title: 'Renvoi - ' + label_pour + ' c/ ' + label_contre + ' pour : ' + renvoi.r_motif,
+              title: 'Renvoi - ' + label_pour + ' c/ ' + label_contre + ' : ' + renvoi.r_motif,
               start: moment(renvoi.r_date).format('YYYY-MM-DD'),
               viewableIn: ["basicDay"],
               url: '/dossiers/dossier/'+instruction.dossier._id.toString(),
@@ -107,7 +108,7 @@ exports.renvois_events_get = function(req, res, next){
             var label_pour = instruction.dossier.pour.p_nom;
             var label_contre = instruction.dossier.contre.c_nom;
             var new_calendrier = { // On ajoute l'event mise a l'etat
-              title: 'MEE - ' + label_pour + ' c/ ' + label_contre + ' pour : ' + calendrier.c_commentaire,
+              title: 'MEE - ' + label_pour + ' c/ ' + label_contre + ' : ' + calendrier.c_commentaire,
               start: moment(calendrier.c_fin).format('YYYY-MM-DD'),
               viewableIn: ["basicDay"],
               url: '/dossiers/dossier/'+instruction.dossier._id.toString(),
@@ -124,6 +125,7 @@ exports.renvois_events_get = function(req, res, next){
   });
 };
 
+// Recuperations de parties contenant un email ou telephone
 exports.annuaire_get = function(req, res, next){
   
   async.parallel({

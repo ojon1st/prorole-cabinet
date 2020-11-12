@@ -15,6 +15,6 @@ function show_notification(shortCutFunction, title, msg) {
 
 function login_error (){
   if(window.location.search){
-    show_notification('warning', 'Connexion à votre compte', 'La combinaison identifiant & mot de passe est incorrect');
+    show_notification('warning', 'Connexion à votre compte', 'La combinaison identifiant & mot de passe est incorrect, veuillez revoir vos identifiants');
   }
 }

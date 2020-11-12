@@ -1,24 +1,10 @@
 var Dossier = require('../models/dossier');
-
-var Counter = require('../models/counter');
 var Pour = require('../models/pour');
 var Contre = require('../models/contre');
 var Juridiction = require('../models/juridiction');
 var Instruction = require('../models/instruction');
-var Nature = require('../models/nature');
 
 var async = require('async');
-var moment = require('moment');
-const flash = require('express-flash-notification');
-var cloudinary = require('cloudinary');
-
-//const NotifySend = require('node-notifier').NotifySend;
-//var notifier = new NotifySend();
-cloudinary.config({ 
-    cloud_name: 'prorole', 
-    api_key: '675842782989895', 
-    api_secret: 'Lc5kh5dKKKla8Brcci87Jf8BOL0' 
-});
 
 const {
   body,
@@ -28,7 +14,7 @@ const {
   sanitizeBody
 } = require('express-validator/filter');
 
-// Display list of all Dossier.
+// Recuperation de dossiers.
 exports.dossier_list = function (req, res, next) {
 
   // Get all dossier for form
@@ -53,7 +39,7 @@ exports.dossier_list = function (req, res, next) {
 
 };
 
-// Display detail page for a specific Dossier.
+// Visualisation du dossier
 exports.dossier_detail = function (req, res, next) {
 
   async.parallel({
@@ -121,12 +107,12 @@ exports.dossier_detail = function (req, res, next) {
 
 };
 
-// Display Dossier create form on GET.
+// Vue, creation de dossier
 exports.dossier_create_get = function (req, res, next) {
   res.render('dossiers/dossier_form', { title: 'Creation de dossier'});
 };
 
-// Check and remove duplicate ref physique
+// Verification ref physique
 exports.remove_duplicate_ref = function (req, res, next) {
 
   // Get all dossier for form
@@ -150,7 +136,7 @@ exports.remove_duplicate_ref = function (req, res, next) {
   });
 };
 
-// Handle Dossier create on POST.
+// Creation du dossier
 exports.dossier_create_post = [
 
   // Process request after validation and sanitization.
@@ -209,7 +195,7 @@ exports.dossier_create_post = [
   }
 ];
 
-// Handle Dossier update on POST.
+// Mise a jour du dossier
 exports.dossier_update_post = [
     // Process request after validation and sanitization.
   (req, res, next) => {

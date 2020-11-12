@@ -1,5 +1,4 @@
 var Instruction = require('../models/instruction');
-
 var async = require('async');
 var moment = require('moment');
 
@@ -11,14 +10,7 @@ const {
   sanitizeBody
 } = require('express-validator/filter');
 
-var cloudinary = require('cloudinary');
-
-cloudinary.config({ 
-  cloud_name: 'prorole', 
-  api_key: '675842782989895', 
-  api_secret: 'Lc5kh5dKKKla8Brcci87Jf8BOL0' 
-});
-
+// Creation et mise a jour d'instruction
 exports.instruction_create_post = [
   // Process request after validation and sanitization.
   (req, res, next) => {
@@ -67,6 +59,7 @@ exports.instruction_create_post = [
   }
 ];
 
+// Creation de renvois
 exports.renvoi_create_post = [
   (req, res, next) => {
 
@@ -114,7 +107,7 @@ exports.renvoi_create_post = [
     }
 ];
 
-
+// Creation de mise en etat
 exports.mise_en_etat_create_post = [
   (req, res, next) => {
     // Extract the validation errors from a request.
@@ -157,6 +150,7 @@ exports.mise_en_etat_create_post = [
     }
 ];
 
+// Sauvegarde de la decision
 exports.decision_save = [
   (req, res, next) => {
 
@@ -205,6 +199,7 @@ exports.decision_save = [
   }
 ];
 
+// Recuperation de mise en etat
 exports.mise_en_etat_get = function (req, res, next) {
 
   async.parallel({
@@ -232,6 +227,7 @@ exports.mise_en_etat_get = function (req, res, next) {
 
 };
 
+// Conclusion communiquee
 exports.del_conclusion = function (req, res, next) {
   async.parallel({
     instruction: function (callback) {
@@ -277,6 +273,7 @@ exports.del_conclusion = function (req, res, next) {
 
 };
 
+// Dilligence effectuee - role general
 exports.del_role = function (req, res, next) {
   async.parallel({
     instruction: function (callback) {
@@ -307,6 +304,7 @@ exports.del_role = function (req, res, next) {
 
 };
 
+// Recuperation de dossiers avec defaut de renvoi
 exports.get_manques = function(req, res, next){
   
   async.parallel({
@@ -332,6 +330,7 @@ exports.get_manques = function(req, res, next){
   });
 };
 
+// Recuperation de dossiers renvoyes au role general
 exports.get_renvoi_role_general = function(req, res, next){
   async.parallel({
     
@@ -364,10 +363,11 @@ exports.get_renvoi_role_general = function(req, res, next){
   });
 };
 
+// Recuperation de dossiers avec une conclusion a prendre
 exports.conclusion_prendre = function(req, res, next){
   async.parallel({
     conclusions: function(callback){
-      Instruction.find({}, {'renvois':1,'_id':1, 'dossier':1, 'juridiction':1, 'calendrier':1})
+      Instruction.find({}, {'renvois':{'$slice':-1},'_id':1, 'dossier':1, 'juridiction':1, 'calendrier':{'$slice':-1}})
                  .populate({ path: 'dossier', model: 'Dossier', populate: { path: 'pour contre'} })
                  .populate('juridiction')
                  .exec(callback);
@@ -379,25 +379,25 @@ exports.conclusion_prendre = function(req, res, next){
     results.conclusions.forEach(function(conclusion){
       var tab_class = {};
       let del_conclsion_renvoi = del_conclsion_calendrier = false;
-      if((conclusion.renvois && conclusion.renvois.length > 0 && conclusion.renvois[parseInt(conclusion.renvois.length - 1, 10)].r_type == 'nos conclusions') || (conclusion.calendrier && conclusion.calendrier.length > 0 && conclusion.calendrier[parseInt(conclusion.calendrier.length - 1, 10)].c_conclusion == 'nous') && conclusion.decision == null){
-        if(conclusion.renvois && conclusion.renvois.length > 0 && conclusion.renvois[parseInt(conclusion.renvois.length - 1, 10)].r_type == "delibere vide"){return}
-        var date_check = (conclusion.renvois[parseInt(conclusion.renvois.length - 1, 10)] ? conclusion.renvois[parseInt(conclusion.renvois.length - 1, 10)].r_date : conclusion.calendrier[parseInt(conclusion.calendrier.length - 1, 10)].c_fin);
+      if((conclusion.renvois && conclusion.renvois.length > 0 && conclusion.renvois[0].r_type == 'nos conclusions') || (conclusion.calendrier && conclusion.calendrier.length > 0 && conclusion.calendrier[0].c_conclusion == 'nous') && conclusion.decision == null){
+        if(conclusion.renvois && conclusion.renvois.length > 0 && conclusion.renvois[0].r_type == "delibere vide"){return}
+        var date_check = (conclusion.renvois[0] && conclusion.renvois[0].r_type == 'nos conclusions' ? conclusion.renvois[0].r_date : conclusion.calendrier[0].c_fin);
         var diff = moment().diff(moment(date_check), 'days')
         if(diff <= 0){
           (diff >= -3 ? tab_class.clsDif = 'r-3' : (diff >= -7 ? tab_class.clsDif = 'r-7' : tab_class.clsDif = 'r-x'));
         }
         else{tab_class.clsDif = 'r-3';}
 
-        if(conclusion.renvois && conclusion.renvois.length > 0 && conclusion.renvois[parseInt(conclusion.renvois.length - 1, 10)].r_operate && conclusion.renvois[parseInt(conclusion.renvois.length - 1, 10)].r_operate.length > 0){
-          conclusion.renvois[parseInt(conclusion.renvois.length - 1, 10)].r_operate.forEach(function (renvoi){
+        if(conclusion.renvois && conclusion.renvois.length > 0 && conclusion.renvois[0].r_operate && conclusion.renvois[0].r_operate.length > 0){
+          conclusion.renvois[0].r_operate.forEach(function (renvoi){
             if(renvoi.origine == 'Calendrier'){
               return del_conclsion_renvoi = true;
             }
           });
         }
 
-        if(conclusion.calendrier && conclusion.calendrier.length > 0 && conclusion.calendrier[parseInt(conclusion.calendrier.length - 1, 10)].c_operate && conclusion.calendrier[parseInt(conclusion.calendrier.length - 1, 10)].c_operate.length > 0){
-          conclusion.calendrier[parseInt(conclusion.calendrier.length - 1, 10)].c_operate.forEach(function (calendrier){
+        if(conclusion.calendrier && conclusion.calendrier.length > 0 && conclusion.calendrier[0].c_operate && conclusion.calendrier[0].c_operate.length > 0){
+          conclusion.calendrier[0].c_operate.forEach(function (calendrier){
             if(calendrier.origine == 'Calendrier'){
               return del_conclsion_calendrier = true;
             }
@@ -415,6 +415,7 @@ exports.conclusion_prendre = function(req, res, next){
   });
 };
 
+// Recuperation de dossiers qui ont ete delibere
 exports.get_decision_a_lever = function(req, res, next){
   async.parallel({
     
@@ -438,6 +439,7 @@ exports.get_decision_a_lever = function(req, res, next){
   });
 };
 
+// // Dilligence effectuee - decision a lever
 exports.del_decision = function (req, res, next) {
   async.parallel({
     theinstruction: function (callback) {

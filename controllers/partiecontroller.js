@@ -1,3 +1,4 @@
+// Mise a jour du pour
 exports.pour_update = [
   // Process request after validation and sanitization.
   (req, res, next) => {
@@ -19,6 +20,7 @@ exports.pour_update = [
 
 ];
 
+// Mise a jour du contre
 exports.contre_update = [
   // Process request after validation and sanitization.
   (req, res, next) => {
