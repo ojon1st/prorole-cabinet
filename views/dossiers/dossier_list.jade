@@ -71,8 +71,8 @@ block content
                       tr.go_to_dossier
                         td #{dossier.ref_d}
                         td 
-                          a.button(href="/dossiers/dossier/#{dossier._id}") #{dossier.pour.p_nom} c/ #{dossier.contre.c_nom}
-                        td #{dossier.ref_d_p}
+                          a.button(href="/dossiers/dossier/#{dossier._id}") #{atob(dossier.pour.p_nom)} c/ #{atob(dossier.contre.c_nom)}
+                        td #{atob(dossier.ref_d_p)}
 append jscripts
   // start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
   script(src='/assets/plugins/holder/holder.js')

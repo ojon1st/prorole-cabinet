@@ -5,6 +5,8 @@ var Juridiction = require('../models/juridiction');
 var Instruction = require('../models/instruction');
 
 var async = require('async');
+var atob = require('atob');
+var btoa = require('btoa');
 
 const {
   body,
@@ -118,7 +120,7 @@ exports.remove_duplicate_ref = function (req, res, next) {
   // Get all dossier for form
   async.parallel({
     dossier_physique: function (callback) {
-      Dossier.findOne({ref_d_p: req.params.ref}).exec(callback);
+      Dossier.findOne({ref_d_p: atob(req.params.ref)}).exec(callback);
     },
     
   }, function (err, results) {
@@ -145,19 +147,19 @@ exports.dossier_create_post = [
     const errors = validationResult(req);
     
     let pour = new Pour({
-      p_nom: req.body[0]['p_nom'],
-      p_tel: req.body[0]['p_tel'],
-      p_email: req.body[0]['p_email']
+      p_nom: btoa(req.body[0]['p_nom']),
+      p_tel: btoa(req.body[0]['p_tel']),
+      p_email: btoa(req.body[0]['p_email'])
     });
 
     let contre = new Contre({
-      c_nom: req.body[0]['c_nom'],
-      c_tel: req.body[0]['c_tel'],
-      c_email: req.body[0]['c_email']
+      c_nom: btoa(req.body[0]['c_nom']),
+      c_tel: btoa(req.body[0]['c_tel']),
+      c_email: btoa(req.body[0]['c_email'])
     });
 
     let dossier = new Dossier({
-      ref_d_p: req.body[0]['ref_d_p'],
+      ref_d_p: btoa(req.body[0]['ref_d_p']),
       pour: pour,
       contre: contre
     });
@@ -206,11 +208,11 @@ exports.dossier_update_post = [
       .exec(function(err, the_dossier){
         if (err) return next(err);
         the_dossier.updateOne({
-          ref_d_p : req.body.ref_d_p,
-          nature : req.body.nature,
-          qualite : req.body.qualite,
-          resume : req.body.resume,
-          c_avocat : req.body.avocat
+          ref_d_p : btoa(req.body.ref_d_p),
+          nature : btoa(req.body.nature),
+          qualite : btoa(req.body.qualite),
+          resume : btoa(req.body.resume),
+          c_avocat : btoa(req.body.avocat)
         }, function(err) {
           if(err) {console.log(err)}
           res.send({

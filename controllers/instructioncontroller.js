@@ -1,6 +1,8 @@
 var Instruction = require('../models/instruction');
 var async = require('async');
 var moment = require('moment');
+var atob = require('atob');
+var btoa = require('btoa');
 
 const {
   body,
@@ -81,8 +83,8 @@ exports.renvoi_create_post = [
         if(last_renvoi.length > 0){
           results.theinstruction.renvois.push({
             r_date: moment(last_renvoi[parseInt(last_renvoi.length -1)].r_date, "DD-MM-YYYY"),
-            r_type: req.body.type_renvoi,
-            r_motif: req.body.motif_renvoi
+            r_type: btoa(req.body.type_renvoi),
+            r_motif: btoa(req.body.motif_renvoi)
           });
         }
         else{
@@ -92,8 +94,8 @@ exports.renvoi_create_post = [
       else{
         results.theinstruction.renvois.push({
           r_date: req.body.date_renvoi,
-          r_type: req.body.type_renvoi,
-          r_motif: req.body.motif_renvoi
+          r_type: btoa(req.body.type_renvoi),
+          r_motif: btoa(req.body.motif_renvoi)
         });
       }
       results.theinstruction.save(function (err) {
@@ -125,11 +127,11 @@ exports.mise_en_etat_create_post = [
       }else {
         req.body.forEach(function (doc) {
           results.theinstruction.calendrier.push({
-            c_conclusion: doc.con,
+            c_conclusion: btoa(doc.con),
             c_debut: moment(doc.du, "DD-MM-YYYY"),
             c_fin: moment(doc.au, "DD-MM-YYYY"),
             c_heure: doc.h,
-            c_commentaire: doc.com_name
+            c_commentaire: btoa(doc.com_name)
           });
 
 
@@ -174,7 +176,7 @@ exports.decision_save = [
       }
       if (results.theinstruction && req.body.decision.trim() != '') {
 
-        results.theinstruction.decision = req.body.decision;
+        results.theinstruction.decision = btoa(req.body.decision);
         results.theinstruction.save(function (err) {
           if (err) {
             return next(err);
@@ -217,6 +219,9 @@ exports.mise_en_etat_get = function (req, res, next) {
         type_of_response: 'echec'
       })
     } else {
+      results.instruction.calendrier.forEach(function(conclusion){
+        conclusion.c_commentaire = atob(conclusion.c_commentaire);
+      });
       res.send({
         type_of_response: 'success',
         mee_list: results.instruction.calendrier
@@ -242,7 +247,7 @@ exports.del_conclusion = function (req, res, next) {
     if(results.instruction.renvois && results.instruction.renvois.length > 0){
       results.instruction.renvois.forEach(function(renvoi){
         if(renvoi._id == req.params.conclusion){
-          renvoi.r_operate.push({origine: 'Calendrier', operate: 1});
+          renvoi.r_operate.push({origine: btoa('Calendrier'), operate: 1});
           results.instruction.save(function (err) {
             if (err) { next(err);}
             res.send({
@@ -257,7 +262,7 @@ exports.del_conclusion = function (req, res, next) {
     if(results.instruction.calendrier && results.instruction.calendrier.length > 0){
       results.instruction.calendrier.forEach(function(calendrier){
         if(calendrier._id == req.params.conclusion){
-          calendrier.c_operate.push({origine: 'Calendrier', operate: 1});
+          calendrier.c_operate.push({origine: btoa('Calendrier'), operate: 1});
           results.instruction.save(function (err) {
             if (err) { next(err);}
             res.send({
@@ -288,7 +293,7 @@ exports.del_role = function (req, res, next) {
     if(results.instruction.renvois && results.instruction.renvois.length > 0){
       results.instruction.renvois.forEach(function(renvoi){
         if(renvoi._id == req.params.generale){
-          renvoi.r_operate.push({origine: 'Role general', operate: 1});
+          renvoi.r_operate.push({origine: btoa('Role general'), operate: 1});
           results.instruction.save(function (err) {
             if (err) { next(err);}
             res.send({
@@ -320,7 +325,7 @@ exports.get_manques = function(req, res, next){
      
       var dossiers_retards = [];
       results.last_renvois.forEach(function(last_renvoi){
-        if(last_renvoi.renvois.length > 0 && moment().diff(moment(last_renvoi.renvois[0].r_date), 'days') > 0 && last_renvoi.renvois[0].r_type !="delibere vide" && last_renvoi.decision == null){
+        if(last_renvoi.renvois.length > 0 && moment().diff(moment(last_renvoi.renvois[0].r_date), 'days') > 0 && last_renvoi.renvois[0].r_type != btoa("delibere vide") && last_renvoi.decision == null){
           dossiers_retards.push(last_renvoi);
         }
       });
@@ -346,7 +351,7 @@ exports.get_renvoi_role_general = function(req, res, next){
       var renvoi_role_general = [];
       var role = false;
       results.renvois_rgs.forEach(function(renvois_rg){
-        if(renvois_rg.renvois.length > 0 && renvois_rg.renvois[0].r_type == 'renvoi au role general' && renvois_rg.renvois[0].r_type != "delibere vide" && renvois_rg.decision == null){
+        if(renvois_rg.renvois.length > 0 && renvois_rg.renvois[0].r_type == btoa('renvoi au role general') && renvois_rg.renvois[0].r_type != btoa("delibere vide") && renvois_rg.decision == null){
           if(renvois_rg.renvois[0].r_operate && renvois_rg.renvois[0].r_operate.length > 0){
             renvois_rg.renvois[0].r_operate.forEach(function (renvoi){
               if(renvoi.origine == 'Role general'){
@@ -379,9 +384,9 @@ exports.conclusion_prendre = function(req, res, next){
     results.conclusions.forEach(function(conclusion){
       var tab_class = {};
       let del_conclsion_renvoi = del_conclsion_calendrier = false;
-      if((conclusion.renvois && conclusion.renvois.length > 0 && conclusion.renvois[0].r_type == 'nos conclusions') || (conclusion.calendrier && conclusion.calendrier.length > 0 && conclusion.calendrier[0].c_conclusion == 'nous') && conclusion.decision == null){
-        if(conclusion.renvois && conclusion.renvois.length > 0 && conclusion.renvois[0].r_type == "delibere vide"){return}
-        var date_check = (conclusion.renvois[0] && conclusion.renvois[0].r_type == 'nos conclusions' ? conclusion.renvois[0].r_date : conclusion.calendrier[0].c_fin);
+      if((conclusion.renvois && conclusion.renvois.length > 0 && conclusion.renvois[0].r_type == btoa('nos conclusions')) || (conclusion.calendrier && conclusion.calendrier.length > 0 && conclusion.calendrier[0].c_conclusion == btoa('nous')) && conclusion.decision == null){
+        if(conclusion.renvois && conclusion.renvois.length > 0 && conclusion.renvois[0].r_type == btoa("delibere vide")){return}
+        var date_check = (conclusion.renvois[0] && conclusion.renvois[0].r_type == btoa('nos conclusions') ? conclusion.renvois[0].r_date : conclusion.calendrier[0].c_fin);
         var diff = moment().diff(moment(date_check), 'days')
         if(diff <= 0){
           (diff >= -3 ? tab_class.clsDif = 'r-3' : (diff >= -7 ? tab_class.clsDif = 'r-7' : tab_class.clsDif = 'r-x'));
@@ -390,7 +395,7 @@ exports.conclusion_prendre = function(req, res, next){
 
         if(conclusion.renvois && conclusion.renvois.length > 0 && conclusion.renvois[0].r_operate && conclusion.renvois[0].r_operate.length > 0){
           conclusion.renvois[0].r_operate.forEach(function (renvoi){
-            if(renvoi.origine == 'Calendrier'){
+            if(renvoi.origine == btoa('Calendrier')){
               return del_conclsion_renvoi = true;
             }
           });
@@ -398,7 +403,7 @@ exports.conclusion_prendre = function(req, res, next){
 
         if(conclusion.calendrier && conclusion.calendrier.length > 0 && conclusion.calendrier[0].c_operate && conclusion.calendrier[0].c_operate.length > 0){
           conclusion.calendrier[0].c_operate.forEach(function (calendrier){
-            if(calendrier.origine == 'Calendrier'){
+            if(calendrier.origine == btoa('Calendrier')){
               return del_conclsion_calendrier = true;
             }
           });
@@ -429,7 +434,7 @@ exports.get_decision_a_lever = function(req, res, next){
       if (err) { return next(err); }
       var decision = [];
       results.decision.forEach(function(dossier){
-        if((dossier.decision != null && dossier.decision != '') || (dossier.renvois.length > 0 && dossier.renvois[0].r_type == "delibere vide")){
+        if((dossier.decision != null && dossier.decision != '') || (dossier.renvois.length > 0 && dossier.renvois[0].r_type == btoa("delibere vide"))){
           if(dossier.isDecision == null){
             decision.push(dossier);
           }

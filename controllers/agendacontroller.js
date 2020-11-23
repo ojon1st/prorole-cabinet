@@ -6,10 +6,9 @@ var Juridiction = require('../models/juridiction');
 
 var async = require('async');
 var moment = require('moment');
+var atob = require('atob');
+var btoa = require('btoa');
 
-
-const { body,validationResult } = require('express-validator/check');
-const { sanitizeBody } = require('express-validator/filter');
 
 // Vue Agenga
 exports.audiencier_get = function(req, res, next) {
@@ -39,7 +38,7 @@ exports.renvois_events_get = function(req, res, next){
       }
       var events_retards = [];
       results.last_renvois.forEach(function(last_renvoi){
-        if(last_renvoi.renvois.length > 0 && moment().diff(moment(last_renvoi.renvois[0].r_date), 'days') > 0 && last_renvoi.renvois[0].r_type !="delibere vide" && last_renvoi.decision == null){
+        if(last_renvoi.renvois.length > 0 && moment().diff(moment(last_renvoi.renvois[0].r_date), 'days') > 0 && last_renvoi.renvois[0].r_type != btoa("delibere vide") && last_renvoi.decision == null){
           events_retards.push(last_renvoi.renvois[0]._id.toString());
         }
       });
@@ -48,7 +47,7 @@ exports.renvois_events_get = function(req, res, next){
       var juridictions_date_array = [];
       results.instructions.forEach(function(instruction){ // Pour chaque instruction
         var nom_de_classe_tribunal = nom_de_classe_renvoi = nom_de_classe_calendrier = '';
-        if(instruction.dossier.nature && instruction.dossier.nature == 'Difficultés d\'exécution'){
+        if(instruction.dossier.nature && instruction.dossier.nature == btoa('Difficultés d\'exécution')){
           instruction.dossier.nature = 'Référé';
         }
         if (instruction.renvois.length > 0){ // Si renvoi il y a
@@ -61,8 +60,9 @@ exports.renvois_events_get = function(req, res, next){
               nom_de_classe_renvoi = 'event-bg-renvoi';
             }
             if (!juridictions_date_array.includes(instruction.dossier.nature+'_'+instruction.juridiction._id.toString()+ '_' +moment(renvoi.r_date).format('YYYY-MM-DD'))){ //on vérifie si la juridiction fait partie tu tableau des juridictions avant de l'ajouter comme nex event
+            let appel = (instruction.juridiction.division == 'appel'? 'Cour d\'appel de ': '');
             var new_tribunal = { // On crée l'event Tribunal
-                title: instruction.juridiction.nom + " - " + instruction.dossier.nature,
+                title: appel + "" + instruction.juridiction.nom + " - " + atob(instruction.dossier.nature),
                 start: moment(renvoi.r_date).format('YYYY-MM-DD'),
                 viewableIn: ["basicWeek", "basicDay", "month"],
                 tribunalId: instruction.juridiction._id.toString(),
@@ -76,7 +76,7 @@ exports.renvois_events_get = function(req, res, next){
             var label_pour = instruction.dossier.pour.p_nom;
             var label_contre = instruction.dossier.contre.c_nom;
             var new_renvoi = { // On ajoute l'event renvoi
-              title: 'Renvoi - ' + label_pour + ' c/ ' + label_contre + ' : ' + renvoi.r_motif,
+              title: 'Renvoi - ' + atob(label_pour) + ' c/ ' + atob(label_contre) + ' : ' + atob(renvoi.r_motif),
               start: moment(renvoi.r_date).format('YYYY-MM-DD'),
               viewableIn: ["basicDay"],
               url: '/dossiers/dossier/'+instruction.dossier._id.toString(),
@@ -94,7 +94,7 @@ exports.renvois_events_get = function(req, res, next){
             if (!juridictions_date_array.includes(instruction.dossier.nature+'_'+instruction.juridiction._id.toString()+ '_' +moment(calendrier.c_fin).format('YYYY-MM-DD'))){ //on vérifie si la juridiction fait partie tu tableau des juridictions avant de l'ajouter comme nex event
               let appel = (instruction.juridiction.division == 'appel'? 'Cour d\'appel de ': '');
               var new_tribunal = { // On crée l'event Tribunal
-                title: appel  + "" +  instruction.juridiction.nom + " - " + instruction.dossier.nature,
+                title: appel  + "" +  instruction.juridiction.nom + " - " + atob(instruction.dossier.nature),
                 start: moment(calendrier.c_fin).format('YYYY-MM-DD'),
                 viewableIn: ["basicWeek", "basicDay", "month"],
                 tribunalId: instruction.juridiction._id.toString(),
@@ -108,7 +108,7 @@ exports.renvois_events_get = function(req, res, next){
             var label_pour = instruction.dossier.pour.p_nom;
             var label_contre = instruction.dossier.contre.c_nom;
             var new_calendrier = { // On ajoute l'event mise a l'etat
-              title: 'MEE - ' + label_pour + ' c/ ' + label_contre + ' : ' + calendrier.c_commentaire,
+              title: 'MEE - ' + atob(label_pour) + ' c/ ' + atob(label_contre) + ' : ' + atob(calendrier.c_commentaire),
               start: moment(calendrier.c_fin).format('YYYY-MM-DD'),
               viewableIn: ["basicDay"],
               url: '/dossiers/dossier/'+instruction.dossier._id.toString(),

@@ -84,7 +84,7 @@ block content
                       td 
                         | #{dossier.dossier.ref_d}
                       td 
-                        a.button(href="/dossiers/dossier/#{dossier.dossier._id}", class='#{classDefaut}') #{dossier.dossier.pour.p_nom} c/ #{dossier.dossier.contre.c_nom}
+                        a.button(href="/dossiers/dossier/#{dossier.dossier._id}", class='#{classDefaut}') #{atob(dossier.dossier.pour.p_nom)} c/ #{atob(dossier.dossier.contre.c_nom)}
                       td.text-capitalize
                         | #{dossier.juridiction.nom}
                       if(title != 'décision à lever')
@@ -110,7 +110,7 @@ block content
                       td 
                         | #{conclusion.conclusion.dossier.ref_d}
                       td 
-                        a.button(href="/dossiers/dossier/#{conclusion.conclusion.dossier._id}", class='#{conclusion.etat.clsDif}') #{conclusion.conclusion.dossier.pour.p_nom} c/ #{conclusion.conclusion.dossier.contre.c_nom}
+                        a.button(href="/dossiers/dossier/#{conclusion.conclusion.dossier._id}", class='#{conclusion.etat.clsDif}') #{atob(conclusion.conclusion.dossier.pour.p_nom)} c/ #{atob(conclusion.conclusion.dossier.contre.c_nom)}
                       td.text-capitalize
                         | #{conclusion.conclusion.juridiction.nom}
                       td

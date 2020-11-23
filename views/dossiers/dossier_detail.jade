@@ -20,9 +20,9 @@ append styles
     }
 
 block content
-  -let nature = (dossier.nature && (dossier.nature == 'Civile' || dossier.nature == 'Référé civil')) ? true : false
-  -let inst_appel = (dossier.qualite && (dossier.qualite == 'Intimé (e)' || dossier.qualite == 'Appelant (e)')) ? true : false
-  -let inst_cour = ((dossier.nature && dossier.nature == 'Sursis d\'exécution') || (dossier.qualite && (dossier.qualite == 'Demandeur (resse) au pourvoi' || dossier.qualite == 'Défendeur (resse) au pourvoi'))) ? true : false
+  -let nature = (dossier.nature && (atob(dossier.nature) == 'Civile' || atob(dossier.nature) == 'Référé civil')) ? true : false
+  -let inst_appel = (dossier.qualite && (atob(dossier.qualite) == 'Intimé (e)' || atob(dossier.qualite) == 'Appelant (e)')) ? true : false
+  -let inst_cour = ((dossier.nature && atob(dossier.nature) == 'Sursis d\'exécution') || (dossier.qualite && (atob(dossier.qualite) == 'Demandeur (resse) au pourvoi' || atob(dossier.qualite) == 'Défendeur (resse) au pourvoi'))) ? true : false
   input#inst_nature(type='hidden', value='#{nature}', disabled)
   input#inst_appel(type='hidden', value='#{inst_appel}', disabled)
   input#inst_cour(type='hidden', value='#{inst_cour}', disabled)
@@ -63,146 +63,147 @@ block content
               .col-md-12
                 form(method='POST', action='')
                   .row
-                    - let visible = (dossier.ref_d_p || (dossier.nature && dossier.nature != 'null') || (dossier.qualite && dossier.qualite != 'null') || (dossier.resume && dossier.resume != 'null')) ? 'cacher': 'afficher'
+                    //- - let visible = (dossier.ref_d_p || (dossier.nature && atob(dossier.nature) != 'null') || (dossier.qualite && atob(dossier.qualite) != 'null') || (dossier.resume && atob(dossier.resume) != 'null')) ? 'cacher': 'afficher'
                     .col-md-12
                       .form-group
                         label.col-sm-12.dos-text 
                           | Réf. dossier numerique : 
                           strong.str #{dossier.ref_d}
-                      if(visible == 'cacher')
-                        #visible
-                          .form-group
-                            label.col-sm-12.dos-text 
-                              | Réf. dossier physique : 
-                              strong.str #{dossier.ref_d_p}
-                          .form-group
-                            label.col-sm-9.dos-text
-                              | Pour : 
-                              strong.str #{dossier.pour.p_nom}
-                            .col-sm-3
-                              a.btn.btn-link.show-calendar(href='#infoPour')
-                                span.fa.fa-plus
-                                strong d'infos
-                          .form-group
-                            label.col-sm-12.dos-text 
-                              | Qualité : 
-                              strong.str #{dossier.qualite}
-                          .form-group
-                            label.col-sm-9.dos-text
-                              | Contre : 
-                              strong.str #{dossier.contre.c_nom}
-                            .col-sm-3
-                              a.btn.btn-link.show-calendar(href='#infoContre')
-                                span.fa.fa-plus
-                                strong d'infos
-                          .form-group
-                            label.col-sm-12.dos-text 
-                              | Avocat Adverse : 
-                              strong.str #{dossier.c_avocat}
-                          .form-group
-                            label.col-sm-12.dos-text 
-                              | Matiere du litige : 
-                              strong.str #{dossier.nature}
-                          .form-group
-                            label.col-sm-3.dos-text
-                              | Résumé du dossier :
-                            .col-sm-8
-                              textarea.form-control(placeholder='Résumé du litige', cols='30', rows='7', readonly=true)
-                                | #{dossier.resume}
-                      #hidden(class=(visible == 'cacher') ? 'hidden': '')
-                        - let instruction = (i_instance[0]) ? i_instance[0] : (i_appel[0])? i_appel[0] : (i_cour[0])? i_cour[0] : ''
-                        .form-group
+                      //- if(visible == 'cacher')
+                      //-   #visible
+                      //-     .form-group
+                      //-       label.col-sm-12.dos-text 
+                      //-         | Réf. dossier physique : 
+                      //-         strong.str #{atob(dossier.ref_d_p)}
+                      //-     .form-group
+                      //-       label.col-sm-9.dos-text
+                      //-         | Pour : 
+                      //-         strong.str #{atob(dossier.pour.p_nom)}
+                      //-       .col-sm-3
+                      //-         a.btn.btn-link.show-calendar(href='#infoPour')
+                      //-           span.fa.fa-plus
+                      //-           strong d'infos
+                      //-     .form-group
+                      //-       label.col-sm-12.dos-text 
+                      //-         | Qualité : 
+                      //-         strong.str 
+                      //-           if(dossier.qualite)
+                      //-             | #{atob(dossier.qualite)}
+                      //-     .form-group
+                      //-       label.col-sm-9.dos-text
+                      //-         | Contre : 
+                      //-         strong.str #{atob(dossier.contre.c_nom)}
+                      //-       .col-sm-3
+                      //-         a.btn.btn-link.show-calendar(href='#infoContre')
+                      //-           span.fa.fa-plus
+                      //-           strong d'infos
+                      //-     .form-group
+                      //-       label.col-sm-12.dos-text 
+                      //-         | Avocat Adverse : 
+                      //-         strong.str #{atob(dossier.c_avocat)}
+                      //-     .form-group
+                      //-       label.col-sm-12.dos-text 
+                      //-         | Matiere du litige : 
+                      //-         strong.str
+                      //-           if(dossier.nature)
+                      //-             | #{atob(dossier.nature)}
+                      //-     .form-group
+                      //-       label.col-sm-3.dos-text
+                      //-         | Résumé du dossier :
+                      //-       .col-sm-8
+                      //-         textarea.form-control(placeholder='Résumé du litige', cols='30', rows='7', readonly=true)
+                      //-           if(dossier.resume)
+                      //-             | #{atob(dossier.resume)}
+                      
+                      //- #hidden(class=(visible == 'cacher') ? 'hidden': '')
+                      - let instruction = (i_instance[0]) ? i_instance[0] : (i_appel[0])? i_appel[0] : (i_cour[0])? i_cour[0] : ''
+                      .form-group
+                        label.col-sm-3.dos-text
+                          | Ref. dossier physique :
+                        .col-sm-8
+                          input.form-control(name='ref_d_p', placeholder='Saisir la réference du dossier physique', onchange='check_ref(this)', value='#{atob(dossier.ref_d_p)}')
+                      .form-group
+                        label.col-sm-9.dos-text
+                          | Pour : 
+                          strong.str #{atob(dossier.pour.p_nom)}
+                        .col-sm-3
+                          a.btn.btn-link.show-calendar(href='#infoPour')
+                            span.fa.fa-plus
+                            strong d'infos  
+                      .form-group
+                        label.col-sm-3.dos-text
+                          | Qualité :
+                        .col-sm-8
+                          select.form-control(name='qualite')
+                            if (dossier.qualite && atob(dossier.qualite) != 'null')
+                              option(value='#{atob(dossier.qualite)}', selected='#{atob(dossier.qualite)}') #{atob(dossier.qualite)}
+                            else
+                              option(value='null', selected='') Choisir la qualité
+                            option(value='Demandeur (resse)') Demandeur (resse)
+                            option(value='Défendeur (resse)') Défendeur (resse)
+                            option(value='Prévenu (e)') Prévenu (e)
+                            option(value='Inculpé (e)') Inculpé (e)
+                            option(value='Accusé (e)') Accusé (e)
+                            option(value='Partie civile') Partie civile
+                            option(value='Tiers saisi (e)') Tiers saisi (e)
+                            option(value='Appelé (e) en garantie') Appelé (e) en garantie
+                            option(value='Appelant (e)') Appelant (e)
+                            option(value='Intimé (e)') Intimé (é)
+                            option(value='Demandeur (resse) au pourvoi') Demandeur (resse) au pourvoi
+                            option(value='Défendeur (resse) au pourvoi') Défendeur (resse) au pourvoi 
+                      .form-group
+                        label.col-sm-9.dos-text
+                          | Contre : 
+                          strong.str #{atob(dossier.contre.c_nom)}
+                        .col-sm-3
+                          a.btn.btn-link.show-calendar(href='#infoContre')
+                            span.fa.fa-plus
+                            strong d'infos
+                      .form-group
+                        label.col-sm-3.dos-text
+                          | Avocat adverse :
+                        .col-sm-8
+                          input.form-control(name='avocat', placeholder='Saisir l\'avocat adverse', value='#{atob(dossier.c_avocat)}') 
+                      .form-group
+                        if(instruction == '' || ((instruction.renvois && instruction.renvois.length==0) && (instruction.calendrier && instruction.calendrier.length==0)))
                           label.col-sm-3.dos-text
-                            | Ref. dossier physique :
+                            | Matière de litige :
                           .col-sm-8
-                            input.form-control(name='ref_d_p', placeholder='Saisir la réference du dossier physique', onchange='check_ref(this)', value='#{dossier.ref_d_p}')
-                        .form-group
-                          label.col-sm-9.dos-text
-                            | Pour : 
-                            strong.str #{dossier.pour.p_nom}
-                          .col-sm-3
-                            a.btn.btn-link.show-calendar(href='#infoPour')
-                              span.fa.fa-plus
-                              strong d'infos  
-                        .form-group
-                          if(instruction == '' || ((instruction.renvois && instruction.renvois.length==0) && (instruction.calendrier && instruction.calendrier.length==0)))
-                            label.col-sm-3.dos-text
-                              | Qualité :
-                            .col-sm-8
-                              select.form-control(name='qualite')
-                                if (dossier.qualite && dossier.qualite != 'null')
-                                  option(value='#{dossier.qualite}', selected='#{dossier.qualite}') #{dossier.qualite}
-                                else
-                                  option(value='null', selected='') Choisir la qualité
-                                option(value='Demandeur (resse)') Demandeur (resse)
-                                option(value='Défendeur (resse)') Défendeur (resse)
-                                option(value='Prévenu (e)') Prévenu (e)
-                                option(value='Inculpé (e)') Inculpé (e)
-                                option(value='Accusé (e)') Accusé (e)
-                                option(value='Partie civile') Partie civile
-                                option(value='Tiers saisi (e)') Tiers saisi (e)
-                                option(value='Appelé (e) en garantie') Appelé (e) en garantie
-                                option(value='Appelant (e)') Appelant (e)
-                                option(value='Intimé (e)') Intimé (é)
-                                option(value='Demandeur (resse) au pourvoi') Demandeur (resse) au pourvoi
-                                option(value='Défendeur (resse) au pourvoi') Défendeur (resse) au pourvoi 
-                          else
-                            label.col-sm-12.dos-text 
-                              | Qualite : 
-                              strong.str #{dossier.qualite}
-                            select.hidden.form-control(name='qualite')
-                              option(value=value='#{dossier.qualite}', selected='#{dossier.qualite}') #{dossier.qualite} 
-                        .form-group
-                          label.col-sm-9.dos-text
-                            | Contre : 
-                            strong.str #{dossier.contre.c_nom}
-                          .col-sm-3
-                            a.btn.btn-link.show-calendar(href='#infoContre')
-                              span.fa.fa-plus
-                              strong d'infos
-                        .form-group
-                          label.col-sm-3.dos-text
-                            | Avocat adverse :
-                          .col-sm-8
-                            input.form-control(name='avocat', placeholder='Saisir l\'avocat adverse', value='#{dossier.c_avocat}') 
-                        .form-group
-                          if(instruction == '' || ((instruction.renvois && instruction.renvois.length==0) && (instruction.calendrier && instruction.calendrier.length==0)))
-                            label.col-sm-3.dos-text
-                              | Matière de litige :
-                            .col-sm-8
-                              select.form-control(name='nature')
-                                if (dossier.nature && dossier.nature != 'null')
-                                  option(value=value='#{dossier.nature}', selected='#{dossier.nature}') #{dossier.nature}
-                                else
-                                  option(value='null', selected='') Choisir la nature du litige
-                                option(value='Civile') Civile
-                                option(value='Commerciale') Commerciale
-                                option(value='Référé administratif') Référé administratif
-                                option(value='Référé') Référé
-                                option(value='Défenses à l\'exécution') Défenses à l'exécution
-                                option(value='Difficultés d\'exécution') Difficultés d'exécution
-                                option(value='Sursis d\'exécution') Sursis d'exécution
-                                option(value='Sociale') Sociale
-                                option(value='Pénale') Pénale
-                                option(value='Administratif') Administratif
-                                option(value='Electorale') Electorale
-                          else
-                            label.col-sm-12.dos-text 
-                              | Matiere du litige : 
-                              strong.str #{dossier.nature}
-                            select.hidden.form-control(name='nature')
-                              option(value=value='#{dossier.nature}', selected='#{dossier.nature}') #{dossier.nature} 
-                        .form-group
+                            select.form-control(name='nature')
+                              if (dossier.nature && atob(dossier.nature) != 'null')
+                                option(value=value='#{atob(dossier.nature)}', selected='#{atob(dossier.nature)}') #{atob(dossier.nature)}
+                              else
+                                option(value='null', selected='') Choisir la nature du litige
+                              option(value='Civile') Civile
+                              option(value='Commerciale') Commerciale
+                              option(value='Référé administratif') Référé administratif
+                              option(value='Référé') Référé
+                              option(value='Défenses à l\'exécution') Défenses à l'exécution
+                              option(value='Difficultés d\'exécution') Difficultés d'exécution
+                              option(value='Sursis d\'exécution') Sursis d'exécution
+                              option(value='Sociale') Sociale
+                              option(value='Pénale') Pénale
+                              option(value='Administratif') Administratif
+                              option(value='Electorale') Electorale
+                        else
+                          label.col-sm-12.dos-text 
+                            | Matiere du litige : 
+                            strong.str #{atob(dossier.nature)}
+                          select.hidden.form-control(name='nature')
+                            option(value=value='#{atob(dossier.nature)}', selected='#{atob(dossier.nature)}') #{atob(dossier.nature)} 
+                      .form-group
                           label.col-sm-3.ods-text
                             | Résumé de l'afffaire :
                           .col-sm-8
                             textarea.form-control(name='resume', placeholder='Résumé du litige', cols='30', rows='7')
-                              | #{dossier.resume}
+                              if(dossier.resume)
+                                | #{atob(dossier.resume)}
                       .form-group
                         .col-sm-offset-8.col-sm-3.text-center
                           -let id = dossier._id
-                          -let btn = (visible == 'cacher') ? 'Modifier': 'Sauvegader'
-                          - let btn_func = (btn == 'Sauvegader') ? `update_dossier("${id}")` : 'update()'
+                          //- -let btn = (visible == 'cacher') ? 'Modifier': 'Sauvegarder'
+                          - let btn = 'Sauvegarder'
+                          - let btn_func = (btn == 'Sauvegarder') ? `update_dossier("${id}")` : 'update()'
                           a#btn-func.btn.btn-dark-azure(onclick=btn_func) !{btn}
     .col-sm-12.col-md-6
       .row.padding-horizontal-10
@@ -261,15 +262,15 @@ block content
                           each renvoi in instruction.renvois
                             .row
                               .col-sm-offset-1.col-sm-8
-                                p Renvoyé au #{moment(renvoi.r_date).format("DD-MM-YYYY")} : #{renvoi.r_motif}
+                                p Renvoyé au #{moment(renvoi.r_date).format("DD-MM-YYYY")} : #{atob(renvoi.r_motif)}
                           -let check_calendar  = (instruction.calendrier) ? (instruction.calendrier.length > 0) ? true : false : false
                           input(type='hidden', value='#{check_calendar}', id='mee_#{division}')
                           each cal in instruction.calendrier
                             .row
                               .col-sm-offset-1.col-sm-8
-                                p MEE du #{moment(cal.c_debut).format("DD-MM-YYYY")} au #{moment(cal.c_fin).format("DD-MM-YYYY")} : #{cal.c_commentaire}
+                                p MEE du #{moment(cal.c_debut).format("DD-MM-YYYY")} au #{moment(cal.c_fin).format("DD-MM-YYYY")} : #{atob(cal.c_commentaire)}
                       hr
-                    if (!(instruction && instruction.renvois.length>0 && instruction.renvois[last].r_type == "delibere vide" && instruction.juridiction.division == division))
+                    if (!(instruction && instruction.renvois.length>0 && atob(instruction.renvois[last].r_type) == "delibere vide" && instruction.juridiction.division == division))
                       .form-group
                         label.col-sm-2.control-label
                           | Renvoi :
@@ -316,7 +317,7 @@ block content
                           | Délibéré :
                         .col-sm-9
                           textarea.form-control(name='decision', id='decision_#{division}', cols='30', rows='7', readonly)
-                            | #{instruction.decision}
+                            | #{atob(instruction.decision)}
                           input(type='hidden', value='true', id='delibere_#{division}')
                     else
                       .form-group
@@ -370,7 +371,7 @@ block content
                   |  :
                 .col-sm-8
                   span.input-icon
-                    input.form-control(type='text', placeholder='Noms de denomination du client', name='p_nom', value="#{dossier.pour.p_nom}", required)
+                    input.form-control(type='text', placeholder='Noms de denomination du client', name='p_nom', value="#{atob(dossier.pour.p_nom)}", required)
                     i.fa.fa-user
               .form-group
                 label.col-sm-3.control-label
@@ -380,14 +381,14 @@ block content
                     if(dossier.pour.p_tel == null)
                       input.form-control.input-mask-phone(name='p_tel', type='text', placeholder='Téléphone du client')
                     else
-                      input.form-control.input-mask-phone(name='p_tel', type='text', placeholder='Téléphone du client', value="#{dossier.pour.p_tel}")
+                      input.form-control.input-mask-phone(name='p_tel', type='text', placeholder='Téléphone du client', value="#{atob(dossier.pour.p_tel)}")
                     i.fa.fa-phone
               .form-group
                 label.col-sm-3.control-label
                   | e-mail :
                 .col-sm-8
                   span.input-icon
-                    input.form-control(name='p_email', type='email', placeholder='Adresse electronique du client', value="#{dossier.pour.p_email}")
+                    input.form-control(name='p_email', type='email', placeholder='Adresse electronique du client', value="#{atob(dossier.pour.p_email)}")
                     i.fa.fa-envelope
           .row
             .col-md-3.text-center
@@ -412,7 +413,7 @@ block content
                   |  :
                 .col-sm-8
                   span.input-icon
-                    input.form-control(type='text', placeholder='Noms de denomination du contre', name='c_nom', value="#{dossier.contre.c_nom}", required)
+                    input.form-control(type='text', placeholder='Noms de denomination du contre', name='c_nom', value="#{atob(dossier.contre.c_nom)}", required)
                     i.fa.fa-user
               .form-group
                 label.col-sm-3.control-label
@@ -422,14 +423,14 @@ block content
                     if(dossier.contre.c_tel == null)
                       input.form-control.input-mask-phone(name='c_tel', type='text', placeholder='Téléphone du contre')
                     else
-                      input.form-control.input-mask-phone(name='c_tel', type='text', placeholder='Téléphone du contre', value="#{dossier.contre.c_tel}")
+                      input.form-control.input-mask-phone(name='c_tel', type='text', placeholder='Téléphone du contre', value="#{atob(dossier.contre.c_tel)}")
                     i.fa.fa-phone
               .form-group
                 label.col-sm-3.control-label
                   | e-mail :
                 .col-sm-8
                   span.input-icon
-                    input.form-control(name='c_email', type='email', placeholder='Adresse electronique du contre', value="#{dossier.contre.c_email}")
+                    input.form-control(name='c_email', type='email', placeholder='Adresse electronique du contre', value="#{atob(dossier.contre.c_email)}")
                     i.fa.fa-envelope
           .row
             .col-md-3.text-center

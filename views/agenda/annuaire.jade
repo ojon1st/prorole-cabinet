@@ -30,9 +30,9 @@ block content
               tbody
                 each p in carnet
                   tr
-                    th #{p.prenom_nom}
-                    th #{p.email}
-                    th #{p.tel}
+                    th #{atob(p.prenom_nom)}
+                    th #{atob(p.email)}
+                    th #{atob(p.tel)}
 append jscripts
   // start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY
   script(src='/assets/plugins/holder/holder.js')

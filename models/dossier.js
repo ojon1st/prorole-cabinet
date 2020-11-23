@@ -16,6 +16,7 @@ var DossierSchema = new Schema({
   correspondance:[{dossier_id:String, ref:String}],
   contre:{type: Schema.ObjectId, ref: 'Contre'},
   d_update:{type:Date, default:moment()},
+  crypt: {type:Boolean, default: false},
   hookEnabled:{ type: Boolean, required: false, default: false }
 });
 

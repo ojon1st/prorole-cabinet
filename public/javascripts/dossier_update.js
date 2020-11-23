@@ -82,13 +82,12 @@ function confirm_new_juridiction(selectObject, id_dossier, new_division) {
         (new_division == 'appel' &&  $('#delibere_cour').val() != 'true' && $('#inst_cour').val() == 'false') || 
         (new_division == 'cour')){
         if(($('#inst_nature').val() == 'true' && selectObject.options[ selectObject.selectedIndex ].text == 'TC Niamey') || ($('select[name=nature]').val() == 'Commerciale' && selectObject.options[ selectObject.selectedIndex ].text == 'TGIHC Niamey')){
-          $(selectObject).val('null').text('Selectionner une juridiction');
+          
           return show_notification('error', 'Changement de juriduction', 'Non respect de la procedure judicaire, la juridiction ne peut pas être changer');
         }
           create_instance(selectObject.value, id_dossier, new_division);
       }
       else{
-        $(selectObject).val('null');
         return show_notification('error', 'Changement de juriduction', 'Non respect de la procedure judicaire, la juridiction ne peut pas être changer');
       }
     }
