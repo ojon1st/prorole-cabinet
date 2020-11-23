@@ -12,8 +12,8 @@ var agendasRouter = require('./routes/agendas');
 var adminsRouter = require('./routes/administrateurs');
 var mongoose = require('mongoose');
 mongoose.set('useCreateIndex', true);
-// var mongoDB = process.env.DATABASE ||'mongodb://admin_prorole:az34ty78@ds149489.mlab.com:49489/prorole_avocat'; //en ligne
-var mongoDB = 'mongodb://127.0.0.1:27017/avocat'; //local
+var mongoDB = process.env.DATABASE ||'mongodb://admin_prorole:az34ty78@ds149489.mlab.com:49489/prorole_avocat'; //en ligne
+// var mongoDB = 'mongodb://127.0.0.1:27017/avocat'; //local
 mongoose.connect(mongoDB,  {useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
