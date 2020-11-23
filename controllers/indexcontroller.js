@@ -26,33 +26,31 @@ exports.login_get = function(req, res, next) {
 
 // Verication des identifiants
 exports.login_post = [
-  
-  body('password', 'Veuillez renseigner votre pseudo').isLength({ min: 1 }).trim(),
+  body('password', 'Veuillez renseigner votre pseudo').isLength({ min: 8 }).trim(),
   passport.authenticate('local', {
-      //failureMessage: 'Votre Pseudo ou mot de passe est incorrect.',
-      failureRedirect: '/login?error'
+    failureRedirect: '/login?error'
   }),
   (req, res, next) => {
-      console.log('Vous êtes maintenant connecté');
-      res.redirect('/');
+    console.log('Vous êtes maintenant connecté');
+    res.redirect('/');
   }
 ];
 
 // Deconnexion
 exports.user_logout_get = function (req, res, next) {
-    req.logout();
-    res.redirect('/login');
+  req.logout();
+  res.redirect('/login');
 };
 
 
 passport.serializeUser(function (user, done) {
-    done(null, user.id);
+  done(null, user.id);
 });
 
 passport.deserializeUser(function (id, done) {
-    Configuration.findById(id, function (err, user) {
-        done(err, user);
-    });
+  Configuration.findById(id, function (err, user) {
+    done(err, user);
+  });
 });
 passport.use(new LocalStrategy({
   usernameField: 'username',

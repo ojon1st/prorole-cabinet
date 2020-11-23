@@ -16,7 +16,7 @@ header.topbar.navbar.navbar-inverse.navbar-fixed-top.inner
         li.current-user
           a.dropdown-toggle(href='/logout')
             if (cabinet)
-              span.strong.username #{cabinet.denomination}
+              span.strong.username #{atob(cabinet.denomination)}
         // end: USER DROPDOWN
       // end: TOP NAVIGATION MENU
       // end: TOPBAR CONTAINER
